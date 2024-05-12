@@ -1,10 +1,15 @@
-import {SafeAreaView, Text} from 'react-native';
+import {QueryClientProvider} from '@tanstack/react-query';
+import {NavigationContainer} from '@react-navigation/native';
+import RootNavigator from './src/navigations/root/RootNavigator';
+import queryClient from './src/api/queryClient';
 
 function App() {
   return (
-    <SafeAreaView>
-      <Text>드디어 됐다. 오후 11시 29분</Text>
-    </SafeAreaView>
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </QueryClientProvider>
   );
 }
 
