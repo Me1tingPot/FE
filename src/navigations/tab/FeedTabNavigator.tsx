@@ -58,8 +58,8 @@ function TabBarIcons(route: RouteProp<FeedTabParamList>, focused: boolean) {
 }
 
 const FeedTabNavigator = () => {
-  const {t, i18n} = useTranslation(['en']);
-  console.log(t('home2'));
+  const {t} = useTranslation();
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -84,35 +84,35 @@ const FeedTabNavigator = () => {
         name={feedTabNavigations.FEED_HOME}
         component={FeedHomeScreen}
         options={({navigation}) => ({
-          tabBarLabel: `${t('bottomTab.home')}`,
+          tabBarLabel: `${t(`bottomTab.home`)}`,
         })}
       />
       <Tab.Screen
         name={feedTabNavigations.PARTY_HOME}
         component={PartyHomeScreen}
         options={({navigation}) => ({
-          tabBarLabel: 'Party',
+          tabBarLabel: `${t(`bottomTab.party`)}`,
         })}
       />
       <Tab.Screen
         name={feedTabNavigations.WISH_HOME}
         component={WishHomeScreen}
         options={({navigation}) => ({
-          tabBarLabel: 'Wish',
+          tabBarLabel: `${t(`bottomTab.wish`)}`,
         })}
       />
       <Tab.Screen
         name={feedTabNavigations.COMMUNITY_HOME}
         component={CommunityHomeScreen}
         options={({navigation}) => ({
-          tabBarLabel: 'Community',
+          tabBarLabel: `${t(`bottomTab.community`)}`,
         })}
       />
       <Tab.Screen
         name={feedTabNavigations.MY_HOME}
         component={MyHomeScreen}
         options={({navigation}) => ({
-          tabBarLabel: 'My',
+          tabBarLabel: `${t(`bottomTab.my`)}`,
         })}
       />
     </Tab.Navigator>
