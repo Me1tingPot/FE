@@ -1,15 +1,15 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 interface LangIdState {
-  langId: string | null;
-  setLangId: (langId: string) => void;
+	langId: string | null;
+	setLangId: (langId: string) => void;
 }
 
 const useLangIdStore = create<LangIdState>(set => ({
-  langId: null,
-  setLangId: langId => {
-    set({langId});
-  },
+	langId: null,
+	setLangId: langId => {
+		set({ langId });
+	},
 }));
 
 export default useLangIdStore;

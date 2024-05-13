@@ -1,10 +1,10 @@
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 interface SignUpScreenProps {}
 
-const SignUpScreen = ({}: SignUpScreenProps) => {
-  return <View></View>;
-};
+function SignUpScreen({}: SignUpScreenProps) {
+	return <View />;
+}
 
 const styles = StyleSheet.create({});
 
