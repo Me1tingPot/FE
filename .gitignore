@@ -67,3 +67,5 @@ yarn-error.log
 
 .env
 yarn.lock
+.yarn
+yarn
