@@ -1,10 +1,7 @@
 {
-  "bottomTab": {
-    "home": "Home",
-    "party": "Party",
-    "wish": "Wish",
-    "community": "Community",
-    "my": "My"
-  },
-  "hi": "안녕하세요"
+	"홈": "Home",
+	"파티": "Party",
+	"위시리스트": "Wish",
+	"커뮤니티": "Community",
+	"마이페이지": "My"
 }

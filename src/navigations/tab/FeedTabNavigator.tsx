@@ -1,16 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useTranslation } from 'react-i18next';
-
-import { colors, feedTabNavigations } from '../../constants';
+import CommunityHomeScreen from '@/screens/community/CommunityHomeScreen';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
+import MyHomeScreen from '@/screens/my/MyHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import WishHomeScreen from '@/screens/wish/WishHomeScreen';
-import CommunityHomeScreen from '@/screens/community/CommunityHomeScreen';
-import MyHomeScreen from '@/screens/my/MyHomeScreen';
+import useThemeStore from '@/store/useThemeStore';
+import { colors, feedTabNavigations } from '../../constants';
 
 export type FeedTabParamList = {
 	[feedTabNavigations.FEED_HOME]: undefined;
@@ -24,7 +24,7 @@ const Tab = createBottomTabNavigator<FeedTabParamList>();
 
 function TabBarIcons(route: RouteProp<FeedTabParamList>, focused: boolean) {
 	let iconName = '';
-
+	const { theme } = useThemeStore();
 	switch (route.name) {
 		case feedTabNavigations.FEED_HOME: {
 			iconName = focused ? 'home' : 'home-outline';
@@ -51,30 +51,31 @@ function TabBarIcons(route: RouteProp<FeedTabParamList>, focused: boolean) {
 	return (
 		<Ionicons
 			name={iconName}
-			color={focused ? colors.BLACK : colors.GRAY_500}
+			color={focused ? colors[theme].BLACK : colors[theme].GRAY_500}
 			size={25}
 		/>
 	);
 }
 
 function FeedTabNavigator() {
+	const { theme } = useThemeStore();
 	const { t } = useTranslation();
 
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
 				headerStyle: {
-					backgroundColor: colors.WHITE,
-					shadowColor: colors.GRAY_200,
+					backgroundColor: colors[theme].WHITE,
+					shadowColor: colors[theme].GRAY_200,
 				},
 				headerTitleStyle: {
 					fontSize: 15,
 				},
-				headerTintColor: colors.BLACK,
-				tabBarActiveTintColor: colors.BLACK,
+				headerTintColor: colors[theme].BLACK,
+				tabBarActiveTintColor: colors[theme].BLACK,
 				tabBarStyle: {
-					backgroundColor: colors.WHITE,
-					borderTopColor: colors.GRAY_200,
+					backgroundColor: colors[theme].WHITE,
+					borderTopColor: colors[theme].GRAY_200,
 					borderTopWIdth: StyleSheet.hairlineWidth,
 				},
 				headerShown: false,
@@ -85,35 +86,35 @@ function FeedTabNavigator() {
 				name={feedTabNavigations.FEED_HOME}
 				component={FeedHomeScreen}
 				options={({ navigation }) => ({
-					tabBarLabel: `${t(`bottomTab.home`)}`,
+					tabBarLabel: `${t('홈')}`,
 				})}
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.PARTY_HOME}
 				component={PartyHomeScreen}
 				options={({ navigation }) => ({
-					tabBarLabel: `${t(`bottomTab.party`)}`,
+					tabBarLabel: `${t('파티')}`,
 				})}
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.WISH_HOME}
 				component={WishHomeScreen}
 				options={({ navigation }) => ({
-					tabBarLabel: `${t(`bottomTab.wish`)}`,
+					tabBarLabel: `${t('위시리스트')}`,
 				})}
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.COMMUNITY_HOME}
 				component={CommunityHomeScreen}
 				options={({ navigation }) => ({
-					tabBarLabel: `${t(`bottomTab.community`)}`,
+					tabBarLabel: `${t('커뮤니티')}`,
 				})}
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.MY_HOME}
 				component={MyHomeScreen}
 				options={({ navigation }) => ({
-					tabBarLabel: `${t(`bottomTab.my`)}`,
+					tabBarLabel: `${t('마이페이지')}`,
 				})}
 			/>
 		</Tab.Navigator>

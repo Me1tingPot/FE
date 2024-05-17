@@ -6,6 +6,7 @@ import { getEncryptStorage, setEncryptStorage } from '@/utils';
 
 function useThemeStorage() {
 	// Default System Theme Value
+	// light | dark | null | undefined
 	const systemTheme = useColorScheme();
 	const { theme, isSystem, setTheme, setSystemTheme } = useThemeStore();
 
