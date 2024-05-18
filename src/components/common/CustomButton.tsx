@@ -9,19 +9,29 @@ import {
 	StyleProp,
 	ViewStyle,
 	TextStyle,
+	ActivityIndicator,
 } from 'react-native';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types/common';
 import { colors } from '../../constants';
 
+// 다른 곳에서 재사용될 수 있을지 생각해보기
+export const buttonVariants = ['filled', 'outlined'] as const;
+type buttonVariant = (typeof buttonVariants)[number];
+
+export const buttonSizes = ['large', 'medium'] as const;
+type buttonSize = (typeof buttonSizes)[number];
+
 interface CustomButtonProps extends PressableProps {
 	label: string;
-	variant?: 'filled' | 'outlined';
-	size?: 'large' | 'medium';
+	variant?: buttonVariant;
+	size?: buttonSize;
 	inValid?: boolean;
 	style?: StyleProp<ViewStyle>;
 	textStyle?: StyleProp<TextStyle>;
 	icon?: ReactNode;
+	isLoading?: boolean;
+	onPress?: () => void;
 }
 
 /**
@@ -43,6 +53,8 @@ function CustomButton({
 	style = null,
 	textStyle = null,
 	icon = null,
+	isLoading = false,
+	onPress,
 	...props
 }: CustomButtonProps) {
 	const { theme } = useThemeStore();
@@ -58,13 +70,26 @@ function CustomButton({
 				inValid && styles.inValid,
 				style,
 			]}
+			onPress={onPress}
 			{...props}
 		>
 			<View style={styles[size]}>
-				{icon}
-				<Text style={[styles.text, styles[`${variant}Text`], textStyle]}>
-					{label}
-				</Text>
+				{isLoading ? (
+					<ActivityIndicator
+						color={
+							variant === 'filled'
+								? colors.light.UNCHANGE_WHITE
+								: colors.light.UNCHANGE_BLACK
+						}
+					/>
+				) : (
+					<>
+						{icon}
+						<Text style={[styles.text, styles[`${variant}Text`], textStyle]}>
+							{label}
+						</Text>
+					</>
+				)}
 			</View>
 		</Pressable>
 	);

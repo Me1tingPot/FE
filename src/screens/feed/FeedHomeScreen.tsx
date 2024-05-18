@@ -18,8 +18,19 @@ function FeedHomeScreen({}: FeedHomeScreenProps) {
 			<Button title="한국어" onPress={() => changeLanguage('ko')} />
 			<Button title="영어" onPress={() => changeLanguage('en')} />
 			<View style={styles.buttonContainer}>
-				<CustomButton label="버튼 테스트" size="medium" variant="outlined" />
-				<CustomButton label="버튼 테스트" size="medium" />
+				<CustomButton
+					label="버튼 테스트"
+					size="medium"
+					variant={'outlined'}
+					isLoading={true}
+				/>
+				<CustomButton
+					label="버튼 테스트"
+					size="medium"
+					onPress={() => console.log('click')}
+					inValid={false}
+					isLoading={true}
+				/>
 			</View>
 		</SafeAreaView>
 	);
