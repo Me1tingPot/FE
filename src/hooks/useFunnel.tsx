@@ -1,53 +1,37 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { Funnel, Step } from '@/components/funnel/Funnel';
+import { FunnelProps, NonEmptyArray, StepProps } from '@/types/index';
 
-type StepProps<Step> = {
-	name: Readonly<Step>;
-	children: React.ReactNode;
-};
+type RouteFunnelProps<Steps extends NonEmptyArray<string>> = Omit<
+	FunnelProps<Steps>,
+	'steps' | 'step'
+>;
 
-type FunnelProps<Step> = {
-	children: Array<React.ReactElement<StepProps<Step>>>;
-};
+type FunnelComponent<Steps extends NonEmptyArray<string>> = ((
+	props: RouteFunnelProps<Steps>,
+) => JSX.Element) & { Step: (props: StepProps<Steps>) => JSX.Element };
 
-const useFunnel = <Step extends string>(defaultStep: Step, lastStep: Step) => {
-	const [step, setStep] = useState<Step>(defaultStep);
+export const useFunnel = <Steps extends NonEmptyArray<string>>(
+	steps: Steps,
+	options?: { initialStep?: Steps[number] },
+): readonly [
+	FunnelComponent<Steps>,
+	activeStepIndex: number,
+	(step: Steps[number]) => void,
+] => {
+	const [step, setStep] = useState(options?.initialStep ?? steps[0]);
+	const activeStepIndex = steps.findIndex(s => s === step);
 
-	const Step = (props: StepProps<Step>): React.ReactElement => {
-		return <>{props.children}</>;
-	};
-
-	const Funnel = ({ children }: FunnelProps<Step>) => {
-		const targetStep = children.find(
-			childStep => childStep.props.name === step,
+	const FunnelComponent = useMemo(() => {
+		return Object.assign(
+			function RouteFunnel(props: RouteFunnelProps<Steps>) {
+				return <Funnel<Steps> steps={steps} step={step} {...props} />;
+			},
+			{
+				Step,
+			},
 		);
+	}, [step]);
 
-		if (!targetStep) throw new Error(`현재 ${step}과 일치하지 않습니다.`);
-
-		return targetStep;
-	};
-
-	Funnel.step = Step;
-
-	const prevStep = () => {
-		if (step !== '1') {
-			setStep(String(Number(step) - 1) as Step);
-		}
-	};
-
-	const nextStep = () => {
-		if (String(Number(step) + 1) < lastStep) {
-			setStep(String(Number(step) + 1) as Step);
-		}
-	};
-
-	return {
-		Funnel,
-		Step,
-		setStep,
-		currentStep: step,
-		prevStep,
-		nextStep,
-	} as const;
+	return [FunnelComponent, activeStepIndex, setStep] as const;
 };
-
-export default useFunnel;
