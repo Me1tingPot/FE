@@ -1,12 +1,12 @@
 import { Button, Text, View } from 'react-native';
 
-const Page1 = ({ onNext }: { onNext: () => void }) => {
+const Location = ({ onNext }: { onNext: () => void }) => {
 	return (
 		<View>
-			<Text>Page 1 </Text>
+			<Text>위치 입력</Text>
 			<Button title="다음" onPress={onNext} />
 		</View>
 	);
 };
 
-export default Page1;
+export default Location;

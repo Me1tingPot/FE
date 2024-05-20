@@ -1,7 +1,21 @@
-import Page1 from './Page1';
-import Page2 from './Page2';
-import Page3 from './Page3';
-import Page4 from './Page4';
-import Page5 from './Page5';
+import Birth from './Birth';
+import Email from './Email';
+import FaceImg from './FaceImg';
+import Finish from './Finish';
+import Language from './Language';
+import Location from './Location';
+import Name from './Name';
+import Password from './Password';
+import Sex from './Sex';
 
-export { Page1, Page2, Page3, Page4, Page5 };
+export {
+	Sex,
+	Name,
+	Email,
+	Password,
+	Birth,
+	Location,
+	FaceImg,
+	Finish,
+	Language,
+};

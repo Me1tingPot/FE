@@ -1,12 +1,12 @@
 import { Button, Text, View } from 'react-native';
 
-const Page4 = ({ onNext }: { onNext: () => void }) => {
+const Birth = ({ onNext }: { onNext: () => void }) => {
 	return (
 		<View>
-			<Text>Page4</Text>
+			<Text>생년월일 입력</Text>
 			<Button title="다음" onPress={onNext} />
 		</View>
 	);
 };
 
-export default Page4;
+export default Birth;
