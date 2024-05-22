@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -6,10 +7,13 @@ import CustomButton from '../common/CustomButton';
 const Sex = ({ onNext }: { onNext: () => void }) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
 	return (
 		<View style={styles.container}>
-			<Text>안녕하세요!</Text>
-			<Text>당신의 성별을 선택해주세요.</Text>
+			<Text style={styles.title}>안녕하세요!</Text>
+			<Text style={styles.description}>
+				당신의 <Text style={styles.textPoint}>성별</Text>을 선택해주세요.
+			</Text>
 
 			<View style={styles.buttonContainer}>
 				<View style={styles.buttonLayout}>
@@ -35,7 +39,7 @@ const styling = (theme: ThemeMode) =>
 			flex: 1,
 
 			paddingVertical: 50,
-			paddingHorizontal: 30,
+			paddingHorizontal: 40,
 		},
 		buttonContainer: {
 			display: 'flex',
@@ -46,10 +50,24 @@ const styling = (theme: ThemeMode) =>
 			marginTop: 50,
 		},
 		buttonLayout: {
-			width: '35%',
+			width: '40%',
 		},
 		buttonPosition: {
 			marginTop: 'auto',
+		},
+		title: {
+			fontSize: 20,
+			color: colors[theme].GRAY_700,
+		},
+		description: {
+			marginTop: 10,
+
+			fontSize: 14,
+			color: colors[theme].GRAY_500,
+		},
+		textPoint: {
+			color: colors[theme].BLACK,
+			fontWeight: 700,
 		},
 	});
 
