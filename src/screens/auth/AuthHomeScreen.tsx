@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, SafeAreaView, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { authNavigations } from '@/constants';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
@@ -14,6 +14,26 @@ export type AuthHomeScreenProps = StackScreenProps<
 >;
 
 function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
+	const [userData, setUserData] = useState<{
+		id: string;
+		firstName: string;
+		lastName: string;
+	} | null>(null);
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const response = await fetch('https://localhost:8081/user');
+				const data = await response.json();
+				console.log('반환값: ', data);
+				setUserData(data);
+			} catch (error) {
+				console.error('Error fetching user data:', error);
+			}
+		};
+		fetchUserData();
+	}, []);
+
 	return (
 		<SafeAreaView>
 			<Button
@@ -24,6 +44,7 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 				title="회원가입 화면으로 이동"
 				onPress={() => navigation.navigate(authNavigations.SIGN_UP)}
 			/>
+			<Text>{userData?.firstName}</Text>
 		</SafeAreaView>
 	);
 }
