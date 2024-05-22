@@ -1,38 +1,60 @@
-import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
-import { View } from 'react-native';
-import Config from 'react-native-config';
-import CustomButton from '@/components/common/CustomButton';
-import i18n from '@/locales/i18n.config';
-
-console.log('환경변수 테스트', Config.TEST);
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import SearchInput from '@/components/common/SearchInput';
+import FeedHomeBox from '@/components/feed/FeedHomeBox';
+import { colors } from '@/constants';
+import useThemeStore from '@/store/useThemeStore';
+import { ThemeMode } from '@/types';
 
 interface FeedHomeScreenProps {}
 
 function FeedHomeScreen({}: FeedHomeScreenProps) {
-	const changeLanguage = (lang: string) => {
-		i18n.changeLanguage(lang);
-	};
+	const { theme } = useThemeStore();
+	const styles = styling(theme);
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text>FeedHomeScreen</Text>
-			<Button title="한국어" onPress={() => changeLanguage('ko')} />
-			<Button title="영어" onPress={() => changeLanguage('en')} />
-			<View style={styles.buttonContainer}>
-				<CustomButton label="버튼 테스트" size="medium" variant="outlined" />
-				<CustomButton label="버튼 테스트" size="medium" />
+			<View style={styles.searchContainer}>
+				<SearchInput onSubmit={() => {}} placeholder="파티를 검색해 보세요!" />
 			</View>
+			<ScrollView style={styles.scrollContainer}>
+				<View style={styles.boxContainer}>
+					<FeedHomeBox
+						text1="파티 호스트가 되어 친구들을 모아보세요!"
+						highlightText="파티"
+						text2="참여하기"
+					/>
+					<FeedHomeBox
+						text1="내 주변에서 열리는 글로벌 파티에 참여하세요!"
+						highlightText="내 주변 파티"
+						text2="둘러보기"
+					/>
+					<FeedHomeBox highlightText="예약" text2="된 일정" />
+				</View>
+			</ScrollView>
 		</SafeAreaView>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	buttonContainer: {
-		padding: 20,
-		gap: 20,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		boxContainer: {
+			width: '100%',
+			alignItems: 'center',
+			marginTop: 10,
+			gap: 20,
+		},
+		container: {
+			flex: 1,
+			backgroundColor: colors[theme].WHITE,
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
+		scrollContainer: {
+			flex: 1,
+			width: '100%',
+		},
+		searchContainer: {
+			marginTop: 30,
+		},
+	});
 
 export default FeedHomeScreen;
