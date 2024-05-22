@@ -1,10 +1,18 @@
+import { FieldError, UseFormSetValue } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 
-const Sex = ({ onNext }: { onNext: () => void }) => {
+type SexProps = {
+	onNext: () => void;
+	setValue: UseFormSetValue<SignupInputs>;
+	error?: FieldError | undefined;
+};
+
+const Sex = ({ onNext }: SexProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 

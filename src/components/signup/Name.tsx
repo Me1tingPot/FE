@@ -1,12 +1,20 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { FieldError, UseFormRegister } from 'react-hook-form';
+import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
-const Name = ({ onNext }: { onNext: () => void }) => {
+type NameProps = {
+	onNext: () => void;
+	register: UseFormRegister<SignupInputs>;
+	error?: FieldError | undefined;
+};
+
+const Name = ({ onNext }: NameProps) => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const { theme } = useThemeStore();

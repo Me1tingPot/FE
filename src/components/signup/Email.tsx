@@ -1,12 +1,20 @@
 import { useState } from 'react';
+import { FieldError, UseFormRegister } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
-const Email = ({ onNext }: { onNext: () => void }) => {
+type EmailProps = {
+	onNext: () => void;
+	register: UseFormRegister<SignupInputs>;
+	error?: FieldError | undefined;
+};
+
+const Email = ({ onNext }: EmailProps) => {
 	const [email, setEmail] = useState('');
 	const { theme } = useThemeStore();
 	const styles = styilng(theme);

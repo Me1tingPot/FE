@@ -1,13 +1,21 @@
 import { useState } from 'react';
+import { FieldError, UseFormSetValue } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
-const Birth = ({ onNext }: { onNext: () => void }) => {
+type BirthProps = {
+	onNext: () => void;
+	setValue: UseFormSetValue<SignupInputs>;
+	error?: FieldError | undefined;
+};
+
+const Birth = ({ onNext }: BirthProps) => {
 	const [date, setDate] = useState('');
 	const { theme } = useThemeStore();
 	const styles = styilng(theme);
