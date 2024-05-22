@@ -1,4 +1,4 @@
-import { FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {

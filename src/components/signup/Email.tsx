@@ -17,9 +17,9 @@ type EmailProps = {
 const Email = ({ onNext }: EmailProps) => {
 	const [email, setEmail] = useState('');
 	const { theme } = useThemeStore();
-	const styles = styilng(theme);
+	const styles = styling(theme);
 	return (
-		<View style={styles.conatiner}>
+		<View style={styles.container}>
 			<View>
 				<Text style={styles.title}>이메일을 입력해주세요.</Text>
 				<Text style={styles.description}>
@@ -31,6 +31,7 @@ const Email = ({ onNext }: EmailProps) => {
 				value={email}
 				onChangeText={t => setEmail(t)}
 				placeholder="예시) melting_pot@gmail.com"
+				keyboardType="email-address"
 			/>
 
 			<View style={styles.buttonPosition}>
@@ -40,14 +41,13 @@ const Email = ({ onNext }: EmailProps) => {
 	);
 };
 
-const styilng = (theme: ThemeMode) =>
+const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
-		conatiner: {
+		container: {
 			display: 'flex',
 			flexDirection: 'column',
 			flex: 1,
 			gap: 30,
-
 			paddingVertical: 50,
 			paddingHorizontal: 40,
 		},

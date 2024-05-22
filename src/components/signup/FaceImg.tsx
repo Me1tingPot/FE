@@ -28,10 +28,10 @@ type FaceImgProps = {
 
 const FaceImg = ({ onNext }: FaceImgProps) => {
 	const { theme } = useThemeStore();
-	const styles = styilng(theme);
+	const styles = styling(theme);
 
 	return (
-		<View style={styles.conatiner}>
+		<View style={styles.container}>
 			<View>
 				<Text style={styles.title}>사진 등록</Text>
 				<Text style={styles.description}>
@@ -72,14 +72,13 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 	);
 };
 
-const styilng = (theme: ThemeMode) =>
+const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
-		conatiner: {
+		container: {
 			display: 'flex',
 			flexDirection: 'column',
 			flex: 1,
 			gap: 30,
-
 			paddingVertical: 50,
 			paddingHorizontal: 40,
 		},
@@ -92,13 +91,12 @@ const styilng = (theme: ThemeMode) =>
 		},
 		description: {
 			marginTop: 10,
-
 			fontSize: 14,
 			color: colors[theme].GRAY_500,
 		},
 		textPoint: {
 			color: colors[theme].BLACK,
-			fontWeight: 700,
+			fontWeight: '700',
 		},
 		notice: {
 			textAlign: 'center',
@@ -114,7 +112,6 @@ const styilng = (theme: ThemeMode) =>
 			alignItems: 'center',
 			width: 130,
 			height: 180,
-
 			backgroundColor: colors[theme].WHITE,
 			borderRadius: 20,
 			borderWidth: 0.5,

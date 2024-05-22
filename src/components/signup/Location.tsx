@@ -14,10 +14,10 @@ type LocationProps = {
 
 const Location = ({ onNext }: LocationProps) => {
 	const { theme } = useThemeStore();
-	const styles = styilng(theme);
+	const styles = styling(theme);
 
 	return (
-		<View style={styles.conatiner}>
+		<View style={styles.container}>
 			<View>
 				<Text style={styles.title}>어디에 계신가요?</Text>
 				<Text style={styles.description}>
@@ -33,14 +33,13 @@ const Location = ({ onNext }: LocationProps) => {
 	);
 };
 
-const styilng = (theme: ThemeMode) =>
+const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
-		conatiner: {
+		container: {
 			display: 'flex',
 			flexDirection: 'column',
 			flex: 1,
 			gap: 30,
-
 			paddingVertical: 50,
 			paddingHorizontal: 40,
 		},
@@ -53,13 +52,12 @@ const styilng = (theme: ThemeMode) =>
 		},
 		description: {
 			marginTop: 10,
-
 			fontSize: 14,
 			color: colors[theme].GRAY_500,
 		},
 		textPoint: {
 			color: colors[theme].BLACK,
-			fontWeight: 700,
+			fontWeight: '700',
 		},
 	});
 

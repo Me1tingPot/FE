@@ -18,7 +18,7 @@ const Name = ({ onNext }: NameProps) => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const { theme } = useThemeStore();
-	const styles = styilng(theme);
+	const styles = styling(theme);
 
 	return (
 		<View style={styles.container}>
@@ -60,14 +60,13 @@ const Name = ({ onNext }: NameProps) => {
 	);
 };
 
-const styilng = (theme: ThemeMode) =>
+const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
 			display: 'flex',
 			flexDirection: 'column',
 			flex: 1,
 			gap: 20,
-
 			paddingVertical: 50,
 			paddingHorizontal: 40,
 		},
@@ -80,7 +79,6 @@ const styilng = (theme: ThemeMode) =>
 		},
 		description: {
 			marginTop: 10,
-
 			fontSize: 14,
 			color: colors[theme].GRAY_500,
 		},
@@ -89,7 +87,7 @@ const styilng = (theme: ThemeMode) =>
 		},
 		textPoint: {
 			color: colors[theme].BLACK,
-			fontWeight: 700,
+			fontWeight: '700',
 		},
 	});
 

@@ -18,9 +18,9 @@ const Password = ({ onNext }: PasswordProps) => {
 	const [password, setPassword] = useState('');
 	const [passwordCheck, setPassWordCheck] = useState('');
 	const { theme } = useThemeStore();
-	const styles = styilng(theme);
+	const styles = styling(theme);
 	return (
-		<View style={styles.conatiner}>
+		<View style={styles.container}>
 			<View>
 				<Text style={styles.title}>비밀번호를 입력해주세요.</Text>
 				<Text style={styles.description}>추후 변경할 수 있어요.</Text>
@@ -47,14 +47,13 @@ const Password = ({ onNext }: PasswordProps) => {
 	);
 };
 
-const styilng = (theme: ThemeMode) =>
+const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
-		conatiner: {
+		container: {
 			display: 'flex',
 			flexDirection: 'column',
 			flex: 1,
 			gap: 30,
-
 			paddingVertical: 50,
 			paddingHorizontal: 40,
 		},

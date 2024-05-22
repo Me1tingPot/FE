@@ -45,7 +45,6 @@ const styling = (theme: ThemeMode) =>
 			display: 'flex',
 			flexDirection: 'column',
 			flex: 1,
-
 			paddingVertical: 50,
 			paddingHorizontal: 40,
 		},
@@ -53,7 +52,6 @@ const styling = (theme: ThemeMode) =>
 			display: 'flex',
 			flexDirection: 'row',
 			justifyContent: 'space-around',
-
 			paddingHorizontal: 30,
 			marginTop: 50,
 		},
@@ -69,13 +67,12 @@ const styling = (theme: ThemeMode) =>
 		},
 		description: {
 			marginTop: 10,
-
 			fontSize: 14,
 			color: colors[theme].GRAY_500,
 		},
 		textPoint: {
 			color: colors[theme].BLACK,
-			fontWeight: 700,
+			fontWeight: '700',
 		},
 	});
 
