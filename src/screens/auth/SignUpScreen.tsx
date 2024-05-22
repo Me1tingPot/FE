@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
 	Birth,
@@ -11,6 +11,7 @@ import {
 	Password,
 	Sex,
 } from '@/components/signup';
+import ProgressBar from '@/components/signup/progressBar/ProgressBar';
 import { authNavigations, colors } from '@/constants';
 import { useFunnel } from '@/hooks/useFunnel';
 import useThemeStore from '@/store/useThemeStore';
@@ -45,9 +46,10 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 				colors={['#DCFFEA', '#C5FFDD', '#A5F2E1']}
 				style={styles.greenCircle}
 			/>
-			<View style={styles.progressBarBg}>
-				<View style={styles.progressBar}></View>
-			</View>
+			<ProgressBar
+				activeStepIndex={activeStepIndex}
+				stepLength={funnelSteps.length}
+			/>
 			<Funnel>
 				<Funnel.Step name={'sex'}>
 					<Sex onNext={() => setStep('name')} />
@@ -103,19 +105,6 @@ const styling = (theme: ThemeMode) =>
 			borderRadius: 500,
 			bottom: -80,
 			left: 140,
-		},
-		progressBarBg: {
-			width: '90%',
-			height: 3,
-			marginTop: 5,
-			alignSelf: 'center',
-			backgroundColor: colors[theme].GRAY_300,
-		},
-		progressBar: {
-			position: 'absolute',
-			width: '20%',
-			height: 3,
-			backgroundColor: colors[theme].GREEN_500,
 		},
 	});
 
