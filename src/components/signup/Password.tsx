@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -10,13 +8,13 @@ import CustomTextInput from '../common/CustomTextInput';
 
 type PasswordProps = {
 	onNext: () => void;
-	register: UseFormRegister<SignupInputs>;
-	error?: FieldError | undefined;
 };
 
 const Password = ({ onNext }: PasswordProps) => {
-	const [password, setPassword] = useState('');
-	const [passwordCheck, setPassWordCheck] = useState('');
+	const {
+		control,
+		formState: { errors },
+	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -27,16 +25,33 @@ const Password = ({ onNext }: PasswordProps) => {
 			</View>
 
 			<View style={styles.buttonContainer}>
-				<CustomTextInput
-					value={password}
-					onChangeText={t => setPassword(t)}
-					placeholder="비밀번호 입력"
-					message="최소 8자, 최대 20자"
+				<Controller
+					control={control}
+					name="password"
+					render={({ field: { onChange, onBlur, value } }) => (
+						<CustomTextInput
+							value={value}
+							onChangeText={onChange}
+							onBlur={onBlur}
+							placeholder="비밀번호 입력"
+							message="최소 8자, 최대 20자"
+							variant={errors.password ? 'error' : 'default'}
+						/>
+					)}
 				/>
-				<CustomTextInput
-					value={passwordCheck}
-					onChangeText={t => setPassWordCheck(t)}
-					placeholder="비밀번호 확인"
+
+				<Controller
+					control={control}
+					name="passwordCheck"
+					render={({ field: { onChange, onBlur, value } }) => (
+						<CustomTextInput
+							value={value}
+							onChangeText={onChange}
+							onBlur={onBlur}
+							placeholder="비밀번호 확인"
+							variant={errors.passwordCheck ? 'error' : 'default'}
+						/>
+					)}
 				/>
 			</View>
 

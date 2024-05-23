@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -10,14 +8,16 @@ import CustomTextInput from '../common/CustomTextInput';
 
 type EmailProps = {
 	onNext: () => void;
-	register: UseFormRegister<SignupInputs>;
-	error?: FieldError | undefined;
 };
 
 const Email = ({ onNext }: EmailProps) => {
-	const [email, setEmail] = useState('');
+	const {
+		control,
+		formState: { errors },
+	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
 	return (
 		<View style={styles.container}>
 			<View>
@@ -27,11 +27,19 @@ const Email = ({ onNext }: EmailProps) => {
 				</Text>
 			</View>
 
-			<CustomTextInput
-				value={email}
-				onChangeText={t => setEmail(t)}
-				placeholder="예시) melting_pot@gmail.com"
-				keyboardType="email-address"
+			<Controller
+				control={control}
+				name="email"
+				render={({ field: { onChange, onBlur, value } }) => (
+					<CustomTextInput
+						value={value}
+						onChangeText={onChange}
+						onBlur={onBlur}
+						placeholder="예시) melting_pot@gmail.com"
+						keyboardType="email-address"
+						variant={errors.email ? 'error' : 'default'}
+					/>
+				)}
 			/>
 
 			<View style={styles.buttonPosition}>

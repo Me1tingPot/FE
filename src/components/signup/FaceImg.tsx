@@ -1,4 +1,3 @@
-import { FieldError, Merge, UseFormSetValue } from 'react-hook-form';
 import {
 	FlatList,
 	StyleSheet,
@@ -8,7 +7,6 @@ import {
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -22,8 +20,6 @@ const iconList = [
 
 type FaceImgProps = {
 	onNext: () => void;
-	setValue: UseFormSetValue<SignupInputs>;
-	error?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
 };
 
 const FaceImg = ({ onNext }: FaceImgProps) => {

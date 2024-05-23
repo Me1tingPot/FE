@@ -1,18 +1,20 @@
-import { FieldError, UseFormSetValue } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 
 type SexProps = {
 	onNext: () => void;
-	setValue: UseFormSetValue<SignupInputs>;
-	error?: FieldError | undefined;
 };
 
 const Sex = ({ onNext }: SexProps) => {
+	const {
+		control,
+		formState: { errors },
+		setValue,
+	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -25,10 +27,28 @@ const Sex = ({ onNext }: SexProps) => {
 
 			<View style={styles.buttonContainer}>
 				<View style={styles.buttonLayout}>
-					<CustomButton label="여성" />
+					<Controller
+						control={control}
+						name="sex"
+						render={() => (
+							<CustomButton
+								label="여성"
+								onPress={() => setValue('sex', '여성')}
+							/>
+						)}
+					/>
 				</View>
 				<View style={styles.buttonLayout}>
-					<CustomButton label="남성" />
+					<Controller
+						control={control}
+						name="sex"
+						render={() => (
+							<CustomButton
+								label="남성"
+								onPress={() => setValue('sex', '남성')}
+							/>
+						)}
+					/>
 				</View>
 			</View>
 

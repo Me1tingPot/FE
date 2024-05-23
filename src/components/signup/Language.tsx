@@ -1,18 +1,21 @@
-import { FieldError, UseFormSetValue } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { Button, Text, View } from 'react-native';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
 
 type LanguageProps = {
 	onNext: () => void;
-	setValue: UseFormSetValue<SignupInputs>;
-	error?: FieldError | undefined;
+	onSubmit: (data: any) => Promise<void>;
 };
 
-const Language = ({ onNext }: LanguageProps) => {
+const Language = ({ onNext, onSubmit }: LanguageProps) => {
+	const {
+		control,
+		formState: { errors },
+		handleSubmit,
+	} = useFormContext();
 	return (
 		<View>
 			<Text>언어 및 국적 입력</Text>
-			<Button title="다음" onPress={onNext} />
+			<Button title="다음" onPress={handleSubmit(onSubmit)} />
 		</View>
 	);
 };

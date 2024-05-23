@@ -1,6 +1,6 @@
-import { useForm } from 'react-hook-form';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import GenericForm from '@/components/form/GenericForm';
 import {
 	Birth,
 	Email,
@@ -21,9 +21,11 @@ import { AuthHomeScreenProps } from './AuthHomeScreen';
 
 export interface SignupInputs {
 	sex: '여성' | '남성';
-	name: string;
+	firstName: string;
+	lastName: string;
 	email: string;
 	password: string;
+	passwordCheck: string;
 	birth: string;
 	location: string;
 	faceImgs: string[];
@@ -49,17 +51,13 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
-	const {
-		register,
-		handleSubmit,
-		watch,
-		setValue,
-		formState: { errors },
-	} = useForm<SignupInputs>();
-
-	const onSubmit = async () => {
+	const onSubmit = async (data: any) => {
 		try {
-		} catch (e) {}
+			console.log('입력받은 데이터: ', data);
+			setStep('finish');
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
@@ -76,67 +74,37 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 				activeStepIndex={activeStepIndex}
 				stepLength={funnelSteps.length}
 			/>
-			<Funnel>
-				<Funnel.Step name={'sex'}>
-					<Sex
-						onNext={() => setStep('name')}
-						setValue={setValue}
-						error={errors.sex}
-					/>
-				</Funnel.Step>
-				<Funnel.Step name={'name'}>
-					<Name
-						onNext={() => setStep('email')}
-						register={register}
-						error={errors.name}
-					/>
-				</Funnel.Step>
-				<Funnel.Step name={'email'}>
-					<Email
-						onNext={() => setStep('password')}
-						register={register}
-						error={errors.email}
-					/>
-				</Funnel.Step>
-				<Funnel.Step name={'password'}>
-					<Password
-						onNext={() => setStep('birth')}
-						register={register}
-						error={errors.password}
-					/>
-				</Funnel.Step>
-				<Funnel.Step name={'birth'}>
-					<Birth
-						onNext={() => setStep('location')}
-						setValue={setValue}
-						error={errors.birth}
-					/>
-				</Funnel.Step>
-				<Funnel.Step name={'location'}>
-					<Location
-						onNext={() => setStep('faceImg')}
-						setValue={setValue}
-						error={errors.location}
-					/>
-				</Funnel.Step>
-				<Funnel.Step name={'faceImg'}>
-					<FaceImg
-						onNext={() => setStep('language')}
-						setValue={setValue}
-						error={errors.faceImgs}
-					/>
-				</Funnel.Step>
-				<Funnel.Step name={'language'}>
-					<Language
-						onNext={() => setStep('finish')}
-						setValue={setValue}
-						error={errors.language}
-					/>
-				</Funnel.Step>
-				<Funnel.Step name={'finish'}>
-					<Finish onNext={() => navigation.replace(authNavigations.LOGIN)} />
-				</Funnel.Step>
-			</Funnel>
+			<GenericForm<SignupInputs>>
+				<Funnel>
+					<Funnel.Step name={'sex'}>
+						<Sex onNext={() => setStep('name')} />
+					</Funnel.Step>
+					<Funnel.Step name={'name'}>
+						<Name onNext={() => setStep('email')} />
+					</Funnel.Step>
+					<Funnel.Step name={'email'}>
+						<Email onNext={() => setStep('password')} />
+					</Funnel.Step>
+					<Funnel.Step name={'password'}>
+						<Password onNext={() => setStep('birth')} />
+					</Funnel.Step>
+					<Funnel.Step name={'birth'}>
+						<Birth onNext={() => setStep('location')} />
+					</Funnel.Step>
+					<Funnel.Step name={'location'}>
+						<Location onNext={() => setStep('faceImg')} />
+					</Funnel.Step>
+					<Funnel.Step name={'faceImg'}>
+						<FaceImg onNext={() => setStep('language')} />
+					</Funnel.Step>
+					<Funnel.Step name={'language'}>
+						<Language onNext={() => setStep('finish')} onSubmit={onSubmit} />
+					</Funnel.Step>
+					<Funnel.Step name={'finish'}>
+						<Finish onNext={() => navigation.replace(authNavigations.LOGIN)} />
+					</Funnel.Step>
+				</Funnel>
+			</GenericForm>
 		</SafeAreaView>
 	);
 }

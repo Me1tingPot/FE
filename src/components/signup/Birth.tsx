@@ -1,9 +1,7 @@
-import { useState } from 'react';
-import { FieldError, UseFormSetValue } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -11,12 +9,13 @@ import CustomTextInput from '../common/CustomTextInput';
 
 type BirthProps = {
 	onNext: () => void;
-	setValue: UseFormSetValue<SignupInputs>;
-	error?: FieldError | undefined;
 };
 
 const Birth = ({ onNext }: BirthProps) => {
-	const [date, setDate] = useState('');
+	const {
+		control,
+		formState: { errors },
+	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -31,18 +30,25 @@ const Birth = ({ onNext }: BirthProps) => {
 				</Text>
 			</View>
 
-			<CustomTextInput
-				value={date}
-				onChangeText={t => setDate(t)}
-				placeholder="----년 --월 --일"
-				variant={'success'}
-				icon={
-					<MaterialIcons
-						name="calendar-month"
-						color={colors[theme].GRAY_300}
-						size={25}
+			<Controller
+				control={control}
+				name="date"
+				render={({ field: { onChange, onBlur, value } }) => (
+					<CustomTextInput
+						value={value}
+						onChangeText={onChange}
+						onBlur={onBlur}
+						placeholder="----년 --월 --일"
+						variant={'success'}
+						icon={
+							<MaterialIcons
+								name="calendar-month"
+								color={colors[theme].GRAY_300}
+								size={25}
+							/>
+						}
 					/>
-				}
+				)}
 			/>
 
 			<View style={styles.buttonPosition}>

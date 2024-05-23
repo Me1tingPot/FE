@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -10,13 +8,13 @@ import CustomTextInput from '../common/CustomTextInput';
 
 type NameProps = {
 	onNext: () => void;
-	register: UseFormRegister<SignupInputs>;
-	error?: FieldError | undefined;
 };
 
 const Name = ({ onNext }: NameProps) => {
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
+	const {
+		control,
+		formState: { errors },
+	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -30,15 +28,32 @@ const Name = ({ onNext }: NameProps) => {
 			</View>
 
 			<View>
-				<CustomTextInput
-					value={firstName}
-					onChangeText={t => setFirstName(t)}
-					placeholder="여권상의 영문 이름"
+				<Controller
+					control={control}
+					name="firstName"
+					render={({ field: { onChange, onBlur, value } }) => (
+						<CustomTextInput
+							value={value}
+							onBlur={onBlur}
+							onChangeText={onChange}
+							placeholder="여권상의 영문 이름"
+							variant={errors?.firstName ? 'error' : 'default'}
+						/>
+					)}
 				/>
-				<CustomTextInput
-					value={lastName}
-					onChangeText={t => setLastName(t)}
-					placeholder="여권상의 영문 성"
+
+				<Controller
+					control={control}
+					name="lastName"
+					render={({ field: { onChange, onBlur, value } }) => (
+						<CustomTextInput
+							value={value}
+							onChangeText={onChange}
+							onBlur={onBlur}
+							placeholder="여권상의 영문 성"
+							variant={errors?.latsName ? 'error' : 'default'}
+						/>
+					)}
 				/>
 			</View>
 
