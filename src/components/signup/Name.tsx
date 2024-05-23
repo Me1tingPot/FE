@@ -1,5 +1,13 @@
+import { useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+	NativeSyntheticEvent,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TextInputKeyPressEventData,
+	View,
+} from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -40,6 +48,7 @@ const Name = ({ onNext }: NameProps) => {
 								onChangeText={onChange}
 								placeholder="여권상의 영문 이름"
 								variant={errors?.firstName ? 'error' : 'default'}
+								returnKeyType="next"
 							/>
 						)}
 					/>
@@ -54,6 +63,11 @@ const Name = ({ onNext }: NameProps) => {
 								onBlur={onBlur}
 								placeholder="여권상의 영문 성"
 								variant={errors?.latsName ? 'error' : 'default'}
+								onSubmitEditing={({ nativeEvent: { text } }) => {
+									if (text) {
+										onNext();
+									}
+								}}
 							/>
 						)}
 					/>

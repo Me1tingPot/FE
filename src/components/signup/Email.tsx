@@ -37,8 +37,13 @@ const Email = ({ onNext }: EmailProps) => {
 							onChangeText={onChange}
 							onBlur={onBlur}
 							placeholder="예시) melting_pot@gmail.com"
-							keyboardType="email-address"
+							inputMode="email"
 							variant={errors.email ? 'error' : 'default'}
+							onSubmitEditing={({ nativeEvent: { text } }) => {
+								if (text) {
+									onNext();
+								}
+							}}
 						/>
 					)}
 				/>

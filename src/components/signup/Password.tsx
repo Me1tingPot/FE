@@ -37,6 +37,8 @@ const Password = ({ onNext }: PasswordProps) => {
 								placeholder="비밀번호 입력"
 								message="최소 8자, 최대 20자"
 								variant={errors.password ? 'error' : 'default'}
+								returnKeyType="next"
+								secureTextEntry={true}
 							/>
 						)}
 					/>
@@ -51,6 +53,12 @@ const Password = ({ onNext }: PasswordProps) => {
 								onBlur={onBlur}
 								placeholder="비밀번호 확인"
 								variant={errors.passwordCheck ? 'error' : 'default'}
+								onSubmitEditing={({ nativeEvent: { text } }) => {
+									if (text) {
+										onNext();
+									}
+								}}
+								secureTextEntry={true}
 							/>
 						)}
 					/>
