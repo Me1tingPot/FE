@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -20,37 +20,39 @@ const Sex = ({ onNext }: SexProps) => {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>안녕하세요!</Text>
-			<Text style={styles.description}>
-				당신의 <Text style={styles.textPoint}>성별</Text>을 선택해주세요.
-			</Text>
+			<ScrollView>
+				<Text style={styles.title}>안녕하세요!</Text>
+				<Text style={styles.description}>
+					당신의 <Text style={styles.textPoint}>성별</Text>을 선택해주세요.
+				</Text>
 
-			<View style={styles.buttonContainer}>
-				<View style={styles.buttonLayout}>
-					<Controller
-						control={control}
-						name="sex"
-						render={() => (
-							<CustomButton
-								label="여성"
-								onPress={() => setValue('sex', '여성')}
-							/>
-						)}
-					/>
+				<View style={styles.buttonContainer}>
+					<View style={styles.buttonLayout}>
+						<Controller
+							control={control}
+							name="sex"
+							render={() => (
+								<CustomButton
+									label="여성"
+									onPress={() => setValue('sex', '여성')}
+								/>
+							)}
+						/>
+					</View>
+					<View style={styles.buttonLayout}>
+						<Controller
+							control={control}
+							name="sex"
+							render={() => (
+								<CustomButton
+									label="남성"
+									onPress={() => setValue('sex', '남성')}
+								/>
+							)}
+						/>
+					</View>
 				</View>
-				<View style={styles.buttonLayout}>
-					<Controller
-						control={control}
-						name="sex"
-						render={() => (
-							<CustomButton
-								label="남성"
-								onPress={() => setValue('sex', '남성')}
-							/>
-						)}
-					/>
-				</View>
-			</View>
+			</ScrollView>
 
 			<View style={styles.buttonPosition}>
 				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
@@ -91,7 +93,7 @@ const styling = (theme: ThemeMode) =>
 			color: colors[theme].GRAY_500,
 		},
 		textPoint: {
-			color: colors[theme].BLACK,
+			color: colors[theme].GRAY_700,
 			fontWeight: '700',
 		},
 	});

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -14,13 +14,15 @@ const Location = ({ onNext }: LocationProps) => {
 
 	return (
 		<View style={styles.container}>
-			<View>
-				<Text style={styles.title}>어디에 계신가요?</Text>
-				<Text style={styles.description}>
-					위치 정보를 이용하여 <Text style={styles.textPoint}>가까운 파티</Text>
-					를 추천해드릴게요.
-				</Text>
-			</View>
+			<ScrollView>
+				<View>
+					<Text style={styles.title}>어디에 계신가요?</Text>
+					<Text style={styles.description}>
+						위치 정보를 이용하여{' '}
+						<Text style={styles.textPoint}>가까운 파티</Text>를 추천해드릴게요.
+					</Text>
+				</View>
+			</ScrollView>
 
 			<View style={styles.buttonPosition}>
 				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
@@ -52,7 +54,7 @@ const styling = (theme: ThemeMode) =>
 			color: colors[theme].GRAY_500,
 		},
 		textPoint: {
-			color: colors[theme].BLACK,
+			color: colors[theme].GRAY_700,
 			fontWeight: '700',
 		},
 	});

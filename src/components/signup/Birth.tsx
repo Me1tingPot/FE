@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -21,35 +21,37 @@ const Birth = ({ onNext }: BirthProps) => {
 
 	return (
 		<View style={styles.container}>
-			<View>
-				<Text style={styles.title}>생년월일을 알려주세요!</Text>
-				<Text style={styles.description}>
-					나이 표시에 사용되며{' '}
-					<Text style={styles.textPoint}>이후 변경이 불가</Text>
-					합니다.
-				</Text>
-			</View>
+			<ScrollView>
+				<View>
+					<Text style={styles.title}>생년월일을 알려주세요!</Text>
+					<Text style={styles.description}>
+						나이 표시에 사용되며{' '}
+						<Text style={styles.textPoint}>이후 변경이 불가</Text>
+						합니다.
+					</Text>
+				</View>
 
-			<Controller
-				control={control}
-				name="date"
-				render={({ field: { onChange, onBlur, value } }) => (
-					<CustomTextInput
-						value={value}
-						onChangeText={onChange}
-						onBlur={onBlur}
-						placeholder="----년 --월 --일"
-						variant={'success'}
-						icon={
-							<MaterialIcons
-								name="calendar-month"
-								color={colors[theme].GRAY_300}
-								size={25}
-							/>
-						}
-					/>
-				)}
-			/>
+				<Controller
+					control={control}
+					name="date"
+					render={({ field: { onChange, onBlur, value } }) => (
+						<CustomTextInput
+							value={value}
+							onChangeText={onChange}
+							onBlur={onBlur}
+							placeholder="----년 --월 --일"
+							variant={'success'}
+							icon={
+								<MaterialIcons
+									name="calendar-month"
+									color={colors[theme].GRAY_300}
+									size={25}
+								/>
+							}
+						/>
+					)}
+				/>
+			</ScrollView>
 
 			<View style={styles.buttonPosition}>
 				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
@@ -77,11 +79,12 @@ const styling = (theme: ThemeMode) =>
 		},
 		description: {
 			marginTop: 10,
+			marginBottom: 30,
 			fontSize: 14,
 			color: colors[theme].GRAY_500,
 		},
 		textPoint: {
-			color: colors[theme].BLACK,
+			color: colors[theme].GRAY_700,
 			fontWeight: '700',
 		},
 	});
