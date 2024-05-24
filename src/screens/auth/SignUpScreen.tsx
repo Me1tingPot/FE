@@ -5,7 +5,6 @@ import {
 	Birth,
 	Email,
 	FaceImg,
-	Finish,
 	Location,
 	Language,
 	Name,
@@ -43,7 +42,6 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 		'location',
 		'faceImg',
 		'language',
-		'finish',
 	] as const;
 	const [Funnel, activeStepIndex, setStep] = useFunnel(funnelSteps, {
 		initialStep: 'sex',
@@ -54,7 +52,6 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 	const onSubmit = async (data: any) => {
 		try {
 			console.log('입력받은 데이터: ', data);
-			setStep('finish');
 		} catch (error) {
 			console.error(error);
 		}
@@ -98,10 +95,10 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 						<FaceImg onNext={() => setStep('language')} />
 					</Funnel.Step>
 					<Funnel.Step name={'language'}>
-						<Language onNext={() => setStep('finish')} onSubmit={onSubmit} />
-					</Funnel.Step>
-					<Funnel.Step name={'finish'}>
-						<Finish onNext={() => navigation.replace(authNavigations.LOGIN)} />
+						<Language
+							onNext={() => navigation.replace(authNavigations.SIGN_UP_FINISH)}
+							onSubmit={onSubmit}
+						/>
 					</Funnel.Step>
 				</Funnel>
 			</GenericForm>
