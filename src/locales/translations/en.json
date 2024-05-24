@@ -48,5 +48,11 @@
 	"사용 언어를 선택해주세요.": "Please select your language.",
 	"최소 1개, 최대 3개": "At least one, at most three",
 	"국적 선택하기": "Choose your nationality",
-	"사용 언어 선택하기": "Select the language you want to use"
+	"사용 언어 선택하기": "Select the language you want to use",
+	"위치 권한 허용이 필요합니다.": "Location permission is required.",
+	"설정 화면에서 위치 권한을 허용해주세요.": "Please allow location permissions on the settings screen.",
+	"사진 접근 권한이 필요합니다.": "Photo access is required.",
+	"설정 화면에서 사진 접근 권한을 허용해주세요.": "Please allow photo access on the settings screen.",
+	"카메라 촬영 권한이 필요합니다.": "You need permission to shoot the camera.",
+	"설정 화면에서 카메라 권한을 허용해주세요.": "Please allow the camera permission on the setting screen."
 }
