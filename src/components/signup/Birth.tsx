@@ -1,5 +1,13 @@
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+	ScrollView,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -15,9 +23,22 @@ const Birth = ({ onNext }: BirthProps) => {
 	const {
 		control,
 		formState: { errors },
+		setValue,
 	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const [date, setDate] = useState(new Date());
+	const [open, setOpen] = useState(false);
+
+	const d = new Date(date);
+	const year = d.getFullYear();
+	const month = String(d.getMonth() + 1).padStart(2, '0');
+	const day = String(d.getDate()).padStart(2, '0');
+	let formatDateString = `${year}.${month}.${day}`;
+
+	useEffect(() => {
+		setValue('birth', formatDateString);
+	}, [formatDateString]);
 
 	return (
 		<View style={styles.container}>
@@ -35,23 +56,49 @@ const Birth = ({ onNext }: BirthProps) => {
 					control={control}
 					name="date"
 					render={({ field: { onChange, onBlur, value } }) => (
-						<CustomTextInput
-							value={value}
-							onChangeText={onChange}
-							onBlur={onBlur}
-							placeholder="----년 --월 --일"
-							variant={'success'}
-							icon={
-								<MaterialIcons
-									name="calendar-month"
-									color={colors[theme].GRAY_300}
-									size={25}
-								/>
-							}
-						/>
+						<View>
+							<CustomTextInput
+								value={value || formatDateString}
+								onChangeText={onChange}
+								onBlur={onBlur}
+								placeholder="----년 --월 --일"
+								variant={'success'}
+								icon={
+									<MaterialIcons
+										name="calendar-month"
+										color={colors[theme].GRAY_300}
+										size={25}
+									/>
+								}
+								editable={false}
+							/>
+							<TouchableOpacity
+								activeOpacity={0}
+								onPress={() => setOpen(true)}
+								style={styles.overlayButton}
+							/>
+						</View>
 					)}
 				/>
 			</ScrollView>
+
+			<DatePicker
+				modal
+				open={open}
+				date={date}
+				onConfirm={date => {
+					setOpen(false);
+					setDate(date);
+				}}
+				onCancel={() => {
+					setOpen(false);
+				}}
+				mode="date"
+				locale="ko"
+				title="날짜 선택"
+				confirmText="확인"
+				cancelText="취소"
+			/>
 
 			<View style={styles.buttonPosition}>
 				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
@@ -86,6 +133,13 @@ const styling = (theme: ThemeMode) =>
 		textPoint: {
 			color: colors[theme].GRAY_700,
 			fontWeight: '700',
+		},
+		overlayButton: {
+			height: 70,
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			right: 0,
 		},
 	});
 
