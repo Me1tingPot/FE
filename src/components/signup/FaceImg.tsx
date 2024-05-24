@@ -16,6 +16,7 @@ import {
 } from 'react-native-image-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
+import usePermission from '@/hooks/usePermission';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -40,6 +41,7 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const [files, setFiles] = useState<string[]>([]);
+	usePermission('PHOTO');
 
 	const options: ImageLibraryOptions = {
 		selectionLimit: 4,
