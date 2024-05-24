@@ -1,13 +1,5 @@
-import { useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import {
-	NativeSyntheticEvent,
-	ScrollView,
-	StyleSheet,
-	Text,
-	TextInputKeyPressEventData,
-	View,
-} from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -37,7 +29,7 @@ const Name = ({ onNext }: NameProps) => {
 					</Text>
 				</View>
 
-				<View style={styles.marginTop}>
+				<View style={styles.nameContainer}>
 					<Controller
 						control={control}
 						name="firstName"
@@ -98,7 +90,10 @@ const styling = (theme: ThemeMode) =>
 			paddingVertical: 50,
 			paddingHorizontal: 40,
 		},
-		marginTop: {
+		nameContainer: {
+			display: 'flex',
+			flexDirection: 'column',
+			gap: 40,
 			marginTop: 20,
 		},
 		buttonPosition: {
