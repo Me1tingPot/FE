@@ -3,6 +3,7 @@ import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompoundOption } from '@/components/common/CompoundOption';
 import Babo from '@/components/signup/Babo';
+import DatePickerOption from '@/components/signup/DatePickerOption';
 import { authNavigations } from '@/constants';
 import useModal from '@/hooks/useModal';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
@@ -23,6 +24,7 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 		firstName: string;
 		lastName: string;
 	} | null>(null);
+	const [date, setDate] = useState(new Date());
 
 	useEffect(() => {
 		const fetchUserData = async () => {

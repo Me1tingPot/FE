@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
+	Pressable,
 	ScrollView,
 	StyleSheet,
 	Text,
@@ -11,10 +12,13 @@ import {
 import DatePicker from 'react-native-date-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
+import useModal from '@/hooks/useModal';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { getDateLocaleFormat, getDateWithSeparator } from '@/utils';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
+import DatePickerOption from './DatePickerOption';
 
 type BirthProps = {
 	onNext: () => void;
@@ -30,21 +34,18 @@ const Birth = ({ onNext }: BirthProps) => {
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const [date, setDate] = useState(new Date());
-	const [open, setOpen] = useState(false);
+	const [isPicked, setIsPicked] = useState(false);
+	const dateOption = useModal();
+	const formatDateString = getDateLocaleFormat(date, '/');
 
-	const d = new Date(date);
-	const year = d.getFullYear();
-	const month = String(d.getMonth() + 1).padStart(2, '0');
-	const day = String(d.getDate()).padStart(2, '0');
-	let formatDateString = `${year}.${month}.${day}`;
+	const handleConfirmDate = () => {
+		setIsPicked(true);
+		dateOption.hide();
+	};
 
-	useEffect(() => {
-		formatDateString = '';
-	}, []);
-
-	useEffect(() => {
-		setValue('birth', formatDateString);
-	}, [formatDateString]);
+	const handleChangeDate = (pickedDate: Date) => {
+		setDate(pickedDate);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -64,7 +65,7 @@ const Birth = ({ onNext }: BirthProps) => {
 					render={({ field: { onChange, onBlur, value } }) => (
 						<View>
 							<CustomTextInput
-								value={value || formatDateString}
+								value={isPicked ? formatDateString : t('----년 --월 --일')}
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('----년 --월 --일')}
@@ -80,36 +81,28 @@ const Birth = ({ onNext }: BirthProps) => {
 							/>
 							<TouchableOpacity
 								activeOpacity={0}
-								onPress={() => setOpen(true)}
 								style={styles.overlayButton}
+								onPress={dateOption.show}
 							/>
 						</View>
 					)}
 				/>
 			</ScrollView>
 
-			<DatePicker
-				modal
-				open={open}
+			<DatePickerOption
+				isVisible={dateOption.isVisible}
 				date={date}
-				onConfirm={date => {
-					setOpen(false);
-					setDate(date);
-				}}
-				onCancel={() => {
-					setOpen(false);
-				}}
-				mode="date"
-				locale="ko"
-				title={t('날짜 선택')}
-				confirmText={t('확인')}
-				cancelText={t('취소')}
+				hideOption={dateOption.hide}
+				onChangeDate={handleChangeDate}
+				onConfirmDate={handleConfirmDate}
 			/>
-
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={onNext}
+					onPress={() => {
+						setValue('birth', formatDateString);
+						onNext();
+					}}
 					variant={'filled'}
 				/>
 			</View>
