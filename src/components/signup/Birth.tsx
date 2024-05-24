@@ -37,6 +37,10 @@ const Birth = ({ onNext }: BirthProps) => {
 	let formatDateString = `${year}.${month}.${day}`;
 
 	useEffect(() => {
+		formatDateString = '';
+	}, []);
+
+	useEffect(() => {
 		setValue('birth', formatDateString);
 	}, [formatDateString]);
 
@@ -54,7 +58,7 @@ const Birth = ({ onNext }: BirthProps) => {
 
 				<Controller
 					control={control}
-					name="date"
+					name="birth"
 					render={({ field: { onChange, onBlur, value } }) => (
 						<View>
 							<CustomTextInput
