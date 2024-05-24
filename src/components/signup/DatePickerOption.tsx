@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	Modal,
 	Pressable,
@@ -6,14 +7,12 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	useColorScheme,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { getLocales } from 'react-native-localize';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { CompoundOption } from '../common/CompoundOption';
 
 interface DatePickerOptionProps {
 	isVisible: boolean;
@@ -32,6 +31,7 @@ const DatePickerOption = ({
 }: DatePickerOptionProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 
 	return (
 		<Modal visible={isVisible} transparent animationType="fade">
@@ -49,11 +49,11 @@ const DatePickerOption = ({
 				</View>
 				<View style={styles.optionContainer}>
 					<Pressable style={styles.optionButton} onPress={onConfirmDate}>
-						<Text style={styles.optionText}>확인</Text>
+						<Text style={styles.optionText}>{t('확인')}</Text>
 					</Pressable>
 					<View style={styles.divider} />
 					<Pressable style={styles.optionButton} onPress={hideOption}>
-						<Text style={styles.optionDangerText}>취소</Text>
+						<Text style={styles.optionDangerText}>{t('취소')}</Text>
 					</Pressable>
 				</View>
 			</SafeAreaView>
