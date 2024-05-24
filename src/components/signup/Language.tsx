@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
 	Alert,
 	Pressable,
@@ -53,6 +54,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 	const [local, setLocal] = useState('');
 	const [language, setLanguage] = useState<string[]>([]);
 	const [open, setOpen] = useState({ local: false, language: false });
@@ -75,8 +77,10 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 		<View style={styles.container}>
 			<ScrollView>
 				<View>
-					<Text style={styles.title}>국적을 선택해주세요!</Text>
-					<Text style={styles.description}>이후 변경할 수 있습니다.</Text>
+					<Text style={styles.title}>{t('국적을 선택해주세요!')}</Text>
+					<Text style={styles.description}>
+						{t('이후 변경할 수 있습니다.')}
+					</Text>
 					<Controller
 						control={control}
 						name="local"
@@ -85,7 +89,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 								value={value || local}
 								onChangeText={onChange}
 								onBlur={onBlur}
-								placeholder="국적 선택하기"
+								placeholder={t('국적 선택하기')}
 								variant="success"
 								icon={
 									open.local ? (
@@ -141,8 +145,8 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 				</View>
 
 				<View style={styles.marginTop}>
-					<Text style={styles.title}>사용 언어를 선택해주세요.</Text>
-					<Text style={styles.description}>최소 1개, 최대 3개</Text>
+					<Text style={styles.title}>{t('사용 언어를 선택해주세요.')}</Text>
+					<Text style={styles.description}>{t('최소 1개, 최대 3개')}</Text>
 					<Controller
 						control={control}
 						name="language"
@@ -151,7 +155,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 								value={value || language.join(', ')}
 								onChangeText={onChange}
 								onBlur={onBlur}
-								placeholder="사용 언어 선택하기"
+								placeholder={t('사용 언어 선택하기')}
 								variant="success"
 								icon={
 									open.language ? (
@@ -209,7 +213,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 
 			<View style={styles.buttonPosition}>
 				<CustomButton
-					label="다음으로"
+					label={t('다음으로')}
 					onPress={() => {
 						onNext();
 						setValue('local', local);

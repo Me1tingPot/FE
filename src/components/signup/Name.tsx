@@ -1,4 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -17,15 +18,16 @@ const Name = ({ onNext }: NameProps) => {
 	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 
 	return (
 		<View style={styles.container}>
 			<ScrollView>
 				<View>
-					<Text style={styles.title}>이름을 적어주세요.</Text>
+					<Text style={styles.title}>{t('이름을 적어주세요.')}</Text>
 					<Text style={styles.description}>
-						<Text style={styles.textPoint}>여권 상</Text>의 영문 이름이
-						필요해요!
+						<Text style={styles.textPoint}>{t('여권 상')}</Text>
+						{t('의 영문 이름이 필요해요!')}
 					</Text>
 				</View>
 
@@ -38,7 +40,7 @@ const Name = ({ onNext }: NameProps) => {
 								value={value}
 								onBlur={onBlur}
 								onChangeText={onChange}
-								placeholder="여권상의 영문 이름"
+								placeholder={t('여권상의 영문 이름')}
 								variant={errors?.firstName ? 'error' : 'default'}
 								returnKeyType="next"
 							/>
@@ -53,7 +55,7 @@ const Name = ({ onNext }: NameProps) => {
 								value={value}
 								onChangeText={onChange}
 								onBlur={onBlur}
-								placeholder="여권상의 영문 성"
+								placeholder={t('여권상의 영문 성')}
 								variant={errors?.latsName ? 'error' : 'default'}
 								onSubmitEditing={({ nativeEvent: { text } }) => {
 									if (text) {
@@ -67,15 +69,20 @@ const Name = ({ onNext }: NameProps) => {
 			</ScrollView>
 			<View style={styles.buttonPosition}>
 				<Text style={[styles.textPoint, styles.title, styles.noticeText]}>
-					왜 여권에 기재된 이름이 필요한가요?
+					{t('왜 여권에 기재된 이름이 필요한가요?')}
 				</Text>
 				<Text style={[styles.description, styles.noticeText]}>
-					온오프라인 만남에서 벌어질 수 있는 신분상의 도용이나 이로 인한 피해,
-					로맨스 스캠 등 다양한 범죄를 예방하기 위해 국제적으로 통용되는
-					신분증에 기재된 이름을 정확히 적어주세요.
+					{t('왜 여권에 기재된 이름이 필요한가요?')}
+					{t(
+						'온오프라인 만남에서 벌어질 수 있는 신분상의 도용이나 이로 인한 피해, 로맨스 스캠 등 다양한 범죄를 예방하기 위해 국제적으로 통용되는 신분증에 기재된 이름을 정확히 적어주세요.',
+					)}
 				</Text>
 
-				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
+				<CustomButton
+					label={t('다음으로')}
+					onPress={onNext}
+					variant={'filled'}
+				/>
 			</View>
 		</View>
 	);

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
 	FlatList,
 	Image,
@@ -37,6 +38,7 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 	const [files, setFiles] = useState<string[]>([]);
 
 	const options: ImageLibraryOptions = {
@@ -67,10 +69,10 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 				renderItem={() => (
 					<View style={styles.heightFull}>
 						<View>
-							<Text style={styles.title}>사진 등록</Text>
+							<Text style={styles.title}>{t('사진 등록')}</Text>
 							<Text style={styles.description}>
-								<Text style={styles.textPoint}>얼굴을 확인</Text>할 수 있는
-								사진을 1장 이상 등록해주세요.
+								<Text style={styles.textPoint}>{t('얼굴을 확인')}</Text>
+								{t('할 수 있는 사진을 1장 이상 등록해주세요.')}
 							</Text>
 						</View>
 
@@ -108,11 +110,14 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 			/>
 			<View style={styles.buttonPosition}>
 				<Text style={styles.notice}>
-					본 플랫폼은 타인 사진의 도용을 엄격히 금지합니다.{'\n'}이는 저작권
-					침해에 해당되며, 심각한 경우 법적 처벌을 받을 수 있습니다.
+					{t('본 플랫폼은 타인 사진의 도용을 엄격히 금지합니다.')}
+					{'\n'}
+					{t(
+						'이는 저작권 침해에 해당되며, 심각한 경우 법적 처벌을 받을 수 있습니다.',
+					)}
 				</Text>
 				<CustomButton
-					label="다음으로"
+					label={t('다음으로')}
 					onPress={() => {
 						onNext();
 						setValue('faceImg', files);

@@ -1,4 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -17,14 +18,15 @@ const Email = ({ onNext }: EmailProps) => {
 	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 
 	return (
 		<View style={styles.container}>
 			<ScrollView>
 				<View>
-					<Text style={styles.title}>이메일을 입력해주세요.</Text>
+					<Text style={styles.title}>{t('이메일을 입력해주세요.')}</Text>
 					<Text style={styles.description}>
-						신분 인증 후에는 해당 이메일로 로그인할 수 있어요.
+						{t('신분 인증 후에는 해당 이메일로 로그인할 수 있어요.')}
 					</Text>
 				</View>
 
@@ -36,7 +38,7 @@ const Email = ({ onNext }: EmailProps) => {
 							value={value}
 							onChangeText={onChange}
 							onBlur={onBlur}
-							placeholder="예시) melting_pot@gmail.com"
+							placeholder={t('예시) melting_pot@gmail.com')}
 							inputMode="email"
 							variant={errors.email ? 'error' : 'default'}
 							onSubmitEditing={({ nativeEvent: { text } }) => {
@@ -50,7 +52,11 @@ const Email = ({ onNext }: EmailProps) => {
 			</ScrollView>
 
 			<View style={styles.buttonPosition}>
-				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
+				<CustomButton
+					label={t('다음으로')}
+					onPress={onNext}
+					variant={'filled'}
+				/>
 			</View>
 		</View>
 	);

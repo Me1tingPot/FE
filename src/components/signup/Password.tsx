@@ -1,4 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -17,12 +18,14 @@ const Password = ({ onNext }: PasswordProps) => {
 	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
+
 	return (
 		<View style={styles.container}>
 			<ScrollView>
 				<View>
-					<Text style={styles.title}>비밀번호를 입력해주세요.</Text>
-					<Text style={styles.description}>추후 변경할 수 있어요.</Text>
+					<Text style={styles.title}>{t('비밀번호를 입력해주세요.')}</Text>
+					<Text style={styles.description}>{t('추후 변경할 수 있어요.')}</Text>
 				</View>
 
 				<View style={styles.buttonContainer}>
@@ -34,8 +37,8 @@ const Password = ({ onNext }: PasswordProps) => {
 								value={value}
 								onChangeText={onChange}
 								onBlur={onBlur}
-								placeholder="비밀번호 입력"
-								message="최소 8자, 최대 20자"
+								placeholder={t('비밀번호 입력')}
+								message={t('최소 8자, 최대 20자')}
 								variant={errors.password ? 'error' : 'default'}
 								returnKeyType="next"
 								secureTextEntry={true}
@@ -51,7 +54,7 @@ const Password = ({ onNext }: PasswordProps) => {
 								value={value}
 								onChangeText={onChange}
 								onBlur={onBlur}
-								placeholder="비밀번호 확인"
+								placeholder={t('비밀번호 확인')}
 								variant={errors.passwordCheck ? 'error' : 'default'}
 								onSubmitEditing={({ nativeEvent: { text } }) => {
 									if (text) {
@@ -66,7 +69,11 @@ const Password = ({ onNext }: PasswordProps) => {
 			</ScrollView>
 
 			<View style={styles.buttonPosition}>
-				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
+				<CustomButton
+					label={t('다음으로')}
+					onPress={onNext}
+					variant={'filled'}
+				/>
 			</View>
 		</View>
 	);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
 	ScrollView,
 	StyleSheet,
@@ -27,6 +28,7 @@ const Birth = ({ onNext }: BirthProps) => {
 	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 	const [date, setDate] = useState(new Date());
 	const [open, setOpen] = useState(false);
 
@@ -48,11 +50,11 @@ const Birth = ({ onNext }: BirthProps) => {
 		<View style={styles.container}>
 			<ScrollView>
 				<View>
-					<Text style={styles.title}>생년월일을 알려주세요!</Text>
+					<Text style={styles.title}>{t('생년월일을 알려주세요!')}</Text>
 					<Text style={styles.description}>
-						나이 표시에 사용되며{' '}
-						<Text style={styles.textPoint}>이후 변경이 불가</Text>
-						합니다.
+						{t('나이 표시에 사용되며')}{' '}
+						<Text style={styles.textPoint}>{t('이후 변경이 불가')}</Text>
+						{t('합니다.')}
 					</Text>
 				</View>
 
@@ -65,7 +67,7 @@ const Birth = ({ onNext }: BirthProps) => {
 								value={value || formatDateString}
 								onChangeText={onChange}
 								onBlur={onBlur}
-								placeholder="----년 --월 --일"
+								placeholder={t('----년 --월 --일')}
 								variant={'success'}
 								icon={
 									<MaterialIcons
@@ -99,13 +101,17 @@ const Birth = ({ onNext }: BirthProps) => {
 				}}
 				mode="date"
 				locale="ko"
-				title="날짜 선택"
-				confirmText="확인"
-				cancelText="취소"
+				title={t('날짜 선택')}
+				confirmText={t('확인')}
+				cancelText={t('취소')}
 			/>
 
 			<View style={styles.buttonPosition}>
-				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
+				<CustomButton
+					label={t('다음으로')}
+					onPress={onNext}
+					variant={'filled'}
+				/>
 			</View>
 		</View>
 	);

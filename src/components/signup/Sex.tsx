@@ -1,4 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -17,13 +18,15 @@ const Sex = ({ onNext }: SexProps) => {
 	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 
 	return (
 		<View style={styles.container}>
 			<ScrollView>
-				<Text style={styles.title}>안녕하세요!</Text>
+				<Text style={styles.title}>{t('안녕하세요!')}</Text>
 				<Text style={styles.description}>
-					당신의 <Text style={styles.textPoint}>성별</Text>을 선택해주세요.
+					{t('당신의')} <Text style={styles.textPoint}>{t('성별')}</Text>
+					{t('을 선택해주세요.')}
 				</Text>
 
 				<View style={styles.buttonContainer}>
@@ -33,7 +36,7 @@ const Sex = ({ onNext }: SexProps) => {
 							name="sex"
 							render={() => (
 								<CustomButton
-									label="여성"
+									label={t('여성')}
 									onPress={() => setValue('sex', '여성')}
 								/>
 							)}
@@ -45,7 +48,7 @@ const Sex = ({ onNext }: SexProps) => {
 							name="sex"
 							render={() => (
 								<CustomButton
-									label="남성"
+									label={t('남성')}
 									onPress={() => setValue('sex', '남성')}
 								/>
 							)}
@@ -55,7 +58,11 @@ const Sex = ({ onNext }: SexProps) => {
 			</ScrollView>
 
 			<View style={styles.buttonPosition}>
-				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
+				<CustomButton
+					label={t('다음으로')}
+					onPress={onNext}
+					variant={'filled'}
+				/>
 			</View>
 		</View>
 	);
