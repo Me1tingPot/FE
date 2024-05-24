@@ -1,10 +1,18 @@
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import {
 	FlatList,
+	Image,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import {
+	ImageLibraryOptions,
+	ImagePickerResponse,
+	launchImageLibrary,
+} from 'react-native-image-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -23,8 +31,33 @@ type FaceImgProps = {
 };
 
 const FaceImg = ({ onNext }: FaceImgProps) => {
+	const {
+		formState: { errors },
+		setValue,
+	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const [files, setFiles] = useState<string[]>([]);
+
+	const options: ImageLibraryOptions = {
+		selectionLimit: 4,
+		mediaType: 'photo',
+	};
+
+	const openLibrary = async () => {
+		await launchImageLibrary(options, (response: ImagePickerResponse) => {
+			if (response.errorCode) {
+				console.error(response.errorMessage);
+			} else {
+				if (response.assets) {
+					const fileUris = response.assets
+						.map(asset => asset.uri)
+						.filter(uri => uri !== undefined) as string[];
+					setFiles(fileUris);
+				}
+			}
+		});
+	};
 
 	return (
 		<View style={styles.container}>
@@ -48,13 +81,24 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 							}}
 							style={{ flex: 1 }}
 							data={iconList}
-							renderItem={({ item }) => (
-								<TouchableOpacity style={styles.imageButton}>
-									<MaterialIcons
-										name={item}
-										color={colors[theme].GRAY_400}
-										size={25}
-									/>
+							renderItem={({ item, index }) => (
+								<TouchableOpacity
+									activeOpacity={0.8}
+									style={styles.imageButton}
+									onPress={openLibrary}
+								>
+									{files[index] ? (
+										<Image
+											source={{ uri: files[index] }}
+											style={styles.image}
+										/>
+									) : (
+										<MaterialIcons
+											name={item}
+											color={colors[theme].GRAY_400}
+											size={25}
+										/>
+									)}
 								</TouchableOpacity>
 							)}
 							numColumns={2}
@@ -67,7 +111,14 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 					본 플랫폼은 타인 사진의 도용을 엄격히 금지합니다.{'\n'}이는 저작권
 					침해에 해당되며, 심각한 경우 법적 처벌을 받을 수 있습니다.
 				</Text>
-				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
+				<CustomButton
+					label="다음으로"
+					onPress={() => {
+						onNext();
+						setValue('faceImg', files);
+					}}
+					variant={'filled'}
+				/>
 			</View>
 		</View>
 	);
@@ -122,6 +173,11 @@ const styling = (theme: ThemeMode) =>
 		},
 		flexGrow: {
 			flexGrow: 1,
+		},
+		image: {
+			width: '100%',
+			height: '100%',
+			borderRadius: 20,
 		},
 	});
 
