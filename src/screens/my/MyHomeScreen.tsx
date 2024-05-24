@@ -8,7 +8,7 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 	return (
 		<SafeAreaView style={styles.container}>
 			<Text>MyHomeScreen</Text>
-			<Text>{t(`bottomTab.home`)}</Text>
+			<Text>{t('홈')}</Text>
 		</SafeAreaView>
 	);
 }
