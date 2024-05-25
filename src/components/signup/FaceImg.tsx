@@ -9,24 +9,15 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import {
-	ImageLibraryOptions,
-	ImagePickerResponse,
-	launchImageLibrary,
-} from 'react-native-image-picker';
+import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
+import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
-
-const iconList = [
-	'camera-alt',
-	'add-circle-outline',
-	'add-circle-outline',
-	'add-circle-outline',
-];
+import CameraOrLibrary from './CameraOrLibrary';
 
 type FaceImgProps = {
 	onNext: () => void;
@@ -38,29 +29,21 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 		setValue,
 	} = useFormContext();
 	const { theme } = useThemeStore();
+	const modal = useModal();
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const [files, setFiles] = useState<string[]>([]);
 	usePermission('PHOTO');
+	usePermission('CAMERA');
 
-	const options: ImageLibraryOptions = {
-		selectionLimit: 4,
+	const cameraOptions: CameraOptions = {
+		cameraType: 'front',
 		mediaType: 'photo',
 	};
 
-	const openLibrary = async () => {
-		await launchImageLibrary(options, (response: ImagePickerResponse) => {
-			if (response.errorCode) {
-				console.error(response.errorMessage);
-			} else {
-				if (response.assets) {
-					const fileUris = response.assets
-						.map(asset => asset.uri)
-						.filter(uri => uri !== undefined) as string[];
-					setFiles(fileUris);
-				}
-			}
-		});
+	const libraryOptions: ImageLibraryOptions = {
+		selectionLimit: 3,
+		mediaType: 'photo',
 	};
 
 	return (
@@ -78,19 +61,20 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 							</Text>
 						</View>
 
-						<FlatList
-							columnWrapperStyle={{
-								marginTop: 20,
-								justifyContent: 'space-between',
-							}}
-							style={{ flex: 1 }}
-							data={iconList}
-							renderItem={({ item, index }) => (
-								<TouchableOpacity
-									activeOpacity={0.8}
-									style={styles.imageButton}
-									onPress={openLibrary}
-								>
+						<View style={styles.imageContainer}>
+							<TouchableOpacity
+								activeOpacity={0.8}
+								style={styles.imageButton}
+								onPress={modal.show}
+							>
+								<MaterialIcons
+									name="camera-alt"
+									color={colors[theme].GRAY_400}
+									size={25}
+								/>
+							</TouchableOpacity>
+							{files.map((item, index) => (
+								<View style={styles.imageButton}>
 									{files[index] ? (
 										<Image
 											source={{ uri: files[index] }}
@@ -103,10 +87,9 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 											size={25}
 										/>
 									)}
-								</TouchableOpacity>
-							)}
-							numColumns={2}
-						/>
+								</View>
+							))}
+						</View>
 					</View>
 				)}
 			/>
@@ -127,6 +110,13 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 					variant={'filled'}
 				/>
 			</View>
+			<CameraOrLibrary
+				isVisible={modal.isVisible}
+				hideOption={modal.hide}
+				cameraOptions={cameraOptions}
+				libraryOptions={libraryOptions}
+				setFiles={setFiles}
+			/>
 		</View>
 	);
 };
@@ -185,6 +175,13 @@ const styling = (theme: ThemeMode) =>
 			width: '100%',
 			height: '100%',
 			borderRadius: 20,
+		},
+		imageContainer: {
+			display: 'flex',
+			flexDirection: 'row',
+			flexWrap: 'wrap',
+			gap: 10,
+			marginTop: 40,
 		},
 	});
 

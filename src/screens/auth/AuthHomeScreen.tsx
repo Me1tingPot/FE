@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompoundOption } from '@/components/common/CompoundOption';
-import Babo from '@/components/signup/Babo';
 import DatePickerOption from '@/components/signup/DatePickerOption';
 import { authNavigations } from '@/constants';
 import useModal from '@/hooks/useModal';
@@ -53,7 +52,6 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 			<Button title="컴파운드 옵션열기" onPress={modal.show} />
 
 			<Text>{userData?.firstName}</Text>
-			<Babo isVisible={modal.isVisible} hideOption={modal.hide} />
 		</SafeAreaView>
 	);
 }
