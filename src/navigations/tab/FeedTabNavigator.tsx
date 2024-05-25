@@ -1,9 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
+import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
 import CommunityHomeScreen from '@/screens/community/CommunityHomeScreen';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import MyHomeScreen from '@/screens/my/MyHomeScreen';
@@ -87,6 +88,15 @@ function FeedTabNavigator() {
 				component={FeedHomeScreen}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('홈')}`,
+					headerShown: true,
+					headerStyle: { paddingHorizontal: 10 },
+					headerTitle: ' ',
+					headerLeft: () => <FeedHomeHeaderLeft />,
+					headerRight: () => (
+						<Pressable style={{ marginRight: 10 }}>
+							<Ionicons name="notifications-outline" size={25} />
+						</Pressable>
+					),
 				})}
 			/>
 			<Tab.Screen
