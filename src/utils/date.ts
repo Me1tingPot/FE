@@ -73,6 +73,11 @@ function isSameAsCurrentDate(year: number, month: number, date: number) {
 	return currentDate === inputDate;
 }
 
+function changeEnMonth(year: number, month: number) {
+	const date = new Date(year, month - 1);
+	return date.toLocaleString('en-US', { month: 'long' });
+}
+
 export type { MonthYear };
 
 export {
@@ -82,4 +87,5 @@ export {
 	getMonthYearDetails,
 	getNewMonthYear,
 	isSameAsCurrentDate,
+	changeEnMonth,
 };

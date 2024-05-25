@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { getLocales } from 'react-native-localize';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { MonthYear, isSameAsCurrentDate } from '@/utils';
+import { MonthYear, changeEnMonth, isSameAsCurrentDate } from '@/utils';
 import DateBox from './DateBox';
 import DayOfWeeks from './DayOfWeeks';
 
@@ -26,6 +27,7 @@ const Calendar = ({
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const lng = getLocales()[0].languageCode;
 
 	return (
 		<>
@@ -38,7 +40,8 @@ const Calendar = ({
 				</Pressable>
 				<Pressable style={styles.monthYearContainer}>
 					<Text style={styles.titleText}>
-						{year}년 {month}월
+						{lng === 'ko' && `${year}년 ${month}월`}
+						{lng === 'en' && `${year} ${changeEnMonth(year, month)}`}
 					</Text>
 					<MaterialIcons
 						name="keyboard-arrow-down"
