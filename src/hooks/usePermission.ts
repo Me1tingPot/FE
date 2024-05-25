@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Linking, Platform } from 'react-native';
 import {
 	check,
@@ -28,6 +29,7 @@ const iosPermissions: PermissionOS = {
 };
 
 function usePermission(type: PermissionType) {
+	const { t } = useTranslation();
 	useEffect(() => {
 		(async () => {
 			const isAndroid = Platform.OS === 'android';
@@ -38,15 +40,15 @@ function usePermission(type: PermissionType) {
 
 			const showPermissionAlert = () => {
 				Alert.alert(
-					alerts[`${type}_PERMISSION`].TITLE,
-					alerts[`${type}_PERMISSION`].DESCRIPTION,
+					t(`${alerts[`${type}_PERMISSION`].TITLE}`),
+					t(`${alerts[`${type}_PERMISSION`].DESCRIPTION}`),
 					[
 						{
-							text: '설정하기',
+							text: t('설정하기'),
 							onPress: () => Linking.openSettings(),
 						},
 						{
-							text: '취소',
+							text: t('취소'),
 							style: 'cancel',
 						},
 					],
