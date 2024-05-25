@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { authNavigations, colors } from '@/constants';
 import { createStackNavigator } from '@react-navigation/stack';
+import { authNavigations, colors } from '@/constants';
 import AuthHomeScreen from '@/screens/auth/AuthHomeScreen';
 import LoginScreen from '@/screens/auth/LoginScreen';
+import SignUpFinishScreen from '@/screens/auth/SignUpFinishScreen';
 import SignUpScreen from '@/screens/auth/SignUpScreen';
 
 // Screen Typing시 아래 타입을 전달해주면 됨.
@@ -15,6 +16,7 @@ export type AuthStackParamList = {
 	[authNavigations.AUTH_HOME]: undefined;
 	[authNavigations.LOGIN]: undefined;
 	[authNavigations.SIGN_UP]: undefined;
+	[authNavigations.SIGN_UP_FINISH]: undefined;
 };
 
 function AuthStackNavigator() {
@@ -50,6 +52,13 @@ function AuthStackNavigator() {
 				component={SignUpScreen}
 				options={{
 					headerTitle: '회원가입',
+				}}
+			/>
+			<Stack.Screen
+				name={authNavigations.SIGN_UP_FINISH}
+				component={SignUpFinishScreen}
+				options={{
+					headerTitle: '회원가입 완료',
 				}}
 			/>
 		</Stack.Navigator>

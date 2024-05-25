@@ -1,52 +1,110 @@
-import { useState } from 'react';
-import { FieldError, UseFormSetValue } from 'react-hook-form';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import {
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
+import useModal from '@/hooks/useModal';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { getDateLocaleFormat, getDateWithSeparator } from '@/utils';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
+import DatePickerOption from './DatePickerOption';
 
 type BirthProps = {
 	onNext: () => void;
-	setValue: UseFormSetValue<SignupInputs>;
-	error?: FieldError | undefined;
 };
 
 const Birth = ({ onNext }: BirthProps) => {
-	const [date, setDate] = useState('');
+	const {
+		control,
+		formState: { errors },
+		setValue,
+	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
+	const [date, setDate] = useState(new Date());
+	const [isPicked, setIsPicked] = useState(false);
+	const dateOption = useModal();
+	const formatDateString = getDateLocaleFormat(date, '/');
+
+	const handleConfirmDate = () => {
+		setIsPicked(true);
+		dateOption.hide();
+	};
+
+	const handleChangeDate = (pickedDate: Date) => {
+		setDate(pickedDate);
+	};
 
 	return (
 		<View style={styles.container}>
-			<View>
-				<Text style={styles.title}>생년월일을 알려주세요!</Text>
-				<Text style={styles.description}>
-					나이 표시에 사용되며{' '}
-					<Text style={styles.textPoint}>이후 변경이 불가</Text>
-					합니다.
-				</Text>
-			</View>
+			<ScrollView>
+				<View>
+					<Text style={styles.title}>{t('생년월일을 알려주세요!')}</Text>
+					<Text style={styles.description}>
+						{t('나이 표시에 사용되며')}{' '}
+						<Text style={styles.textPoint}>{t('이후 변경이 불가')}</Text>
+						{t('합니다.')}
+					</Text>
+				</View>
 
-			<CustomTextInput
-				value={date}
-				onChangeText={t => setDate(t)}
-				placeholder="----년 --월 --일"
-				variant={'success'}
-				icon={
-					<MaterialIcons
-						name="calendar-month"
-						color={colors[theme].GRAY_300}
-						size={25}
-					/>
-				}
+				<Controller
+					control={control}
+					name="birth"
+					render={({ field: { onChange, onBlur, value } }) => (
+						<View>
+							<CustomTextInput
+								value={isPicked ? formatDateString : t('----년 --월 --일')}
+								onChangeText={onChange}
+								onBlur={onBlur}
+								placeholder={t('----년 --월 --일')}
+								variant={'success'}
+								icon={
+									<MaterialIcons
+										name="calendar-month"
+										color={colors[theme].GRAY_300}
+										size={25}
+									/>
+								}
+								editable={false}
+							/>
+							<TouchableOpacity
+								activeOpacity={0}
+								style={styles.overlayButton}
+								onPress={dateOption.show}
+							/>
+						</View>
+					)}
+				/>
+			</ScrollView>
+
+			<DatePickerOption
+				isVisible={dateOption.isVisible}
+				date={date}
+				hideOption={dateOption.hide}
+				onChangeDate={handleChangeDate}
+				onConfirmDate={handleConfirmDate}
 			/>
-
 			<View style={styles.buttonPosition}>
-				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
+				<CustomButton
+					label={t('다음으로')}
+					onPress={() => {
+						setValue('birth', formatDateString);
+						onNext();
+					}}
+					variant={'filled'}
+				/>
 			</View>
 		</View>
 	);
@@ -71,12 +129,20 @@ const styling = (theme: ThemeMode) =>
 		},
 		description: {
 			marginTop: 10,
+			marginBottom: 30,
 			fontSize: 14,
 			color: colors[theme].GRAY_500,
 		},
 		textPoint: {
-			color: colors[theme].BLACK,
+			color: colors[theme].GRAY_700,
 			fontWeight: '700',
+		},
+		overlayButton: {
+			height: 70,
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			right: 0,
 		},
 	});
 

@@ -1,39 +1,68 @@
-import { FieldError, UseFormSetValue } from 'react-hook-form';
-import { StyleSheet, Text, View } from 'react-native';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
-import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 
 type SexProps = {
 	onNext: () => void;
-	setValue: UseFormSetValue<SignupInputs>;
-	error?: FieldError | undefined;
 };
 
 const Sex = ({ onNext }: SexProps) => {
+	const {
+		control,
+		formState: { errors },
+		setValue,
+	} = useFormContext();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>안녕하세요!</Text>
-			<Text style={styles.description}>
-				당신의 <Text style={styles.textPoint}>성별</Text>을 선택해주세요.
-			</Text>
+			<ScrollView>
+				<Text style={styles.title}>{t('안녕하세요!')}</Text>
+				<Text style={styles.description}>
+					{t('당신의')} <Text style={styles.textPoint}>{t('성별')}</Text>
+					{t('을 선택해주세요.')}
+				</Text>
 
-			<View style={styles.buttonContainer}>
-				<View style={styles.buttonLayout}>
-					<CustomButton label="여성" />
+				<View style={styles.buttonContainer}>
+					<View style={styles.buttonLayout}>
+						<Controller
+							control={control}
+							name="sex"
+							render={() => (
+								<CustomButton
+									label={t('여성')}
+									onPress={() => setValue('sex', '여성')}
+								/>
+							)}
+						/>
+					</View>
+					<View style={styles.buttonLayout}>
+						<Controller
+							control={control}
+							name="sex"
+							render={() => (
+								<CustomButton
+									label={t('남성')}
+									onPress={() => setValue('sex', '남성')}
+								/>
+							)}
+						/>
+					</View>
 				</View>
-				<View style={styles.buttonLayout}>
-					<CustomButton label="남성" />
-				</View>
-			</View>
+			</ScrollView>
 
 			<View style={styles.buttonPosition}>
-				<CustomButton label="다음으로" onPress={onNext} variant={'filled'} />
+				<CustomButton
+					label={t('다음으로')}
+					onPress={onNext}
+					variant={'filled'}
+				/>
 			</View>
 		</View>
 	);
@@ -71,7 +100,7 @@ const styling = (theme: ThemeMode) =>
 			color: colors[theme].GRAY_500,
 		},
 		textPoint: {
-			color: colors[theme].BLACK,
+			color: colors[theme].GRAY_700,
 			fontWeight: '700',
 		},
 	});

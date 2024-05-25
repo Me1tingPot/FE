@@ -2,6 +2,7 @@ const authNavigations = {
 	AUTH_HOME: 'AuthHome',
 	LOGIN: 'Login',
 	SIGN_UP: 'SignUp',
+	SIGN_UP_FINISH: 'SignUpFinish',
 } as const;
 
 const feedTabNavigations = {

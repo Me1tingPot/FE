@@ -59,7 +59,9 @@ function CustomTextInput({
 				/>
 				<View style={styles.icon}>{icon}</View>
 			</View>
-			<Text style={[styles.message, styles[variant]]}>{message}</Text>
+			{message && (
+				<Text style={[styles.message, styles[variant]]}>{message}</Text>
+			)}
 		</View>
 	);
 }

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { CompoundOption } from '@/components/common/CompoundOption';
+import DatePickerOption from '@/components/signup/DatePickerOption';
 import { authNavigations } from '@/constants';
+import useModal from '@/hooks/useModal';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 
 /** *
@@ -14,11 +17,13 @@ export type AuthHomeScreenProps = StackScreenProps<
 >;
 
 function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
+	const modal = useModal();
 	const [userData, setUserData] = useState<{
 		id: string;
 		firstName: string;
 		lastName: string;
 	} | null>(null);
+	const [date, setDate] = useState(new Date());
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -44,6 +49,8 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 				title="회원가입 화면으로 이동"
 				onPress={() => navigation.navigate(authNavigations.SIGN_UP)}
 			/>
+			<Button title="컴파운드 옵션열기" onPress={modal.show} />
+
 			<Text>{userData?.firstName}</Text>
 		</SafeAreaView>
 	);
