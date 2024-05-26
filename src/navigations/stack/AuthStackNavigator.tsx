@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { authNavigations, colors } from '@/constants';
 import AuthHomeScreen from '@/screens/auth/AuthHomeScreen';
 import LoginScreen from '@/screens/auth/LoginScreen';
 import SignUpFinishScreen from '@/screens/auth/SignUpFinishScreen';
 import SignUpScreen from '@/screens/auth/SignUpScreen';
+import useThemeStore from '@/store/useThemeStore';
 
 // Screen Typing시 아래 타입을 전달해주면 됨.
 export type AuthStackParamList = {
@@ -21,16 +21,17 @@ export type AuthStackParamList = {
 
 function AuthStackNavigator() {
 	const Stack = createStackNavigator<AuthStackParamList>();
+	const { theme } = useThemeStore();
 	return (
 		<Stack.Navigator
 			screenOptions={{
 				cardStyle: {
-					backgroundColor: colors.WHITE,
+					backgroundColor: colors[theme].WHITE,
 				},
 				headerTitleStyle: {
 					fontSize: 15,
 				},
-				headerTintColor: colors.BLACK,
+				headerTintColor: colors[theme].BLACK,
 			}}
 		>
 			<Stack.Screen
@@ -64,7 +65,5 @@ function AuthStackNavigator() {
 		</Stack.Navigator>
 	);
 }
-
-const styles = StyleSheet.create({});
 
 export default AuthStackNavigator;

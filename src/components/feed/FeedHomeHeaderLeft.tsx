@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
 	text: {
 		marginLeft: 5,
 		fontSize: 20,
+		fontFamily: 'Pretendard-Bold',
 	},
 });
 

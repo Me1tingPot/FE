@@ -56,5 +56,6 @@
 	"설정 화면에서 사진 접근 권한을 허용해주세요.": "Please allow photo access on the settings screen.",
 	"카메라 촬영 권한이 필요합니다.": "You need permission to shoot the camera.",
 	"설정 화면에서 카메라 권한을 허용해주세요.": "Please allow the camera permission on the setting screen.",
-	"요일": ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
+	"요일": ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
+	"닫기": "Close"
 }

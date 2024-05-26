@@ -6,15 +6,16 @@ import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { getMonthYearDetails, getNewMonthYear } from '@/utils';
 
-interface PartyHomeScreenProps {}
+interface PartyReservationScreenProps {}
 
-function PartyHomeScreen({}: PartyHomeScreenProps) {
+const PartyReservationScreen = ({}: PartyReservationScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
 	const currentMonthYear = getMonthYearDetails(new Date());
 	const [monthYear, setMonthYear] = useState(currentMonthYear);
-	const [selectedDate, setSelectedDate] = useState(0);
+	const [selectedDate, setSelectedDate] = useState<number>(0);
+	const [selectedButton, setSelectedButton] = useState<string>('저장');
 
 	const handleUpdateMonth = (increment: number) => {
 		setMonthYear(prev => getNewMonthYear(prev, increment));
@@ -26,7 +27,6 @@ function PartyHomeScreen({}: PartyHomeScreenProps) {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text>PartyHomeScreen</Text>
 			<Calendar
 				monthYear={monthYear}
 				onChangeMonth={handleUpdateMonth}
@@ -35,7 +35,7 @@ function PartyHomeScreen({}: PartyHomeScreenProps) {
 			/>
 		</SafeAreaView>
 	);
-}
+};
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
@@ -45,4 +45,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default PartyHomeScreen;
+export default PartyReservationScreen;

@@ -1,14 +1,15 @@
-import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { getLocales } from 'react-native-localize';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
+import useModal from '@/hooks/useModal';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { MonthYear, changeEnMonth, isSameAsCurrentDate } from '@/utils';
 import DateBox from './DateBox';
 import DayOfWeeks from './DayOfWeeks';
+import YearSelector from './YearSelector';
 
 interface CalendarProps {
 	monthYear: MonthYear;
@@ -26,8 +27,15 @@ const Calendar = ({
 	const { month, year, lastDate, firstDayOfWeek } = monthYear;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-	const { t } = useTranslation();
 	const lng = getLocales()[0].languageCode;
+	const yearSelector = useModal();
+
+	const handleChangeYear = (selectYear: number) => {
+		// 연도 바꿔줄수있음.
+		// 1년 12달 (선택한 year에서 - 현재 year)를 뺴주고 12를 곱하면됨
+		onChangeMonth((selectYear - year) * 12);
+		yearSelector.hide();
+	};
 
 	return (
 		<>
@@ -38,7 +46,10 @@ const Calendar = ({
 				>
 					<Ionicons name="arrow-back" size={25} color={colors[theme].BLACK} />
 				</Pressable>
-				<Pressable style={styles.monthYearContainer}>
+				<Pressable
+					style={styles.monthYearContainer}
+					onPress={yearSelector.show}
+				>
 					<Text style={styles.titleText}>
 						{lng === 'ko' && `${year}년 ${month}월`}
 						{lng === 'en' && `${year} ${changeEnMonth(year, month)}`}
@@ -82,6 +93,12 @@ const Calendar = ({
 					numColumns={7}
 				/>
 			</View>
+			<YearSelector
+				isVisible={yearSelector.isVisible}
+				currentYear={year}
+				onChangeYear={handleChangeYear}
+				hide={yearSelector.hide}
+			/>
 		</>
 	);
 };

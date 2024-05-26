@@ -5,13 +5,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
+import PartyHomeHeader from '@/components/party/PartyHomeHeader';
 import CommunityHomeScreen from '@/screens/community/CommunityHomeScreen';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import MyHomeScreen from '@/screens/my/MyHomeScreen';
-import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import WishHomeScreen from '@/screens/wish/WishHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
+import PartyStackNavigator from '../stack/PartyStackNavigator';
 
 export type FeedTabParamList = {
 	[feedTabNavigations.FEED_HOME]: undefined;
@@ -89,7 +90,6 @@ function FeedTabNavigator() {
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('홈')}`,
 					headerShown: true,
-					headerStyle: { paddingHorizontal: 10 },
 					headerTitle: ' ',
 					headerLeft: () => <FeedHomeHeaderLeft />,
 					headerRight: () => (
@@ -101,9 +101,11 @@ function FeedTabNavigator() {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.PARTY_HOME}
-				component={PartyHomeScreen}
-				options={({ navigation }) => ({
+				component={PartyStackNavigator}
+				options={({ navigation, route }) => ({
 					tabBarLabel: `${t('파티')}`,
+					headerShown: true,
+					headerTitle: () => PartyHomeHeader(navigation),
 				})}
 			/>
 			<Tab.Screen
