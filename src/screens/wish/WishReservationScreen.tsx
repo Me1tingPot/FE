@@ -6,9 +6,9 @@ import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { getMonthYearDetails, getNewMonthYear } from '@/utils';
 
-interface PartyReservationScreenProps {}
+interface WishReservationScreenProps {}
 
-const PartyReservationScreen = ({}: PartyReservationScreenProps) => {
+const WishReservationScreen = ({}: WishReservationScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -26,7 +26,7 @@ const PartyReservationScreen = ({}: PartyReservationScreenProps) => {
 	};
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView style={[styles.container]}>
 			<Calendar
 				monthYear={monthYear}
 				onChangeMonth={handleUpdateMonth}
@@ -45,4 +45,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default PartyReservationScreen;
+export default WishReservationScreen;

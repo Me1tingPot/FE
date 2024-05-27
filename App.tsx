@@ -1,4 +1,4 @@
-import { StatusBar } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClientProvider } from '@tanstack/react-query';
 import useThemeStorage from '@/hooks/useThemeStorage';

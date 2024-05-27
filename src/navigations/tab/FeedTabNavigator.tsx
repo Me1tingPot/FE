@@ -5,14 +5,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
-import PartyHomeHeader from '@/components/party/PartyHomeHeader';
 import CommunityHomeScreen from '@/screens/community/CommunityHomeScreen';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import MyHomeScreen from '@/screens/my/MyHomeScreen';
-import WishHomeScreen from '@/screens/wish/WishHomeScreen';
+import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
-import PartyStackNavigator from '../stack/PartyStackNavigator';
+import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
 
 export type FeedTabParamList = {
 	[feedTabNavigations.FEED_HOME]: undefined;
@@ -101,16 +100,14 @@ function FeedTabNavigator() {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.PARTY_HOME}
-				component={PartyStackNavigator}
+				component={PartyHomeScreen}
 				options={({ navigation, route }) => ({
 					tabBarLabel: `${t('파티')}`,
-					headerShown: true,
-					headerTitle: () => PartyHomeHeader(navigation),
 				})}
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.WISH_HOME}
-				component={WishHomeScreen}
+				component={WishTopTabNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('위시리스트')}`,
 				})}
