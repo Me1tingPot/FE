@@ -123,26 +123,28 @@ const styling = (theme: ThemeMode) =>
 		yearButton: {
 			width: 80,
 			height: 40,
-			padding: 10,
 			margin: 5,
 			borderWidth: 1,
 			borderColor: colors[theme].GRAY_500,
-			borderRadius: 2,
+			borderRadius: 20,
 			alignItems: 'center',
 			justifyContent: 'center',
+			overflow: 'hidden',
 		},
 		currentYearButton: {
-			backgroundColor: colors[theme].PINK_700,
-			borderColor: colors[theme].PINK_700,
+			backgroundColor: colors[theme].EMERALD_500,
+			borderColor: colors[theme].EMERALD_500,
 		},
 		yearText: {
 			fontSize: 16,
 			fontWeight: '500',
 			color: colors[theme].GRAY_700,
+			fontFamily: 'Pretendard-Bold',
 		},
 		currentYearText: {
-			color: colors[theme].WHITE,
+			color: colors[theme].BLUE_500,
 			fontWeight: '600',
+			fontFamily: 'Pretendard-Bold',
 		},
 		closeButton: {
 			flex: 1,

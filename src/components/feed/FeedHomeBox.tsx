@@ -27,7 +27,12 @@ const FeedHomeBox = ({ text1, text2, highlightText }: FeedHomeBoxProps) => {
 					pressed ? styles.filledPressed : styles.filled,
 				]}
 			>
-				<Ionicons style={styles.boxIcon} name="chevron-forward" size={25} />
+				<Ionicons
+					style={styles.boxIcon}
+					name="chevron-forward"
+					size={25}
+					color={colors[theme].BLACK}
+				/>
 			</Pressable>
 		</View>
 	);
@@ -52,10 +57,14 @@ const styling = (theme: ThemeMode) =>
 		},
 		text: {
 			fontSize: 15,
+			color: colors[theme].BLACK,
+			fontFamily: 'Pretendard-Light',
 		},
 		highlightText: {
 			fontWeight: '900',
 			fontSize: 20,
+			color: colors[theme].BLACK,
+			fontFamily: 'Pretendard-Bold',
 		},
 		boxBottom: {
 			position: 'relative',

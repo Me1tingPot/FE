@@ -47,12 +47,15 @@ const styling = (theme: ThemeMode) =>
 		text: {
 			fontSize: 15,
 			color: colors[theme].BLACK,
+			fontFamily: 'Pretendard-Bold',
 		},
 		saturdayText: {
 			color: colors[theme].BLUE_500,
+			fontFamily: 'Pretendard-Bold',
 		},
 		sundayText: {
 			color: colors[theme].RED_500,
+			fontFamily: 'Pretendard-Bold',
 		},
 	});
 
