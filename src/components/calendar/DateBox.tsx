@@ -64,6 +64,8 @@ const styling = (theme: ThemeMode) =>
 			width: 28,
 			height: 28,
 			borderRadius: 28,
+			// Android borderRadius Problem resolve
+			overflow: 'hidden',
 		},
 		selectedContainer: {
 			backgroundColor: colors[theme].BLACK,
@@ -74,14 +76,17 @@ const styling = (theme: ThemeMode) =>
 		dateText: {
 			fontSize: 17,
 			color: colors[theme].BLACK,
+			fontFamily: 'Pretendard-Medium',
 		},
 		todayText: {
 			color: colors[theme].PINK_700,
 			fontWeight: 'bold',
+			fontFamily: 'Pretendard-Bold',
 		},
 		selectedDateText: {
 			color: colors[theme].WHITE,
 			fontWeight: 'bold',
+			fontFamily: 'Pretendard-Bold',
 		},
 	});
 

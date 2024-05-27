@@ -129,7 +129,7 @@ const styling = (theme: ThemeMode) =>
 			gap: 5,
 		},
 		medium: {
-			width: '50%',
+			width: '70%',
 			paddingVertical: deviceHeight > 700 ? 12 : 8,
 			alignItems: 'center',
 			justifyContent: 'center',

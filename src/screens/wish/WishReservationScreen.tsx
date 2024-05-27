@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import Calendar from '@/components/calendar/Calendar';
+import ReservationPartyList from '@/components/wish/ReservationPartyList';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -33,6 +34,7 @@ const WishReservationScreen = ({}: WishReservationScreenProps) => {
 				selectedDate={selectedDate}
 				onPressDate={handlePressDate}
 			/>
+			<ReservationPartyList />
 		</SafeAreaView>
 	);
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -12,7 +12,10 @@ const WishSaveScreen = ({}: WishSaveScreenProps) => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text>Wish Save Screen</Text>
+			<ScrollView>
+				<Text>Wish Save Screen</Text>
+				<Text>Wish Save Screen</Text>
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
