@@ -10,7 +10,12 @@ const PartyCard = ({}: PartyCardProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
-		<Pressable style={styles.container}>
+		<Pressable
+			style={({ pressed }) => [
+				styles.container,
+				pressed && styles.pressedContainer,
+			]}
+		>
 			<View style={styles.contentContainer}>
 				<View style={styles.badge}>
 					<Text style={styles.badgeText}>모집 중</Text>
@@ -70,6 +75,17 @@ const styling = (theme: ThemeMode) =>
 			borderRadius: 20,
 			borderColor: colors[theme].EMERALD_500,
 			borderWidth: 4,
+			shadowColor: colors[theme].UNCHANGE_BLACK,
+			shadowOffset: {
+				width: 0,
+				height: 8,
+			},
+			shadowOpacity: 0.2,
+			shadowRadius: 8.65,
+			elevation: 8,
+		},
+		pressedContainer: {
+			backgroundColor: colors[theme].GRAY_100,
 		},
 		contentContainer: {
 			flexDirection: 'column',
