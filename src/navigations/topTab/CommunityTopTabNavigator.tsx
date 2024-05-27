@@ -1,22 +1,21 @@
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { colors, wishNavigations } from '@/constants';
-import WishReservationScreen from '@/screens/wish/WishReservationScreen';
-import WishSaveScreen from '@/screens/wish/WishSaveScreen';
+import { colors, communityNavigations } from '@/constants';
+import CommunityPostingScreen from '@/screens/community/CommunityPostingScreen';
+import CommunityQuestionScreen from '@/screens/community/CommunityQuestionScreen';
 import useThemeStore from '@/store/useThemeStore';
 
-export type PartyTabParamList = {
-	[wishNavigations.WISH_SAVE]: undefined;
-	[wishNavigations.WISH_RESERVATION]: undefined;
+export type CommunityTabParamList = {
+	[communityNavigations.COMMUNITY_POSTING]: undefined;
+	[communityNavigations.COMMUNITY_QUESTION]: undefined;
 };
 
-const Tab = createMaterialTopTabNavigator<PartyTabParamList>();
+const Tab = createMaterialTopTabNavigator<CommunityTabParamList>();
 
-function WishTopTabNavigator() {
-	const { t } = useTranslation();
+function CommunityTopTabNavigator() {
 	const { theme } = useThemeStore();
-
+	const { t } = useTranslation();
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
 			<Tab.Navigator
@@ -36,17 +35,17 @@ function WishTopTabNavigator() {
 				}}
 			>
 				<Tab.Screen
-					name={wishNavigations.WISH_SAVE}
-					component={WishSaveScreen}
+					name={communityNavigations.COMMUNITY_POSTING}
+					component={CommunityPostingScreen}
 					options={{
-						tabBarLabel: `${t('저장')}`,
+						tabBarLabel: `${t('질문')}`,
 					}}
 				/>
 				<Tab.Screen
-					name={wishNavigations.WISH_RESERVATION}
-					component={WishReservationScreen}
+					name={communityNavigations.COMMUNITY_QUESTION}
+					component={CommunityQuestionScreen}
 					options={{
-						tabBarLabel: `${t('예약')}`,
+						tabBarLabel: `${t('포스팅')}`,
 					}}
 				/>
 			</Tab.Navigator>
@@ -54,4 +53,4 @@ function WishTopTabNavigator() {
 	);
 }
 
-export default WishTopTabNavigator;
+export default CommunityTopTabNavigator;

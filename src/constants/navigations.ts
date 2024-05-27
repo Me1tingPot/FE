@@ -18,4 +18,14 @@ const wishNavigations = {
 	WISH_RESERVATION: 'WishReservation',
 } as const;
 
-export { authNavigations, feedTabNavigations, wishNavigations };
+const communityNavigations = {
+	COMMUNITY_POSTING: 'CommunityPosting',
+	COMMUNITY_QUESTION: 'CommunityQuestion',
+} as const;
+
+export {
+	authNavigations,
+	feedTabNavigations,
+	wishNavigations,
+	communityNavigations,
+};
