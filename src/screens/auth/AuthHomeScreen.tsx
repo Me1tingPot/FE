@@ -11,10 +11,7 @@ import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
  * Screen Typing
  * Navigator에서 정의한 ParamList를 타입으로 전달, 조금 더 명확히 하기 위해서 스크린 명까지 전달.
  */
-export type AuthHomeScreenProps = StackScreenProps<
-	AuthStackParamList,
-	typeof authNavigations.AUTH_HOME
->;
+export type AuthHomeScreenProps = StackScreenProps<AuthStackParamList>;
 
 function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 	const modal = useModal();

@@ -1,20 +1,12 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 interface PartyHomeScreenProps {}
 
-function PartyHomeScreen({}: PartyHomeScreenProps) {
-	return (
-		<SafeAreaView style={styles.container}>
-			<Text>PartyHomeScreen</Text>
-		</SafeAreaView>
-	);
-}
+const PartyHomeScreen = ({}: PartyHomeScreenProps) => {
+	return <View></View>;
+};
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});
+const styles = StyleSheet.create({});
 
 export default PartyHomeScreen;

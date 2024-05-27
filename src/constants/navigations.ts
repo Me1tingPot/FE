@@ -13,4 +13,9 @@ const feedTabNavigations = {
 	MY_HOME: 'MyHome',
 } as const;
 
-export { authNavigations, feedTabNavigations };
+const wishNavigations = {
+	WISH_SAVE: 'WishSave',
+	WISH_RESERVATION: 'WishReservation',
+} as const;
+
+export { authNavigations, feedTabNavigations, wishNavigations };

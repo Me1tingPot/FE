@@ -19,7 +19,7 @@ import { colors } from '../../constants';
 export const buttonVariants = ['filled', 'outlined'] as const;
 type buttonVariant = (typeof buttonVariants)[number];
 
-export const buttonSizes = ['large', 'medium'] as const;
+export const buttonSizes = ['large', 'medium', 'small'] as const;
 type buttonSize = (typeof buttonSizes)[number];
 
 interface CustomButtonProps extends PressableProps {
@@ -65,7 +65,6 @@ function CustomButton({
 			disabled={inValid}
 			style={({ pressed }) => [
 				styles.container,
-
 				pressed ? styles[`${variant}Pressed`] : styles[variant],
 				inValid && styles.inValid,
 				style,
@@ -120,6 +119,10 @@ const styling = (theme: ThemeMode) =>
 			borderWidth: 1,
 			opacity: 0.5,
 		},
+		text: {
+			fontSize: 16,
+			fontWeight: '500',
+		},
 		large: {
 			width: '100%',
 			paddingVertical: deviceHeight > 700 ? 15 : 10,
@@ -129,16 +132,19 @@ const styling = (theme: ThemeMode) =>
 			gap: 5,
 		},
 		medium: {
-			width: '50%',
+			width: '70%',
 			paddingVertical: deviceHeight > 700 ? 12 : 8,
 			alignItems: 'center',
 			justifyContent: 'center',
 			flexDirection: 'row',
 			gap: 5,
 		},
-		text: {
-			fontSize: 16,
-			fontWeight: '500',
+		small: {
+			width: 100,
+			height: 40,
+			flexDirection: 'row',
+			justifyContent: 'center',
+			alignItems: 'center',
 		},
 		filledText: {
 			color: colors[theme].WHITE,

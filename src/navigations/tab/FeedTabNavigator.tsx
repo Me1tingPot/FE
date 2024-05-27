@@ -9,9 +9,9 @@ import CommunityHomeScreen from '@/screens/community/CommunityHomeScreen';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import MyHomeScreen from '@/screens/my/MyHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
-import WishHomeScreen from '@/screens/wish/WishHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
+import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
 
 export type FeedTabParamList = {
 	[feedTabNavigations.FEED_HOME]: undefined;
@@ -89,7 +89,6 @@ function FeedTabNavigator() {
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('홈')}`,
 					headerShown: true,
-					headerStyle: { paddingHorizontal: 10 },
 					headerTitle: ' ',
 					headerLeft: () => <FeedHomeHeaderLeft />,
 					headerRight: () => (
@@ -102,13 +101,13 @@ function FeedTabNavigator() {
 			<Tab.Screen
 				name={feedTabNavigations.PARTY_HOME}
 				component={PartyHomeScreen}
-				options={({ navigation }) => ({
+				options={({ navigation, route }) => ({
 					tabBarLabel: `${t('파티')}`,
 				})}
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.WISH_HOME}
-				component={WishHomeScreen}
+				component={WishTopTabNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('위시리스트')}`,
 				})}
