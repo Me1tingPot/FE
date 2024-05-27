@@ -66,18 +66,16 @@ const Name = ({ onNext }: NameProps) => {
 						)}
 					/>
 				</View>
-			</ScrollView>
-			<View style={styles.buttonPosition}>
-				<Text style={[styles.textPoint, styles.title, styles.noticeText]}>
+				<Text style={[styles.textPoint, styles.title, styles.noticeTitle]}>
 					{t('왜 여권에 기재된 이름이 필요한가요?')}
 				</Text>
 				<Text style={[styles.description, styles.noticeText]}>
-					{t('왜 여권에 기재된 이름이 필요한가요?')}
 					{t(
 						'온오프라인 만남에서 벌어질 수 있는 신분상의 도용이나 이로 인한 피해, 로맨스 스캠 등 다양한 범죄를 예방하기 위해 국제적으로 통용되는 신분증에 기재된 이름을 정확히 적어주세요.',
 					)}
 				</Text>
-
+			</ScrollView>
+			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
 					onPress={onNext}
@@ -116,8 +114,14 @@ const styling = (theme: ThemeMode) =>
 			fontSize: 14,
 			color: colors[theme].GRAY_500,
 		},
+		noticeTitle: {
+			fontSize: 12,
+			marginTop: 30,
+			paddingHorizontal: 10,
+		},
 		noticeText: {
 			fontSize: 12,
+			paddingHorizontal: 10,
 		},
 		textPoint: {
 			color: colors[theme].GRAY_700,

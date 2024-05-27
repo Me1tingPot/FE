@@ -1,21 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
-	Pressable,
 	ScrollView,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import DatePicker from 'react-native-date-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { getDateLocaleFormat, getDateWithSeparator } from '@/utils';
+import { getDateLocaleFormat } from '@/utils';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 import DatePickerOption from './DatePickerOption';
