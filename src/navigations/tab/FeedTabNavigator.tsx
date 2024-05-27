@@ -11,6 +11,7 @@ import MyHomeScreen from '@/screens/my/MyHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
+import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
 
 export type FeedTabParamList = {
@@ -114,7 +115,7 @@ function FeedTabNavigator() {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.COMMUNITY_HOME}
-				component={CommunityHomeScreen}
+				component={CommunityTopTabNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('커뮤니티')}`,
 				})}
