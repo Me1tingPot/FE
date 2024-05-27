@@ -5,7 +5,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
-import CommunityHomeScreen from '@/screens/community/CommunityHomeScreen';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import MyHomeScreen from '@/screens/my/MyHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
