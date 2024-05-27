@@ -1,5 +1,4 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Pressable } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -17,9 +16,12 @@ const PostPreview = () => {
 					<Text style={styles.name}>Sunny Kim</Text>
 					<Text style={styles.date}>24/07/07</Text>
 				</View>
-				<Pressable>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => console.log('click')}
+				>
 					<Image source={Report} style={styles.report} />
-				</Pressable>
+				</TouchableOpacity>
 			</View>
 			<View style={styles.contents}>
 				<View style={styles.titleLayout}>
@@ -31,9 +33,12 @@ const PostPreview = () => {
 					이번주에 잠실에서 만나려고 하는데요, 일단 저 포함 3명이고, 한국인 2명
 					있어요.
 				</Text>
-				<Pressable>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => console.log('click')}
+				>
 					<Text style={styles.more}>...더보기</Text>
-				</Pressable>
+				</TouchableOpacity>
 			</View>
 			<View style={styles.bottom}>
 				<Image source={Comment} />
