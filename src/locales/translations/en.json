@@ -62,5 +62,8 @@
 	"예약": "Reservation",
 	"예정된 파티가 없어요!": "We don't have any planned parties!",
 	"내 주변 다양한 파티에 참여해 보세요.": "Try participating in various parties around me.",
-	"내 주변 파티 구경하러 가기": "Going to see the party around me"
+	"내 주변 파티 구경하러 가기": "Going to see the party around me",
+	"모집 중": "Recruiting",
+	"모집 예정": "To be recruited",
+	"마감": "Deadline"
 }

@@ -20,7 +20,7 @@ const Location = ({ onNext }: LocationProps) => {
 				<View>
 					<Text style={styles.title}>{t('어디에 계신가요?')}</Text>
 					<Text style={styles.description}>
-						{t('위치 정보를 이용하여')}{' '}
+						{t('위치 정보를 이용하여')}
 						<Text style={styles.textPoint}>{t('가까운 파티')}</Text>
 						{t('를 추천해드릴게요.')}
 					</Text>
