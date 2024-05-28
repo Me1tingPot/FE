@@ -1,22 +1,102 @@
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import DarkModeOption from '@/components/my/DarkModeOption';
+import SettingItem from '@/components/my/SettingItem';
+import { colors } from '@/constants';
+import useModal from '@/hooks/useModal';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import useThemeStore from '@/store/useThemeStore';
+import { ThemeMode } from '@/types';
 
 interface MyHomeScreenProps {}
 
 function MyHomeScreen({}: MyHomeScreenProps) {
-	const { t, i18n } = useTranslation();
+	const { t } = useTranslation();
+	const darkModeOption = useModal();
+	const { theme: themeMode, isSystem } = useThemeStorage();
+	const { theme } = useThemeStore();
+	const styles = styling(theme);
+
+	const isDarkOrSystem =
+		isSystem === true
+			? '시스템 기본값'
+			: themeMode === 'light'
+				? '라이트 모드'
+				: '다크 모드';
+
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text>MyHomeScreen</Text>
-			<Text>{t('홈')}</Text>
+			<View style={{ marginVertical: 50 }}>
+				<Text>프로필 이미지 들어갈 곳</Text>
+			</View>
+			<ScrollView showsVerticalScrollIndicator={false}>
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('계정')}</Text>
+					<SettingItem title={t('아이디')} subTitle="dydals3440" />
+					<SettingItem title={t('비밀번호 변경')} />
+					<SettingItem title={t('이메일 변경')} />
+				</View>
+				<View style={styles.space} />
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('커뮤니티')}</Text>
+					<SettingItem title={t('이용 제한 내역')} />
+					<SettingItem title={t('채팅 설정')} />
+					<SettingItem title={t('커뮤니티 이용규칙')} />
+				</View>
+				<View style={styles.space} />
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('앱 설정')}</Text>
+					<SettingItem
+						title={t('다크 모드')}
+						onPress={darkModeOption.show}
+						subTitle={isDarkOrSystem}
+					/>
+					<SettingItem title={t('알림 설정')} />
+				</View>
+				<View style={styles.space} />
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('이용 안내')}</Text>
+					<SettingItem title={t('앱 버전')} />
+					<SettingItem title={t('문의 하기')} />
+					<SettingItem title={t('공지사항')} />
+					<SettingItem title={t('서비스 이용약관')} />
+					<SettingItem title={t('오픈소스 라이선스')} />
+				</View>
+				<View style={styles.space} />
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('기타')}</Text>
+					<SettingItem title={t('정보 동의 설정')} />
+					<SettingItem title={t('회원 탈퇴')} />
+					<SettingItem title={t('로그아웃')} />
+				</View>
+			</ScrollView>
+			<DarkModeOption
+				isVisible={darkModeOption.isVisible}
+				hideOption={darkModeOption.hide}
+			/>
 		</SafeAreaView>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			paddingHorizontal: 20,
+		},
+		section: {
+			flexDirection: 'column',
+		},
+		categoryText: {
+			fontSize: 25,
+			fontFamily: 'Pretendard-Bold',
+			paddingHorizontal: 10,
+			marginBottom: 10,
+			color: colors[theme].BLACK,
+		},
+		space: {
+			height: 30,
+		},
+	});
 
 export default MyHomeScreen;
