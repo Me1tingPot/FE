@@ -33,10 +33,8 @@ const WishSaveScreen = ({}: WishSaveScreenProps) => {
 					textStyle={{ fontSize: 15 }}
 				/>
 			</View>
-			<ScrollView>
-				<View style={styles.scrollContainer}>
-					<PartyCard />
-				</View>
+			<ScrollView contentContainerStyle={styles.scrollContainer}>
+				<PartyCard />
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -54,9 +52,11 @@ const styling = (theme: ThemeMode) =>
 			marginVertical: 20,
 		},
 		scrollContainer: {
+			display: 'flex',
 			flexDirection: 'column',
-			justifyContent: 'center',
-			alignItems: 'center',
+			gap: 10,
+			paddingHorizontal: 20,
+			paddingVertical: 20,
 		},
 	});
 
