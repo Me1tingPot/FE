@@ -1,27 +1,18 @@
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
-import PostPreview from '@/components/community/PostPreview';
+import { SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native';
 import { colors } from '@/constants';
-import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-type CommunityPostingScreenProps = {
-	navigation: NavigationProp<CommunityStackParamList>;
-};
+type CommunityPostingScreenProps = {};
 
-const CommunityPostingScreen = ({
-	navigation,
-}: CommunityPostingScreenProps) => {
+const CommunityPostingScreen = ({}: CommunityPostingScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.contentContainer}>
-				{new Array(10).fill(null).map((item, index) => (
-					<PostPreview key={index} navigation={navigation} id={index} />
-				))}
+				<Text>CommunityPostingScreen</Text>
 			</ScrollView>
 		</SafeAreaView>
 	);
