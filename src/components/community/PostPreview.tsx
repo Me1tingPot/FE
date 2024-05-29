@@ -1,15 +1,30 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '@/constants';
+import { NavigationProp } from '@react-navigation/native';
+import { colors, communityNavigations } from '@/constants';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import Comment from '../../assets/images/Comment.png';
 import Report from '../../assets/images/Report.png';
 
-const PostPreview = () => {
+type PostPreviewProps = {
+	navigation: NavigationProp<CommunityStackParamList>;
+	id: number;
+};
+
+const PostPreview = ({ navigation, id }: PostPreviewProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
-		<View style={styles.container}>
+		<TouchableOpacity
+			style={styles.container}
+			activeOpacity={0.8}
+			onPress={() =>
+				navigation.navigate(communityNavigations.COMMUNITY_POSTING_DETAIL, {
+					id,
+				})
+			}
+		>
 			<View style={styles.top}>
 				<Image source={{ uri: '/' }} style={styles.profileImg} />
 				<View style={styles.userInfo}>
@@ -44,7 +59,7 @@ const PostPreview = () => {
 				<Image source={Comment} />
 				<Text>3</Text>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 };
 

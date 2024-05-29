@@ -36,14 +36,14 @@ function CommunityTopTabNavigator() {
 			>
 				<Tab.Screen
 					name={communityNavigations.COMMUNITY_POSTING}
-					component={CommunityPostingScreen}
+					component={CommunityQuestionScreen}
 					options={{
 						tabBarLabel: `${t('질문')}`,
 					}}
 				/>
 				<Tab.Screen
 					name={communityNavigations.COMMUNITY_QUESTION}
-					component={CommunityQuestionScreen}
+					component={CommunityPostingScreen}
 					options={{
 						tabBarLabel: `${t('포스팅')}`,
 					}}
