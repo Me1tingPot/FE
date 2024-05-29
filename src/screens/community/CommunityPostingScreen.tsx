@@ -1,13 +1,13 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import PostPreview from '@/components/community/PostPreview';
 import { colors } from '@/constants';
-import { CommunityTabParamList } from '@/navigations/topTab/CommunityTopTabNavigator';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
 type CommunityPostingScreenProps = {
-	navigation: NavigationProp<CommunityTabParamList>;
+	navigation: NavigationProp<CommunityStackParamList>;
 };
 
 const CommunityPostingScreen = ({
@@ -19,8 +19,8 @@ const CommunityPostingScreen = ({
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.contentContainer}>
-				{new Array(10).fill(null).map(() => (
-					<PostPreview />
+				{new Array(10).fill(null).map((item, index) => (
+					<PostPreview key={index} navigation={navigation} id={index} />
 				))}
 			</ScrollView>
 		</SafeAreaView>
