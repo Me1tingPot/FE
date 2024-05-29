@@ -19,16 +19,8 @@ const wishNavigations = {
 } as const;
 
 const communityNavigations = {
-	COMMUNITY_TOPTAB: 'CommunityTopTab',
 	COMMUNITY_POSTING: 'CommunityPosting',
 	COMMUNITY_QUESTION: 'CommunityQuestion',
-	COMMUNITY_POSTING_DETAIL: 'CommunityPostingDetail',
-} as const;
-
-const myNavigations = {
-	MY_HOME: 'MyHome',
-	EDIT_PROFILE: 'EditProfile',
-	MY_WRITE_POST: 'MyWritePost',
 } as const;
 
 export {
@@ -36,5 +28,4 @@ export {
 	feedTabNavigations,
 	wishNavigations,
 	communityNavigations,
-	myNavigations,
 };
