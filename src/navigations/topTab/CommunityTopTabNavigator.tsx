@@ -22,10 +22,9 @@ function CommunityTopTabNavigator() {
 				screenOptions={{
 					tabBarLabelStyle: {
 						fontSize: 20,
-						fontFamily: 'Pretendard-Bold',
+						fontFamily: 'Pretendard-Light',
 					},
 					tabBarInactiveTintColor: colors[theme].GRAY_500,
-					tabBarActiveTintColor: colors[theme].PINK_700,
 					tabBarStyle: {
 						backgroundColor: colors[theme].WHITE,
 					},
