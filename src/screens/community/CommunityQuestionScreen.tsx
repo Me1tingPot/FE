@@ -4,8 +4,10 @@ import {
 	SafeAreaView,
 	ScrollView,
 	StyleSheet,
+	View,
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import BottomButton from '@/components/common/BottomButton';
 import PostPreview from '@/components/community/PostPreview';
 import { colors } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -42,6 +44,15 @@ const CommunityQuestionScreen = ({
 					<PostPreview key={index} navigation={navigation} id={index} />
 				))}
 			</ScrollView>
+			<View style={styles.buttonList}>
+				<BottomButton
+					family="Octicons"
+					name="pencil"
+					color={colors[theme].WHITE}
+					size={30}
+					onPress={() => {}}
+				/>
+			</View>
 		</SafeAreaView>
 	);
 };
@@ -58,6 +69,11 @@ const styling = (theme: ThemeMode) =>
 			gap: 10,
 			paddingHorizontal: 20,
 			paddingVertical: 20,
+		},
+		buttonList: {
+			position: 'absolute',
+			bottom: 30,
+			right: 15,
 		},
 	});
 export default CommunityQuestionScreen;
