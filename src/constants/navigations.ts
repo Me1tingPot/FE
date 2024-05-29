@@ -25,9 +25,16 @@ const communityNavigations = {
 	COMMUNITY_POSTING_DETAIL: 'CommunityPostingDetail',
 } as const;
 
+const myNavigations = {
+	MY_HOME: 'MyHome',
+	EDIT_PROFILE: 'EditProfile',
+	MY_WRITE_POST: 'MyWritePost',
+} as const;
+
 export {
 	authNavigations,
 	feedTabNavigations,
 	wishNavigations,
 	communityNavigations,
+	myNavigations,
 };
