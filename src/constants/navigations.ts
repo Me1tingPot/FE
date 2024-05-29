@@ -26,7 +26,7 @@ const communityNavigations = {
 } as const;
 
 const myNavigations = {
-	MY_HOME: 'MyHome',
+	MY_PAGE_HOME: 'MyPageHome',
 	EDIT_PROFILE: 'EditProfile',
 	MY_WRITE_POST: 'MyWritePost',
 } as const;

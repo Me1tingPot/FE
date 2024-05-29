@@ -10,7 +10,11 @@ import { name as appName } from './app.json';
 async function enableMocking() {
 	await import('./msw.polyfills');
 	const { server } = await import('./src/mocks/server/');
-	server.listen();
+	server.listen({
+		onUnhandledRequest() {
+			console.trace('Here');
+		},
+	});
 }
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {

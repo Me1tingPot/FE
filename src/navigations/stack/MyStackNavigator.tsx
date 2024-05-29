@@ -7,7 +7,7 @@ import MyWritePostScreen from '@/screens/my/MyWritePostScreen';
 import useThemeStore from '@/store/useThemeStore';
 
 export type MyStackParamList = {
-	[myNavigations.MY_HOME]: undefined;
+	[myNavigations.MY_PAGE_HOME]: undefined;
 	[myNavigations.EDIT_PROFILE]: undefined;
 	[myNavigations.MY_WRITE_POST]: undefined;
 };
@@ -35,7 +35,7 @@ function MyStackNavigator() {
 			}}
 		>
 			<Stack.Screen
-				name={myNavigations.MY_HOME}
+				name={myNavigations.MY_PAGE_HOME}
 				component={MyHomeScreen}
 				options={{
 					headerShown: false,
