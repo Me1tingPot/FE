@@ -3,7 +3,6 @@
  */
 import { AppRegistry } from 'react-native';
 import 'react-native-gesture-handler';
-import messaging from '@react-native-firebase/messaging';
 import '@/locales/i18n.config';
 import { name as appName } from './app.json';
 
@@ -12,10 +11,6 @@ async function enableMocking() {
 	const { server } = await import('./src/mocks/server/');
 	server.listen();
 }
-
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-	console.log('Message handled in the background!', remoteMessage);
-});
 
 AppRegistry.registerRunnable(appName, async initialProps => {
 	try {
