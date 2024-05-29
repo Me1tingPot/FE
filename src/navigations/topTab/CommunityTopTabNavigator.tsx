@@ -22,9 +22,10 @@ function CommunityTopTabNavigator() {
 				screenOptions={{
 					tabBarLabelStyle: {
 						fontSize: 20,
-						fontFamily: 'Pretendard-Light',
+						fontFamily: 'Pretendard-Bold',
 					},
 					tabBarInactiveTintColor: colors[theme].GRAY_500,
+					tabBarActiveTintColor: colors[theme].PINK_700,
 					tabBarStyle: {
 						backgroundColor: colors[theme].WHITE,
 					},
@@ -35,14 +36,14 @@ function CommunityTopTabNavigator() {
 			>
 				<Tab.Screen
 					name={communityNavigations.COMMUNITY_POSTING}
-					component={CommunityQuestionScreen}
+					component={CommunityPostingScreen}
 					options={{
 						tabBarLabel: `${t('질문')}`,
 					}}
 				/>
 				<Tab.Screen
 					name={communityNavigations.COMMUNITY_QUESTION}
-					component={CommunityPostingScreen}
+					component={CommunityQuestionScreen}
 					options={{
 						tabBarLabel: `${t('포스팅')}`,
 					}}
