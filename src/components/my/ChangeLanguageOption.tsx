@@ -24,15 +24,21 @@ const ChangeLanguageOption = ({
 		i18n.changeLanguage('en');
 		hideOption();
 	};
-
+	console.log(t);
 	return (
 		<CompoundOption isVisible={isVisible} hideOption={hideOption}>
 			<CompoundOption.Background>
 				<CompoundOption.Container>
-					<CompoundOption.Button onPress={onChangeKorean}>
+					<CompoundOption.Button
+						onPress={onChangeKorean}
+						isChecked={i18n.language === 'ko'}
+					>
 						{t('한국어')}
 					</CompoundOption.Button>
-					<CompoundOption.Button onPress={onChangeEnglish}>
+					<CompoundOption.Button
+						onPress={onChangeEnglish}
+						isChecked={i18n.language === 'en'}
+					>
 						{t('영어')}
 					</CompoundOption.Button>
 				</CompoundOption.Container>
