@@ -9,6 +9,7 @@ import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
+import CommunityStackNavigator from '../stack/CommunityStackNavigator';
 import MyStackNavigator from '../stack/MyStackNavigator';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
@@ -114,7 +115,7 @@ function FeedTabNavigator() {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.COMMUNITY_HOME}
-				component={CommunityTopTabNavigator}
+				component={CommunityStackNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('커뮤니티')}`,
 				})}

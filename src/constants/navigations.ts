@@ -19,8 +19,10 @@ const wishNavigations = {
 } as const;
 
 const communityNavigations = {
+	COMMUNITY_TOPTAB: 'CommunityTopTab',
 	COMMUNITY_POSTING: 'CommunityPosting',
 	COMMUNITY_QUESTION: 'CommunityQuestion',
+	COMMUNITY_POSTING_DETAIL: 'CommunityPostingDetail',
 } as const;
 
 const myNavigations = {
