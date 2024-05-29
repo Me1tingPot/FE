@@ -1,15 +1,20 @@
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import BottomButton from '@/components/common/BottomButton';
 import SearchInput from '@/components/common/SearchInput';
 import FeedHomeBox from '@/components/feed/FeedHomeBox';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-interface FeedHomeScreenProps {}
-
-function FeedHomeScreen({}: FeedHomeScreenProps) {
+function FeedHomeScreen() {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const navigation = useNavigation();
+	const handleMoveChatPage = () => {
+		// TODO: Chat 페이지로 이동 navigation 타입 정의
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.searchContainer}>
@@ -30,6 +35,15 @@ function FeedHomeScreen({}: FeedHomeScreenProps) {
 					<FeedHomeBox highlightText="예약" text2="된 일정" />
 				</View>
 			</ScrollView>
+			<View style={styles.buttonList}>
+				<BottomButton
+					family="Ionicons"
+					name="chatbubbles"
+					color={colors[theme].WHITE}
+					size={30}
+					onPress={() => {}}
+				/>
+			</View>
 		</SafeAreaView>
 	);
 }
@@ -54,6 +68,11 @@ const styling = (theme: ThemeMode) =>
 		},
 		searchContainer: {
 			marginTop: 30,
+		},
+		buttonList: {
+			position: 'absolute',
+			bottom: 30,
+			right: 15,
 		},
 	});
 

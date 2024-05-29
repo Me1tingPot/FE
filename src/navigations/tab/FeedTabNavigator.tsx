@@ -6,11 +6,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
-import MyHomeScreen from '@/screens/my/MyHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
+<<<<<<< HEAD
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
+=======
+import MyStackNavigator from '../stack/MyStackNavigator';
+import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
+import CommunityStackNavigator from '../stack/CommunityStackNavigator';
+>>>>>>> parent of 5321bb4 (Revert "Feature/#10 WishList 페이지 구현, Compound Card 구현 Bottom Button 구현 ")
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
 
 export type FeedTabParamList = {
@@ -121,7 +126,7 @@ function FeedTabNavigator() {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.MY_HOME}
-				component={MyHomeScreen}
+				component={MyStackNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('마이페이지')}`,
 				})}

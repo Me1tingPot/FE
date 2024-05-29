@@ -69,7 +69,6 @@ const PartyCard = ({}: PartyCardProps) => {
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
-			width: 347,
 			height: 160,
 			backgroundColor: colors[theme].WHITE,
 			borderRadius: 20,
