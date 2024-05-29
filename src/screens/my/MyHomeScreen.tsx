@@ -1,10 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import ChangeLanguageOption from '@/components/my/ChangeLanguageOption';
 import DarkModeOption from '@/components/my/DarkModeOption';
 import SettingItem from '@/components/my/SettingItem';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
 import useThemeStorage from '@/hooks/useThemeStorage';
+import i18n from '@/locales/i18n.config';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
@@ -13,16 +15,18 @@ interface MyHomeScreenProps {}
 function MyHomeScreen({}: MyHomeScreenProps) {
 	const { t } = useTranslation();
 	const darkModeOption = useModal();
+	const changeLanguageOption = useModal();
 	const { theme: themeMode, isSystem } = useThemeStorage();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-
+	console.log(i18n.language);
+	const whichLanguage = i18n.language === 'ko' ? t('한국어') : t('영어');
 	const isDarkOrSystem =
 		isSystem === true
-			? '시스템 기본값'
+			? t('시스템 기본값')
 			: themeMode === 'light'
-				? '라이트 모드'
-				: '다크 모드';
+				? t('라이트 모드')
+				: t('다크 모드');
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -51,6 +55,11 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 						onPress={darkModeOption.show}
 						subTitle={isDarkOrSystem}
 					/>
+					<SettingItem
+						title={t('언어 변경')}
+						subTitle={whichLanguage}
+						onPress={changeLanguageOption.show}
+					/>
 					<SettingItem title={t('알림 설정')} />
 				</View>
 				<View style={styles.space} />
@@ -73,6 +82,10 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 			<DarkModeOption
 				isVisible={darkModeOption.isVisible}
 				hideOption={darkModeOption.hide}
+			/>
+			<ChangeLanguageOption
+				isVisible={changeLanguageOption.isVisible}
+				hideOption={changeLanguageOption.hide}
 			/>
 		</SafeAreaView>
 	);

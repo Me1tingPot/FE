@@ -89,5 +89,11 @@
 	"기타": "Others",
 	"정보 동의 설정": "Setting up consent to information",
 	"회원 탈퇴": "Leave Membership",
-	"로그아웃": "Logout"
+	"로그아웃": "Logout",
+	"한국어": "Korean",
+	"영어": "English",
+	"언어 변경": "Change Language",
+	"라이트 모드": "Light Mode",
+	"시스템 기본값 모드": "System Default Mode",
+	"시스템 기본값": "System Default"
 }

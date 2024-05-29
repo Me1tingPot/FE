@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, useColorScheme } from 'react-native';
 import useThemeStorage from '@/hooks/useThemeStorage';
 import { CompoundOption } from '../common/CompoundOption';
@@ -11,6 +12,7 @@ interface DarkModeOptionProps {
 const DarkModeOption = ({ isVisible, hideOption }: DarkModeOptionProps) => {
 	const systemDefault = useColorScheme();
 	const { theme, isSystem, setMode, setSystem } = useThemeStorage();
+	const { t } = useTranslation();
 	const handlePressLight = () => {
 		setMode('light');
 		setSystem(false);
@@ -36,24 +38,24 @@ const DarkModeOption = ({ isVisible, hideOption }: DarkModeOptionProps) => {
 						onPress={handlePressLight}
 						isChecked={isSystem === false && theme === 'light'}
 					>
-						라이트 모드
+						{t('라이트 모드')}
 					</CompoundOption.Button>
 					<CompoundOption.Button
 						onPress={handlePressDark}
 						isChecked={isSystem === false && theme === 'dark'}
 					>
-						다크 모드
+						{t('다크 모드')}
 					</CompoundOption.Button>
 					<CompoundOption.Button
 						onPress={handlePressSystem}
 						isChecked={isSystem === true}
 					>
-						시스템 기본값 모드
+						{t('시스템 기본값 모드')}
 					</CompoundOption.Button>
 				</CompoundOption.Container>
 				<CompoundOption.Container>
 					<CompoundOption.Button onPress={hideOption}>
-						취소
+						{t('취소')}
 					</CompoundOption.Button>
 				</CompoundOption.Container>
 			</CompoundOption.Background>
