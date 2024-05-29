@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
@@ -11,6 +11,7 @@ import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
 import MyStackNavigator from '../stack/MyStackNavigator';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
+import CommunityStackNavigator from '../stack/CommunityStackNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
 
 export type FeedTabParamList = {
@@ -114,7 +115,7 @@ function FeedTabNavigator() {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.COMMUNITY_HOME}
-				component={CommunityTopTabNavigator}
+				component={CommunityStackNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('커뮤니티')}`,
 				})}
