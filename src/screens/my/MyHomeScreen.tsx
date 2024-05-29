@@ -100,6 +100,7 @@ const styling = (theme: ThemeMode) =>
 		},
 		contentContainer: {
 			paddingHorizontal: 15,
+			flex: 1,
 		},
 		section: {
 			flexDirection: 'column',

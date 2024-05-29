@@ -9,13 +9,8 @@ import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
-<<<<<<< HEAD
-import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
-=======
 import MyStackNavigator from '../stack/MyStackNavigator';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
-import CommunityStackNavigator from '../stack/CommunityStackNavigator';
->>>>>>> parent of 5321bb4 (Revert "Feature/#10 WishList 페이지 구현, Compound Card 구현 Bottom Button 구현 ")
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
 
 export type FeedTabParamList = {
