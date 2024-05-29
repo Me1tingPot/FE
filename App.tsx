@@ -9,10 +9,15 @@ import RootNavigator from './src/navigations/root/RootNavigator';
 
 function App() {
 	const { theme } = useThemeStorage();
+	const getFcmToken = async () => {
+		const fcmToken = await messaging().getToken();
+		console.log('[+] FCM Token :: ', fcmToken);
+	};
 	useEffect(() => {
 		const unsubscribe = messaging().onMessage(async remoteMessage => {
 			Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
 		});
+		getFcmToken();
 
 		return unsubscribe;
 	}, []);
