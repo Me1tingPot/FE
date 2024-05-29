@@ -6,11 +6,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
+import MyHomeScreen from '@/screens/my/MyHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedTabNavigations } from '../../constants';
-import MyStackNavigator from '../stack/MyStackNavigator';
-import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import CommunityStackNavigator from '../stack/CommunityStackNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
 
@@ -122,7 +121,7 @@ function FeedTabNavigator() {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.MY_HOME}
-				component={MyStackNavigator}
+				component={MyHomeScreen}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('마이페이지')}`,
 				})}
