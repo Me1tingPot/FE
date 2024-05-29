@@ -19,6 +19,7 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 	const { theme: themeMode, isSystem } = useThemeStorage();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	console.log(i18n.language);
 	const whichLanguage = i18n.language === 'ko' ? t('한국어') : t('영어');
 	const isDarkOrSystem =
 		isSystem === true
