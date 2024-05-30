@@ -22,7 +22,7 @@ const CommunityPostingScreen = ({
 			<View style={styles.contentContainer}>
 				<ScrollView contentContainerStyle={styles.scrollStyle}>
 					{new Array(10).fill(null).map((_, idx) => (
-						<PostingPreview key={idx} />
+						<PostingPreview key={idx} navigation={navigation} id={idx} />
 					))}
 				</ScrollView>
 			</View>

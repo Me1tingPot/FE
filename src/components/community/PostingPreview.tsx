@@ -6,17 +6,32 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { colors } from '@/constants';
+import { NavigationProp } from '@react-navigation/native';
+import { colors, communityNavigations } from '@/constants';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import Comment from '../../assets/images/Comment.png';
 import Report from '../../assets/images/Report.png';
 
-const PostingPreview = () => {
+type PostingPreviewProps = {
+	navigation: NavigationProp<CommunityStackParamList>;
+	id: number;
+};
+
+const PostingPreview = ({ navigation, id }: PostingPreviewProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
-		<TouchableOpacity style={styles.container} activeOpacity={0.8}>
+		<TouchableOpacity
+			style={styles.container}
+			activeOpacity={0.8}
+			onPress={() =>
+				navigation.navigate(communityNavigations.COMMUNITY_POSTING_DETAIL, {
+					id,
+				})
+			}
+		>
 			<View style={styles.row}>
 				<Image style={styles.userImg} />
 				<Text style={styles.flexText}>Sunny Kim</Text>
@@ -95,9 +110,11 @@ const styling = (theme: ThemeMode) =>
 			borderBottomColor: colors[theme].GRAY_400,
 		},
 		content: {
+			color: colors[theme].BLACK,
 			fontFamily: 'Pretendard-Light',
 		},
 		title: {
+			color: colors[theme].BLACK,
 			fontSize: 18,
 			fontFamily: 'Pretendard-Regular',
 		},
