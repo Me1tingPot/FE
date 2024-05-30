@@ -8,6 +8,7 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	ViewStyle,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
@@ -22,15 +23,22 @@ function CardMain({ children, ...props }: CardMainProps) {
 	return <Pressable {...props}>{children}</Pressable>;
 }
 
-function Container({ children }: PropsWithChildren) {
+interface ContainerProps extends PressableProps {
+	children: ReactNode;
+	style?: ViewStyle;
+}
+
+function Container({ children, style, ...props }: ContainerProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
 	return (
 		<Pressable
+			{...props}
 			style={({ pressed }) => [
 				styles.container,
 				pressed && styles.pressedContainer,
+				style,
 			]}
 		>
 			{children}
@@ -51,42 +59,33 @@ function Badge({ children }: PropsWithChildren) {
 
 interface ProfileProps extends ImageProps {
 	uri?: string;
+	size: 'sm' | 'md' | 'lg';
 }
 
-function Profile({ uri, ...props }: ProfileProps) {
+function Profile({ size = 'sm', uri, ...props }: ProfileProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const defaultImage = require('@/assets/user-default.png');
 
 	return (
 		<Image
-			style={styles.profile}
+			style={[styles[`${size}Profile`]]}
 			source={uri ? { uri } : defaultImage}
 			{...props}
 		/>
 	);
 }
 
-function TextContainer({
-	title,
-	description,
-}: {
-	title: string;
-	description: string;
-}) {
+interface TextContainerProps {
+	children: ReactNode;
+	style?: ViewStyle;
+}
+
+function TextContainer({ children, style }: TextContainerProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
-	return (
-		<View style={styles.textContainer}>
-			<Text style={styles.titleText} numberOfLines={2}>
-				{title}
-			</Text>
-			<Text style={styles.descText} numberOfLines={1}>
-				{description}
-			</Text>
-		</View>
-	);
+	return <View style={[styles.textContainer, style]}>{children}</View>;
 }
 
 function Divider() {
@@ -159,11 +158,19 @@ const styling = (theme: ThemeMode) =>
 			fontSize: 13,
 		},
 		profile: {
+			borderRadius: 50,
+		},
+		smProfile: {
 			width: 50,
 			height: 50,
-			borderRadius: 50,
-			top: 10,
-			left: 10,
+		},
+		mdProfile: {
+			width: 75,
+			height: 75,
+		},
+		lgProfile: {
+			width: 100,
+			height: 100,
 		},
 		textContainer: {
 			flexDirection: 'column',

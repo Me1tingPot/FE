@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import ChangeLanguageOption from '@/components/my/ChangeLanguageOption';
 import DarkModeOption from '@/components/my/DarkModeOption';
+import ProfileContainer from '@/components/my/ProfileContainer';
 import SettingItem from '@/components/my/SettingItem';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
@@ -29,56 +30,58 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<View style={styles.contentContainer}>
-				<View style={{ marginVertical: 50 }}>
-					<Text>프로필 이미지 들어갈 곳</Text>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				style={styles.contentContainer}
+			>
+				{/* TODO:Profile Data 전달 */}
+				<ProfileContainer />
+				{/* TODO:기획 완료시, 페이지 연결 */}
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('계정')}</Text>
+					<SettingItem title={t('아이디')} subTitle="dydals3440" />
+					<SettingItem title={t('비밀번호 변경')} />
+					<SettingItem title={t('이메일 변경')} />
 				</View>
-				<ScrollView showsVerticalScrollIndicator={false}>
-					<View style={styles.section}>
-						<Text style={styles.categoryText}>{t('계정')}</Text>
-						<SettingItem title={t('아이디')} subTitle="dydals3440" />
-						<SettingItem title={t('비밀번호 변경')} />
-						<SettingItem title={t('이메일 변경')} />
-					</View>
-					<View style={styles.space} />
-					<View style={styles.section}>
-						<Text style={styles.categoryText}>{t('커뮤니티')}</Text>
-						<SettingItem title={t('이용 제한 내역')} />
-						<SettingItem title={t('채팅 설정')} />
-						<SettingItem title={t('커뮤니티 이용규칙')} />
-					</View>
-					<View style={styles.space} />
-					<View style={styles.section}>
-						<Text style={styles.categoryText}>{t('앱 설정')}</Text>
-						<SettingItem
-							title={t('다크 모드')}
-							onPress={darkModeOption.show}
-							subTitle={isDarkOrSystem}
-						/>
-						<SettingItem
-							title={t('언어 변경')}
-							subTitle={whichLanguage}
-							onPress={changeLanguageOption.show}
-						/>
-						<SettingItem title={t('알림 설정')} />
-					</View>
-					<View style={styles.space} />
-					<View style={styles.section}>
-						<Text style={styles.categoryText}>{t('이용 안내')}</Text>
-						<SettingItem title={t('앱 버전')} />
-						<SettingItem title={t('문의 하기')} />
-						<SettingItem title={t('공지사항')} />
-						<SettingItem title={t('서비스 이용약관')} />
-						<SettingItem title={t('오픈소스 라이선스')} />
-					</View>
-					<View style={styles.space} />
-					<View style={styles.section}>
-						<Text style={styles.categoryText}>{t('기타')}</Text>
-						<SettingItem title={t('정보 동의 설정')} />
-						<SettingItem title={t('회원 탈퇴')} />
-						<SettingItem title={t('로그아웃')} />
-					</View>
-				</ScrollView>
+				<View style={styles.space} />
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('커뮤니티')}</Text>
+					<SettingItem title={t('이용 제한 내역')} />
+					<SettingItem title={t('채팅 설정')} />
+					<SettingItem title={t('커뮤니티 이용규칙')} />
+				</View>
+				<View style={styles.space} />
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('앱 설정')}</Text>
+					<SettingItem
+						title={t('다크 모드')}
+						onPress={darkModeOption.show}
+						subTitle={isDarkOrSystem}
+					/>
+					<SettingItem
+						title={t('언어 변경')}
+						subTitle={whichLanguage}
+						onPress={changeLanguageOption.show}
+					/>
+					<SettingItem title={t('알림 설정')} />
+				</View>
+				<View style={styles.space} />
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('이용 안내')}</Text>
+					<SettingItem title={t('앱 버전')} />
+					<SettingItem title={t('문의 하기')} />
+					<SettingItem title={t('공지사항')} />
+					<SettingItem title={t('서비스 이용약관')} />
+					<SettingItem title={t('오픈소스 라이선스')} />
+				</View>
+				<View style={styles.space} />
+				<View style={styles.section}>
+					<Text style={styles.categoryText}>{t('기타')}</Text>
+					<SettingItem title={t('정보 동의 설정')} />
+					<SettingItem title={t('회원 탈퇴')} />
+					<SettingItem title={t('로그아웃')} />
+				</View>
+
 				<DarkModeOption
 					isVisible={darkModeOption.isVisible}
 					hideOption={darkModeOption.hide}
@@ -87,7 +90,7 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 					isVisible={changeLanguageOption.isVisible}
 					hideOption={changeLanguageOption.hide}
 				/>
-			</View>
+			</ScrollView>
 		</SafeAreaView>
 	);
 }

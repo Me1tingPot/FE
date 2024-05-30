@@ -29,16 +29,18 @@ function MyStackNavigator() {
 					backgroundColor: colors[theme].WHITE,
 				},
 				headerTitleStyle: {
-					fontSize: 15,
+					fontSize: 20,
 				},
-				headerTintColor: colors[theme].BLACK,
+				headerTintColor: colors[theme].GRAY_700,
+				headerTitleAlign: 'center',
 			}}
 		>
 			<Stack.Screen
 				name={myNavigations.MY_PAGE_HOME}
 				component={MyHomeScreen}
 				options={{
-					headerShown: false,
+					headerShown: true,
+					headerTitle: `${t('마이페이지')}`,
 				}}
 			/>
 			<Stack.Screen

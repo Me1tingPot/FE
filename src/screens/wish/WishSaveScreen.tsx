@@ -43,25 +43,6 @@ const WishSaveScreen = ({}: WishSaveScreenProps) => {
 			</View>
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
 				<PartyCard />
-				<CompoundCard.Container>
-					<CompoundCard.Badge>모집 중</CompoundCard.Badge>
-					<View style={{ flexDirection: 'row', padding: 10 }}>
-						<CompoundCard.Profile uri="https://reactnative.dev/img/tiny_logo.png" />
-						<CompoundCard.TextContainer
-							title="24회 전주국제영화제 뒤풀이 파티로 어서오세요"
-							description="전주월드컵경기장 (전주특별자치도 전주시 덕진구 기린대로 1055)"
-						/>
-					</View>
-					<CompoundCard.Divider />
-					<View
-						style={{ flexDirection: 'row', justifyContent: 'space-around' }}
-					>
-						<CompoundCard.DetailInfo iconName="happy" info="김용민" />
-						<CompoundCard.DetailInfo iconName="calendar" info="2024/05/27" />
-						<CompoundCard.DetailInfo iconName="time" info="16:42" />
-						<CompoundCard.DetailInfo iconName="people" info="5 (4~8)" />
-					</View>
-				</CompoundCard.Container>
 			</ScrollView>
 		</SafeAreaView>
 	);
