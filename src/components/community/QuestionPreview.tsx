@@ -7,12 +7,12 @@ import { ThemeMode } from '@/types';
 import Comment from '../../assets/images/Comment.png';
 import Report from '../../assets/images/Report.png';
 
-type PostPreviewProps = {
+type QuestionPreviewProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
 	id: number;
 };
 
-const PostPreview = ({ navigation, id }: PostPreviewProps) => {
+const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -135,4 +135,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default PostPreview;
+export default QuestionPreview;

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
-import PostPreview from '@/components/community/PostPreview';
+import QuestionPreview from '@/components/community/QuestionPreview';
 import { colors, communityNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
@@ -41,7 +41,7 @@ const CommunityQuestionScreen = ({
 				}
 			>
 				{new Array(10).fill(null).map((item, index) => (
-					<PostPreview key={index} navigation={navigation} id={index} />
+					<QuestionPreview key={index} navigation={navigation} id={index} />
 				))}
 			</ScrollView>
 			<View style={styles.buttonList}>
