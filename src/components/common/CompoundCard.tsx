@@ -7,7 +7,6 @@ import {
 	StyleSheet,
 	Text,
 	TouchableOpacity,
-	TouchableOpacityProps,
 	View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';

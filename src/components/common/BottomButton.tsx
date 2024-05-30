@@ -1,5 +1,11 @@
 import React from 'react';
-import { Pressable, PressableProps, StyleSheet, View } from 'react-native';
+import {
+	Pressable,
+	PressableProps,
+	StyleSheet,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -18,6 +24,7 @@ interface BottomButtonProps extends PressableProps {
 	name: string;
 	size?: number;
 	color?: string;
+	style?: ViewStyle;
 }
 
 const BottomButton = ({
@@ -25,12 +32,13 @@ const BottomButton = ({
 	name,
 	size = 30,
 	color = '#fff',
+	style,
 	...props
 }: BottomButtonProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
-		<Pressable style={styles.bottomButton} {...props}>
+		<Pressable style={[styles.bottomButton, style]} {...props}>
 			{family === 'Ionicons' && (
 				<Ionicons name={name} color={color} size={size} />
 			)}
