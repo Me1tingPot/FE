@@ -12,7 +12,7 @@ const CommunityPostingDetailScreen = ({
 	route,
 }: CommunityPostingDetailScreenProps) => {
 	const { id } = route.params;
-	console.log(id);
+
 	return <Text>CommunityPostingDetailScreen | postId: {id}</Text>;
 };
 

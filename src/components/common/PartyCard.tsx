@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-	Image,
-	Pressable,
-	StyleSheet,
-	Text,
-	TouchableHighlight,
-	View,
-} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import BottomButton from './BottomButton';
+import IconCircleButton from './IconCircleButton';
 
 interface PartyCardProps {}
 
@@ -22,7 +15,7 @@ const PartyCard = ({}: PartyCardProps) => {
 
 	const renderRightActions = () => (
 		<View style={styles.rightActionContainer}>
-			<BottomButton
+			<IconCircleButton
 				family="Ionicons"
 				name="trash"
 				color={colors[theme].WHITE}

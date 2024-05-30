@@ -19,7 +19,7 @@ type IconFamilies = {
 	Octicons: 'Octicons';
 };
 
-interface BottomButtonProps extends PressableProps {
+interface IconCircleButtonProps extends PressableProps {
 	family: keyof IconFamilies;
 	name: string;
 	size?: number;
@@ -27,14 +27,14 @@ interface BottomButtonProps extends PressableProps {
 	style?: ViewStyle;
 }
 
-const BottomButton = ({
+const IconCircleButton = ({
 	family,
 	name,
 	size = 30,
 	color = '#fff',
 	style,
 	...props
-}: BottomButtonProps) => {
+}: IconCircleButtonProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -69,4 +69,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default BottomButton;
+export default IconCircleButton;
