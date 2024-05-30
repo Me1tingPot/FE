@@ -9,7 +9,7 @@ import {
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import PostPreview from '@/components/community/PostPreview';
-import { colors } from '@/constants';
+import { colors, communityNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -50,7 +50,9 @@ const CommunityQuestionScreen = ({
 					name="pencil"
 					color={colors[theme].WHITE}
 					size={30}
-					onPress={() => {}}
+					onPress={() =>
+						navigation.navigate(communityNavigations.COMMUNITY_QUESTION_WRITE)
+					}
 				/>
 			</View>
 		</SafeAreaView>

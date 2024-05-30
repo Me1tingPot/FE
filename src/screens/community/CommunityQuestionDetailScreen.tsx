@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 
-type CommunityPostingDetailScreenProps = {
+type CommunityQuestionDetailScreenProps = {
 	route: {
 		params: {
 			id: number;
@@ -10,17 +10,17 @@ type CommunityPostingDetailScreenProps = {
 	};
 };
 
-const CommunityPostingDetailScreen = ({
+const CommunityQuestionDetailScreen = ({
 	route,
-}: CommunityPostingDetailScreenProps) => {
+}: CommunityQuestionDetailScreenProps) => {
 	const Stack = createStackNavigator<CommunityStackParamList>();
 	const { id } = route.params;
 
 	return (
 		<View>
-			<Text>CommunityPostingDetailScreen | postId: {id}</Text>
+			<Text>CommunityQuestionDetailScreen | postId: {id}</Text>
 		</View>
 	);
 };
 
-export default CommunityPostingDetailScreen;
+export default CommunityQuestionDetailScreen;

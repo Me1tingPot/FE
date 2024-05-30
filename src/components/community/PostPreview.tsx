@@ -20,7 +20,7 @@ const PostPreview = ({ navigation, id }: PostPreviewProps) => {
 			style={styles.container}
 			activeOpacity={0.8}
 			onPress={() =>
-				navigation.navigate(communityNavigations.COMMUNITY_POSTING_DETAIL, {
+				navigation.navigate(communityNavigations.COMMUNITY_QUESTION_DETAIL, {
 					id,
 				})
 			}
