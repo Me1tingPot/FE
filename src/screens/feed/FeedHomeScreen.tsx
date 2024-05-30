@@ -1,6 +1,6 @@
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import BottomButton from '@/components/common/BottomButton';
+import IconCircleButton from '@/components/common/IconCircleButton';
 import SearchInput from '@/components/common/SearchInput';
 import FeedHomeBox from '@/components/feed/FeedHomeBox';
 import { colors } from '@/constants';
@@ -36,7 +36,7 @@ function FeedHomeScreen() {
 				</View>
 			</ScrollView>
 			<View style={styles.buttonList}>
-				<BottomButton
+				<IconCircleButton
 					family="Ionicons"
 					name="chatbubbles"
 					color={colors[theme].WHITE}

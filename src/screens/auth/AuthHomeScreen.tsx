@@ -27,7 +27,7 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 			try {
 				const response = await fetch('https://localhost:8081/user');
 				const data = await response.json();
-				console.log('반환값: ', data);
+
 				setUserData(data);
 			} catch (error) {
 				console.error('Error fetching user data:', error);

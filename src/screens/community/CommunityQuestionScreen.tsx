@@ -7,7 +7,7 @@ import {
 	View,
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import BottomButton from '@/components/common/BottomButton';
+import IconCircleButton from '@/components/common/IconCircleButton';
 import PostPreview from '@/components/community/PostPreview';
 import { colors } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -45,7 +45,7 @@ const CommunityQuestionScreen = ({
 				))}
 			</ScrollView>
 			<View style={styles.buttonList}>
-				<BottomButton
+				<IconCircleButton
 					family="Octicons"
 					name="pencil"
 					color={colors[theme].WHITE}

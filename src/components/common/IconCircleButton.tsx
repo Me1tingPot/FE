@@ -1,5 +1,11 @@
 import React from 'react';
-import { Pressable, PressableProps, StyleSheet, View } from 'react-native';
+import {
+	Pressable,
+	PressableProps,
+	StyleSheet,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -13,24 +19,26 @@ type IconFamilies = {
 	Octicons: 'Octicons';
 };
 
-interface BottomButtonProps extends PressableProps {
+interface IconCircleButtonProps extends PressableProps {
 	family: keyof IconFamilies;
 	name: string;
 	size?: number;
 	color?: string;
+	style?: ViewStyle;
 }
 
-const BottomButton = ({
+const IconCircleButton = ({
 	family,
 	name,
 	size = 30,
 	color = '#fff',
+	style,
 	...props
-}: BottomButtonProps) => {
+}: IconCircleButtonProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
-		<Pressable style={styles.bottomButton} {...props}>
+		<Pressable style={[styles.bottomButton, style]} {...props}>
 			{family === 'Ionicons' && (
 				<Ionicons name={name} color={color} size={size} />
 			)}
@@ -61,4 +69,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default BottomButton;
+export default IconCircleButton;

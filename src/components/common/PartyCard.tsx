@@ -1,68 +1,89 @@
+import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import IconCircleButton from './IconCircleButton';
 
 interface PartyCardProps {}
 
 const PartyCard = ({}: PartyCardProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	const renderRightActions = () => (
+		<View style={styles.rightActionContainer}>
+			<IconCircleButton
+				family="Ionicons"
+				name="trash"
+				color={colors[theme].WHITE}
+				style={{ backgroundColor: colors[theme].RED_500 }}
+			/>
+		</View>
+	);
+
 	return (
-		<Pressable
-			style={({ pressed }) => [
-				styles.container,
-				pressed && styles.pressedContainer,
-			]}
-		>
-			<View style={styles.contentContainer}>
-				<View style={styles.badge}>
-					<Text style={styles.badgeText}>모집 중</Text>
-				</View>
-				<View style={styles.imageContainer}>
-					<Image
-						source={require('@/assets/user-default.png')}
-						width={45}
-						height={45}
-					/>
-					<View style={styles.textContainer}>
-						<Text style={styles.titleText} numberOfLines={2}>
-							24회 전주국제영화제 뒤풀이 파티로 어서오세요 24회 전주국제영화제
-							뒤풀이 파티로 어서오세요 24회 전주국제영화제 뒤풀이 파 어서오세요
-						</Text>
-						<Text style={styles.descText} numberOfLines={1}>
-							전주월드컵경기장 (전주특별자치도 전주시 덕진구 기린대로 1055)
-						</Text>
+		<Swipeable renderRightActions={renderRightActions}>
+			<Pressable
+				style={({ pressed }) => [
+					styles.container,
+					pressed && styles.pressedContainer,
+				]}
+			>
+				<View style={styles.contentContainer}>
+					<View style={styles.badge}>
+						<Text style={styles.badgeText}>모집 중</Text>
 					</View>
-				</View>
-				<View style={styles.dividerContainer}>
-					<View style={styles.divider} />
-				</View>
-				<View style={styles.detailInfoContainer}>
-					<View style={styles.iconContainer}>
-						<Ionicons name="happy" size={20} color={colors[theme].GRAY_500} />
-						<Text style={styles.iconFont}>김용민</Text>
-					</View>
-					<View style={styles.iconContainer}>
-						<Ionicons
-							name="calendar"
-							size={20}
-							color={colors[theme].GRAY_500}
+					<View style={styles.imageContainer}>
+						<Image
+							source={require('@/assets/user-default.png')}
+							style={styles.image}
 						/>
-						<Text style={styles.iconFont}>2024/05/27</Text>
+						<View style={styles.textContainer}>
+							<Text style={styles.titleText} numberOfLines={2}>
+								24회 전주국제영화제 뒤풀이 파티로 어서오세요 24회 전주국제영화제
+								뒤풀이 파티로 어서오세요 24회 전주국제영화제 뒤풀이 파
+								어서오세요
+							</Text>
+							<Text style={styles.descText} numberOfLines={1}>
+								전주월드컵경기장 (전주특별자치도 전주시 덕진구 기린대로 1055)
+							</Text>
+						</View>
 					</View>
-					<View style={styles.iconContainer}>
-						<Ionicons name="time" size={20} color={colors[theme].GRAY_500} />
-						<Text style={styles.iconFont}>16:42</Text>
+					<View style={styles.dividerContainer}>
+						<View style={styles.divider} />
 					</View>
-					<View style={styles.iconContainer}>
-						<Ionicons name="people" size={20} color={colors[theme].GRAY_500} />
-						<Text style={styles.iconFont}>5 (4~8)</Text>
+					<View style={styles.detailInfoContainer}>
+						<View style={styles.iconContainer}>
+							<Ionicons name="happy" size={20} color={colors[theme].GRAY_500} />
+							<Text style={styles.iconFont}>김용민</Text>
+						</View>
+						<View style={styles.iconContainer}>
+							<Ionicons
+								name="calendar"
+								size={20}
+								color={colors[theme].GRAY_500}
+							/>
+							<Text style={styles.iconFont}>2024/05/27</Text>
+						</View>
+						<View style={styles.iconContainer}>
+							<Ionicons name="time" size={20} color={colors[theme].GRAY_500} />
+							<Text style={styles.iconFont}>16:42</Text>
+						</View>
+						<View style={styles.iconContainer}>
+							<Ionicons
+								name="people"
+								size={20}
+								color={colors[theme].GRAY_500}
+							/>
+							<Text style={styles.iconFont}>5 (4~8)</Text>
+						</View>
 					</View>
 				</View>
-			</View>
-		</Pressable>
+			</Pressable>
+		</Swipeable>
 	);
 };
 
@@ -113,6 +134,10 @@ const styling = (theme: ThemeMode) =>
 			gap: 10,
 			paddingHorizontal: 10,
 		},
+		image: {
+			width: 45,
+			height: 45,
+		},
 		textContainer: {
 			flexDirection: 'column',
 			marginTop: 10,
@@ -147,6 +172,23 @@ const styling = (theme: ThemeMode) =>
 		iconFont: {
 			color: colors[theme].GRAY_500,
 			fontSize: 13,
+		},
+		rightActionContainer: {
+			flexDirection: 'row',
+			justifyContent: 'center',
+			alignItems: 'center',
+			backgroundColor: colors[theme].GRAY_100,
+			width: 100,
+			borderRadius: 20,
+			margin: 4,
+		},
+		actionButton: {
+			backgroundColor: colors[theme].EMERALD_500,
+			marginHorizontal: 5,
+			borderRadius: 10,
+		},
+		actionButtonText: {
+			color: colors[theme].WHITE,
 		},
 	});
 
