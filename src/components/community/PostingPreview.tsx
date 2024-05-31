@@ -19,6 +19,9 @@ type PostingPreviewProps = {
 	id: number;
 };
 
+const testImg =
+	'https://images.unsplash.com/photo-1605100958409-e084833953d4?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
+
 const PostingPreview = ({ navigation, id }: PostingPreviewProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -33,7 +36,7 @@ const PostingPreview = ({ navigation, id }: PostingPreviewProps) => {
 			}
 		>
 			<View style={styles.row}>
-				<Image style={styles.userImg} />
+				<Image source={{ uri: testImg }} style={styles.userImg} />
 				<Text style={styles.flexText}>Sunny Kim</Text>
 				<TouchableOpacity
 					activeOpacity={0.8}
@@ -56,7 +59,7 @@ const PostingPreview = ({ navigation, id }: PostingPreviewProps) => {
 					)}
 				/>
 			</View>
-			<View style={styles.verticalLine}></View>
+			<View style={styles.verticalLine} />
 			<View style={[styles.row, styles.innerPadding]}>
 				<Image source={Comment} />
 				<Text style={styles.flexText}>댓글 3개</Text>

@@ -12,6 +12,9 @@ type QuestionPreviewProps = {
 	id: number;
 };
 
+const testImg =
+	'https://images.unsplash.com/photo-1555437858-e8521a85abc0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
+
 const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -26,7 +29,7 @@ const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 			}
 		>
 			<View style={styles.top}>
-				<Image source={{ uri: '/' }} style={styles.profileImg} />
+				<Image source={{ uri: testImg }} style={styles.profileImg} />
 				<View style={styles.userInfo}>
 					<Text style={styles.name}>Sunny Kim</Text>
 					<Text style={styles.date}>24/07/07</Text>
