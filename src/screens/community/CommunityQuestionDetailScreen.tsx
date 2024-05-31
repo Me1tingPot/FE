@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	Image,
 	KeyboardAvoidingView,
@@ -15,6 +16,7 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { createStackNavigator } from '@react-navigation/stack';
+import CheckBox from '@/components/common/CheckBox';
 import { colors } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
@@ -40,6 +42,7 @@ const CommunityQuestionDetailScreen = ({
 	const { id } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const [isChecked, setIsChecked] = useState(false);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -104,8 +107,11 @@ const CommunityQuestionDetailScreen = ({
 
 				<View style={styles.inputContainer}>
 					<View style={[styles.rowGap5, styles.anonymousContainer]}>
-						<Text>체크</Text>
-						<Text>익명</Text>
+						<CheckBox
+							isChecked={isChecked}
+							onValueChangedHanlder={() => setIsChecked(prev => !prev)}
+							children={<Text style={styles.anomynousText}>익명</Text>}
+						/>
 					</View>
 					<View style={[styles.rowGap10]}>
 						<TouchableOpacity
@@ -241,6 +247,10 @@ const styling = (theme: ThemeMode) =>
 		input: {
 			flex: 1,
 			height: 20,
+		},
+		anomynousText: {
+			fontSize: 12,
+			color: colors[theme].GRAY_700,
 		},
 	});
 
