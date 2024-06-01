@@ -36,6 +36,9 @@ const myNavigations = {
 
 const feedNavigations = {
 	ALERT: 'Alert',
+	CHAT_START: 'ChatStart',
+	CHAT_HOME: 'ChatHome',
+	CHAT: 'Chat',
 	FEED_TAB: 'FeedTab',
 } as const;
 
