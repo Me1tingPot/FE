@@ -21,7 +21,11 @@ function FeedStackNavigator() {
 			<Stack.Screen
 				name={feedNavigations.ALERT}
 				component={AlertHomeScreen}
-				options={{ headerShown: false }}
+				options={{
+					headerTitle: '알림',
+					headerTitleAlign: 'center',
+					headerBackTitleVisible: false,
+				}}
 			/>
 		</Stack.Navigator>
 	);
