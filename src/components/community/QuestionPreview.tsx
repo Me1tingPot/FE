@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, communityNavigations } from '@/constants';
@@ -18,6 +19,7 @@ const testImg =
 const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 	return (
 		<TouchableOpacity
 			style={styles.container}
@@ -55,7 +57,7 @@ const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}
 				>
-					<Text style={styles.more}>...더보기</Text>
+					<Text style={styles.more}>...{`${t('더보기')}`}</Text>
 				</TouchableOpacity>
 			</View>
 			<View style={styles.bottom}>

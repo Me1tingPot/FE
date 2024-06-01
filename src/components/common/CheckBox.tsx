@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, PressableProps, StyleSheet } from 'react-native';
 import { View, ViewStyle } from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { colors } from '@/constants';
@@ -12,12 +12,11 @@ type checkBoxVariant = (typeof checkBoxVariants)[number];
 export const checkBoxSizes = ['s', 'm', 'l'] as const;
 type checkBoxSize = (typeof checkBoxSizes)[number];
 
-interface CheckBoxProps {
+interface CheckBoxProps extends PressableProps {
 	variant?: checkBoxVariant;
 	size?: checkBoxSize;
 	isChecked: boolean;
 	disabled?: boolean;
-	onValueChangedHanlder: (checked: boolean) => void;
 	children?: ReactNode;
 	style?: ViewStyle;
 }
@@ -27,18 +26,14 @@ function CheckBox({
 	size = 's',
 	isChecked,
 	disabled = false,
-	onValueChangedHanlder,
 	children,
 	style,
+	...props
 }: CheckBoxProps) {
 	const { theme } = useThemeStore();
 	const styles = styling({ theme, isChecked, size, disabled, variant });
 	return (
-		<Pressable
-			style={[styles.container, style]}
-			onPress={() => onValueChangedHanlder(isChecked)}
-			disabled={disabled}
-		>
+		<Pressable style={[styles.container, style]} disabled={disabled} {...props}>
 			<View style={styles.checkBox}>
 				<Octicons
 					name="check"

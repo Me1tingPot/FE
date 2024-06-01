@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { createStackNavigator } from '@react-navigation/stack';
 import { communityNavigations } from '@/constants';
 import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDetailScreen';
@@ -19,6 +20,7 @@ export type CommunityStackParamList = {
 };
 function CommunityStackNavigator() {
 	const Stack = createStackNavigator<CommunityStackParamList>();
+	const { t } = useTranslation();
 
 	return (
 		<Stack.Navigator>
@@ -30,22 +32,22 @@ function CommunityStackNavigator() {
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_QUESTION_DETAIL}
 				component={CommunityQuestionDetailScreen}
-				options={{ headerTitle: '질문' }}
+				options={{ headerTitle: `${t('질문')}` }}
 			/>
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_POSTING_DETAIL}
 				component={CommunityPostingDetailScreen}
-				options={{ headerTitle: '포스팅' }}
+				options={{ headerTitle: `${t('포스팅')}` }}
 			/>
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_QUESTION_WRITE}
 				component={CommunityQuestionWriteScreen}
-				options={{ headerTitle: '질문하기' }}
+				options={{ headerTitle: `${t('질문하기')}` }}
 			/>
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_POSTING_WRITE}
 				component={CommunityPostingWriteScreen}
-				options={{ headerTitle: '포스팅하기' }}
+				options={{ headerTitle: `${t('포스팅')}` }}
 			/>
 		</Stack.Navigator>
 	);

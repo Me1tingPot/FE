@@ -14,7 +14,7 @@ const Comments = ({}: CommentsProps) => {
 		<>
 			<View style={[styles.rowGap10, styles.bottom]}>
 				<Image source={Comment} />
-				<Text>3</Text>
+				<Text style={styles.commentCount}>3</Text>
 			</View>
 			<View style={styles.verticalLine} />
 		</>
@@ -37,6 +37,9 @@ const styling = (theme: ThemeMode) =>
 			alignSelf: 'center',
 			borderBottomWidth: 0.5,
 			borderBottomColor: colors[theme].GRAY_400,
+		},
+		commentCount: {
+			color: colors[theme].BLACK,
 		},
 	});
 

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
@@ -9,6 +10,7 @@ interface PostContentsProps {}
 const PostContents = ({}: PostContentsProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 	return (
 		<>
 			<View style={styles.contents}>
@@ -31,7 +33,7 @@ const PostContents = ({}: PostContentsProps) => {
 				<View style={styles.translationLayout}>
 					<MaterialIcons name="translate" color={colors[theme].WHITE} />
 				</View>
-				<Text>번역하기</Text>
+				<Text style={styles.translationText}>{`${t('번역하기')}`}</Text>
 			</TouchableOpacity>
 			<View style={styles.verticalLine} />
 		</>
@@ -81,6 +83,10 @@ const styling = (theme: ThemeMode) =>
 			height: 16,
 			backgroundColor: colors[theme].GRAY_500,
 			borderRadius: 3,
+		},
+		translationText: {
+			color: colors[theme].BLACK,
+			fontSize: 14,
 		},
 		verticalLine: {
 			width: '95%',

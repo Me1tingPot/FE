@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image } from 'react-native';
 import {
 	StyleSheet,
@@ -20,7 +21,7 @@ interface InputBottomProps {
 
 const InputBottom = ({ id }: InputBottomProps) => {
 	const [isChecked, setIsChecked] = useState(false);
-
+	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -28,8 +29,8 @@ const InputBottom = ({ id }: InputBottomProps) => {
 			<View style={[styles.rowGap5, styles.anonymousContainer]}>
 				<CheckBox
 					isChecked={isChecked}
-					onValueChangedHanlder={() => setIsChecked(prev => !prev)}
-					children={<Text style={styles.anomynousText}>익명</Text>}
+					onPress={() => setIsChecked(prev => !prev)}
+					children={<Text style={styles.anomynousText}>{`${t('익명')}`}</Text>}
 				/>
 			</View>
 			<View style={[styles.rowGap10]}>

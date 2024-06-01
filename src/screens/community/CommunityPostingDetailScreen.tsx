@@ -1,6 +1,17 @@
-import { Text, View } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import {
+	KeyboardAvoidingView,
+	Platform,
+	SafeAreaView,
+	ScrollView,
+	StyleSheet,
+} from 'react-native';
+import InputBottom from '@/components/community/detail/InputBottom';
+import PostContents from '@/components/community/detail/PostContents';
+import PostInfo from '@/components/community/detail/PostInfo';
+import Comments from '@/components/community/detail/comment/Comments';
+import { colors } from '@/constants';
+import useThemeStore from '@/store/useThemeStore';
+import { ThemeMode } from '@/types';
 
 type CommunityPostingDetailScreenProps = {
 	route: {
@@ -13,14 +24,39 @@ type CommunityPostingDetailScreenProps = {
 const CommunityPostingDetailScreen = ({
 	route,
 }: CommunityPostingDetailScreenProps) => {
-	const Stack = createStackNavigator<CommunityStackParamList>();
 	const { id } = route.params;
+	const { theme } = useThemeStore();
+	const styles = styling(theme);
 
 	return (
-		<View>
-			<Text>CommunityPostingDetailScreen | postId: {id}</Text>
-		</View>
+		<SafeAreaView style={styles.container}>
+			<KeyboardAvoidingView
+				style={{ flex: 1 }}
+				behavior="padding"
+				keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 70}
+			>
+				<ScrollView contentContainerStyle={styles.contentContainer}>
+					<PostInfo />
+					<PostContents />
+					<Comments />
+				</ScrollView>
+				<InputBottom id={id} />
+			</KeyboardAvoidingView>
+		</SafeAreaView>
 	);
 };
+
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: colors[theme].WHITE,
+		},
+		contentContainer: {
+			gap: 10,
+			flex: 1,
+			padding: 20,
+		},
+	});
 
 export default CommunityPostingDetailScreen;

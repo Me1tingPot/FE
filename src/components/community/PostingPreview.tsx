@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	FlatList,
 	Image,
@@ -22,9 +23,12 @@ type PostingPreviewProps = {
 const testImg =
 	'https://images.unsplash.com/photo-1605100958409-e084833953d4?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
 
+const imageList = new Array(4).fill(testImg);
+
 const PostingPreview = ({ navigation, id }: PostingPreviewProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 	return (
 		<TouchableOpacity
 			style={styles.container}
@@ -52,17 +56,17 @@ const PostingPreview = ({ navigation, id }: PostingPreviewProps) => {
 					있어요.
 				</Text>
 				<FlatList
-					data={new Array(4).fill(null)}
+					data={imageList}
 					horizontal={true}
 					renderItem={({ item, index }) => (
-						<Image key={index} style={styles.image} />
+						<Image key={index} source={{ uri: item }} style={styles.image} />
 					)}
 				/>
 			</View>
 			<View style={styles.verticalLine} />
 			<View style={[styles.row, styles.innerPadding]}>
 				<Image source={Comment} />
-				<Text style={styles.flexText}>댓글 3개</Text>
+				<Text style={styles.flexText}>{`${t('댓글')}`} 3</Text>
 				<Text style={styles.date}>2024/05/31</Text>
 			</View>
 		</TouchableOpacity>
