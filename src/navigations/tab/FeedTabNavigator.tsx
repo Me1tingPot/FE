@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { RouteProp } from '@react-navigation/native';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
-import { colors, feedTabNavigations } from '../../constants';
+import { colors, feedNavigations, feedTabNavigations } from '../../constants';
 import CommunityStackNavigator from '../stack/CommunityStackNavigator';
+import { FeedStackParamList } from '../stack/FeedStackNavigator';
 import MyStackNavigator from '../stack/MyStackNavigator';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
@@ -59,7 +60,11 @@ function TabBarIcons(route: RouteProp<FeedTabParamList>, focused: boolean) {
 	);
 }
 
-function FeedTabNavigator() {
+type FeedTabNavigatorProps = {
+	navigation: NavigationProp<FeedStackParamList>;
+};
+
+function FeedTabNavigator({ navigation }: FeedTabNavigatorProps) {
 	const { theme } = useThemeStore();
 	const { t } = useTranslation();
 
@@ -87,13 +92,16 @@ function FeedTabNavigator() {
 			<Tab.Screen
 				name={feedTabNavigations.FEED_HOME}
 				component={FeedHomeScreen}
-				options={({ navigation }) => ({
+				options={() => ({
 					tabBarLabel: `${t('홈')}`,
 					headerShown: true,
 					headerTitle: ' ',
 					headerLeft: () => <FeedHomeHeaderLeft />,
 					headerRight: () => (
-						<Pressable style={{ marginRight: 10 }}>
+						<Pressable
+							style={{ marginRight: 10 }}
+							onPress={() => navigation.navigate(feedNavigations.ALERT)}
+						>
 							<Ionicons name="notifications-outline" size={25} />
 						</Pressable>
 					),

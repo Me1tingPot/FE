@@ -34,10 +34,16 @@ const myNavigations = {
 	MY_WRITE_POST: 'MyWritePost',
 } as const;
 
+const feedNavigations = {
+	ALERT: 'Alert',
+	FEED_TAB: 'FeedTab',
+} as const;
+
 export {
 	authNavigations,
 	feedTabNavigations,
 	wishNavigations,
 	communityNavigations,
 	myNavigations,
+	feedNavigations,
 };
