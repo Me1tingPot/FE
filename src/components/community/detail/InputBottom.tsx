@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image } from 'react-native';
 import {
@@ -20,9 +20,19 @@ interface InputBottomProps {
 	id: number;
 	isChecked: boolean;
 	onPress: (event: GestureResponderEvent) => void;
+	comment: string;
+	setComment: Dispatch<SetStateAction<string>>;
+	onSubmit: () => void;
 }
 
-const InputBottom = ({ id, isChecked, onPress }: InputBottomProps) => {
+const InputBottom = ({
+	id,
+	isChecked,
+	onPress,
+	comment,
+	setComment,
+	onSubmit,
+}: InputBottomProps) => {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -47,11 +57,14 @@ const InputBottom = ({ id, isChecked, onPress }: InputBottomProps) => {
 					/>
 				</TouchableOpacity>
 				<View style={[styles.rowGap5, styles.inputLayout]}>
-					<TextInput placeholder="댓글을 입력하세요" style={styles.input} />
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => console.log('click')}
-					>
+					<TextInput
+						value={comment}
+						onChangeText={t => setComment(t)}
+						placeholderTextColor={colors[theme].GRAY_300}
+						placeholder={`${t('댓글을 입력하세요')}`}
+						style={styles.input}
+					/>
+					<TouchableOpacity activeOpacity={0.8} onPress={onSubmit}>
 						<Image source={Send} />
 					</TouchableOpacity>
 				</View>
@@ -97,7 +110,9 @@ const styling = (theme: ThemeMode) =>
 		},
 		input: {
 			flex: 1,
+			padding: 0,
 			height: 20,
+			color: colors[theme].BLACK,
 		},
 	});
 

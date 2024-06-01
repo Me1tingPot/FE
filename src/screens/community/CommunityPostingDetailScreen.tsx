@@ -26,9 +26,14 @@ const CommunityPostingDetailScreen = ({
 	route,
 }: CommunityPostingDetailScreenProps) => {
 	const [isChecked, setIsChecked] = useState(false);
+	const [comment, setComment] = useState('');
 	const { id } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	const onSubmit = () => {
+		console.log(comment, '익명 유무: ', isChecked);
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -46,6 +51,9 @@ const CommunityPostingDetailScreen = ({
 					id={id}
 					isChecked={isChecked}
 					onPress={() => setIsChecked(prev => !prev)}
+					comment={comment}
+					setComment={setComment}
+					onSubmit={onSubmit}
 				/>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
@@ -60,7 +68,6 @@ const styling = (theme: ThemeMode) =>
 		},
 		contentContainer: {
 			gap: 10,
-			flex: 1,
 			padding: 20,
 		},
 		keyboardView: {

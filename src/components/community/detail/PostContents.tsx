@@ -92,7 +92,7 @@ const styling = (theme: ThemeMode) =>
 			width: '95%',
 			alignSelf: 'center',
 			borderBottomWidth: 0.5,
-			borderBottomColor: colors[theme].GRAY_400,
+			borderBottomColor: colors[theme].GRAY_300,
 		},
 	});
 
