@@ -10,23 +10,46 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
+	TouchableOpacity,
 	View,
 } from 'react-native';
+import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MultipleGradientBgTextInput from '@/components/community/MultipleGradientBgTextInput';
+import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors } from '@/constants';
+import useModal from '@/hooks/useModal';
+import usePermission from '@/hooks/usePermission';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-
-const imageList = ['/', '/', '/', '/', '/', '/', '/', '/', '/', '/'];
 
 type CommunityPostingWriteScreenProps = {};
 
 const CommunityPostingWriteScreen = ({}: CommunityPostingWriteScreenProps) => {
 	const [input, setInput] = useState('');
+	const [files, setFiles] = useState<string[]>([]);
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const modal = useModal();
+
+	usePermission('PHOTO');
+	usePermission('CAMERA');
+
+	const cameraOptions: CameraOptions = {
+		cameraType: 'front',
+		mediaType: 'photo',
+	};
+
+	const libraryOptions: ImageLibraryOptions = {
+		selectionLimit: 10,
+		mediaType: 'photo',
+	};
+
+	const deleteImage = (img: string) => {
+		const imgList = files.filter(item => item !== img);
+		setFiles(imgList);
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -44,29 +67,33 @@ const CommunityPostingWriteScreen = ({}: CommunityPostingWriteScreenProps) => {
 				</ScrollView>
 				<View style={[styles.displayRow, styles.imageContainer]}>
 					<FlatList
-						data={imageList}
+						data={files}
 						horizontal
 						renderItem={({ item, index }) => (
 							<View key={index} style={styles.imageLayout}>
 								<Image source={{ uri: item }} style={styles.image} />
 								<Pressable
 									style={styles.imageDelete}
-									onPress={() => console.log('click')}
+									onPress={() => deleteImage(item)}
 								>
-									<Ionicons name="close-outline" size={15} />
+									<Ionicons
+										name="close-outline"
+										size={15}
+										color={colors[theme].BLACK}
+									/>
 								</Pressable>
 							</View>
 						)}
 					/>
 				</View>
 				<View style={[styles.displayRow, styles.menu]}>
-					<Pressable onPress={() => console.log('click')}>
+					<TouchableOpacity activeOpacity={0.8} onPress={modal.show}>
 						<Ionicons
 							name="camera-outline"
 							color={colors[theme].GRAY_400}
 							size={30}
 						/>
-					</Pressable>
+					</TouchableOpacity>
 					<View style={[styles.displayRow]}>
 						<Pressable
 							style={styles.menuBtn}
@@ -83,6 +110,13 @@ const CommunityPostingWriteScreen = ({}: CommunityPostingWriteScreenProps) => {
 					</View>
 				</View>
 			</KeyboardAvoidingView>
+			<CameraOrLibrary
+				isVisible={modal.isVisible}
+				hideOption={modal.hide}
+				cameraOptions={cameraOptions}
+				libraryOptions={libraryOptions}
+				setFiles={setFiles}
+			/>
 		</SafeAreaView>
 	);
 };
@@ -143,7 +177,9 @@ const styling = (theme: ThemeMode) =>
 			position: 'absolute',
 			top: 0,
 			right: 0,
-			padding: 2,
+			padding: 1,
+			backgroundColor: colors[theme].WHITE,
+			opacity: 0.7,
 		},
 	});
 

@@ -8,6 +8,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import CheckBox from '@/components/common/CheckBox';
 import { colors } from '@/constants';
@@ -17,10 +18,11 @@ import Send from '../../../assets/images/Send.png';
 
 interface InputBottomProps {
 	id: number;
+	isChecked: boolean;
+	onPress: (event: GestureResponderEvent) => void;
 }
 
-const InputBottom = ({ id }: InputBottomProps) => {
-	const [isChecked, setIsChecked] = useState(false);
+const InputBottom = ({ id, isChecked, onPress }: InputBottomProps) => {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -29,7 +31,7 @@ const InputBottom = ({ id }: InputBottomProps) => {
 			<View style={[styles.rowGap5, styles.anonymousContainer]}>
 				<CheckBox
 					isChecked={isChecked}
-					onPress={() => setIsChecked(prev => !prev)}
+					onPress={onPress}
 					children={<Text style={styles.anomynousText}>{`${t('익명')}`}</Text>}
 				/>
 			</View>

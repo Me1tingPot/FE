@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	KeyboardAvoidingView,
 	Platform,
@@ -24,6 +25,7 @@ type CommunityPostingDetailScreenProps = {
 const CommunityPostingDetailScreen = ({
 	route,
 }: CommunityPostingDetailScreenProps) => {
+	const [isChecked, setIsChecked] = useState(false);
 	const { id } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -31,7 +33,7 @@ const CommunityPostingDetailScreen = ({
 	return (
 		<SafeAreaView style={styles.container}>
 			<KeyboardAvoidingView
-				style={{ flex: 1 }}
+				style={styles.keyboardView}
 				behavior="padding"
 				keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 70}
 			>
@@ -40,7 +42,11 @@ const CommunityPostingDetailScreen = ({
 					<PostContents />
 					<Comments />
 				</ScrollView>
-				<InputBottom id={id} />
+				<InputBottom
+					id={id}
+					isChecked={isChecked}
+					onPress={() => setIsChecked(prev => !prev)}
+				/>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
 	);
@@ -56,6 +62,9 @@ const styling = (theme: ThemeMode) =>
 			gap: 10,
 			flex: 1,
 			padding: 20,
+		},
+		keyboardView: {
+			flex: 1,
 		},
 	});
 
