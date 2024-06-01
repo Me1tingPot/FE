@@ -19,7 +19,7 @@ interface IPartyOptionBottomSheet {
 }
 
 const PartyOptionBottomSheet = forwardRef<Ref, IPartyOptionBottomSheet>(
-	({ handleClosePress }, ref) => {
+	({ handleClosePress }, ref: any) => {
 		const { theme } = useThemeStore();
 		const styles = styling(theme);
 		const snapPoints = useMemo(() => ['25%', '50%', '80%'], []);

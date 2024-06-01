@@ -39,11 +39,11 @@ const PartyOptionRegion = ({ handleClosePress }: PartyOptionRegionProps) => {
 				{districtList.map((district, idx) => (
 					<Pressable
 						key={idx}
+						onPress={() => handleSelectRegion(district)}
 						style={({ pressed }) => [
 							styles.districtItem,
-							pressed && styles.pressedDistrictItem,
+							pressed && (styles.pressedDistrictItem as any),
 						]}
-						onPress={() => handleSelectRegion(district)}
 					>
 						<Text
 							style={[
