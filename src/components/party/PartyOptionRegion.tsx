@@ -6,14 +6,19 @@ import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 
 interface PartyOptionRegionProps {
-	handleClosePress: () => void;
+	selectedRegion: string | null;
+	setSelectedRegion: (item: string) => void;
+	setSelectedSection: (section: string) => void;
 }
 
-const PartyOptionRegion = ({ handleClosePress }: PartyOptionRegionProps) => {
+const PartyOptionRegion = ({
+	selectedRegion,
+	setSelectedRegion,
+	setSelectedSection,
+}: PartyOptionRegionProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [selectedItem, setSelectedItem] = useState<string | null>(null);
-	const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
 
 	const handlePress = (item: string) => {
 		setSelectedItem(item);
@@ -59,6 +64,12 @@ const PartyOptionRegion = ({ handleClosePress }: PartyOptionRegionProps) => {
 		);
 	};
 
+	const handleNavigateToNextSection = () => {
+		if (selectedItem) {
+			setSelectedSection('기간');
+		}
+	};
+
 	return (
 		<>
 			<View style={styles.container}>
@@ -100,10 +111,11 @@ const PartyOptionRegion = ({ handleClosePress }: PartyOptionRegionProps) => {
 			</View>
 			<View style={{ padding: 20 }}>
 				<CustomButton
-					label="지역 선택하기"
+					label="기간 선택하기" // Changed label
 					variant="outlined"
-					onPress={() => handleClosePress()}
+					onPress={handleNavigateToNextSection} // Changed onPress
 					size="medium"
+					disabled={!selectedItem} // Disable button if no region is selected
 				/>
 			</View>
 		</>
