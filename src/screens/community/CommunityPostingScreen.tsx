@@ -1,4 +1,11 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import {
+	RefreshControl,
+	SafeAreaView,
+	ScrollView,
+	StyleSheet,
+	View,
+} from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import PostingPreview from '@/components/community/PostingPreview';
@@ -14,13 +21,27 @@ type CommunityPostingScreenProps = {
 const CommunityPostingScreen = ({
 	navigation,
 }: CommunityPostingScreenProps) => {
+	const [refreshing, setRefreshing] = useState(false);
+
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.contentContainer}>
-				<ScrollView contentContainerStyle={styles.scrollStyle}>
+				<ScrollView
+					contentContainerStyle={styles.scrollStyle}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					}
+				>
 					{new Array(10).fill(null).map((_, idx) => (
 						<PostingPreview key={idx} navigation={navigation} id={idx} />
 					))}

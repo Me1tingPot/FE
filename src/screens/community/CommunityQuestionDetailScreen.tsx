@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
 	KeyboardAvoidingView,
 	Platform,
+	RefreshControl,
 	SafeAreaView,
 	ScrollView,
 	StyleSheet,
@@ -27,9 +28,18 @@ const CommunityQuestionDetailScreen = ({
 }: CommunityQuestionDetailScreenProps) => {
 	const [isChecked, setIsChecked] = useState(false);
 	const [comment, setComment] = useState('');
+	const [refreshing, setRefreshing] = useState(false);
+
 	const { id } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
 
 	const onSubmit = () => {
 		console.log(comment, '익명 유무: ', isChecked);
@@ -42,7 +52,12 @@ const CommunityQuestionDetailScreen = ({
 				behavior="padding"
 				keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 70}
 			>
-				<ScrollView contentContainerStyle={styles.contentContainer}>
+				<ScrollView
+					contentContainerStyle={styles.contentContainer}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					}
+				>
 					<PostInfo />
 					<PostContents />
 					<Comments />
