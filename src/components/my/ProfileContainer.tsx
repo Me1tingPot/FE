@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { colors } from '@/constants';
 import { MyStackParamList } from '@/navigations/stack/MyStackNavigator';
