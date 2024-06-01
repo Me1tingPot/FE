@@ -20,9 +20,12 @@ const wishNavigations = {
 
 const communityNavigations = {
 	COMMUNITY_TOPTAB: 'CommunityTopTab',
-	COMMUNITY_POSTING: 'CommunityPosting',
 	COMMUNITY_QUESTION: 'CommunityQuestion',
+	COMMUNITY_QUESTION_DETAIL: 'CommunityQuestionDetail',
+	COMMUNITY_QUESTION_WRITE: 'CommunityQuestionWrite',
+	COMMUNITY_POSTING: 'CommunityPosting',
 	COMMUNITY_POSTING_DETAIL: 'CommunityPostingDetail',
+	COMMUNITY_POSTING_WRITE: 'CommunityPostingWrite',
 } as const;
 
 const myNavigations = {

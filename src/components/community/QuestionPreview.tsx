@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, communityNavigations } from '@/constants';
@@ -7,26 +8,30 @@ import { ThemeMode } from '@/types';
 import Comment from '../../assets/images/Comment.png';
 import Report from '../../assets/images/Report.png';
 
-type PostPreviewProps = {
+type QuestionPreviewProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
 	id: number;
 };
 
-const PostPreview = ({ navigation, id }: PostPreviewProps) => {
+const testImg =
+	'https://images.unsplash.com/photo-1555437858-e8521a85abc0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
+
+const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 	return (
 		<TouchableOpacity
 			style={styles.container}
 			activeOpacity={0.8}
 			onPress={() =>
-				navigation.navigate(communityNavigations.COMMUNITY_POSTING_DETAIL, {
+				navigation.navigate(communityNavigations.COMMUNITY_QUESTION_DETAIL, {
 					id,
 				})
 			}
 		>
 			<View style={styles.top}>
-				<Image source={{ uri: '/' }} style={styles.profileImg} />
+				<Image source={{ uri: testImg }} style={styles.profileImg} />
 				<View style={styles.userInfo}>
 					<Text style={styles.name}>Sunny Kim</Text>
 					<Text style={styles.date}>24/07/07</Text>
@@ -52,7 +57,7 @@ const PostPreview = ({ navigation, id }: PostPreviewProps) => {
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}
 				>
-					<Text style={styles.more}>...더보기</Text>
+					<Text style={styles.more}>...{`${t('더보기')}`}</Text>
 				</TouchableOpacity>
 			</View>
 			<View style={styles.bottom}>
@@ -135,4 +140,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default PostPreview;
+export default QuestionPreview;

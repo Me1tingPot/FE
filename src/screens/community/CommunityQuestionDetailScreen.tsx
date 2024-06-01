@@ -15,7 +15,7 @@ import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-type CommunityPostingDetailScreenProps = {
+type CommunityQuestionDetailScreenProps = {
 	route: {
 		params: {
 			id: number;
@@ -23,9 +23,9 @@ type CommunityPostingDetailScreenProps = {
 	};
 };
 
-const CommunityPostingDetailScreen = ({
+const CommunityQuestionDetailScreen = ({
 	route,
-}: CommunityPostingDetailScreenProps) => {
+}: CommunityQuestionDetailScreenProps) => {
 	const [isChecked, setIsChecked] = useState(false);
 	const [comment, setComment] = useState('');
 	const [refreshing, setRefreshing] = useState(false);
@@ -34,16 +34,16 @@ const CommunityPostingDetailScreen = ({
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
-	const onSubmit = () => {
-		console.log(comment, '익명 유무: ', isChecked);
-	};
-
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
 		setTimeout(() => {
 			setRefreshing(false);
 		}, 2000);
 	}, []);
+
+	const onSubmit = () => {
+		console.log(comment, '익명 유무: ', isChecked);
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -82,7 +82,7 @@ const styling = (theme: ThemeMode) =>
 			backgroundColor: colors[theme].WHITE,
 		},
 		contentContainer: {
-			gap: 10,
+			gap: 15,
 			padding: 20,
 		},
 		keyboardView: {
@@ -90,4 +90,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default CommunityPostingDetailScreen;
+export default CommunityQuestionDetailScreen;
