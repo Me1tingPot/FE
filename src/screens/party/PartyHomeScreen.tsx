@@ -1,12 +1,25 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { colors } from '@/constants';
+import useThemeStore from '@/store/useThemeStore';
+import { ThemeMode } from '@/types';
 
-interface PartyHomeScreenProps {}
+const PartyHomeScreen = () => {
+	const { theme } = useThemeStore();
+	const styles = styling(theme);
 
-const PartyHomeScreen = ({}: PartyHomeScreenProps) => {
-	return <View></View>;
+	return (
+		<SafeAreaView style={styles.container}>
+			<Text>123</Text>
+		</SafeAreaView>
+	);
 };
 
-const styles = StyleSheet.create({});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			backgroundColor: colors[theme].WHITE,
+			flex: 1,
+		},
+	});
 
 export default PartyHomeScreen;

@@ -1,24 +1,33 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { CompoundModal } from '@/components/common/CompoundModal';
-import CustomTextInput from '@/components/common/CustomTextInput';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import ChangeProfileModal from '@/components/my/ChangeProfileModal';
+import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
+import useThemeStore from '@/store/useThemeStore';
+import { ThemeMode } from '@/types';
 
 interface MyEditProfileScreenProps {}
 
 const MyEditProfileScreen = ({}: MyEditProfileScreenProps) => {
+	const { theme } = useThemeStore();
+	const styles = styling(theme);
 	const compoundModal = useModal();
+
 	return (
-		<View>
+		<SafeAreaView style={styles.container}>
 			<ChangeProfileModal
-				isVisible={!compoundModal.isVisible}
+				isVisible={compoundModal.isVisible}
 				hideOption={compoundModal.hide}
 			/>
-		</View>
+		</SafeAreaView>
 	);
 };
 
-const styles = StyleSheet.create({});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: colors[theme].WHITE,
+		},
+	});
 
 export default MyEditProfileScreen;

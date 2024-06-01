@@ -26,7 +26,9 @@ const ChangeProfileModal = ({
 						</Text>
 					</CompoundModal.ContentContainer>
 					<CompoundModal.ButtonRowContainer>
-						<CompoundModal.Button isDanger>취소</CompoundModal.Button>
+						<CompoundModal.Button isDanger onPress={hideOption}>
+							취소
+						</CompoundModal.Button>
 						<CompoundModal.Divider />
 						<CompoundModal.Button>확인</CompoundModal.Button>
 					</CompoundModal.ButtonRowContainer>
