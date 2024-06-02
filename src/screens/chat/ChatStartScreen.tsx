@@ -63,12 +63,12 @@ const styling = (theme: ThemeMode) =>
 			fontFamily: 'Pretendard-Light',
 			fontSize: 25,
 			marginBottom: 10,
-			color: colors[theme].BLACK,
+			color: colors[theme].UNCHANGE_BLACK,
 		},
 		description: {
 			fontFamily: 'Pretendard-Light',
 			fontSize: 14,
-			color: colors[theme].BLACK,
+			color: colors[theme].UNCHANGE_BLACK,
 		},
 		contentsContainer: {
 			flex: 1,

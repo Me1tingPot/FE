@@ -14,7 +14,11 @@ const ChatHomeHeaderLeft = (navigation: ChatHomeHeaderLeftProps) => {
 
 	return (
 		<Pressable style={styles.container} onPress={() => navigation.goBack()}>
-			<Ionicons name="close-outline" size={30} color={colors[theme].BLACK} />
+			<Ionicons
+				name="close-outline"
+				size={30}
+				color={colors[theme].UNCHANGE_BLACK}
+			/>
 		</Pressable>
 	);
 };

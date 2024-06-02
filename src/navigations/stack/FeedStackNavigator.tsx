@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ChatHomeHeaderLeft from '@/components/chat/ChatHomeHeaderLeft';
-import { feedNavigations } from '@/constants';
+import { colors, feedNavigations } from '@/constants';
 import AlertHomeScreen from '@/screens/alert/AlertHomeScreen';
 import ChatHomeScreen from '@/screens/chat/ChatHomeScreen';
 import ChatScreen from '@/screens/chat/ChatScreen';
@@ -55,6 +55,9 @@ function FeedStackNavigator() {
 					headerTitle: '',
 					headerBackTitleVisible: false,
 					headerShadowVisible: false,
+					headerStyle: {
+						backgroundColor: colors[theme].WHITE,
+					},
 				}}
 			/>
 			<Stack.Screen

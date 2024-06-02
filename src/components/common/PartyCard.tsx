@@ -1,5 +1,12 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+	Image,
+	Pressable,
+	PressableProps,
+	StyleSheet,
+	Text,
+	View,
+} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
@@ -7,9 +14,9 @@ import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import IconCircleButton from './IconCircleButton';
 
-interface PartyCardProps {}
+interface PartyCardProps extends PressableProps {}
 
-const PartyCard = ({}: PartyCardProps) => {
+const PartyCard = ({ ...props }: PartyCardProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -31,6 +38,7 @@ const PartyCard = ({}: PartyCardProps) => {
 					styles.container,
 					pressed && styles.pressedContainer,
 				]}
+				{...props}
 			>
 				<View style={styles.contentContainer}>
 					<View style={styles.badge}>

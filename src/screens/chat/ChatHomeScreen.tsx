@@ -2,7 +2,7 @@ import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import NoneChatView from '@/components/chat/NoneChatView';
 import PartyCard from '@/components/common/PartyCard';
-import { colors } from '@/constants';
+import { colors, feedNavigations } from '@/constants';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -11,7 +11,7 @@ interface ChatHomeScreenProps {
 	navigation: NavigationProp<FeedStackParamList>;
 }
 
-const chatList = [];
+const chatList = [0];
 
 function ChatHomeScreen({ navigation }: ChatHomeScreenProps) {
 	const { theme } = useThemeStore();
@@ -27,7 +27,12 @@ function ChatHomeScreen({ navigation }: ChatHomeScreenProps) {
 				{chatList.length > 0 ? (
 					<View style={styles.chatContainer}>
 						{new Array(10).fill(null).map((_, idx) => (
-							<PartyCard key={idx} />
+							<PartyCard
+								key={idx}
+								onPress={() =>
+									navigation.navigate(feedNavigations.CHAT, { id: idx })
+								}
+							/>
 						))}
 					</View>
 				) : (
