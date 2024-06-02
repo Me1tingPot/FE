@@ -19,6 +19,7 @@ interface CheckBoxProps extends PressableProps {
 	disabled?: boolean;
 	children?: ReactNode;
 	style?: ViewStyle;
+	onChangeCheck?: () => void;
 }
 
 function CheckBox({
@@ -28,19 +29,32 @@ function CheckBox({
 	disabled = false,
 	children,
 	style,
+	onChangeCheck,
 	...props
 }: CheckBoxProps) {
 	const { theme } = useThemeStore();
 	const styles = styling({ theme, isChecked, size, disabled, variant });
+
 	return (
-		<Pressable style={[styles.container, style]} disabled={disabled} {...props}>
-			<View style={styles.checkBox}>
+		<Pressable
+			onPress={onChangeCheck}
+			style={styles.container}
+			disabled={disabled}
+			{...props}
+		>
+			<View
+				style={[
+					styles.checkBox,
+					isChecked ? [styles.checkedBox, style] : [styles.emptyBox],
+				]}
+			>
 				<Octicons
 					name="check"
 					color={isChecked ? colors[theme].WHITE : colors[theme].GRAY_100}
 					size={size === 's' ? 10 : size === 'm' ? 15 : 20}
 				/>
 			</View>
+
 			{children}
 		</Pressable>
 	);
@@ -75,11 +89,12 @@ const styling = ({
 			width: size === 's' ? 14 : size === 'm' ? 18 : 23,
 			height: size === 's' ? 14 : size === 'm' ? 18 : 23,
 			borderRadius: variant === 'circle' ? 500 : 3,
-			backgroundColor: disabled
-				? colors[theme].GRAY_200
-				: isChecked
-					? colors[theme].EMERALD_500
-					: colors[theme].GRAY_300,
+		},
+		checkedBox: {
+			backgroundColor: colors[theme].EMERALD_500,
+		},
+		emptyBox: {
+			backgroundColor: colors[theme].GRAY_300,
 		},
 	});
 
