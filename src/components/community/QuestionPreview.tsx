@@ -62,7 +62,7 @@ const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 			</View>
 			<View style={styles.bottom}>
 				<Image source={Comment} />
-				<Text>3</Text>
+				<Text style={styles.commentCount}>3</Text>
 			</View>
 		</TouchableOpacity>
 	);
@@ -137,6 +137,10 @@ const styling = (theme: ThemeMode) =>
 			flexDirection: 'row',
 			gap: 5,
 			padding: 5,
+		},
+		commentCount: {
+			color: colors[theme].BLACK,
+			fontSize: 14,
 		},
 	});
 
