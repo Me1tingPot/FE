@@ -1,19 +1,20 @@
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import SearchInput from '@/components/common/SearchInput';
 import FeedHomeBox from '@/components/feed/FeedHomeBox';
-import { colors } from '@/constants';
+import { colors, feedNavigations } from '@/constants';
+import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-function FeedHomeScreen() {
+interface FeedHomeScreenProps {
+	navigation: NavigationProp<FeedStackParamList>;
+}
+
+function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-	const navigation = useNavigation();
-	const handleMoveChatPage = () => {
-		// TODO: Chat 페이지로 이동 navigation 타입 정의
-	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -41,7 +42,7 @@ function FeedHomeScreen() {
 					name="chatbubbles"
 					color={colors[theme].WHITE}
 					size={30}
-					onPress={() => {}}
+					onPress={() => navigation.navigate(feedNavigations.CHAT_START)}
 				/>
 			</View>
 		</SafeAreaView>

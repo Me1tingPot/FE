@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { createStackNavigator } from '@react-navigation/stack';
-import { communityNavigations } from '@/constants';
+import { colors, communityNavigations } from '@/constants';
 import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDetailScreen';
 import CommunityPostingWriteScreen from '@/screens/community/CommunityPostingWriteScreen';
 import CommunityQuestionDetailScreen from '@/screens/community/CommunityQuestionDetailScreen';
 import CommunityQuestionWriteScreen from '@/screens/community/CommunityQuestionWriteScreen';
+import useThemeStore from '@/store/useThemeStore';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 
 export type CommunityStackParamList = {
@@ -18,9 +19,11 @@ export type CommunityStackParamList = {
 	[communityNavigations.COMMUNITY_QUESTION_WRITE]: undefined;
 	[communityNavigations.COMMUNITY_POSTING_WRITE]: undefined;
 };
+
 function CommunityStackNavigator() {
 	const Stack = createStackNavigator<CommunityStackParamList>();
 	const { t } = useTranslation();
+	const { theme } = useThemeStore();
 
 	return (
 		<Stack.Navigator>
@@ -32,12 +35,26 @@ function CommunityStackNavigator() {
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_QUESTION_DETAIL}
 				component={CommunityQuestionDetailScreen}
-				options={{ headerTitle: `${t('질문')}` }}
+				options={{
+					headerTitle: `${t('질문')}`,
+					headerStyle: { backgroundColor: colors[theme].WHITE },
+					headerTitleStyle: { color: colors[theme].BLACK },
+					headerLeftLabelVisible: false,
+					headerShadowVisible: false,
+					headerTitleAlign: 'center',
+				}}
 			/>
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_POSTING_DETAIL}
 				component={CommunityPostingDetailScreen}
-				options={{ headerTitle: `${t('포스팅')}` }}
+				options={{
+					headerTitle: `${t('포스팅')}`,
+					headerStyle: { backgroundColor: colors[theme].WHITE },
+					headerTitleStyle: { color: colors[theme].BLACK },
+					headerLeftLabelVisible: false,
+					headerShadowVisible: false,
+					headerTitleAlign: 'center',
+				}}
 			/>
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_QUESTION_WRITE}
