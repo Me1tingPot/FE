@@ -16,6 +16,7 @@ interface PartyOptionPeriodProps {
 const PartyOptionPeriod = ({
 	setSelectedPeriod,
 	setSelectedSection,
+	selectedPeriod,
 }: PartyOptionPeriodProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -42,7 +43,7 @@ const PartyOptionPeriod = ({
 					<CheckBox
 						key={idx}
 						size="l"
-						isChecked={selectedItem === item}
+						isChecked={selectedPeriod === item}
 						onChangeCheck={() => handlePress(item)}
 					>
 						<Text style={styles.checkboxText}>{item}</Text>

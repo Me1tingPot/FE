@@ -1,4 +1,11 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react';
+import React, {
+	Dispatch,
+	SetStateAction,
+	forwardRef,
+	useCallback,
+	useMemo,
+	useState,
+} from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import {
 	BottomSheetBackdrop,
@@ -15,18 +22,16 @@ import PartyOptionStatus from './PartyOptionStatus';
 
 type Ref = BottomSheet;
 
+export interface IFilter {
+	region: string;
+	duration: string;
+	status: string;
+}
+
 interface IPartyOptionBottomSheet {
 	handleClosePress: () => void;
-	setFilter: (filter: {
-		region: string;
-		duration: string;
-		status: string;
-	}) => void;
-	filter: {
-		region: string | null;
-		duration: string | null;
-		status: string | null;
-	};
+	setFilter: Dispatch<SetStateAction<IFilter>>;
+	filter: IFilter;
 }
 
 const PartyOptionBottomSheet = forwardRef<Ref, IPartyOptionBottomSheet>(
@@ -35,15 +40,7 @@ const PartyOptionBottomSheet = forwardRef<Ref, IPartyOptionBottomSheet>(
 		const styles = styling(theme);
 		const snapPoints = useMemo(() => ['25%', '50%', '80%'], []);
 		const [selectedItem, setSelectedItem] = useState<string | null>('지역');
-		const [selectedOptions, setSelectedOptions] = useState<{
-			region: string | null;
-			duration: string | null;
-			status: string | null;
-		}>({
-			region: null,
-			duration: null,
-			status: null,
-		});
+		console.log(filter);
 
 		const renderBackdrop = useCallback(
 			(props: any) => (
@@ -101,27 +98,27 @@ const PartyOptionBottomSheet = forwardRef<Ref, IPartyOptionBottomSheet>(
 					</View>
 					{selectedItem === '지역' && (
 						<PartyOptionRegion
-							selectedRegion={selectedOptions.region}
+							selectedRegion={filter.region}
 							setSelectedRegion={region =>
-								setSelectedOptions(prev => ({ ...prev, region }))
+								setFilter(prev => ({ ...prev, region }))
 							}
 							setSelectedSection={setSelectedItem}
 						/>
 					)}
 					{selectedItem === '기간' && (
 						<PartyOptionPeriod
-							selectedPeriod={selectedOptions.duration}
+							selectedPeriod={filter.duration}
 							setSelectedPeriod={duration =>
-								setSelectedOptions(prev => ({ ...prev, duration }))
+								setFilter(prev => ({ ...prev, duration }))
 							}
 							setSelectedSection={setSelectedItem}
 						/>
 					)}
 					{selectedItem === '모집 상태' && (
 						<PartyOptionStatus
-							selectedStatus={selectedOptions.status}
+							selectedStatus={filter.status}
 							setSelectedStatus={status =>
-								setSelectedOptions(prev => ({ ...prev, status }))
+								setFilter(prev => ({ ...prev, status }))
 							}
 							handleCloseModal={handleClosePress}
 						/>

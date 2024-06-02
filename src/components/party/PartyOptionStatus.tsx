@@ -13,6 +13,7 @@ interface PartyOptionStatusProps {
 }
 
 const PartyOptionStatus = ({
+	selectedStatus,
 	setSelectedStatus,
 	handleCloseModal,
 }: PartyOptionStatusProps) => {
@@ -40,7 +41,7 @@ const PartyOptionStatus = ({
 				<CheckBox
 					key={idx}
 					size="l"
-					isChecked={selectedItem === item}
+					isChecked={selectedStatus === item}
 					onChangeCheck={() => handlePress(item)}
 				>
 					<Text style={styles.checkboxText}>{item}</Text>

@@ -13,7 +13,9 @@ import {
 	BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 import PartyCard from '@/components/common/PartyCard';
-import PartyOptionBottomSheet from '@/components/party/PartyOptionBottomSheet';
+import PartyOptionBottomSheet, {
+	IFilter,
+} from '@/components/party/PartyOptionBottomSheet';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -26,18 +28,11 @@ const PartyHomeScreen = () => {
 	const handleClosePress = () => bottomSheetModalRef.current?.close();
 	const handleOpenPress = () => bottomSheetModalRef.current?.present();
 
-	// 필터 상태를 객체로 관리
-	const [filter, setFilter] = useState({
+	const [filter, setFilter] = useState<IFilter>({
 		region: '',
 		duration: '',
 		status: '',
 	});
-
-	console.log(filter);
-
-	const handleFilterChange = (newFilter: typeof filter) => {
-		setFilter(newFilter);
-	};
 
 	return (
 		<BottomSheetModalProvider>
@@ -46,12 +41,16 @@ const PartyHomeScreen = () => {
 					<Text style={styles.filterText}>필터</Text>
 					<Ionicons name="options" size={23} color={colors[theme].RED_500} />
 				</Pressable>
-				<View>
-					<Text style={{ color: colors[theme].GRAY_700 }}>{filter.region}</Text>
-					<Text style={{ color: colors[theme].GRAY_700 }}>
-						{filter.duration}
-					</Text>
-					<Text style={{ color: colors[theme].GRAY_700 }}>{filter.status}</Text>
+				<View style={styles.selectedContainer}>
+					<View style={styles.selectedButton}>
+						<Text style={styles.selectedText}>{filter.region}</Text>
+					</View>
+					<View style={styles.selectedButton}>
+						<Text style={styles.selectedText}>{filter.duration}</Text>
+					</View>
+					<View style={styles.selectedButton}>
+						<Text style={styles.selectedText}>{filter.status}</Text>
+					</View>
 				</View>
 				<ScrollView contentContainerStyle={styles.scrollContainer}>
 					<PartyCard />
@@ -61,7 +60,7 @@ const PartyHomeScreen = () => {
 					ref={bottomSheetModalRef}
 					handleClosePress={handleClosePress}
 					filter={filter}
-					setFilter={handleFilterChange}
+					setFilter={setFilter}
 				/>
 			</SafeAreaView>
 		</BottomSheetModalProvider>
@@ -92,6 +91,18 @@ const styling = (theme: ThemeMode) =>
 			gap: 10,
 			paddingHorizontal: 20,
 			paddingVertical: 20,
+		},
+		selectedContainer: {
+			flexDirection: 'row',
+			justifyContent: 'space-around',
+			marginTop: 30,
+		},
+		selectedText: {
+			color: colors[theme].GRAY_700,
+			fontFamily: 'Pretendard-bold',
+		},
+		selectedButton: {
+			borderColor: colors[theme].GRAY_700,
 		},
 	});
 
