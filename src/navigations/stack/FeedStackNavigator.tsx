@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import {
 	StackNavigationOptions,
@@ -23,6 +24,7 @@ export type FeedStackParamList = {
 
 function FeedStackNavigator() {
 	const Stack = createStackNavigator<FeedStackParamList>();
+	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -50,7 +52,7 @@ function FeedStackNavigator() {
 				name={feedNavigations.ALERT}
 				component={AlertHomeScreen}
 				options={{
-					headerTitle: '알림',
+					headerTitle: `${t('알림')}`,
 					...commonHeaderOptions,
 				}}
 			/>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	Image,
 	KeyboardAvoidingView,
@@ -31,6 +32,7 @@ const imgUrl =
 	'https://images.unsplash.com/photo-1717097410161-aa16fb3ceb3f?w=1600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8';
 
 function ChatScreen({ route, navigation }: ChatScreenProps) {
+	const { t } = useTranslation();
 	const { id } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -90,7 +92,7 @@ function ChatScreen({ route, navigation }: ChatScreenProps) {
 				<View style={styles.chatInputContainer}>
 					<View style={styles.inputContaner}>
 						<TextInput
-							placeholder="채팅을 입력해주세요"
+							placeholder={`${t('채팅을 입력해주세요')}`}
 							style={styles.input}
 							placeholderTextColor={colors[theme].BLACK}
 						/>
