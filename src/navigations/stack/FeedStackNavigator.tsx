@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+	StackNavigationOptions,
+	createStackNavigator,
+} from '@react-navigation/stack';
 import ChatHomeHeaderLeft from '@/components/chat/ChatHomeHeaderLeft';
 import { colors, feedNavigations } from '@/constants';
 import AlertHomeScreen from '@/screens/alert/AlertHomeScreen';
@@ -23,6 +26,19 @@ function FeedStackNavigator() {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
+	const commonHeaderOptions: StackNavigationOptions = {
+		headerTitleAlign: 'center',
+		headerBackTitleVisible: false,
+		headerShadowVisible: false,
+		headerStyle: {
+			backgroundColor: colors[theme].WHITE,
+		},
+		headerTitleStyle: {
+			color: colors[theme].BLACK,
+		},
+		headerTintColor: colors[theme].BLACK,
+	};
+
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
@@ -35,8 +51,7 @@ function FeedStackNavigator() {
 				component={AlertHomeScreen}
 				options={{
 					headerTitle: '알림',
-					headerTitleAlign: 'center',
-					headerBackTitleVisible: false,
+					...commonHeaderOptions,
 				}}
 			/>
 			<Stack.Screen
@@ -53,11 +68,7 @@ function FeedStackNavigator() {
 				component={ChatHomeScreen}
 				options={{
 					headerTitle: '',
-					headerBackTitleVisible: false,
-					headerShadowVisible: false,
-					headerStyle: {
-						backgroundColor: colors[theme].WHITE,
-					},
+					...commonHeaderOptions,
 				}}
 			/>
 			<Stack.Screen

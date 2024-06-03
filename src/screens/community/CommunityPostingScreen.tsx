@@ -3,6 +3,7 @@ import {
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
+	StatusBar,
 	StyleSheet,
 	View,
 } from 'react-native';
@@ -35,6 +36,10 @@ const CommunityPostingScreen = ({
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<StatusBar
+				barStyle="light-content"
+				backgroundColor={colors[theme].WHITE}
+			/>
 			<View style={styles.contentContainer}>
 				<ScrollView
 					contentContainerStyle={styles.scrollStyle}

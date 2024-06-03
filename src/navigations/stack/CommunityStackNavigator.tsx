@@ -1,5 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+	StackNavigationOptions,
+	createStackNavigator,
+} from '@react-navigation/stack';
 import { colors, communityNavigations } from '@/constants';
 import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDetailScreen';
 import CommunityPostingWriteScreen from '@/screens/community/CommunityPostingWriteScreen';
@@ -25,6 +28,15 @@ function CommunityStackNavigator() {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 
+	const commonHeaderOptions: StackNavigationOptions = {
+		headerStyle: { backgroundColor: colors[theme].WHITE },
+		headerTitleStyle: { color: colors[theme].BLACK },
+		headerLeftLabelVisible: false,
+		headerShadowVisible: false,
+		headerTitleAlign: 'center',
+		headerTintColor: colors[theme].BLACK,
+	};
+
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
@@ -37,11 +49,7 @@ function CommunityStackNavigator() {
 				component={CommunityQuestionDetailScreen}
 				options={{
 					headerTitle: `${t('질문')}`,
-					headerStyle: { backgroundColor: colors[theme].WHITE },
-					headerTitleStyle: { color: colors[theme].BLACK },
-					headerLeftLabelVisible: false,
-					headerShadowVisible: false,
-					headerTitleAlign: 'center',
+					...commonHeaderOptions,
 				}}
 			/>
 			<Stack.Screen
@@ -49,22 +57,24 @@ function CommunityStackNavigator() {
 				component={CommunityPostingDetailScreen}
 				options={{
 					headerTitle: `${t('포스팅')}`,
-					headerStyle: { backgroundColor: colors[theme].WHITE },
-					headerTitleStyle: { color: colors[theme].BLACK },
-					headerLeftLabelVisible: false,
-					headerShadowVisible: false,
-					headerTitleAlign: 'center',
+					...commonHeaderOptions,
 				}}
 			/>
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_QUESTION_WRITE}
 				component={CommunityQuestionWriteScreen}
-				options={{ headerTitle: `${t('질문하기')}` }}
+				options={{
+					headerTitle: `${t('질문하기')}`,
+					...commonHeaderOptions,
+				}}
 			/>
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_POSTING_WRITE}
 				component={CommunityPostingWriteScreen}
-				options={{ headerTitle: `${t('포스팅')}` }}
+				options={{
+					headerTitle: `${t('포스팅')}`,
+					...commonHeaderOptions,
+				}}
 			/>
 		</Stack.Navigator>
 	);
