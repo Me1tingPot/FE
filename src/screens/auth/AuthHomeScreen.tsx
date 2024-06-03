@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -25,6 +26,7 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const modal = useModal();
+	const { t } = useTranslation();
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -42,14 +44,14 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 					style={styles.greenCircle}
 				/>
 				<ScrollView contentContainerStyle={styles.contentContainer}>
-					<Text style={styles.title}>멜팅팟에 오신 걸 환영합니다!</Text>
+					<Text style={styles.title}>{t('멜팅팟에 오신 걸 환영합니다!')}</Text>
 					<View style={styles.buttonContainer}>
 						<CustomButton
-							label="로그인 화면으로 이동"
+							label={t('로그인 화면으로 이동')}
 							onPress={() => navigation.navigate(authNavigations.LOGIN)}
 						/>
 						<CustomButton
-							label="회원가입 화면으로 이동"
+							label={t('회원가입 화면으로 이동')}
 							onPress={() => navigation.navigate(authNavigations.SIGN_UP)}
 						/>
 					</View>
