@@ -18,6 +18,12 @@ const wishNavigations = {
 	WISH_RESERVATION: 'WishReservation',
 } as const;
 
+const partyNavigations = {
+	PARTY_HOME: 'PartyHome',
+	PARTY_WRITE: 'PartyWrite',
+	PARTY_DETAIL: 'PartyDetail',
+} as const;
+
 const communityNavigations = {
 	COMMUNITY_TOPTAB: 'CommunityTopTab',
 	COMMUNITY_QUESTION: 'CommunityQuestion',
@@ -50,4 +56,5 @@ export {
 	communityNavigations,
 	myNavigations,
 	feedNavigations,
+	partyNavigations,
 };

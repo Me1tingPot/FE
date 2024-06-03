@@ -12,15 +12,22 @@ import {
 	BottomSheetModal,
 	BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
+import { NavigationProp } from '@react-navigation/native';
+import IconCircleButton from '@/components/common/IconCircleButton';
 import PartyCard from '@/components/common/PartyCard';
 import PartyOptionBottomSheet, {
 	IFilter,
 } from '@/components/party/PartyOptionBottomSheet';
 import { colors } from '@/constants';
+import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-const PartyHomeScreen = () => {
+interface PartyHomeScreenProps {
+	navigation: NavigationProp<PartyStackParamList>;
+}
+
+const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -55,7 +62,15 @@ const PartyHomeScreen = () => {
 				<ScrollView contentContainerStyle={styles.scrollContainer}>
 					<PartyCard />
 				</ScrollView>
-
+				<View style={styles.buttonList}>
+					<IconCircleButton
+						family="Octicons"
+						name="pencil"
+						color={colors[theme].WHITE}
+						size={30}
+						onPress={() => navigation.navigate('PartyWrite')}
+					/>
+				</View>
 				<PartyOptionBottomSheet
 					ref={bottomSheetModalRef}
 					handleClosePress={handleClosePress}
@@ -103,6 +118,11 @@ const styling = (theme: ThemeMode) =>
 		},
 		selectedButton: {
 			borderColor: colors[theme].GRAY_700,
+		},
+		buttonList: {
+			position: 'absolute',
+			bottom: 30,
+			right: 15,
 		},
 	});
 

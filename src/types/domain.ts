@@ -6,10 +6,10 @@
 //   [key in MarkerColor]: string;
 // };
 
-// interface ImageUri {
-//   id?: number;
-//   uri: string;
-// }
+interface ImageUri {
+	id?: number;
+	uri: string;
+}
 
 // interface Marker {
 //   id: number;
@@ -18,3 +18,5 @@
 //   color: MarkerColor;
 //   score: number;
 // }
+
+export type { ImageUri };
