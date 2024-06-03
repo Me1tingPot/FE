@@ -37,6 +37,7 @@ function PartyStackNavigator() {
 				component={PartyWriteScreen}
 				options={{
 					headerShown: true,
+					headerTitle: t('파티 주최하기'),
 				}}
 			/>
 			<Stack.Screen
