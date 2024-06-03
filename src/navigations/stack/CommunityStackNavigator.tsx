@@ -4,6 +4,7 @@ import {
 	createStackNavigator,
 } from '@react-navigation/stack';
 import { colors, communityNavigations } from '@/constants';
+import CommunityCommentsScreen from '@/screens/community/CommunityCommentsScreen';
 import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDetailScreen';
 import CommunityPostingWriteScreen from '@/screens/community/CommunityPostingWriteScreen';
 import CommunityQuestionDetailScreen from '@/screens/community/CommunityQuestionDetailScreen';
@@ -21,6 +22,7 @@ export type CommunityStackParamList = {
 	};
 	[communityNavigations.COMMUNITY_QUESTION_WRITE]: undefined;
 	[communityNavigations.COMMUNITY_POSTING_WRITE]: undefined;
+	[communityNavigations.COMMUNITY_COMMENTS]: { id: number };
 };
 
 function CommunityStackNavigator() {
@@ -75,6 +77,11 @@ function CommunityStackNavigator() {
 					headerTitle: `${t('포스팅')}`,
 					...commonHeaderOptions,
 				}}
+			/>
+			<Stack.Screen
+				name={communityNavigations.COMMUNITY_COMMENTS}
+				component={CommunityCommentsScreen}
+				options={{ headerTitle: '댓글', ...commonHeaderOptions }}
 			/>
 		</Stack.Navigator>
 	);

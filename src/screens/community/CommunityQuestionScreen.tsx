@@ -37,7 +37,12 @@ const CommunityQuestionScreen = ({
 			<ScrollView
 				contentContainerStyle={styles.contentContainer}
 				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						colors={[colors[theme].BLACK]}
+						tintColor={colors[theme].BLACK}
+					/>
 				}
 			>
 				{new Array(10).fill(null).map((item, index) => (

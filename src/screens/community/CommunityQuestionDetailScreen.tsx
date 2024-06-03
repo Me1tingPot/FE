@@ -7,11 +7,13 @@ import {
 	ScrollView,
 	StyleSheet,
 } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 import InputBottom from '@/components/community/detail/InputBottom';
 import PostContents from '@/components/community/detail/PostContents';
 import PostInfo from '@/components/community/detail/PostInfo';
 import Comments from '@/components/community/detail/comment/Comments';
 import { colors } from '@/constants';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
@@ -21,10 +23,12 @@ type CommunityQuestionDetailScreenProps = {
 			id: number;
 		};
 	};
+	navigation: NavigationProp<CommunityStackParamList>;
 };
 
 const CommunityQuestionDetailScreen = ({
 	route,
+	navigation,
 }: CommunityQuestionDetailScreenProps) => {
 	const [isChecked, setIsChecked] = useState(false);
 	const [comment, setComment] = useState('');
@@ -55,12 +59,17 @@ const CommunityQuestionDetailScreen = ({
 				<ScrollView
 					contentContainerStyle={styles.contentContainer}
 					refreshControl={
-						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+							colors={[colors[theme].BLACK]}
+							tintColor={colors[theme].BLACK}
+						/>
 					}
 				>
 					<PostInfo />
 					<PostContents />
-					<Comments />
+					<Comments navigation={navigation} id={id} />
 				</ScrollView>
 				<InputBottom
 					id={id}
