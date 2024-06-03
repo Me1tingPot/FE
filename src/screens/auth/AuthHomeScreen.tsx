@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ScrollView } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { StackScreenProps } from '@react-navigation/stack';
-import { CompoundOption } from '@/components/common/CompoundOption';
-import DatePickerOption from '@/components/signup/DatePickerOption';
-import { authNavigations } from '@/constants';
+import CustomButton from '@/components/common/CustomButton';
+import { authNavigations, colors } from '@/constants';
 import useModal from '@/hooks/useModal';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
+import useThemeStore from '@/store/useThemeStore';
+import { ThemeMode } from '@/types';
 
 /** *
  * Screen Typing
@@ -13,46 +15,97 @@ import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
  */
 export type AuthHomeScreenProps = StackScreenProps<AuthStackParamList>;
 
+const colorList = {
+	bgColor: ['#FFFFFF', '#E6FFF0', '#DCFFEA', '#C5FFDD', '#B1FFE9', '#D3FFF5'],
+	redCircle: ['#FF3666', '#FF4F6E', '#D67DFF'],
+	greenCircle: ['#DCFFEA', '#C5FFDD', '#A5F2E1'],
+};
+
 function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
+	const { theme } = useThemeStore();
+	const styles = styling(theme);
 	const modal = useModal();
-	const [userData, setUserData] = useState<{
-		id: string;
-		firstName: string;
-		lastName: string;
-	} | null>(null);
-	const [date, setDate] = useState(new Date());
-
-	useEffect(() => {
-		const fetchUserData = async () => {
-			try {
-				const response = await fetch('https://localhost:8081/user');
-				const data = await response.json();
-
-				setUserData(data);
-			} catch (error) {
-				console.error('Error fetching user data:', error);
-			}
-		};
-		fetchUserData();
-	}, []);
 
 	return (
-		<SafeAreaView>
-			<Button
-				title="로그인 화면으로 이동"
-				onPress={() => navigation.navigate(authNavigations.LOGIN)}
+		<SafeAreaView style={styles.container}>
+			<StatusBar
+				barStyle="dark-content"
+				backgroundColor={colors[theme].UNCHANGE_WHITE}
 			/>
-			<Button
-				title="회원가입 화면으로 이동"
-				onPress={() => navigation.navigate(authNavigations.SIGN_UP)}
-			/>
-			<Button title="컴파운드 옵션열기" onPress={modal.show} />
-
-			<Text>{userData?.firstName}</Text>
+			<LinearGradient
+				style={styles.backgroundContainer}
+				colors={colorList.bgColor}
+			>
+				<LinearGradient colors={colorList.redCircle} style={styles.redCircle} />
+				<LinearGradient
+					colors={colorList.greenCircle}
+					style={styles.greenCircle}
+				/>
+				<ScrollView contentContainerStyle={styles.contentContainer}>
+					<Text style={styles.title}>멜팅팟에 오신 걸 환영합니다!</Text>
+					<View style={styles.buttonContainer}>
+						<CustomButton
+							label="로그인 화면으로 이동"
+							onPress={() => navigation.navigate(authNavigations.LOGIN)}
+						/>
+						<CustomButton
+							label="회원가입 화면으로 이동"
+							onPress={() => navigation.navigate(authNavigations.SIGN_UP)}
+						/>
+					</View>
+				</ScrollView>
+			</LinearGradient>
 		</SafeAreaView>
 	);
 }
 
-const styles = StyleSheet.create({});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: colors[theme].UNCHANGE_WHITE,
+		},
+		contentContainer: {
+			flex: 1,
+			paddingHorizontal: 10,
+			paddingVertical: 30,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		redCircle: {
+			width: 400,
+			height: 400,
+			position: 'absolute',
+			borderRadius: 500,
+			bottom: -130,
+			right: 120,
+			opacity: 0.8,
+		},
+		greenCircle: {
+			width: 400,
+			height: 400,
+			position: 'absolute',
+			borderRadius: 500,
+			bottom: -80,
+			left: 140,
+		},
+		backgroundContainer: {
+			flex: 1,
+			padding: 30,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		buttonContainer: {
+			marginTop: 'auto',
+			gap: 10,
+		},
+		title: {
+			flex: 1,
+			fontSize: 25,
+			color: colors[theme].UNCHANGE_BLACK,
+			fontFamily: 'Pretendard-Light',
+			marginTop: 90,
+		},
+	});
 
 export default AuthHomeScreen;

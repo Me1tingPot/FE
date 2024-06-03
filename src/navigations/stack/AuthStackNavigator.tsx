@@ -1,11 +1,15 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { authNavigations, colors } from '@/constants';
+import {
+	StackNavigationOptions,
+	createStackNavigator,
+} from '@react-navigation/stack';
+import { authNavigations, colors, feedTabNavigations } from '@/constants';
 import AuthHomeScreen from '@/screens/auth/AuthHomeScreen';
 import LoginScreen from '@/screens/auth/LoginScreen';
 import SignUpFinishScreen from '@/screens/auth/SignUpFinishScreen';
 import SignUpScreen from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
+import FeedStackNavigator from './FeedStackNavigator';
 
 // Screen Typing시 아래 타입을 전달해주면 됨.
 export type AuthStackParamList = {
@@ -17,11 +21,23 @@ export type AuthStackParamList = {
 	[authNavigations.LOGIN]: undefined;
 	[authNavigations.SIGN_UP]: undefined;
 	[authNavigations.SIGN_UP_FINISH]: undefined;
+	[feedTabNavigations.FEED_HOME]: undefined;
 };
 
 function AuthStackNavigator() {
 	const Stack = createStackNavigator<AuthStackParamList>();
 	const { theme } = useThemeStore();
+
+	const headerOptions: StackNavigationOptions = {
+		headerStyle: {
+			backgroundColor: colors[theme].WHITE,
+		},
+		headerTintColor: colors[theme].BLACK,
+		headerShadowVisible: false,
+		headerLeftLabelVisible: false,
+		headerTitleAlign: 'center',
+	};
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
@@ -46,6 +62,7 @@ function AuthStackNavigator() {
 				component={LoginScreen}
 				options={{
 					headerTitle: '로그인',
+					...headerOptions,
 				}}
 			/>
 			<Stack.Screen
@@ -53,6 +70,7 @@ function AuthStackNavigator() {
 				component={SignUpScreen}
 				options={{
 					headerTitle: '회원가입',
+					...headerOptions,
 				}}
 			/>
 			<Stack.Screen
@@ -60,6 +78,18 @@ function AuthStackNavigator() {
 				component={SignUpFinishScreen}
 				options={{
 					headerTitle: '회원가입 완료',
+					...headerOptions,
+					headerStyle: {
+						backgroundColor: colors[theme].UNCHANGE_WHITE,
+					},
+					headerTintColor: colors[theme].UNCHANGE_BLACK,
+				}}
+			/>
+			<Stack.Screen
+				name={feedTabNavigations.FEED_HOME}
+				component={FeedStackNavigator}
+				options={{
+					headerShown: false,
 				}}
 			/>
 		</Stack.Navigator>

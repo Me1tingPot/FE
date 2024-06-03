@@ -91,6 +91,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 								onBlur={onBlur}
 								placeholder={t('국적 선택하기')}
 								variant="success"
+								placeholderTextColor={colors[theme].GRAY_300}
 								icon={
 									open.local ? (
 										<Pressable
@@ -136,7 +137,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 										]}
 										onPress={() => setLocal(item)}
 									>
-										<Text>{item}</Text>
+										<Text style={styles.menuText}>{item}</Text>
 									</Pressable>
 								))}
 							</GestureHandlerScrollView>
@@ -157,6 +158,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 								onBlur={onBlur}
 								placeholder={t('사용 언어 선택하기')}
 								variant="success"
+								placeholderTextColor={colors[theme].GRAY_300}
 								icon={
 									open.language ? (
 										<Pressable
@@ -202,7 +204,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 										]}
 										onPress={() => toggleSelection(item)}
 									>
-										<Text>{item}</Text>
+										<Text style={styles.menuText}>{item}</Text>
 									</Pressable>
 								))}
 							</GestureHandlerScrollView>
@@ -278,6 +280,9 @@ const styling = (theme: ThemeMode) =>
 			paddingHorizontal: 30,
 			borderBottomWidth: 0.5,
 			borderBottomColor: colors[theme].GREEN_500,
+		},
+		menuText: {
+			color: colors[theme].BLACK,
 		},
 	});
 

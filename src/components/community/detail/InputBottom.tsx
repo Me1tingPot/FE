@@ -20,6 +20,7 @@ interface InputBottomProps {
 	id: number;
 	isChecked: boolean;
 	onPress: (event: GestureResponderEvent) => void;
+	onPressCamera: () => void;
 	comment: string;
 	setComment: Dispatch<SetStateAction<string>>;
 	onSubmit: () => void;
@@ -32,6 +33,7 @@ const InputBottom = ({
 	comment,
 	setComment,
 	onSubmit,
+	onPressCamera,
 }: InputBottomProps) => {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
@@ -46,10 +48,7 @@ const InputBottom = ({
 				/>
 			</View>
 			<View style={[styles.rowGap10]}>
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => console.log('click')}
-				>
+				<TouchableOpacity activeOpacity={0.8} onPress={onPressCamera}>
 					<IonIcons
 						name="camera-outline"
 						color={colors[theme].GRAY_500}

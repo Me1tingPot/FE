@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { colors, wishNavigations } from '@/constants';
 import WishReservationScreen from '@/screens/wish/WishReservationScreen';
 import WishSaveScreen from '@/screens/wish/WishSaveScreen';
 import useThemeStore from '@/store/useThemeStore';
+import { ThemeMode } from '@/types';
 
 export type PartyTabParamList = {
 	[wishNavigations.WISH_SAVE]: undefined;
@@ -16,9 +17,10 @@ const Tab = createMaterialTopTabNavigator<PartyTabParamList>();
 function WishTopTabNavigator() {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
+	const styles = styling(theme);
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<SafeAreaView style={styles.safeView}>
 			<Tab.Navigator
 				screenOptions={{
 					tabBarLabelStyle: {
@@ -53,5 +55,13 @@ function WishTopTabNavigator() {
 		</SafeAreaView>
 	);
 }
+
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		safeView: {
+			flex: 1,
+			backgroundColor: colors[theme].WHITE,
+		},
+	});
 
 export default WishTopTabNavigator;

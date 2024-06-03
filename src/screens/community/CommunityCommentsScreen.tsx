@@ -6,49 +6,38 @@ import {
 	SafeAreaView,
 	ScrollView,
 	StyleSheet,
+	View,
 } from 'react-native';
 import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
-import { NavigationProp } from '@react-navigation/native';
 import InputBottom from '@/components/community/detail/InputBottom';
-import PostContents from '@/components/community/detail/PostContents';
-import PostInfo from '@/components/community/detail/PostInfo';
-import Comments from '@/components/community/detail/comment/Comments';
+import CommentsView from '@/components/community/detail/comment/CommentsView';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
-import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-type CommunityPostingDetailScreenProps = {
+interface CommunityCommentsScreenProps {
 	route: {
 		params: {
 			id: number;
 		};
 	};
-	navigation: NavigationProp<CommunityStackParamList>;
-};
+}
 
-const CommunityPostingDetailScreen = ({
-	route,
-	navigation,
-}: CommunityPostingDetailScreenProps) => {
+const CommunityCommentsScreen = ({ route }: CommunityCommentsScreenProps) => {
+	const { id } = route.params;
 	const [isChecked, setIsChecked] = useState(false);
 	const [comment, setComment] = useState('');
 	const [refreshing, setRefreshing] = useState(false);
 	const [files, setFiles] = useState<string[]>([]);
 
-	const { id } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const modal = useModal();
 	usePermission('CAMERA');
 	usePermission('PHOTO');
-
-	const onSubmit = () => {
-		console.log(comment, '익명 유무: ', isChecked);
-	};
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -56,6 +45,10 @@ const CommunityPostingDetailScreen = ({
 			setRefreshing(false);
 		}, 2000);
 	}, []);
+
+	const onSubmit = () => {
+		console.log(comment, '익명 유무: ', isChecked);
+	};
 
 	const cameraOptions: CameraOptions = {
 		cameraType: 'front',
@@ -85,9 +78,11 @@ const CommunityPostingDetailScreen = ({
 						/>
 					}
 				>
-					<PostInfo />
-					<PostContents />
-					<Comments navigation={navigation} id={id} />
+					<View style={styles.commentLayout}>
+						{new Array(3).fill(null).map((_, idx) => (
+							<CommentsView key={idx} />
+						))}
+					</View>
 				</ScrollView>
 				<InputBottom
 					id={id}
@@ -118,11 +113,16 @@ const styling = (theme: ThemeMode) =>
 		},
 		contentContainer: {
 			gap: 10,
-			padding: 20,
+			paddingVertical: 10,
+			paddingHorizontal: 20,
 		},
 		keyboardView: {
 			flex: 1,
 		},
+		commentLayout: {
+			gap: 10,
+			paddingHorizontal: 10,
+		},
 	});
 
-export default CommunityPostingDetailScreen;
+export default CommunityCommentsScreen;

@@ -30,8 +30,8 @@ function AlertHomeScreen() {
 					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 				}
 			>
-				{new Array(10).fill(null).map(() => (
-					<AlertBox />
+				{new Array(10).fill(null).map((_, idx) => (
+					<AlertBox key={idx} />
 				))}
 			</ScrollView>
 		</SafeAreaView>

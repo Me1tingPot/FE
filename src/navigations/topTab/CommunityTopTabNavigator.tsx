@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { colors, communityNavigations } from '@/constants';
 import CommunityPostingScreen from '@/screens/community/CommunityPostingScreen';
 import CommunityQuestionScreen from '@/screens/community/CommunityQuestionScreen';
 import useThemeStore from '@/store/useThemeStore';
+import { ThemeMode } from '@/types';
 
 export type CommunityTabParamList = {
 	[communityNavigations.COMMUNITY_POSTING]: undefined;
@@ -16,8 +17,10 @@ const Tab = createMaterialTopTabNavigator<CommunityTabParamList>();
 function CommunityTopTabNavigator() {
 	const { theme } = useThemeStore();
 	const { t } = useTranslation();
+	const styles = styling(theme);
+
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<SafeAreaView style={styles.safeView}>
 			<Tab.Navigator
 				screenOptions={{
 					tabBarLabelStyle: {
@@ -52,5 +55,13 @@ function CommunityTopTabNavigator() {
 		</SafeAreaView>
 	);
 }
+
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		safeView: {
+			flex: 1,
+			backgroundColor: colors[theme].WHITE,
+		},
+	});
 
 export default CommunityTopTabNavigator;

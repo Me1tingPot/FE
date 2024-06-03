@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	Image,
 	SafeAreaView,
@@ -20,6 +21,7 @@ interface ChatStartScreenProps {
 }
 
 function ChatStartScreen({ navigation }: ChatStartScreenProps) {
+	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const colorList = ['#FFFFFF', '#C6FFF3'];
@@ -29,15 +31,19 @@ function ChatStartScreen({ navigation }: ChatStartScreenProps) {
 			<ScrollView contentContainerStyle={{ flex: 1 }}>
 				<LinearGradient colors={colorList} style={styles.backgroundContainer}>
 					<View style={styles.contentsContainer}>
-						<Text style={styles.title}>채팅에 오신 것을 환영합니다!</Text>
-						<Text style={styles.description}>파티에 참여하고</Text>
-						<Text style={styles.description}>실시간 채팅을 받아보세요.</Text>
+						<Text
+							style={styles.title}
+						>{`${t('채팅에 오신 것을 환영합니다!')}`}</Text>
+						<Text style={styles.description}>{`${t('파티에 참여하고')}`}</Text>
+						<Text
+							style={styles.description}
+						>{`${t('실시간 채팅을 받아보세요.')}`}</Text>
 						<Image source={ChatStart} style={styles.imageLayout} />
 					</View>
 
 					<View style={styles.buttonLayout}>
 						<CustomButton
-							label="채팅하러 가기"
+							label={`${t('채팅하러 가기')}`}
 							onPress={() => navigation.navigate(feedNavigations.CHAT_HOME)}
 						/>
 					</View>

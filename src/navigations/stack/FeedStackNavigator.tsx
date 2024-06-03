@@ -1,5 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+	StackNavigationOptions,
+	createStackNavigator,
+} from '@react-navigation/stack';
 import ChatHomeHeaderLeft from '@/components/chat/ChatHomeHeaderLeft';
 import { colors, feedNavigations } from '@/constants';
 import AlertHomeScreen from '@/screens/alert/AlertHomeScreen';
@@ -20,8 +24,22 @@ export type FeedStackParamList = {
 
 function FeedStackNavigator() {
 	const Stack = createStackNavigator<FeedStackParamList>();
+	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	const commonHeaderOptions: StackNavigationOptions = {
+		headerTitleAlign: 'center',
+		headerBackTitleVisible: false,
+		headerShadowVisible: false,
+		headerStyle: {
+			backgroundColor: colors[theme].WHITE,
+		},
+		headerTitleStyle: {
+			color: colors[theme].BLACK,
+		},
+		headerTintColor: colors[theme].BLACK,
+	};
 
 	return (
 		<Stack.Navigator>
@@ -34,9 +52,8 @@ function FeedStackNavigator() {
 				name={feedNavigations.ALERT}
 				component={AlertHomeScreen}
 				options={{
-					headerTitle: '알림',
-					headerTitleAlign: 'center',
-					headerBackTitleVisible: false,
+					headerTitle: `${t('알림')}`,
+					...commonHeaderOptions,
 				}}
 			/>
 			<Stack.Screen
@@ -53,11 +70,7 @@ function FeedStackNavigator() {
 				component={ChatHomeScreen}
 				options={{
 					headerTitle: '',
-					headerBackTitleVisible: false,
-					headerShadowVisible: false,
-					headerStyle: {
-						backgroundColor: colors[theme].WHITE,
-					},
+					...commonHeaderOptions,
 				}}
 			/>
 			<Stack.Screen
