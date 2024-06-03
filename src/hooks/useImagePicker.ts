@@ -27,12 +27,12 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 
 		setImageUris(prev => [...prev, ...uris.map(uri => ({ uri }))]);
 	};
-	console.log(imageUris);
 
 	const deleteImageUri = (uri: string) => {
 		const newImageUris = imageUris.filter(image => image.uri !== uri);
 		setImageUris(newImageUris);
 	};
+	console.log(imageUris);
 
 	// image-crop-picker는 순서를 보장해주지 않음.
 	const changeImageUrisOrder = (fromIndex: number, toIndex: number) => {
@@ -56,12 +56,14 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 		})
 			.then(images => {
 				// 서버에 저장할 수 있는 형태로 변경
-
 				const formData = getFormDataImages(images);
 
 				uploadImages.mutate(formData, {
 					onSuccess: data => {
 						addImageUris(data);
+					},
+					onError: error => {
+						console.log(error);
 					},
 				});
 			})

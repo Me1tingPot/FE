@@ -24,7 +24,6 @@ const PartyWriteScreen = ({}: PartyWriteScreenProps) => {
 		initialImages: [],
 		maxFiles: 10,
 	});
-	console.log('imagePicker.imageUris', imagePicker.imageUris);
 
 	return (
 		<SafeAreaView style={styles.container}>
