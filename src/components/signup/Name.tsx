@@ -43,6 +43,7 @@ const Name = ({ onNext }: NameProps) => {
 								placeholder={t('여권상의 영문 이름')}
 								variant={errors?.firstName ? 'error' : 'default'}
 								returnKeyType="next"
+								placeholderTextColor={colors[theme].GRAY_300}
 							/>
 						)}
 					/>
@@ -57,6 +58,7 @@ const Name = ({ onNext }: NameProps) => {
 								onBlur={onBlur}
 								placeholder={t('여권상의 영문 성')}
 								variant={errors?.latsName ? 'error' : 'default'}
+								placeholderTextColor={colors[theme].GRAY_300}
 								onSubmitEditing={({ nativeEvent: { text } }) => {
 									if (text) {
 										onNext();

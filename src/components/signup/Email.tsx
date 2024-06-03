@@ -41,6 +41,7 @@ const Email = ({ onNext }: EmailProps) => {
 							placeholder={t('예시) melting_pot@gmail.com')}
 							inputMode="email"
 							variant={errors.email ? 'error' : 'default'}
+							placeholderTextColor={colors[theme].GRAY_300}
 							onSubmitEditing={({ nativeEvent: { text } }) => {
 								if (text) {
 									onNext();

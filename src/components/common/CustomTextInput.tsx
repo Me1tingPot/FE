@@ -96,6 +96,7 @@ const styling = (theme: ThemeMode) =>
 		text: {
 			flex: 1,
 			paddingVertical: 10,
+			color: colors[theme].BLACK,
 		},
 		icon: {
 			display: 'flex',

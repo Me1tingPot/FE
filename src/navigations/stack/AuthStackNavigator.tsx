@@ -78,8 +78,10 @@ function AuthStackNavigator() {
 				component={SignUpFinishScreen}
 				options={{
 					headerTitle: '회원가입 완료',
-					headerShadowVisible: false,
-					headerLeftLabelVisible: false,
+					...headerOptions,
+					headerStyle: {
+						backgroundColor: colors[theme].UNCHANGE_WHITE,
+					},
 					headerTintColor: colors[theme].UNCHANGE_BLACK,
 				}}
 			/>
