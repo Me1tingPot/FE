@@ -12,6 +12,7 @@ import { colors, feedNavigations, feedTabNavigations } from '../../constants';
 import CommunityStackNavigator from '../stack/CommunityStackNavigator';
 import { FeedStackParamList } from '../stack/FeedStackNavigator';
 import MyStackNavigator from '../stack/MyStackNavigator';
+import PartyStackNavigator from '../stack/PartyStackNavigator';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
 
@@ -109,7 +110,7 @@ function FeedTabNavigator({ navigation }: FeedTabNavigatorProps) {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.PARTY_HOME}
-				component={PartyHomeScreen}
+				component={PartyStackNavigator}
 				options={({ navigation, route }) => ({
 					tabBarLabel: `${t('파티')}`,
 				})}
