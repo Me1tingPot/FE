@@ -7,6 +7,7 @@ import {
 	View,
 } from 'react-native';
 import ImageInput from '@/components/common/ImageInput';
+import PreviewImageList from '@/components/common/PreviewImageList';
 import { colors } from '@/constants';
 import useImagePicker from '@/hooks/useImagePicker';
 import usePermission from '@/hooks/usePermission';
@@ -27,26 +28,11 @@ const PartyWriteScreen = ({}: PartyWriteScreenProps) => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView>
-				<ImageInput onChange={imagePicker.handleChange} />
-				<View style={{ width: 70, height: 70 }}>
-					{imagePicker.imageUris.map(({ uri }, index) => {
-						return (
-							<Image
-								key={index}
-								source={{
-									uri: `${
-										Platform.OS === 'ios'
-											? 'http://localhost:3030'
-											: 'http://10.0.2.2:3030'
-									}/${uri}`,
-								}}
-								style={{ width: '100%', height: '100%' }}
-							/>
-						);
-					})}
-				</View>
-			</ScrollView>
+			<ImageInput onChange={imagePicker.handleChange} size="medium" />
+			<PreviewImageList
+				imageUris={imagePicker.imageUris}
+				onDelete={imagePicker.delete}
+			/>
 		</SafeAreaView>
 	);
 };

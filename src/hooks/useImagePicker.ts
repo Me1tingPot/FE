@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ImageUri } from '@/types';
 import { getFormDataImages } from '@/utils';
@@ -16,9 +17,22 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 	const uploadImages = useMutateImages();
 
 	const addImageUris = (uris: string[]) => {
+		if (imageUris.length > maxFiles) {
+			Alert.alert(
+				`이미지 개수 초과`,
+				`추가 가능한 이미지는 최대 ${maxFiles}개입니다.`,
+			);
+			return;
+		}
+
 		setImageUris(prev => [...prev, ...uris.map(uri => ({ uri }))]);
 	};
 	console.log(imageUris);
+
+	const deleteImageUri = (uri: string) => {
+		const newImageUris = imageUris.filter(image => image.uri !== uri);
+		setImageUris(newImageUris);
+	};
 
 	const handleChange = () => {
 		ImagePicker.openPicker({
@@ -51,6 +65,7 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 	return {
 		imageUris,
 		handleChange,
+		delete: deleteImageUri,
 	};
 }
 export default useImagePicker;

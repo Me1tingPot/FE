@@ -7,9 +7,10 @@ import { ThemeMode } from '@/types';
 
 interface ImageInputProps {
 	onChange: () => void;
+	size?: 'large' | 'medium' | 'small';
 }
 
-const ImageInput = ({ onChange }: ImageInputProps) => {
+const ImageInput = ({ onChange, size = 'small' }: ImageInputProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -17,6 +18,9 @@ const ImageInput = ({ onChange }: ImageInputProps) => {
 			style={({ pressed }) => [
 				pressed && styles.imageInputPressed,
 				styles.imageInput,
+				size === 'large' && styles.largeImageInput,
+				size === 'medium' && styles.mediumImageInput,
+				size === 'small' && styles.smallImageInput,
 			]}
 			onPress={onChange}
 		>
@@ -36,11 +40,22 @@ const styling = (theme: ThemeMode) =>
 			borderWidth: 1.5,
 			borderStyle: 'dotted',
 			borderColor: colors[theme].GRAY_300,
-			height: 70,
-			width: 70,
+
 			alignItems: 'center',
 			justifyContent: 'center',
 			gap: 5,
+		},
+		smallImageInput: {
+			height: 70,
+			width: 70,
+		},
+		mediumImageInput: {
+			height: 120,
+			width: 120,
+		},
+		largeImageInput: {
+			height: 150,
+			width: 150,
 		},
 		imageInputPressed: {
 			opacity: 0.5,
