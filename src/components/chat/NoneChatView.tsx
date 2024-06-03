@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, feedNavigations } from '@/constants';
@@ -12,20 +13,25 @@ interface NoneChatViewProps {
 }
 
 const NoneChatView = ({ navigation }: NoneChatViewProps) => {
+	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
 		<View style={styles.container}>
 			<View style={styles.textContainer}>
-				<Text style={styles.title}>아직 참여 중인 채팅 방이 없습니다.</Text>
-				<Text style={styles.description}>파티에 참여하고</Text>
-				<Text style={styles.description}>실시간 채팅을 받아보세요</Text>
+				<Text
+					style={styles.title}
+				>{`${t('아직 참여 중인 채팅 방이 없습니다.')}`}</Text>
+				<Text style={styles.description}>{`${t('파티에 참여하고')}`}</Text>
+				<Text
+					style={styles.description}
+				>{`${t('실시간 채팅을 받아보세요.')}`}</Text>
 			</View>
 
 			<Image source={NoneChat} />
 			<View style={{ marginTop: 'auto' }}>
 				<CustomButton
-					label="내 주변 파티 둘러보기"
+					label={`${t('내 주변 파티 둘러보기')}`}
 					onPress={() => navigation.navigate(feedNavigations.FEED_TAB)}
 				/>
 			</View>

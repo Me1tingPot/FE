@@ -11,7 +11,7 @@ interface ChatHomeScreenProps {
 	navigation: NavigationProp<FeedStackParamList>;
 }
 
-const chatList = [0];
+const chatList = [];
 
 function ChatHomeScreen({ navigation }: ChatHomeScreenProps) {
 	const { theme } = useThemeStore();

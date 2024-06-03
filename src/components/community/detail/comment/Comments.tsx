@@ -1,25 +1,36 @@
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from 'react-native';
-import { colors } from '@/constants';
+import { NavigationProp } from '@react-navigation/native';
+import { colors, communityNavigations } from '@/constants';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CommentImg from '../../../../assets/images/Comment.png';
 import CommentsView from './CommentsView';
 
-interface CommentsProps {}
+interface CommentsProps {
+	navigation: NavigationProp<CommunityStackParamList>;
+	id: number;
+}
 
-const Comments = ({}: CommentsProps) => {
+const Comments = ({ navigation, id }: CommentsProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
 		<>
-			<View style={[styles.rowGap10, styles.bottom]}>
+			<TouchableOpacity
+				activeOpacity={0.8}
+				style={[styles.rowGap10, styles.bottom]}
+				onPress={() =>
+					navigation.navigate(communityNavigations.COMMUNITY_COMMENTS, { id })
+				}
+			>
 				<Image source={CommentImg} />
 				<Text style={styles.commentCount}>3</Text>
-			</View>
+			</TouchableOpacity>
 			<View style={styles.verticalLine} />
 			<View style={styles.commentLayout}>
-				{new Array(10).fill(null).map((_, idx) => (
+				{new Array(3).fill(null).map((_, idx) => (
 					<CommentsView key={idx} />
 				))}
 			</View>

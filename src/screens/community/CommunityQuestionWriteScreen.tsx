@@ -27,7 +27,8 @@ type CommunityQuestionWriteScreenProps = {};
 
 const CommunityQuestionWriteScreen =
 	({}: CommunityQuestionWriteScreenProps) => {
-		const [input, setInput] = useState('');
+		const [title, setTitle] = useState('');
+		const [content, setContent] = useState('');
 		const [files, setFiles] = useState<string[]>([]);
 		const { theme } = useThemeStore();
 		const styles = styling(theme);
@@ -61,9 +62,12 @@ const CommunityQuestionWriteScreen =
 				>
 					<ScrollView contentContainerStyle={styles.contentContainer}>
 						<MultipleGradientBgTextInput
-							value={input}
-							onChangeText={t => setInput(t)}
-							placeholder={t(`다양한 이야기를 공유해보세요!`)}
+							title={title}
+							onChangeTitle={t => setTitle(t)}
+							titlePlaceholder={t(`궁금한 것을 물어보세요!`)}
+							content={content}
+							onChangeContent={t => setContent(t)}
+							contentPlaceholder={t(`상세 내용을 작성해주세요.`)}
 						/>
 					</ScrollView>
 					<View style={[styles.displayRow, styles.imageContainer]}>

@@ -1,32 +1,43 @@
 import { StyleSheet, TextInput } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
 type MultipleGradientBgTextInputProps = {
-	value: string;
-	onChangeText: (text: string) => void;
-	placeholder?: string;
-	colors?: string[];
+	title: string;
+	onChangeTitle: (text: string) => void;
+	titlePlaceholder?: string;
+	content: string;
+	onChangeContent: (text: string) => void;
+	contentPlaceholder?: string;
+	backgroundColors?: string[];
 };
 
 const MultipleGradientBgTextInput = ({
-	value,
-	onChangeText,
-	placeholder = '여기에 입력해주세요.',
-	colors = ['#DCFFEA', '#A8D5FF', '#60B3FF'],
+	title,
+	onChangeTitle,
+	titlePlaceholder = '여기에 입력해주세요.',
+	content,
+	onChangeContent,
+	contentPlaceholder,
+	backgroundColors = ['#DCFFEA', '#A8D5FF', '#60B3FF'],
 }: MultipleGradientBgTextInputProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
-		<LinearGradient colors={colors} style={styles.textLayout}>
+		<LinearGradient colors={backgroundColors} style={styles.textLayout}>
 			<TextInput
-				value={value}
-				onChangeText={onChangeText}
+				style={styles.title}
+				placeholder={titlePlaceholder}
+				value={title}
+				onChangeText={onChangeTitle}
+			/>
+			<TextInput
+				value={content}
+				onChangeText={onChangeContent}
 				multiline
-				placeholder={placeholder}
-				style={styles.text}
+				placeholder={contentPlaceholder}
+				style={styles.content}
 			/>
 		</LinearGradient>
 	);
@@ -40,7 +51,14 @@ const styling = (theme: ThemeMode) =>
 			borderRadius: 20,
 			opacity: 0.8,
 		},
-		text: {},
+		title: {
+			padding: 3,
+			fontSize: 14,
+		},
+		content: {
+			padding: 3,
+			fontSize: 12,
+		},
 	});
 
 export default MultipleGradientBgTextInput;

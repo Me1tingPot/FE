@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import Comment from './Comment';
@@ -10,9 +11,12 @@ const CommentsView = () => {
 	return (
 		<View>
 			<Comment />
-			{new Array(3).fill(null).map(() => (
-				<View style={styles.recommntContainer}>
-					<MaterialIcons name="subdirectory-arrow-right" />
+			{new Array(3).fill(null).map((_, idx) => (
+				<View style={styles.recommntContainer} key={idx}>
+					<MaterialIcons
+						name="subdirectory-arrow-right"
+						color={colors[theme].BLACK}
+					/>
 					<Comment />
 				</View>
 			))}

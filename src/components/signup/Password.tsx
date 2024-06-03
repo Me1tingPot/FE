@@ -42,6 +42,7 @@ const Password = ({ onNext }: PasswordProps) => {
 								variant={errors.password ? 'error' : 'default'}
 								returnKeyType="next"
 								secureTextEntry={true}
+								placeholderTextColor={colors[theme].GRAY_300}
 							/>
 						)}
 					/>
@@ -62,6 +63,7 @@ const Password = ({ onNext }: PasswordProps) => {
 									}
 								}}
 								secureTextEntry={true}
+								placeholderTextColor={colors[theme].GRAY_300}
 							/>
 						)}
 					/>

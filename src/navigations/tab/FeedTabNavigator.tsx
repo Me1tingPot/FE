@@ -102,7 +102,11 @@ function FeedTabNavigator({ navigation }: FeedTabNavigatorProps) {
 							style={{ marginRight: 10 }}
 							onPress={() => navigation.navigate(feedNavigations.ALERT)}
 						>
-							<Ionicons name="notifications-outline" size={25} />
+							<Ionicons
+								name="notifications-outline"
+								size={25}
+								color={colors[theme].BLACK}
+							/>
 						</Pressable>
 					),
 				})}
