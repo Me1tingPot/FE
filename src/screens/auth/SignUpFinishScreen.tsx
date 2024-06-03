@@ -55,7 +55,7 @@ const styling = (theme: ThemeMode) =>
 			display: 'flex',
 			flexDirection: 'column',
 			flex: 1,
-			backgroundColor: colors[theme].WHITE,
+			backgroundColor: colors[theme].UNCHANGE_WHITE,
 		},
 		contentsContainer: {
 			display: 'flex',
@@ -83,13 +83,13 @@ const styling = (theme: ThemeMode) =>
 		},
 		title: {
 			fontSize: 25,
-			color: colors[theme].BLACK,
+			color: colors[theme].UNCHANGE_BLACK,
 			fontFamily: 'Pretendard-Light',
 		},
 		description: {
 			fontSize: 14,
-			color: colors[theme].GRAY_700,
-			fontFamily: 'Pretendard-Bold',
+			color: colors[theme].UNCHANGE_BLACK,
+			fontFamily: 'Pretendard-Regular',
 			marginTop: 5,
 		},
 	});
