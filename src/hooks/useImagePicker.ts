@@ -34,6 +34,17 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 		setImageUris(newImageUris);
 	};
 
+	// image-crop-picker는 순서를 보장해주지 않음.
+	const changeImageUrisOrder = (fromIndex: number, toIndex: number) => {
+		// 기존 상태를 그대로 유지
+		const copyImageUris = [...imageUris];
+		// 위치가 다른 곳으로 이동하려면, 현재 위치에서 제거된 후에, 새로운 위치에 넣어주면 됨.
+		const [removedImage] = copyImageUris.splice(fromIndex, 1);
+		// 이동할 위치로, 아까 제거된 이미지를 넣어주면 됨.
+		copyImageUris.splice(toIndex, 0, removedImage);
+		setImageUris(copyImageUris);
+	};
+
 	const handleChange = () => {
 		ImagePicker.openPicker({
 			mediaType: 'photo',
@@ -66,6 +77,7 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 		imageUris,
 		handleChange,
 		delete: deleteImageUri,
+		changeOrder: changeImageUrisOrder,
 	};
 }
 export default useImagePicker;

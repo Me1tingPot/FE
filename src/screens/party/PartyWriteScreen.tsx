@@ -32,6 +32,7 @@ const PartyWriteScreen = ({}: PartyWriteScreenProps) => {
 			<PreviewImageList
 				imageUris={imagePicker.imageUris}
 				onDelete={imagePicker.delete}
+				onChangeOrder={imagePicker.changeOrder}
 			/>
 		</SafeAreaView>
 	);
