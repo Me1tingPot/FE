@@ -1,14 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-	SafeAreaView,
-	ScrollView,
-	StyleSheet,
-	Text,
-	View,
-	Image,
-} from 'react-native';
-import CompoundCard from '@/components/common/CompoundCard';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import CustomButton from '@/components/common/CustomButton';
 import PartyCard from '@/components/common/PartyCard';
 import { colors } from '@/constants';
