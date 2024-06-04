@@ -49,6 +49,12 @@ const feedNavigations = {
 	FEED_TAB: 'FeedTab',
 } as const;
 
+const userNavigations = {
+	USER: 'User',
+	USER_PROFILE: 'UserProfile',
+	USER_PROFILE_IMAGE: 'UserProfileImage',
+} as const;
+
 export {
 	authNavigations,
 	feedTabNavigations,
@@ -57,4 +63,5 @@ export {
 	myNavigations,
 	feedNavigations,
 	partyNavigations,
+	userNavigations,
 };
