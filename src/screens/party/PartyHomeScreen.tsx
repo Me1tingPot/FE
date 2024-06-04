@@ -82,6 +82,9 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 					}
 				>
 					<PartyCard />
+					<Pressable onPress={() => navigation.navigate('PartyDetail')}>
+						<Text>HI</Text>
+					</Pressable>
 				</ScrollView>
 				<View style={styles.buttonList}>
 					<IconCircleButton
