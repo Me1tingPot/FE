@@ -81,17 +81,16 @@ const styling = (theme: ThemeMode) =>
 			backgroundColor: colors[theme].WHITE,
 			paddingVertical: platformOS === 'android' ? 5 : 10,
 			paddingHorizontal: 25,
+			borderWidth: 1,
 		},
 		default: {
 			borderColor: colors[theme].GRAY_300,
-			borderWidth: 1,
 		},
 		none: {
 			paddingVertical: 0,
 			paddingHorizontal: 10,
 			borderRadius: 10,
 			borderColor: colors[theme].GRAY_300,
-			borderWidth: 1,
 		},
 		error: {
 			borderColor: colors[theme].RED_500,
