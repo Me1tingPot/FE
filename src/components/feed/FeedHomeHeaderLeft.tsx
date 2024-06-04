@@ -8,15 +8,16 @@ interface FeedHomeHeaderLeftProps {}
 const FeedHomeHeaderLeft = ({}: FeedHomeHeaderLeftProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	// require은 동적으로 경로를 세팅 x
+	const logoSource =
+		theme === 'dark'
+			? require('@/assets/images/white_logo_title.png')
+			: require('@/assets/images/black_logo_title.png');
+
 	return (
 		<View style={styles.container}>
-			<Image
-				width={20}
-				height={20}
-				source={require('@/assets/Logo.png')}
-				resizeMode="contain"
-			/>
-			<Text style={styles.text}>elting Pot</Text>
+			<Image style={styles.logo} source={logoSource} resizeMode="contain" />
 		</View>
 	);
 };
@@ -35,6 +36,10 @@ const styling = (theme: ThemeMode) =>
 			fontSize: 20,
 			fontFamily: 'Pretendard-Bold',
 			color: colors[theme].BLACK,
+		},
+		logo: {
+			width: 130,
+			height: 130,
 		},
 	});
 

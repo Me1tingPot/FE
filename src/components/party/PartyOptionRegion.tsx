@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors, districts } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -19,6 +20,9 @@ const PartyOptionRegion = ({
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [selectedItem, setSelectedItem] = useState<string | null>(null);
+	const { t } = useTranslation();
+
+	const region = t('지역 모임', { returnObjects: true });
 
 	const handlePress = (item: string) => {
 		setSelectedItem(item);
@@ -31,8 +35,8 @@ const PartyOptionRegion = ({
 	const renderRightContent = () => {
 		if (!selectedItem) {
 			return (
-				<View>
-					<Text>지역을 선택해 주세요.</Text>
+				<View style={styles.rightContainer}>
+					<Text style={styles.districtText}>{t('지역을 선택해 주세요.')}</Text>
 				</View>
 			);
 		}
@@ -41,7 +45,7 @@ const PartyOptionRegion = ({
 
 		return (
 			<View>
-				{districtList.map((district, idx) => (
+				{districtList.map((district: string, idx: number) => (
 					<Pressable
 						key={idx}
 						onPress={() => handleSelectRegion(district)}
@@ -74,17 +78,7 @@ const PartyOptionRegion = ({
 		<>
 			<View style={styles.container}>
 				<ScrollView contentContainerStyle={styles.leftContainer}>
-					{[
-						'서울',
-						'경기',
-						'인천',
-						'강원',
-						'대전/충청',
-						'대구',
-						'부산/울산',
-						'경상',
-						'광주/전라/제주',
-					].map((item, idx) => (
+					{region.map((item, idx) => (
 						<Pressable
 							key={idx}
 							style={({ pressed }) => [
