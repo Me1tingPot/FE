@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
 	SafeAreaView,
 	StyleSheet,
@@ -6,6 +6,7 @@ import {
 	ScrollView,
 	Pressable,
 	View,
+	RefreshControl,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
@@ -31,6 +32,7 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+	const [refreshing, setRefreshing] = useState(false);
 
 	const handleClosePress = () => bottomSheetModalRef.current?.close();
 	const handleOpenPress = () => bottomSheetModalRef.current?.present();
@@ -40,6 +42,13 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 		duration: '',
 		status: '',
 	});
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
 
 	return (
 		<BottomSheetModalProvider>
@@ -59,7 +68,17 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 						<Text style={styles.selectedText}>{filter.status}</Text>
 					</View>
 				</View>
-				<ScrollView contentContainerStyle={styles.scrollContainer}>
+				<ScrollView
+					contentContainerStyle={styles.scrollContainer}
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+							colors={[colors[theme].BLACK]}
+							tintColor={colors[theme].BLACK}
+						/>
+					}
+				>
 					<PartyCard />
 				</ScrollView>
 				<View style={styles.buttonList}>
