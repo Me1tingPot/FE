@@ -91,6 +91,7 @@ const styling = (theme: ThemeMode) =>
 			flexDirection: 'row',
 			paddingHorizontal: 15,
 			gap: 15,
+			marginBottom: 10,
 		},
 		imageContainer: {
 			width: 70,

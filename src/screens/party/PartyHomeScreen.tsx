@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	SafeAreaView,
 	StyleSheet,
@@ -6,6 +7,7 @@ import {
 	ScrollView,
 	Pressable,
 	View,
+	RefreshControl,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
@@ -31,6 +33,8 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+	const [refreshing, setRefreshing] = useState(false);
+	const { t } = useTranslation();
 
 	const handleClosePress = () => bottomSheetModalRef.current?.close();
 	const handleOpenPress = () => bottomSheetModalRef.current?.present();
@@ -41,11 +45,18 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 		status: '',
 	});
 
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
+
 	return (
 		<BottomSheetModalProvider>
 			<SafeAreaView style={styles.container}>
 				<Pressable onPress={handleOpenPress} style={styles.buttonContainer}>
-					<Text style={styles.filterText}>필터</Text>
+					<Text style={styles.filterText}>{t('필터')}</Text>
 					<Ionicons name="options" size={23} color={colors[theme].RED_500} />
 				</Pressable>
 				<View style={styles.selectedContainer}>
@@ -59,7 +70,17 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 						<Text style={styles.selectedText}>{filter.status}</Text>
 					</View>
 				</View>
-				<ScrollView contentContainerStyle={styles.scrollContainer}>
+				<ScrollView
+					contentContainerStyle={styles.scrollContainer}
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+							colors={[colors[theme].BLACK]}
+							tintColor={colors[theme].BLACK}
+						/>
+					}
+				>
 					<PartyCard />
 				</ScrollView>
 				<View style={styles.buttonList}>
@@ -85,32 +106,31 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
-			backgroundColor: colors[theme].WHITE,
 			flex: 1,
-			paddingHorizontal: 30,
+			backgroundColor: colors[theme].WHITE,
 		},
 		buttonContainer: {
 			flexDirection: 'row',
 			justifyContent: 'flex-end',
 			alignItems: 'center',
-			paddingHorizontal: 20,
+			padding: 20,
 			gap: 10,
 		},
 		filterText: {
 			fontSize: 15,
 			color: colors[theme].RED_500,
+			fontFamily: 'Pretendard-Bold',
 		},
 		scrollContainer: {
 			display: 'flex',
 			flexDirection: 'column',
 			gap: 10,
 			paddingHorizontal: 20,
-			paddingVertical: 20,
 		},
 		selectedContainer: {
 			flexDirection: 'row',
 			justifyContent: 'space-around',
-			marginTop: 30,
+			marginBottom: 20,
 		},
 		selectedText: {
 			color: colors[theme].GRAY_700,
