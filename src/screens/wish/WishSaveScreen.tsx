@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import {
+	RefreshControl,
+	SafeAreaView,
+	ScrollView,
+	StyleSheet,
+	View,
+} from 'react-native';
 import CustomButton from '@/components/common/CustomButton';
 import PartyCard from '@/components/common/PartyCard';
 import { colors } from '@/constants';
@@ -13,6 +19,14 @@ const WishSaveScreen = ({}: WishSaveScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const [refreshing, setRefreshing] = useState(false);
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -33,7 +47,17 @@ const WishSaveScreen = ({}: WishSaveScreenProps) => {
 					textStyle={{ fontSize: 15 }}
 				/>
 			</View>
-			<ScrollView contentContainerStyle={styles.scrollContainer}>
+			<ScrollView
+				contentContainerStyle={styles.scrollContainer}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						colors={[colors[theme].BLACK]}
+						tintColor={colors[theme].BLACK}
+					/>
+				}
+			>
 				<PartyCard />
 			</ScrollView>
 		</SafeAreaView>
