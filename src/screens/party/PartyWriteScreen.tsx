@@ -31,21 +31,21 @@ const PartyWriteScreen = ({}: PartyWriteScreenProps) => {
 				/>
 				<View style={styles.textContainer}>
 					<View style={styles.textWrapper}>
-						<Text>파티 제목</Text>
+						<Text style={styles.label}>파티 제목</Text>
 						<CustomTextInput
 							placeholder="파티 제목"
 							placeholderTextColor={colors[theme].GRAY_500}
 						/>
 					</View>
 					<View style={styles.textWrapper}>
-						<Text>파티 장소</Text>
+						<Text style={styles.label}>파티 장소</Text>
 						<CustomTextInput
 							placeholder="파티 장소"
 							placeholderTextColor={colors[theme].GRAY_500}
 						/>
 					</View>
 					<View style={styles.textWrapper}>
-						<Text>상세 설명</Text>
+						<Text style={styles.label}>상세 설명</Text>
 						<CustomTextInput
 							placeholder="파티 제목"
 							placeholderTextColor={colors[theme].GRAY_500}
@@ -72,6 +72,9 @@ const styling = (theme: ThemeMode) =>
 		},
 		textWrapper: {
 			gap: 20,
+		},
+		label: {
+			color: colors[theme].GRAY_500,
 		},
 	});
 
