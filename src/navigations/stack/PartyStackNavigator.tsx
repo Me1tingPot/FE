@@ -1,5 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+	StackNavigationOptions,
+	createStackNavigator,
+} from '@react-navigation/stack';
 import { colors, partyNavigations } from '@/constants';
 import PartyDetailScreen from '@/screens/party/PartyDetailScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
@@ -17,6 +20,15 @@ const Stack = createStackNavigator<PartyStackParamList>();
 function PartyStackNavigator() {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
+
+	const commonHeaderOptions: StackNavigationOptions = {
+		headerStyle: { backgroundColor: colors[theme].WHITE },
+		headerTitleStyle: { color: colors[theme].BLACK },
+		headerLeftLabelVisible: false,
+		headerShadowVisible: false,
+		headerTitleAlign: 'center',
+		headerTintColor: colors[theme].BLACK,
+	};
 
 	return (
 		<Stack.Navigator
@@ -37,7 +49,8 @@ function PartyStackNavigator() {
 				component={PartyWriteScreen}
 				options={{
 					headerShown: true,
-					headerTitle: t('파티 주최하기'),
+					headerTitle: `${t('파티 주최하기')}`,
+					...commonHeaderOptions,
 				}}
 			/>
 			<Stack.Screen
