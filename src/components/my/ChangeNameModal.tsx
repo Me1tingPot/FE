@@ -6,7 +6,7 @@ import { ThemeMode } from '@/types';
 import { CompoundModal } from '../common/CompoundModal';
 import CustomTextInput from '../common/CustomTextInput';
 
-interface ChangeProfileModalProps {
+interface ChangeNameModalProps {
 	value: string;
 	setValue: Dispatch<SetStateAction<string>>;
 	isVisible: boolean;
@@ -14,13 +14,13 @@ interface ChangeProfileModalProps {
 	onSubmit: () => void;
 }
 
-const ChangeProfileModal = ({
-	value,
-	setValue,
+const ChangeNameModal = ({
 	isVisible,
 	hideOption,
+	value,
+	setValue,
 	onSubmit,
-}: ChangeProfileModalProps) => {
+}: ChangeNameModalProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -29,9 +29,7 @@ const ChangeProfileModal = ({
 				<CompoundModal.Container>
 					<CompoundModal.ContentContainer>
 						<View style={styles.container}>
-							<Text style={styles.mainText}>
-								변경할 프로필 소개를 입력해주세요.
-							</Text>
+							<Text style={styles.mainText}>변경할 이름을 입력해주세요.</Text>
 							<CustomTextInput
 								value={value}
 								onChangeText={t => setValue(t)}
@@ -64,4 +62,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default ChangeProfileModal;
+export default ChangeNameModal;
