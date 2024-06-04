@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	Image,
 	SafeAreaView,
@@ -26,6 +27,7 @@ const MyEditProfileScreen = ({}: MyEditProfileScreenProps) => {
 	const [introduction, setIntroduction] = useState('');
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 	const profileModal = useModal();
 	const nameModal = useModal();
 	const revokeModal = useModal();
@@ -77,20 +79,20 @@ const MyEditProfileScreen = ({}: MyEditProfileScreenProps) => {
 					</TouchableOpacity>
 				</View>
 				<View style={styles.infoContainer}>
-					<Text style={styles.title}>유저 정보</Text>
+					<Text style={styles.title}>{`${t('유저 정보')}`}</Text>
 					<View style={styles.menuContainer}>
 						<View style={styles.flexRow}>
-							<Text style={styles.menuText}>이름</Text>
+							<Text style={styles.menuText}>{`${t('이름')}`}</Text>
 							<Text style={styles.menuContent}>Sally LEE</Text>
 						</View>
 						<View style={styles.verticalLine} />
 						<View style={styles.flexRow}>
-							<Text style={styles.menuText}>이메일</Text>
+							<Text style={styles.menuText}>{`${t('이메일')}`}</Text>
 							<Text style={styles.menuContent}>Sally@naver.com</Text>
 						</View>
 						<View style={styles.verticalLine} />
 						<View style={styles.flexRow}>
-							<Text style={styles.menuText}>프로필 소개</Text>
+							<Text style={styles.menuText}>{`${t('프로필 소개')}`}</Text>
 							<Text style={styles.menuContent}>특기는 여행, 취미는 기록</Text>
 						</View>
 					</View>
@@ -101,21 +103,21 @@ const MyEditProfileScreen = ({}: MyEditProfileScreenProps) => {
 						activeOpacity={0.8}
 						onPress={() => nameModal.show()}
 					>
-						<Text style={styles.menuText}>이름 수정</Text>
+						<Text style={styles.menuText}>{`${t('이름 수정')}`}</Text>
 					</TouchableOpacity>
 					<View style={styles.verticalLine} />
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => profileModal.show()}
 					>
-						<Text style={styles.menuText}>프로필 소개 수정</Text>
+						<Text style={styles.menuText}>{`${t('프로필 소개 수정')}`}</Text>
 					</TouchableOpacity>
 					<View style={styles.verticalLine} />
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => revokeModal.show()}
 					>
-						<Text style={styles.menuText}>멜팅팟 회원 탈퇴</Text>
+						<Text style={styles.menuText}>{`${t('멜팅팟 회원 탈퇴')}`}</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>

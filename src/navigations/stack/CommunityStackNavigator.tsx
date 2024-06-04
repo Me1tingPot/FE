@@ -83,7 +83,7 @@ function CommunityStackNavigator() {
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_COMMENTS}
 				component={CommunityCommentsScreen}
-				options={{ headerTitle: '댓글', ...commonHeaderOptions }}
+				options={{ headerTitle: `${t('댓글')}`, ...commonHeaderOptions }}
 			/>
 			<Stack.Screen
 				name={userNavigations.USER}

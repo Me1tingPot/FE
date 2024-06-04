@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	Image,
 	SafeAreaView,
@@ -28,6 +29,7 @@ const userImg =
 function UserProfileScreen({ navigation }: UserProfileScreenProps) {
 	const [click, setClick] = useState<menuType>('작성한 글');
 	const { theme } = useThemeStore();
+	const { t } = useTranslation();
 	const styles = styling(theme);
 	const userNavigation = useNavigation();
 
@@ -54,11 +56,11 @@ function UserProfileScreen({ navigation }: UserProfileScreenProps) {
 
 						<View style={styles.userInfo}>
 							<View>
-								<Text style={styles.profileText}>활동 내역</Text>
+								<Text style={styles.profileText}>{`${t('활동 내역')}`}</Text>
 								<Text style={styles.description}>주최 1회, 참여 6회</Text>
 							</View>
 							<View>
-								<Text style={styles.profileText}>국적</Text>
+								<Text style={styles.profileText}>{`${t('국적')}`}</Text>
 								<Text style={styles.description}>캐나다</Text>
 							</View>
 						</View>
@@ -73,7 +75,7 @@ function UserProfileScreen({ navigation }: UserProfileScreenProps) {
 							onPress={() => setClick(item)}
 							style={click === item ? styles.clicked : styles.unClicked}
 						>
-							<Text style={styles.menuText}>{item}</Text>
+							<Text style={styles.menuText}>{`${t(item)}`}</Text>
 						</TouchableOpacity>
 					))}
 				</View>

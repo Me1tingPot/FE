@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -21,6 +22,7 @@ const ChangeNameModal = ({
 	setValue,
 	onSubmit,
 }: ChangeNameModalProps) => {
+	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -29,7 +31,9 @@ const ChangeNameModal = ({
 				<CompoundModal.Container>
 					<CompoundModal.ContentContainer>
 						<View style={styles.container}>
-							<Text style={styles.mainText}>변경할 이름을 입력해주세요.</Text>
+							<Text
+								style={styles.mainText}
+							>{`${t('변경할 이름을 입력해주세요.')}`}</Text>
 							<CustomTextInput
 								value={value}
 								onChangeText={t => setValue(t)}
@@ -39,10 +43,12 @@ const ChangeNameModal = ({
 					</CompoundModal.ContentContainer>
 					<CompoundModal.ButtonRowContainer>
 						<CompoundModal.Button isDanger onPress={hideOption}>
-							취소
+							{`${t('취소')}`}
 						</CompoundModal.Button>
 						<CompoundModal.Divider />
-						<CompoundModal.Button onPress={onSubmit}>확인</CompoundModal.Button>
+						<CompoundModal.Button
+							onPress={onSubmit}
+						>{`${t('확인')}`}</CompoundModal.Button>
 					</CompoundModal.ButtonRowContainer>
 				</CompoundModal.Container>
 			</CompoundModal.Background>
