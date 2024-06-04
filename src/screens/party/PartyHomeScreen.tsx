@@ -85,15 +85,14 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
-			backgroundColor: colors[theme].WHITE,
 			flex: 1,
-			paddingHorizontal: 30,
+			backgroundColor: colors[theme].WHITE,
 		},
 		buttonContainer: {
 			flexDirection: 'row',
 			justifyContent: 'flex-end',
 			alignItems: 'center',
-			paddingHorizontal: 20,
+			padding: 20,
 			gap: 10,
 		},
 		filterText: {
@@ -105,12 +104,11 @@ const styling = (theme: ThemeMode) =>
 			flexDirection: 'column',
 			gap: 10,
 			paddingHorizontal: 20,
-			paddingVertical: 20,
 		},
 		selectedContainer: {
 			flexDirection: 'row',
 			justifyContent: 'space-around',
-			marginTop: 30,
+			marginBottom: 20,
 		},
 		selectedText: {
 			color: colors[theme].GRAY_700,

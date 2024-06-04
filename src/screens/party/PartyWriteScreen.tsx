@@ -1,11 +1,4 @@
-import {
-	Image,
-	Platform,
-	SafeAreaView,
-	ScrollView,
-	StyleSheet,
-	View,
-} from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import ImageInput from '@/components/common/ImageInput';
 import PreviewImageList from '@/components/common/PreviewImageList';
 import { colors } from '@/constants';
