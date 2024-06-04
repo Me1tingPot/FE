@@ -1,4 +1,10 @@
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import {
+	Image,
+	SafeAreaView,
+	ScrollView,
+	StyleSheet,
+	View,
+} from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import SearchInput from '@/components/common/SearchInput';
@@ -45,6 +51,16 @@ function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 					onPress={() => navigation.navigate(feedNavigations.CHAT_START)}
 				/>
 			</View>
+			<Image
+				style={styles.mainGreen}
+				source={require('@/assets/images/main_green.png')}
+				resizeMode="contain"
+			/>
+			<Image
+				style={styles.mainPink}
+				source={require('@/assets/images/main_pink.png')}
+				resizeMode="contain"
+			/>
 		</SafeAreaView>
 	);
 }
@@ -56,12 +72,14 @@ const styling = (theme: ThemeMode) =>
 			alignItems: 'center',
 			marginTop: 10,
 			gap: 20,
+			zIndex: 100,
 		},
 		container: {
 			flex: 1,
 			backgroundColor: colors[theme].WHITE,
 			alignItems: 'center',
 			justifyContent: 'center',
+			position: 'relative',
 		},
 		scrollContainer: {
 			flex: 1,
@@ -74,6 +92,16 @@ const styling = (theme: ThemeMode) =>
 			position: 'absolute',
 			bottom: 30,
 			right: 15,
+		},
+		mainPink: {
+			position: 'absolute',
+			bottom: 0,
+			left: -50,
+		},
+		mainGreen: {
+			position: 'absolute',
+			top: 0,
+			right: -100,
 		},
 	});
 

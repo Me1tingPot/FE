@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	SafeAreaView,
 	StyleSheet,
@@ -33,6 +34,7 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 	const styles = styling(theme);
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 	const [refreshing, setRefreshing] = useState(false);
+	const { t } = useTranslation();
 
 	const handleClosePress = () => bottomSheetModalRef.current?.close();
 	const handleOpenPress = () => bottomSheetModalRef.current?.present();
@@ -54,7 +56,7 @@ const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
 		<BottomSheetModalProvider>
 			<SafeAreaView style={styles.container}>
 				<Pressable onPress={handleOpenPress} style={styles.buttonContainer}>
-					<Text style={styles.filterText}>필터</Text>
+					<Text style={styles.filterText}>{t('필터')}</Text>
 					<Ionicons name="options" size={23} color={colors[theme].RED_500} />
 				</Pressable>
 				<View style={styles.selectedContainer}>
@@ -117,6 +119,7 @@ const styling = (theme: ThemeMode) =>
 		filterText: {
 			fontSize: 15,
 			color: colors[theme].RED_500,
+			fontFamily: 'Pretendard-Bold',
 		},
 		scrollContainer: {
 			display: 'flex',
