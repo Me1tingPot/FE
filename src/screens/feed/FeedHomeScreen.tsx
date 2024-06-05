@@ -211,6 +211,7 @@ const styling = (theme: ThemeMode) =>
 			gap: 10,
 			marginTop: 40,
 			marginLeft: 10,
+			marginBottom: 20,
 		},
 		menuCardImg: {
 			width: 150,

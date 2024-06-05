@@ -32,6 +32,7 @@ import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
 import useLocationStore from '@/store/useLocationStore';
 import useThemeStore from '@/store/useThemeStore';
 import mapStyle from '@/style/mapStyle';
+import getMapStyle from '@/style/mapStyle';
 import { ThemeMode } from '@/types';
 import useUserLocation from '../../hooks/useUserLocation';
 import SearchRegionResult from './SearchRegionResult';
@@ -125,7 +126,7 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 				showsUserLocation
 				followsUserLocation
 				showsMyLocationButton={false}
-				customMapStyle={mapStyle}
+				customMapStyle={getMapStyle(theme)}
 				// 지도 찍는 Event
 				onLongPress={handleLongPressMapView}
 				onPress={() => {

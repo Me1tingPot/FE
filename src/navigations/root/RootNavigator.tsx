@@ -9,7 +9,7 @@ interface RootNavigatorProps {}
 
 function RootNavigator({}: RootNavigatorProps) {
 	const isLoggedIn = true;
-	return <>{isLoggedIn ? <FeedStackNavigator /> : <AuthStackNavigator />}</>;
+	return <>{!isLoggedIn ? <FeedStackNavigator /> : <AuthStackNavigator />}</>;
 }
 
 const styles = StyleSheet.create({});
