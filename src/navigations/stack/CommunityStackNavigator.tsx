@@ -3,7 +3,7 @@ import {
 	StackNavigationOptions,
 	createStackNavigator,
 } from '@react-navigation/stack';
-import { colors, communityNavigations } from '@/constants';
+import { colors, communityNavigations, userNavigations } from '@/constants';
 import CommunityCommentsScreen from '@/screens/community/CommunityCommentsScreen';
 import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDetailScreen';
 import CommunityPostingWriteScreen from '@/screens/community/CommunityPostingWriteScreen';
@@ -11,6 +11,7 @@ import CommunityQuestionDetailScreen from '@/screens/community/CommunityQuestion
 import CommunityQuestionWriteScreen from '@/screens/community/CommunityQuestionWriteScreen';
 import useThemeStore from '@/store/useThemeStore';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
+import UserProfileNavigator from './UserProfileNavigator';
 
 export type CommunityStackParamList = {
 	[communityNavigations.COMMUNITY_TOPTAB]: undefined;
@@ -23,6 +24,7 @@ export type CommunityStackParamList = {
 	[communityNavigations.COMMUNITY_QUESTION_WRITE]: undefined;
 	[communityNavigations.COMMUNITY_POSTING_WRITE]: undefined;
 	[communityNavigations.COMMUNITY_COMMENTS]: { id: number };
+	[userNavigations.USER]: undefined;
 };
 
 function CommunityStackNavigator() {
@@ -81,7 +83,12 @@ function CommunityStackNavigator() {
 			<Stack.Screen
 				name={communityNavigations.COMMUNITY_COMMENTS}
 				component={CommunityCommentsScreen}
-				options={{ headerTitle: '댓글', ...commonHeaderOptions }}
+				options={{ headerTitle: `${t('댓글')}`, ...commonHeaderOptions }}
+			/>
+			<Stack.Screen
+				name={userNavigations.USER}
+				component={UserProfileNavigator}
+				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
 	);

@@ -14,7 +14,7 @@ import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-export const inputVariants = ['default', 'error', 'success'] as const;
+export const inputVariants = ['default', 'error', 'success', 'none'] as const;
 type inputVariant = (typeof inputVariants)[number];
 
 interface CustomTextInput extends TextInputProps {
@@ -81,10 +81,17 @@ const styling = (theme: ThemeMode) =>
 			backgroundColor: colors[theme].WHITE,
 			paddingVertical: platformOS === 'android' ? 5 : 10,
 			paddingHorizontal: 25,
-			borderColor: colors[theme].GRAY_300,
 			borderWidth: 1,
 		},
-		default: {},
+		default: {
+			borderColor: colors[theme].GRAY_300,
+		},
+		none: {
+			paddingVertical: 0,
+			paddingHorizontal: 10,
+			borderRadius: 10,
+			borderColor: colors[theme].GRAY_300,
+		},
 		error: {
 			borderColor: colors[theme].RED_500,
 			color: colors[theme].RED_500,

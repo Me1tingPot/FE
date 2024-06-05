@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { colors, communityNavigations } from '@/constants';
+import { colors, communityNavigations, userNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -31,7 +31,11 @@ const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 			}
 		>
 			<View style={styles.top}>
-				<Image source={{ uri: testImg }} style={styles.profileImg} />
+				<TouchableOpacity
+					onPress={() => navigation.navigate(userNavigations.USER)}
+				>
+					<Image source={{ uri: testImg }} style={styles.profileImg} />
+				</TouchableOpacity>
 				<View style={styles.userInfo}>
 					<Text style={styles.name}>Sunny Kim</Text>
 					<Text style={styles.date}>24/07/07</Text>

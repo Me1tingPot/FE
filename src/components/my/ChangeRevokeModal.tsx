@@ -1,27 +1,22 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { CompoundModal } from '../common/CompoundModal';
-import CustomTextInput from '../common/CustomTextInput';
 
-interface ChangeProfileModalProps {
-	value: string;
-	setValue: Dispatch<SetStateAction<string>>;
+interface ChangeRevokeModalProps {
+	onSubmit: () => void;
 	isVisible: boolean;
 	hideOption: () => void;
-	onSubmit: () => void;
 }
 
-const ChangeProfileModal = ({
-	value,
-	setValue,
+const ChangeRevokeModal = ({
+	onSubmit,
 	isVisible,
 	hideOption,
-	onSubmit,
-}: ChangeProfileModalProps) => {
+}: ChangeRevokeModalProps) => {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -31,14 +26,10 @@ const ChangeProfileModal = ({
 				<CompoundModal.Container>
 					<CompoundModal.ContentContainer>
 						<View style={styles.container}>
-							<Text style={styles.mainText}>
-								{`${t('변경할 프로필 소개를 입력해주세요.')}`}
+							<Text style={styles.mainText}>{`${t('멜팅팟 회원 탈퇴')}`}</Text>
+							<Text style={styles.description}>
+								{`${t('정말 탈퇴하시겠습니까?')}`} 🥺
 							</Text>
-							<CustomTextInput
-								value={value}
-								onChangeText={t => setValue(t)}
-								variant="none"
-							/>
 						</View>
 					</CompoundModal.ContentContainer>
 					<CompoundModal.ButtonRowContainer>
@@ -66,6 +57,11 @@ const styling = (theme: ThemeMode) =>
 			alignSelf: 'center',
 			color: colors[theme].GRAY_700,
 		},
+		description: {
+			alignSelf: 'center',
+			fontSize: 12,
+			color: colors[theme].GRAY_700,
+		},
 	});
 
-export default ChangeProfileModal;
+export default ChangeRevokeModal;

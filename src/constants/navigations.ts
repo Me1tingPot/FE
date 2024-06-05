@@ -39,6 +39,7 @@ const myNavigations = {
 	MY_PAGE_HOME: 'MyPageHome',
 	EDIT_PROFILE: 'EditProfile',
 	MY_WRITE_POST: 'MyWritePost',
+	MY_PROFILE_IMAGE_EDIT: 'MyProfileImageEdit',
 } as const;
 
 const feedNavigations = {
@@ -49,6 +50,12 @@ const feedNavigations = {
 	FEED_TAB: 'FeedTab',
 } as const;
 
+const userNavigations = {
+	USER: 'User',
+	USER_PROFILE: 'UserProfile',
+	USER_PROFILE_IMAGE: 'UserProfileImage',
+} as const;
+
 export {
 	authNavigations,
 	feedTabNavigations,
@@ -57,4 +64,5 @@ export {
 	myNavigations,
 	feedNavigations,
 	partyNavigations,
+	userNavigations,
 };

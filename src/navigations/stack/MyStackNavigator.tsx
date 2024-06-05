@@ -1,8 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+	StackNavigationOptions,
+	createStackNavigator,
+} from '@react-navigation/stack';
 import { colors, myNavigations } from '@/constants';
 import MyEditProfileScreen from '@/screens/my/MyEditProfileScreen';
 import MyHomeScreen from '@/screens/my/MyHomeScreen';
+import MyProfileImageEditScreen from '@/screens/my/MyProfileImageEditScreen';
 import MyWritePostScreen from '@/screens/my/MyWritePostScreen';
 import useThemeStore from '@/store/useThemeStore';
 
@@ -10,6 +14,7 @@ export type MyStackParamList = {
 	[myNavigations.MY_PAGE_HOME]: undefined;
 	[myNavigations.EDIT_PROFILE]: undefined;
 	[myNavigations.MY_WRITE_POST]: undefined;
+	[myNavigations.MY_PROFILE_IMAGE_EDIT]: undefined;
 };
 
 const Stack = createStackNavigator<MyStackParamList>();
@@ -17,6 +22,19 @@ const Stack = createStackNavigator<MyStackParamList>();
 function MyStackNavigator() {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
+
+	const commonHeaderOptions: StackNavigationOptions = {
+		headerTitleAlign: 'center',
+		headerBackTitleVisible: false,
+		headerShadowVisible: false,
+		headerStyle: {
+			backgroundColor: colors[theme].WHITE,
+		},
+		headerTitleStyle: {
+			color: colors[theme].BLACK,
+		},
+		headerTintColor: colors[theme].BLACK,
+	};
 
 	return (
 		<Stack.Navigator
@@ -48,9 +66,7 @@ function MyStackNavigator() {
 				component={MyEditProfileScreen}
 				options={{
 					headerTitle: `${t('프로필 수정')}`,
-					cardStyle: {
-						backgroundColor: colors[theme].WHITE,
-					},
+					...commonHeaderOptions,
 				}}
 			/>
 			<Stack.Screen
@@ -62,6 +78,11 @@ function MyStackNavigator() {
 						backgroundColor: colors[theme].WHITE,
 					},
 				}}
+			/>
+			<Stack.Screen
+				name={myNavigations.MY_PROFILE_IMAGE_EDIT}
+				component={MyProfileImageEditScreen}
+				options={{ headerTitle: `${t('프로필 사진')}`, ...commonHeaderOptions }}
 			/>
 		</Stack.Navigator>
 	);
