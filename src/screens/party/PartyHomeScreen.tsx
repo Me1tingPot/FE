@@ -10,7 +10,9 @@ import MapView, {
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import CustomMarker from '@/components/party/CustomMarker';
+import MarkerDetailModal from '@/components/party/MarkerDetailModal';
 import { alerts } from '@/constants';
+import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
@@ -22,13 +24,31 @@ interface PartyDetailScreenProps {
 	navigation: NavigationProp<PartyStackParamList>;
 }
 
+const markers = [
+	{ id: 1, coordinate: { latitude: 37.5915, longitude: 127.027 } },
+	{ id: 2, coordinate: { latitude: 37.5925, longitude: 127.036 } },
+	{ id: 3, coordinate: { latitude: 37.5935, longitude: 127.005 } },
+	{ id: 4, coordinate: { latitude: 37.5905, longitude: 127.023 } },
+	{ id: 5, coordinate: { latitude: 37.5885, longitude: 127.01 } },
+];
+
 const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const mapRef = useRef<MapView | null>(null);
 	const { userLocation, isUserLocationError } = useUserLocation();
 	const [selectLocation, setSelectLocation] = useState<LatLng | null>();
+	const [markerId, setMarkerId] = useState<number | null>(null);
+	const markerDetailModal = useModal();
 	usePermission('LOCATION');
+
+	const moveMapView = (coordinate: LatLng) => {
+		mapRef.current?.animateToRegion({
+			...coordinate,
+			latitudeDelta: 0.0922,
+			longitudeDelta: 0.0421,
+		});
+	};
 
 	const handlePressUserLocation = () => {
 		if (isUserLocationError) {
@@ -36,12 +56,7 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 			return;
 		}
 		// map 이동
-		mapRef.current?.animateToRegion({
-			latitude: userLocation.latitude,
-			longitude: userLocation.longitude,
-			latitudeDelta: 0.0922,
-			longitudeDelta: 0.0421,
-		});
+		moveMapView(userLocation);
 	};
 
 	const handlePressAddPost = () => {
@@ -57,6 +72,13 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 		});
 		// 뒤로 갔을 떄 위치정보 초기화
 		setSelectLocation(null);
+	};
+
+	// Which Marker Click judgement by Id
+	const handlePressMarker = (id: number, coordinate: LatLng) => {
+		moveMapView(coordinate);
+		setMarkerId(id);
+		markerDetailModal.show();
 	};
 
 	const handleLongPressMapView = ({ nativeEvent }: LongPressEvent) => {
@@ -76,18 +98,13 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 				// 지도 찍는 Event
 				onLongPress={handleLongPressMapView}
 			>
-				<CustomMarker
-					coordinate={{
-						latitude: 37.5516032365118,
-						longitude: 126.98989626020192,
-					}}
-				/>
-				<Marker
-					coordinate={{
-						latitude: 37.56,
-						longitude: 126.98989626020192,
-					}}
-				/>
+				{markers.map(({ id, coordinate }) => (
+					<CustomMarker
+						key={id}
+						coordinate={coordinate}
+						onPress={() => handlePressMarker(id, coordinate)}
+					/>
+				))}
 				{selectLocation && (
 					<Callout>
 						<Marker coordinate={selectLocation} />
@@ -106,6 +123,11 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 					onPress={handlePressUserLocation}
 				/>
 			</View>
+			<MarkerDetailModal
+				isVisible={markerDetailModal.isVisible}
+				markerId={markerId}
+				hide={markerDetailModal.hide}
+			/>
 		</>
 	);
 };
