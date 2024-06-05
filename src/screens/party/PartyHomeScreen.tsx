@@ -8,6 +8,10 @@ import MapView, {
 	PROVIDER_GOOGLE,
 } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+	BottomSheetModal,
+	BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import MainSearchInput from '@/components/common/MainSearchInput';
@@ -15,6 +19,9 @@ import Pagination from '@/components/common/Pagination';
 import SearchInput from '@/components/common/SearchInput';
 import CustomMarker from '@/components/party/CustomMarker';
 import MarkerDetailModal from '@/components/party/MarkerDetailModal';
+import PartyOptionBottomSheet, {
+	IFilter,
+} from '@/components/party/PartyOptionBottomSheet';
 import { alerts, colors } from '@/constants';
 import { numbers } from '@/constants/numbers';
 import useModal from '@/hooks/useModal';
@@ -45,13 +52,22 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 	const { theme } = useThemeStore();
 	const insets = useSafeAreaInsets();
 	const styles = styling(theme, insets);
-
+	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 	const { userLocation, isUserLocationError } = useUserLocation();
 	const { selectLocation, setSelectLocation } = useLocationStore();
 	const [markerId, setMarkerId] = useState<number | null>(null);
 	const markerDetailModal = useModal();
 	const { mapRef, moveMapView, handleChangeDelta } = useMoveMapView();
 	usePermission('LOCATION');
+
+	const handleClosePress = () => bottomSheetModalRef.current?.close();
+	const handleOpenPress = () => bottomSheetModalRef.current?.present();
+
+	const [filter, setFilter] = useState<IFilter>({
+		region: '',
+		duration: '',
+		status: '',
+	});
 
 	const handlePressUserLocation = () => {
 		if (isUserLocationError) {
@@ -101,7 +117,7 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 	};
 
 	return (
-		<>
+		<BottomSheetModalProvider>
 			<MapView
 				ref={mapRef}
 				style={styles.container}
@@ -146,11 +162,11 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 					name="my-location"
 					onPress={handlePressUserLocation}
 				/>
-				{/* <IconCircleButton
+				<IconCircleButton
 					family="MaterialIcons"
-					name="search"
-					onPress={handlePressSearch}
-				/> */}
+					name="filter"
+					onPress={handleOpenPress}
+				/>
 			</View>
 			<View style={styles.searchContainer}>
 				<MainSearchInput
@@ -187,7 +203,13 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 				markerId={markerId}
 				hide={markerDetailModal.hide}
 			/>
-		</>
+			<PartyOptionBottomSheet
+				ref={bottomSheetModalRef}
+				handleClosePress={handleClosePress}
+				filter={filter}
+				setFilter={setFilter}
+			/>
+		</BottomSheetModalProvider>
 	);
 };
 
