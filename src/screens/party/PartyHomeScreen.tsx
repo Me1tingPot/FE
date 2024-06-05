@@ -1,108 +1,112 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-	SafeAreaView,
-	StyleSheet,
-	Text,
-	ScrollView,
-	Pressable,
-	View,
-	RefreshControl,
-} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {
-	BottomSheetModal,
-	BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
+import { useRef, useState } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
+import MapView, {
+	Callout,
+	LatLng,
+	LongPressEvent,
+	Marker,
+	PROVIDER_GOOGLE,
+} from 'react-native-maps';
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
-import PartyCard from '@/components/common/PartyCard';
-import PartyOptionBottomSheet, {
-	IFilter,
-} from '@/components/party/PartyOptionBottomSheet';
-import { colors } from '@/constants';
+import CustomMarker from '@/components/party/CustomMarker';
+import { alerts } from '@/constants';
+import usePermission from '@/hooks/usePermission';
 import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
+import mapStyle from '@/style/mapStyle';
 import { ThemeMode } from '@/types';
+import useUserLocation from '../../hooks/useUserLocation';
 
-interface PartyHomeScreenProps {
+interface PartyDetailScreenProps {
 	navigation: NavigationProp<PartyStackParamList>;
 }
 
-const PartyHomeScreen = ({ navigation }: PartyHomeScreenProps) => {
+const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-	const [refreshing, setRefreshing] = useState(false);
-	const { t } = useTranslation();
+	const mapRef = useRef<MapView | null>(null);
+	const { userLocation, isUserLocationError } = useUserLocation();
+	const [selectLocation, setSelectLocation] = useState<LatLng | null>();
+	usePermission('LOCATION');
 
-	const handleClosePress = () => bottomSheetModalRef.current?.close();
-	const handleOpenPress = () => bottomSheetModalRef.current?.present();
+	const handlePressUserLocation = () => {
+		if (isUserLocationError) {
+			// Error Message
+			return;
+		}
+		// map 이동
+		mapRef.current?.animateToRegion({
+			latitude: userLocation.latitude,
+			longitude: userLocation.longitude,
+			latitudeDelta: 0.0922,
+			longitudeDelta: 0.0421,
+		});
+	};
 
-	const [filter, setFilter] = useState<IFilter>({
-		region: '',
-		duration: '',
-		status: '',
-	});
+	const handlePressAddPost = () => {
+		// 위치를 고르지 않고, 누르면 에러 발생.
+		if (!selectLocation) {
+			return Alert.alert(
+				alerts.NOT_SELECTED_LOCATION.TITLE,
+				alerts.NOT_SELECTED_LOCATION.DESCRIPTION,
+			);
+		}
+		navigation.navigate('PartyWrite', {
+			location: selectLocation,
+		});
+		// 뒤로 갔을 떄 위치정보 초기화
+		setSelectLocation(null);
+	};
 
-	const onRefresh = useCallback(() => {
-		setRefreshing(true);
-		setTimeout(() => {
-			setRefreshing(false);
-		}, 2000);
-	}, []);
+	const handleLongPressMapView = ({ nativeEvent }: LongPressEvent) => {
+		setSelectLocation(nativeEvent.coordinate);
+	};
 
 	return (
-		<BottomSheetModalProvider>
-			<SafeAreaView style={styles.container}>
-				<Pressable onPress={handleOpenPress} style={styles.buttonContainer}>
-					<Text style={styles.filterText}>{t('필터')}</Text>
-					<Ionicons name="options" size={23} color={colors[theme].RED_500} />
-				</Pressable>
-				<View style={styles.selectedContainer}>
-					<View style={styles.selectedButton}>
-						<Text style={styles.selectedText}>{filter.region}</Text>
-					</View>
-					<View style={styles.selectedButton}>
-						<Text style={styles.selectedText}>{filter.duration}</Text>
-					</View>
-					<View style={styles.selectedButton}>
-						<Text style={styles.selectedText}>{filter.status}</Text>
-					</View>
-				</View>
-				<ScrollView
-					contentContainerStyle={styles.scrollContainer}
-					refreshControl={
-						<RefreshControl
-							refreshing={refreshing}
-							onRefresh={onRefresh}
-							colors={[colors[theme].BLACK]}
-							tintColor={colors[theme].BLACK}
-						/>
-					}
-				>
-					<PartyCard />
-					<Pressable onPress={() => navigation.navigate('PartyDetail')}>
-						<Text>HI</Text>
-					</Pressable>
-				</ScrollView>
-				<View style={styles.buttonList}>
-					<IconCircleButton
-						family="Octicons"
-						name="pencil"
-						color={colors[theme].WHITE}
-						size={30}
-						onPress={() => navigation.navigate('PartyWrite')}
-					/>
-				</View>
-				<PartyOptionBottomSheet
-					ref={bottomSheetModalRef}
-					handleClosePress={handleClosePress}
-					filter={filter}
-					setFilter={setFilter}
+		<>
+			<MapView
+				ref={mapRef}
+				style={styles.container}
+				provider={PROVIDER_GOOGLE}
+				showsUserLocation
+				followsUserLocation
+				showsMyLocationButton={false}
+				customMapStyle={mapStyle}
+				// 지도 찍는 Event
+				onLongPress={handleLongPressMapView}
+			>
+				<CustomMarker
+					coordinate={{
+						latitude: 37.5516032365118,
+						longitude: 126.98989626020192,
+					}}
 				/>
-			</SafeAreaView>
-		</BottomSheetModalProvider>
+				<Marker
+					coordinate={{
+						latitude: 37.56,
+						longitude: 126.98989626020192,
+					}}
+				/>
+				{selectLocation && (
+					<Callout>
+						<Marker coordinate={selectLocation} />
+					</Callout>
+				)}
+			</MapView>
+			<View style={styles.buttonList}>
+				<IconCircleButton
+					family="MaterialIcons"
+					name="add"
+					onPress={handlePressAddPost}
+				/>
+				<IconCircleButton
+					family="MaterialIcons"
+					name="my-location"
+					onPress={handlePressUserLocation}
+				/>
+			</View>
+		</>
 	);
 };
 
@@ -110,37 +114,6 @@ const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
 			flex: 1,
-			backgroundColor: colors[theme].WHITE,
-		},
-		buttonContainer: {
-			flexDirection: 'row',
-			justifyContent: 'flex-end',
-			alignItems: 'center',
-			padding: 20,
-			gap: 10,
-		},
-		filterText: {
-			fontSize: 15,
-			color: colors[theme].RED_500,
-			fontFamily: 'Pretendard-Bold',
-		},
-		scrollContainer: {
-			display: 'flex',
-			flexDirection: 'column',
-			gap: 10,
-			paddingHorizontal: 20,
-		},
-		selectedContainer: {
-			flexDirection: 'row',
-			justifyContent: 'space-around',
-			marginBottom: 20,
-		},
-		selectedText: {
-			color: colors[theme].GRAY_700,
-			fontFamily: 'Pretendard-bold',
-		},
-		selectedButton: {
-			borderColor: colors[theme].GRAY_700,
 		},
 		buttonList: {
 			position: 'absolute',
@@ -149,4 +122,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default PartyHomeScreen;
+export default PartyDetailScreen;

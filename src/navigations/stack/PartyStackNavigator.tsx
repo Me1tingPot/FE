@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { LatLng } from 'react-native-maps';
 import {
 	StackNavigationOptions,
 	createStackNavigator,
@@ -11,7 +12,7 @@ import useThemeStore from '@/store/useThemeStore';
 
 export type PartyStackParamList = {
 	[partyNavigations.PARTY_HOME]: undefined;
-	[partyNavigations.PARTY_WRITE]: undefined;
+	[partyNavigations.PARTY_WRITE]: { location: LatLng };
 	[partyNavigations.PARTY_DETAIL]: undefined;
 };
 

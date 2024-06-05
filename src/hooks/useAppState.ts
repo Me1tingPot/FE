@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { AppState, StyleSheet, Text, View } from 'react-native';
+import { useRef, useState, useEffect } from 'react';
+import { AppState } from 'react-native';
 
-const AppStateExample = () => {
+const useAppState = () => {
 	const appState = useRef(AppState.currentState);
 	const [appStateVisible, setAppStateVisible] = useState(appState.current);
 	// 사용자가 허용 후, 앱으로 다시 돌아온 상태값 설정.
@@ -34,4 +34,4 @@ const AppStateExample = () => {
 	return { isComeback };
 };
 
-export default AppStateExample;
+export default useAppState;
