@@ -104,6 +104,7 @@ const styling = (theme: ThemeMode) =>
 			alignSelf: 'center',
 			fontSize: 25,
 			fontFamily: 'Pretendard-Light',
+			color: colors[theme].BLACK,
 		},
 		textRed: {
 			color: colors[theme].RED_500,
