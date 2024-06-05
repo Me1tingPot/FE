@@ -22,6 +22,7 @@ const partyNavigations = {
 	PARTY_HOME: 'PartyHome',
 	PARTY_WRITE: 'PartyWrite',
 	PARTY_DETAIL: 'PartyDetail',
+	PARTY_SEARCH: 'PartySearch',
 } as const;
 
 const communityNavigations = {

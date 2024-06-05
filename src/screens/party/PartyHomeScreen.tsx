@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, Keyboard, StyleSheet, View } from 'react-native';
 import MapView, {
 	Callout,
 	LatLng,
@@ -7,18 +7,27 @@ import MapView, {
 	Marker,
 	PROVIDER_GOOGLE,
 } from 'react-native-maps';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
+import MainSearchInput from '@/components/common/MainSearchInput';
+import Pagination from '@/components/common/Pagination';
+import SearchInput from '@/components/common/SearchInput';
 import CustomMarker from '@/components/party/CustomMarker';
 import MarkerDetailModal from '@/components/party/MarkerDetailModal';
-import { alerts } from '@/constants';
+import { alerts, colors } from '@/constants';
+import { numbers } from '@/constants/numbers';
 import useModal from '@/hooks/useModal';
+import useMoveMapView from '@/hooks/useMoveMapView';
 import usePermission from '@/hooks/usePermission';
+import useSearchLocation from '@/hooks/useSearchLocation';
 import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
+import useLocationStore from '@/store/useLocationStore';
 import useThemeStore from '@/store/useThemeStore';
 import mapStyle from '@/style/mapStyle';
 import { ThemeMode } from '@/types';
 import useUserLocation from '../../hooks/useUserLocation';
+import SearchRegionResult from './SearchRegionResult';
 
 interface PartyDetailScreenProps {
 	navigation: NavigationProp<PartyStackParamList>;
@@ -34,21 +43,15 @@ const markers = [
 
 const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 	const { theme } = useThemeStore();
-	const styles = styling(theme);
-	const mapRef = useRef<MapView | null>(null);
+	const insets = useSafeAreaInsets();
+	const styles = styling(theme, insets);
+
 	const { userLocation, isUserLocationError } = useUserLocation();
-	const [selectLocation, setSelectLocation] = useState<LatLng | null>();
+	const { selectLocation, setSelectLocation } = useLocationStore();
 	const [markerId, setMarkerId] = useState<number | null>(null);
 	const markerDetailModal = useModal();
+	const { mapRef, moveMapView, handleChangeDelta } = useMoveMapView();
 	usePermission('LOCATION');
-
-	const moveMapView = (coordinate: LatLng) => {
-		mapRef.current?.animateToRegion({
-			...coordinate,
-			latitudeDelta: 0.0922,
-			longitudeDelta: 0.0421,
-		});
-	};
 
 	const handlePressUserLocation = () => {
 		if (isUserLocationError) {
@@ -85,6 +88,18 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 		setSelectLocation(nativeEvent.coordinate);
 	};
 
+	const handlePressSearch = () => {
+		navigation.navigate('PartySearch');
+	};
+
+	const [keyword, setKeyword] = useState<string>('');
+	const { regionInfo, pageParam, fetchNextPage, fetchPrevPage, hasNextPage } =
+		useSearchLocation(keyword, userLocation);
+
+	const handleChangeKeyword = (text: string) => {
+		setKeyword(text);
+	};
+
 	return (
 		<>
 			<MapView
@@ -97,6 +112,19 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 				customMapStyle={mapStyle}
 				// 지도 찍는 Event
 				onLongPress={handleLongPressMapView}
+				onPress={() => {
+					if (keyword === '') {
+						console.log('hi', '불필요 이벤트 테스트');
+						setKeyword('');
+						Keyboard.dismiss();
+					}
+					return;
+				}}
+				onRegionChangeComplete={handleChangeDelta}
+				region={{
+					...userLocation,
+					...numbers.INITIAL_DELTA,
+				}}
 			>
 				{markers.map(({ id, coordinate }) => (
 					<CustomMarker
@@ -122,7 +150,42 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 					name="my-location"
 					onPress={handlePressUserLocation}
 				/>
+				{/* <IconCircleButton
+					family="MaterialIcons"
+					name="search"
+					onPress={handlePressSearch}
+				/> */}
 			</View>
+			<View style={styles.searchContainer}>
+				<MainSearchInput
+					autoFocus
+					value={keyword}
+					onChangeText={handleChangeKeyword}
+					placeholder="검색할 장소를 입력하세요!"
+					onSubmit={() => Keyboard.dismiss()}
+				/>
+				{keyword && (
+					<View
+						style={{
+							flex: 1,
+							backgroundColor: 'white',
+						}}
+					>
+						<SearchRegionResult
+							regionInfo={regionInfo}
+							setKeyword={setKeyword}
+						/>
+						<Pagination
+							pageParam={pageParam}
+							fetchNextPage={fetchNextPage}
+							fetchPrevPage={fetchPrevPage}
+							hasNextPage={hasNextPage}
+							totalLength={regionInfo.length}
+						/>
+					</View>
+				)}
+			</View>
+
 			<MarkerDetailModal
 				isVisible={markerDetailModal.isVisible}
 				markerId={markerId}
@@ -132,10 +195,20 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 	);
 };
 
-const styling = (theme: ThemeMode) =>
+const styling = (theme: ThemeMode, insets: { top: number }) =>
 	StyleSheet.create({
 		container: {
 			flex: 1,
+		},
+		searchContainer: {
+			position: 'absolute',
+			justifyContent: 'center',
+			alignItems: 'center',
+			top: insets.top + 15,
+			left: 0,
+			right: 0,
+			paddingHorizontal: 20,
+			gap: 20,
 		},
 		buttonList: {
 			position: 'absolute',
