@@ -1,11 +1,13 @@
 #import "AppDelegate.h"
 #import <Firebase.h>
+#import <GoogleMaps/GoogleMaps.h>
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyDDzyab6MNl-B-dpS90sxA80nR61V9hhHA"];
   self.moduleName = @"MeltingPot";
   [FIRApp configure];
   // You can add your custom initial props in the dictionary below.

@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { LatLng } from 'react-native-maps';
 import {
 	StackNavigationOptions,
 	createStackNavigator,
@@ -6,13 +7,15 @@ import {
 import { colors, partyNavigations } from '@/constants';
 import PartyDetailScreen from '@/screens/party/PartyDetailScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
+import PartySearchScreen from '@/screens/party/PartySearchScreen';
 import PartyWriteScreen from '@/screens/party/PartyWriteScreen';
 import useThemeStore from '@/store/useThemeStore';
 
 export type PartyStackParamList = {
 	[partyNavigations.PARTY_HOME]: undefined;
-	[partyNavigations.PARTY_WRITE]: undefined;
+	[partyNavigations.PARTY_WRITE]: { location: LatLng };
 	[partyNavigations.PARTY_DETAIL]: undefined;
+	[partyNavigations.PARTY_SEARCH]: undefined;
 };
 
 const Stack = createStackNavigator<PartyStackParamList>();
@@ -56,6 +59,15 @@ function PartyStackNavigator() {
 			<Stack.Screen
 				name={partyNavigations.PARTY_DETAIL}
 				component={PartyDetailScreen}
+			/>
+			<Stack.Screen
+				name={partyNavigations.PARTY_SEARCH}
+				component={PartySearchScreen}
+				options={{
+					presentation: 'modal',
+					headerShown: true,
+					headerTitle: '장소 검색',
+				}}
 			/>
 		</Stack.Navigator>
 	);
