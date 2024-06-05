@@ -8,6 +8,21 @@ import useThemeStorage from '@/hooks/useThemeStorage';
 import queryClient from './src/api/queryClient';
 import RootNavigator from './src/navigations/root/RootNavigator';
 
+const linking = {
+	prefixes: ['meltingpot://'],
+	config: {
+		screens: {
+			FeedTab: 'FeedTab',
+			Alert: 'Alert',
+			ChatStart: 'ChatStart',
+			CommunityQuestionDetail: 'CommunityQuestionDetail',
+			CommunityPostingDetail: 'CommunityPostingDetail',
+			PartyDetail: 'PartyDetail',
+			UserProfile: 'UserProfile',
+		},
+	},
+};
+
 function App() {
 	const { theme } = useThemeStorage();
 	const getFcmToken = async () => {
@@ -32,7 +47,7 @@ function App() {
 				barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
 			/>
 			<GestureHandlerRootView>
-				<NavigationContainer>
+				<NavigationContainer linking={linking}>
 					<RootNavigator />
 				</NavigationContainer>
 			</GestureHandlerRootView>

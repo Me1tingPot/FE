@@ -5,11 +5,21 @@ import {
 	createStackNavigator,
 } from '@react-navigation/stack';
 import ChatHomeHeaderLeft from '@/components/chat/ChatHomeHeaderLeft';
-import { colors, feedNavigations } from '@/constants';
+import {
+	colors,
+	communityNavigations,
+	feedNavigations,
+	partyNavigations,
+	userNavigations,
+} from '@/constants';
 import AlertHomeScreen from '@/screens/alert/AlertHomeScreen';
 import ChatHomeScreen from '@/screens/chat/ChatHomeScreen';
 import ChatScreen from '@/screens/chat/ChatScreen';
 import ChatStartScreen from '@/screens/chat/ChatStartScreen';
+import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDetailScreen';
+import CommunityQuestionDetailScreen from '@/screens/community/CommunityQuestionDetailScreen';
+import PartyDetailScreen from '@/screens/party/PartyDetailScreen';
+import UserProfileScreen from '@/screens/user/UserProfileScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import FeedTabNavigator from '../tab/FeedTabNavigator';
@@ -20,6 +30,10 @@ export type FeedStackParamList = {
 	[feedNavigations.CHAT_START]: undefined;
 	[feedNavigations.CHAT_HOME]: undefined;
 	[feedNavigations.CHAT]: { id: number };
+	[communityNavigations.COMMUNITY_POSTING_DETAIL]: { id: number };
+	[communityNavigations.COMMUNITY_QUESTION_DETAIL]: { id: number };
+	[partyNavigations.PARTY_DETAIL]: { id: number };
+	[userNavigations.USER_PROFILE]: { id: number };
 };
 
 function FeedStackNavigator() {
@@ -77,6 +91,22 @@ function FeedStackNavigator() {
 				name={feedNavigations.CHAT}
 				component={ChatScreen}
 				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name={communityNavigations.COMMUNITY_POSTING_DETAIL}
+				component={CommunityPostingDetailScreen}
+			/>
+			<Stack.Screen
+				name={communityNavigations.COMMUNITY_QUESTION_DETAIL}
+				component={CommunityQuestionDetailScreen}
+			/>
+			<Stack.Screen
+				name={partyNavigations.PARTY_DETAIL}
+				component={PartyDetailScreen}
+			/>
+			<Stack.Screen
+				name={userNavigations.USER_PROFILE}
+				component={UserProfileScreen}
 			/>
 		</Stack.Navigator>
 	);

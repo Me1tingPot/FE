@@ -8,8 +8,8 @@ import FeedTabNavigator from '../tab/FeedTabNavigator';
 interface RootNavigatorProps {}
 
 function RootNavigator({}: RootNavigatorProps) {
-	const isLoggedIn = true;
-	return <>{!isLoggedIn ? <FeedStackNavigator /> : <AuthStackNavigator />}</>;
+	const isLoggedIn = false;
+	return <>{isLoggedIn ? <FeedStackNavigator /> : <AuthStackNavigator />}</>;
 }
 
 const styles = StyleSheet.create({});
