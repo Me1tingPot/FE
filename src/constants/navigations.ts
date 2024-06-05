@@ -39,6 +39,7 @@ const myNavigations = {
 	MY_PAGE_HOME: 'MyPageHome',
 	EDIT_PROFILE: 'EditProfile',
 	MY_WRITE_POST: 'MyWritePost',
+	MY_PROFILE_IMAGE_EDIT: 'MyProfileImageEdit',
 } as const;
 
 const feedNavigations = {

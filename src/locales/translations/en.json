@@ -396,5 +396,8 @@
 	"댓글단 글": "posts with a comment",
 	"변경할 이름을 입력해주세요.": "Please enter the name you want to change.",
 	"정말 탈퇴하시겠습니까?": "Are you sure you want to delete this account?",
-	"변경할 프로필 소개를 입력해주세요.": "Please enter the profile introduction you want to change."
+	"변경할 프로필 소개를 입력해주세요.": "Please enter the profile introduction you want to change.",
+	"사진 등록 후 대표사진을 선택해주세요.": "Please select a thumbnail after registering the photo.",
+	"대표": "thumbnail",
+	"프로필 사진": "Profile photo"
 }

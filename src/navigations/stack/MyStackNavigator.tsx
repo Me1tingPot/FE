@@ -6,6 +6,7 @@ import {
 import { colors, myNavigations } from '@/constants';
 import MyEditProfileScreen from '@/screens/my/MyEditProfileScreen';
 import MyHomeScreen from '@/screens/my/MyHomeScreen';
+import MyProfileImageEditScreen from '@/screens/my/MyProfileImageEditScreen';
 import MyWritePostScreen from '@/screens/my/MyWritePostScreen';
 import useThemeStore from '@/store/useThemeStore';
 
@@ -13,6 +14,7 @@ export type MyStackParamList = {
 	[myNavigations.MY_PAGE_HOME]: undefined;
 	[myNavigations.EDIT_PROFILE]: undefined;
 	[myNavigations.MY_WRITE_POST]: undefined;
+	[myNavigations.MY_PROFILE_IMAGE_EDIT]: undefined;
 };
 
 const Stack = createStackNavigator<MyStackParamList>();
@@ -76,6 +78,11 @@ function MyStackNavigator() {
 						backgroundColor: colors[theme].WHITE,
 					},
 				}}
+			/>
+			<Stack.Screen
+				name={myNavigations.MY_PROFILE_IMAGE_EDIT}
+				component={MyProfileImageEditScreen}
+				options={{ headerTitle: `${t('프로필 사진')}`, ...commonHeaderOptions }}
 			/>
 		</Stack.Navigator>
 	);

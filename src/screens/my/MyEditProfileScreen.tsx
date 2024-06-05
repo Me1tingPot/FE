@@ -10,19 +10,23 @@ import {
 	View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NavigationProp } from '@react-navigation/native';
 import ChangeNameModal from '@/components/my/ChangeNameModal';
 import ChangeProfileModal from '@/components/my/ChangeProfileModal';
 import ChangeRevokeModal from '@/components/my/ChangeRevokeModal';
-import { colors } from '@/constants';
-import useImagePicker from '@/hooks/useImagePicker';
+import { colors, myNavigations } from '@/constants';
 import useModal from '@/hooks/useModal';
-import usePermission from '@/hooks/usePermission';
+import { MyStackParamList } from '@/navigations/stack/MyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-interface MyEditProfileScreenProps {}
+interface MyEditProfileScreenProps {
+	navigation: NavigationProp<MyStackParamList>;
+}
 
-const MyEditProfileScreen = ({}: MyEditProfileScreenProps) => {
+const userImg = '';
+
+const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 	const [name, setName] = useState('');
 	const [introduction, setIntroduction] = useState('');
 	const { theme } = useThemeStore();
@@ -31,11 +35,6 @@ const MyEditProfileScreen = ({}: MyEditProfileScreenProps) => {
 	const profileModal = useModal();
 	const nameModal = useModal();
 	const revokeModal = useModal();
-	usePermission('PHOTO');
-	const imagePicker = useImagePicker({
-		initialImages: [],
-		maxFiles: 1,
-	});
 
 	const handleChangeName = () => {
 		console.log(name, '이름이 변경되었습니다.');
@@ -58,11 +57,8 @@ const MyEditProfileScreen = ({}: MyEditProfileScreenProps) => {
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.contentContainer}>
 				<View style={styles.userImg}>
-					{imagePicker.imageUris[0] ? (
-						<Image
-							source={{ uri: imagePicker.imageUris[0].uri }}
-							style={styles.userImg}
-						/>
+					{userImg ? (
+						<Image source={{ uri: userImg }} style={styles.userImg} />
 					) : (
 						<Ionicons
 							name="person-sharp"
@@ -72,7 +68,9 @@ const MyEditProfileScreen = ({}: MyEditProfileScreenProps) => {
 					)}
 					<TouchableOpacity
 						style={styles.cameraBtn}
-						onPress={() => imagePicker.handleChange()}
+						onPress={() =>
+							navigation.navigate(myNavigations.MY_PROFILE_IMAGE_EDIT)
+						}
 						activeOpacity={0.8}
 					>
 						<Ionicons name="camera" size={25} color={colors[theme].WHITE} />
