@@ -113,12 +113,8 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 				// 지도 찍는 Event
 				onLongPress={handleLongPressMapView}
 				onPress={() => {
-					if (keyword === '') {
-						console.log('hi', '불필요 이벤트 테스트');
-						setKeyword('');
-						Keyboard.dismiss();
-					}
-					return;
+					setKeyword('');
+					Keyboard.dismiss();
 				}}
 				onRegionChangeComplete={handleChangeDelta}
 				region={{
