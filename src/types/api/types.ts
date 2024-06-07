@@ -1,3 +1,8 @@
+export type IMAGE_DTO = {
+	imageKey: string;
+	thumbnail: boolean;
+};
+
 export type TOKEN_DTO = {
 	accessToken: string;
 	accessTokenExpiresIn: string;

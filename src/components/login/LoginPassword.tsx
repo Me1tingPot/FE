@@ -1,9 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Alert, StyleSheet, Text, View } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
-import { authNavigations, colors, feedTabNavigations } from '@/constants';
-import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
+import { StyleSheet, Text, View } from 'react-native';
+import { colors } from '@/constants';
 import { LoginInputs } from '@/screens/auth/LoginScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -11,11 +9,11 @@ import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
 interface LoginPasswordProps {
-	navigation: NavigationProp<AuthStackParamList>;
 	onSubmit: (data: any) => Promise<void>;
+	isPending?: boolean;
 }
 
-const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
+const LoginPassword = ({ isPending, onSubmit }: LoginPasswordProps) => {
 	const {
 		control,
 		handleSubmit,
@@ -52,7 +50,9 @@ const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
 					label={t('로그인')}
 					onPress={() => handleSubmit(onSubmit)()}
 					variant={'filled'}
-					disabled={errors.password?.message || !password ? true : false}
+					disabled={
+						errors.password?.message || !password || isPending ? true : false
+					}
 				/>
 			</View>
 		</View>

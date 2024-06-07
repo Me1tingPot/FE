@@ -1,14 +1,14 @@
 import { UseFormProps } from 'react-hook-form';
-import { Alert, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NavigationProp } from '@react-navigation/native';
-import { login } from '@/api/auth';
 import GenericForm from '@/components/form/GenericForm';
 import LoginEmail from '@/components/login/LoginEmail';
 import LoginPassword from '@/components/login/LoginPassword';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
 import { authNavigations, colors, feedTabNavigations } from '@/constants';
+import { useLogin } from '@/hooks/queries/useAuth';
 import { useFunnel } from '@/hooks/useFunnel';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import { loginSchema } from '@/schema';
@@ -47,19 +47,25 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 		reValidateMode: 'onChange',
 	};
 
-	const onSubmit = async (data: any) => {
+	const { mutate: login, isPending } = useLogin();
+
+	const onSubmit = async (data: LoginInputs) => {
 		const { email, password } = data;
-		try {
-			const res = await login(email, password);
-			if (res.data.email) {
-				navigation.navigate(feedTabNavigations.FEED_HOME);
-			}
-		} catch (error: any) {
-			if ((error.response.status = 403)) {
-				Alert.alert('존재하지 않는 사용자입니다.');
-			}
-			navigation.navigate(authNavigations.AUTH_HOME);
-		}
+		login(
+			{ email, password },
+			{
+				onSuccess: data => {
+					console.log('로그인 성공:', data);
+					if (data.data.email) {
+						navigation.navigate(feedTabNavigations.FEED_HOME);
+					}
+				},
+				onError: (error: any) => {
+					console.error('로그인 실패:', error);
+					navigation.navigate(authNavigations.AUTH_HOME);
+				},
+			},
+		);
 	};
 
 	return (
@@ -82,7 +88,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 						<LoginEmail onNext={() => setStep(LOGIN_STEPS.PASSWORD)} />
 					</Funnel.Step>
 					<Funnel.Step name={LOGIN_STEPS.PASSWORD}>
-						<LoginPassword navigation={navigation} onSubmit={onSubmit} />
+						<LoginPassword onSubmit={onSubmit} isPending={isPending} />
 					</Funnel.Step>
 				</Funnel>
 			</GenericForm>
