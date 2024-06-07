@@ -36,6 +36,10 @@ const login = async ({
 	return data;
 };
 
+const logout = async () => {
+	await axiosInstance.delete('/auth/signout');
+};
+
 const signup = async ({
 	username,
 	password,
@@ -79,4 +83,4 @@ const getAccessToken = async (): Promise<ResponseToken> => {
 	return data;
 };
 
-export { login, signup, getAccessToken };
+export { login, logout, signup, getAccessToken };

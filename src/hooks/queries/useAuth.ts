@@ -5,7 +5,7 @@ import {
 	useQuery,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { getAccessToken, login, signup } from '@/api/auth';
+import { getAccessToken, login, logout, signup } from '@/api/auth';
 import queryClient from '@/api/queryClient';
 import {
 	removeEncryptStorage,
@@ -83,14 +83,29 @@ function useGetAccessToken() {
 	}, [isError]);
 }
 
+// Logout
+function useLogout(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: logout,
+		onSuccess: () => {
+			removeHeader('Authorization');
+			removeEncryptStorage('refreshToken');
+			queryClient.resetQueries({ queryKey: ['auth'] });
+		},
+		...mutationOptions,
+	});
+}
+
 function useAuth() {
 	const signUpMutation = useSignup();
 	const loginMutation = useLogin();
 	const getNewAccessToken = useGetAccessToken();
+	const logoutMutation = useLogout();
 
 	return {
 		signUpMutation,
 		loginMutation,
+		logoutMutation,
 		getNewAccessToken,
 	};
 }

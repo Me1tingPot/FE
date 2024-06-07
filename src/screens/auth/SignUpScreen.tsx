@@ -8,14 +8,13 @@ import {
 	Birth,
 	Email,
 	FaceImg,
-	Location,
 	Language,
 	Name,
 	Password,
 	Sex,
 } from '@/components/signup';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
-import { authNavigations, colors, feedTabNavigations } from '@/constants';
+import { colors } from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
 import { useFunnel } from '@/hooks/useFunnel';
 import { signupSchema } from '@/schema';
