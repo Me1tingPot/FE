@@ -15,7 +15,6 @@ import {
 } from '@/components/signup';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
 import { authNavigations, colors, feedTabNavigations } from '@/constants';
-import { useSignup } from '@/hooks/queries/useAuth';
 import { useFunnel } from '@/hooks/useFunnel';
 import { signupSchema } from '@/schema';
 import useThemeStore from '@/store/useThemeStore';
@@ -69,8 +68,6 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 		reValidateMode: 'onChange',
 	};
 
-	const { mutate: signup, isPending } = useSignup();
-
 	const onSubmit = async (data: SignupInputs) => {
 		const {
 			sex: gender,
@@ -84,30 +81,30 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 			email: username,
 		} = data;
 		const name = lastName + firstName;
-		signup(
-			{
-				gender,
-				name,
-				password,
-				birth,
-				languages,
-				profileImages,
-				nationality,
-				username,
-			},
-			{
-				onSuccess: data => {
-					console.log('회원가입 성공:', data);
-					if (data.data.email) {
-						navigation.navigate(feedTabNavigations.FEED_HOME);
-					}
-				},
-				onError: (error: any) => {
-					console.error('회원가입 실패:', error);
-					navigation.navigate(authNavigations.AUTH_HOME);
-				},
-			},
-		);
+		// signup(
+		// 	{
+		// 		gender,
+		// 		name,
+		// 		password,
+		// 		birth,
+		// 		languages,
+		// 		profileImages,
+		// 		nationality,
+		// 		username,
+		// 	},
+		// 	{
+		// 		onSuccess: data => {
+		// 			console.log('회원가입 성공:', data);
+		// 			if (data.data.email) {
+		// 				navigation.navigate(feedTabNavigations.FEED_HOME);
+		// 			}
+		// 		},
+		// 		onError: (error: any) => {
+		// 			console.error('회원가입 실패:', error);
+		// 			navigation.navigate(authNavigations.AUTH_HOME);
+		// 		},
+		// 	},
+		// );
 	};
 
 	return (
@@ -145,7 +142,7 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 						<FaceImg onNext={() => setStep(FUNNEL_STEPS.LANGUAGE)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.LANGUAGE}>
-						<Language onSubmit={onSubmit} isPending={isPending} />
+						<Language onSubmit={onSubmit} />
 					</Funnel.Step>
 				</Funnel>
 			</GenericForm>

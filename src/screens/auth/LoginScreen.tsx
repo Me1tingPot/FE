@@ -8,7 +8,7 @@ import LoginEmail from '@/components/login/LoginEmail';
 import LoginPassword from '@/components/login/LoginPassword';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
 import { authNavigations, colors, feedTabNavigations } from '@/constants';
-import { useLogin } from '@/hooks/queries/useAuth';
+import useAuth from '@/hooks/queries/useAuth';
 import { useFunnel } from '@/hooks/useFunnel';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import { loginSchema } from '@/schema';
@@ -47,26 +47,32 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 		reValidateMode: 'onChange',
 	};
 
-	const { mutate: login, isPending } = useLogin();
+	const { loginMutation } = useAuth();
 
 	const onSubmit = async (data: LoginInputs) => {
 		const { email, password } = data;
-
-		login(
+		loginMutation.mutate(
 			{ email, password },
 			{
-				onSuccess: data => {
-					console.log('로그인 성공:', data);
-					if (data.data.email) {
-						navigation.navigate(feedTabNavigations.FEED_HOME);
-					}
-				},
-				onError: (error: any) => {
-					console.error('로그인 실패:', error);
-					navigation.navigate(authNavigations.AUTH_HOME);
-				},
+				onError: error => {},
 			},
 		);
+
+		// login(
+		// 	{ email, password },
+		// 	{
+		// 		onSuccess: data => {
+		// 			console.log('로그인 성공:', data);
+		// 			if (data.data.email) {
+		// 				navigation.navigate(feedTabNavigations.FEED_HOME);
+		// 			}
+		// 		},
+		// 		onError: (error: any) => {
+		// 			console.error('로그인 실패:', error);
+		// 			navigation.navigate(authNavigations.AUTH_HOME);
+		// 		},
+		// 	},
+		// );
 	};
 
 	return (
@@ -89,7 +95,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 						<LoginEmail onNext={() => setStep(LOGIN_STEPS.PASSWORD)} />
 					</Funnel.Step>
 					<Funnel.Step name={LOGIN_STEPS.PASSWORD}>
-						<LoginPassword onSubmit={onSubmit} isPending={isPending} />
+						<LoginPassword onSubmit={onSubmit} />
 					</Funnel.Step>
 				</Funnel>
 			</GenericForm>

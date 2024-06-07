@@ -1,3 +1,5 @@
+import Config from 'react-native-config';
+import { string } from 'zod';
 import { API_URL } from '@/constants/path';
 import { LOGIN_TYPES } from '@/types/api';
 import { IMAGE_DTO } from '@/types/api/types';
@@ -14,15 +16,23 @@ export type signupProps = {
 	profileImages: IMAGE_DTO[];
 };
 
-const login = async (email: string, password: string): Promise<LOGIN_TYPES> => {
+type RequestUser = {
+	email: string;
+	password: string;
+};
+
+const login = async ({
+	email,
+	password,
+}: RequestUser): Promise<LOGIN_TYPES> => {
 	const { data } = await axiosInstance.post(
-		`${process.env.API_URL}/${API_URL.LOGIN}`,
+		`${Config.API_URL}/${API_URL.LOGIN}`,
 		{
 			email: email,
 			password: password,
 		},
 	);
-	// console.log(res.data);
+	console.log(data);
 	return data;
 };
 
@@ -37,7 +47,7 @@ const signup = async ({
 	profileImages,
 }: signupProps) => {
 	const { data } = await axiosInstance.post(
-		`${process.env.API_URL}/${API_URL.SIGNUP}`,
+		`${Config.API_URL}/${API_URL.SIGNUP}`,
 		{
 			username: username,
 			password: password,
