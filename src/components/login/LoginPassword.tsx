@@ -1,8 +1,8 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { colors, feedTabNavigations } from '@/constants';
+import { authNavigations, colors, feedTabNavigations } from '@/constants';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import { LoginInputs } from '@/screens/auth/LoginScreen';
 import useThemeStore from '@/store/useThemeStore';
@@ -50,10 +50,7 @@ const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
 			<View style={styles.buttonLayout}>
 				<CustomButton
 					label={t('로그인')}
-					onPress={() => {
-						handleSubmit(onSubmit)();
-						navigation.navigate(feedTabNavigations.FEED_HOME);
-					}}
+					onPress={() => handleSubmit(onSubmit)()}
 					variant={'filled'}
 					disabled={errors.password?.message || !password ? true : false}
 				/>

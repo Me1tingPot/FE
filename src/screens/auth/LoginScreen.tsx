@@ -1,13 +1,14 @@
 import { UseFormProps } from 'react-hook-form';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NavigationProp } from '@react-navigation/native';
+import { login } from '@/api/auth';
 import GenericForm from '@/components/form/GenericForm';
 import LoginEmail from '@/components/login/LoginEmail';
 import LoginPassword from '@/components/login/LoginPassword';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
-import { colors } from '@/constants';
+import { authNavigations, colors, feedTabNavigations } from '@/constants';
 import { useFunnel } from '@/hooks/useFunnel';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import { loginSchema } from '@/schema';
@@ -47,10 +48,17 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 	};
 
 	const onSubmit = async (data: any) => {
+		const { email, password } = data;
 		try {
-			console.log('입력받은 데이터: ', data);
-		} catch (error) {
-			console.error(error);
+			const res = await login(email, password);
+			if (res.data.email) {
+				navigation.navigate(feedTabNavigations.FEED_HOME);
+			}
+		} catch (error: any) {
+			if ((error.response.status = 403)) {
+				Alert.alert('존재하지 않는 사용자입니다.');
+			}
+			navigation.navigate(authNavigations.AUTH_HOME);
 		}
 	};
 
