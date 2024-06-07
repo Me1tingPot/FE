@@ -1,32 +1,18 @@
+import { useEffect } from 'react';
 import {
 	UseMutationOptions,
-	UseMutationResult,
 	useMutation,
+	useQuery,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { login, signup, signupProps } from '@/api/auth';
-import axiosInstance from '@/api/axios';
-import { LoginInputs } from '@/screens/auth/LoginScreen';
-import { LOGIN_TYPES, SIGNUP_TYPES } from '@/types/api';
-import { setEncryptStorage, setHeader } from '@/utils';
-
-function useSignup(
-	mutationOptions?: UseMutationOptions<SIGNUP_TYPES, AxiosError, signupProps>,
-): UseMutationResult<SIGNUP_TYPES, AxiosError, signupProps> {
-	return useMutation<SIGNUP_TYPES, AxiosError, signupProps>({
-		mutationFn: ({ ...signupProps }: signupProps) => signup({ ...signupProps }),
-		...mutationOptions,
-	});
-}
-
-// function useLogin(
-// 	mutationOptions?: UseMutationOptions<LOGIN_TYPES, AxiosError, LoginInputs>,
-// ): UseMutationResult<LOGIN_TYPES, AxiosError, LoginInputs> {
-// 	return useMutation<LOGIN_TYPES, AxiosError, LoginInputs>({
-// 		mutationFn: ({ email, password }: LoginInputs) => login(email, password),
-// 		...mutationOptions,
-// 	});
-// }
+import { getAccessToken, login, signup } from '@/api/auth';
+import queryClient from '@/api/queryClient';
+import {
+	removeEncryptStorage,
+	removeHeader,
+	setEncryptStorage,
+	setHeader,
+} from '@/utils';
 
 type CustomError = AxiosError<{
 	message: string;
@@ -39,6 +25,13 @@ type UseMutationCustomOptions<TData = unknown, TVariables = unknown> = Omit<
 	'mutationFn'
 >;
 
+function useSignup(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: signup,
+		...mutationOptions,
+	});
+}
+
 function useLogin(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: login,
@@ -50,17 +43,55 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
 			// 2. Storage에 AccessToke9
 			setHeader('Authorization', accessToken);
 		},
+		onSettled: () => {
+			queryClient.refetchQueries({
+				queryKey: ['auth', 'getAccessToken'],
+			});
+		},
 		...mutationOptions,
 	});
+}
+
+// RefreshToken
+// AccessToken이 만료될떄 RefreshToken을 활용해서, AccessToken을 재발급
+// 백엔드에서 준 만료시간은 30분
+function useGetAccessToken() {
+	const { data, error, isSuccess, isError } = useQuery({
+		queryKey: ['auth', 'getAccessToken'],
+		queryFn: getAccessToken,
+		// 30분 -> 2~3분 정도 빠르게
+		staleTime: 1000 * 60 * 30 - 1000 * 60 * 2,
+		// 시간 주기에 따라서, refetch를 하게 해주는 옵션
+		refetchInterval: 1000 * 60 * 30 - 1000 * 60 * 2,
+		// 앱을 종료하징 낳고, 다른 작업했다가 다시 들어오는 경우
+		refetchOnReconnect: true,
+		refetchIntervalInBackground: true,
+	});
+
+	useEffect(() => {
+		if (isSuccess) {
+			setHeader('Authorization', `Bearer ${data.accessToken}`);
+			setEncryptStorage('refreshToken', data.refreshToken);
+		}
+	}, [isSuccess]);
+
+	useEffect(() => {
+		if (isError) {
+			removeHeader('Authorization');
+			removeEncryptStorage('refreshToken');
+		}
+	}, [isError]);
 }
 
 function useAuth() {
 	const signUpMutation = useSignup();
 	const loginMutation = useLogin();
+	const getNewAccessToken = useGetAccessToken();
 
 	return {
 		signUpMutation,
 		loginMutation,
+		getNewAccessToken,
 	};
 }
 

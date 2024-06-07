@@ -1,6 +1,7 @@
 import { UseFormProps } from 'react-hook-form';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Toast from 'react-native-toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NavigationProp } from '@react-navigation/native';
 import GenericForm from '@/components/form/GenericForm';
@@ -54,7 +55,14 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 		loginMutation.mutate(
 			{ email, password },
 			{
-				onError: error => {},
+				onError: error => {
+					Toast.show({
+						type: 'error',
+						text1: error.response?.data.message || '로그인 에러발생',
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+				},
 			},
 		);
 

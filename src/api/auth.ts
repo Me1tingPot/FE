@@ -1,8 +1,8 @@
 import Config from 'react-native-config';
-import { string } from 'zod';
 import { API_URL } from '@/constants/path';
 import { LOGIN_TYPES } from '@/types/api';
 import { IMAGE_DTO } from '@/types/api/types';
+import { getEncryptStorage } from '@/utils';
 import axiosInstance from './axios';
 
 export type signupProps = {
@@ -28,11 +28,11 @@ const login = async ({
 	const { data } = await axiosInstance.post(
 		`${Config.API_URL}/${API_URL.LOGIN}`,
 		{
-			email: email,
-			password: password,
+			email,
+			password,
 		},
 	);
-	console.log(data);
+
 	return data;
 };
 
@@ -49,17 +49,34 @@ const signup = async ({
 	const { data } = await axiosInstance.post(
 		`${Config.API_URL}/${API_URL.SIGNUP}`,
 		{
-			username: username,
-			password: password,
-			name: name,
-			gender: gender,
-			birth: birth,
-			nationality: nationality,
-			languages: languages,
-			profileImages: profileImages,
+			username,
+			password,
+			name,
+			gender,
+			birth,
+			nationality,
+			languages,
+			profileImages,
 		},
 	);
 	return data;
 };
 
-export { login, signup };
+type ResponseToken = {
+	accessToken: string;
+	refreshToken: string;
+};
+
+const getAccessToken = async (): Promise<ResponseToken> => {
+	const refreshToken = await getEncryptStorage('refreshToken');
+
+	const { data } = await axiosInstance.get('/auth/reissue-token', {
+		headers: {
+			Authorization: `Bearer ${refreshToken}`,
+		},
+	});
+	console.log(data);
+	return data;
+};
+
+export { login, signup, getAccessToken };

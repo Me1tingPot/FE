@@ -1,6 +1,7 @@
 import { UseFormProps } from 'react-hook-form';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Toast from 'react-native-toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import GenericForm from '@/components/form/GenericForm';
 import {
@@ -15,6 +16,7 @@ import {
 } from '@/components/signup';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
 import { authNavigations, colors, feedTabNavigations } from '@/constants';
+import useAuth from '@/hooks/queries/useAuth';
 import { useFunnel } from '@/hooks/useFunnel';
 import { signupSchema } from '@/schema';
 import useThemeStore from '@/store/useThemeStore';
@@ -67,6 +69,7 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 		mode: 'onChange',
 		reValidateMode: 'onChange',
 	};
+	const { loginMutation, signUpMutation } = useAuth();
 
 	const onSubmit = async (data: SignupInputs) => {
 		const {
@@ -81,30 +84,29 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 			email: username,
 		} = data;
 		const name = lastName + firstName;
-		// signup(
-		// 	{
-		// 		gender,
-		// 		name,
-		// 		password,
-		// 		birth,
-		// 		languages,
-		// 		profileImages,
-		// 		nationality,
-		// 		username,
-		// 	},
-		// 	{
-		// 		onSuccess: data => {
-		// 			console.log('회원가입 성공:', data);
-		// 			if (data.data.email) {
-		// 				navigation.navigate(feedTabNavigations.FEED_HOME);
-		// 			}
-		// 		},
-		// 		onError: (error: any) => {
-		// 			console.error('회원가입 실패:', error);
-		// 			navigation.navigate(authNavigations.AUTH_HOME);
-		// 		},
-		// 	},
-		// );
+		signUpMutation.mutate(
+			{
+				gender,
+				name,
+				password,
+				birth,
+				languages,
+				profileImages,
+				nationality,
+				username,
+			},
+			{
+				onSuccess: () => loginMutation.mutate({ email: username, password }),
+				onError: error => {
+					Toast.show({
+						type: 'error',
+						text1: error.response?.data.message || '회원가입 에러발생',
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+				},
+			},
+		);
 	};
 
 	return (
