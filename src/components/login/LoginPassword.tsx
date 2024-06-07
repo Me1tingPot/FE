@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, feedTabNavigations } from '@/constants';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
+import { LoginInputs } from '@/screens/auth/LoginScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -17,12 +18,14 @@ interface LoginPasswordProps {
 const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
 	const {
 		control,
-		formState: { errors },
 		handleSubmit,
-	} = useFormContext();
+		formState: { errors },
+		watch,
+	} = useFormContext<LoginInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const password = watch('password');
 
 	return (
 		<View style={styles.container}>
@@ -35,10 +38,11 @@ const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
 						value={value}
 						onChangeText={onChange}
 						onBlur={onBlur}
-						variant={errors.email ? 'error' : 'default'}
+						variant={errors.password ? 'error' : 'default'}
 						placeholder={t('비밀번호 입력')}
-						message={t('최소 8자, 최대 20자')}
+						message={errors.password?.message || t('최소 8자, 최대 20자')}
 						placeholderTextColor={colors[theme].GRAY_300}
+						secureTextEntry
 					/>
 				)}
 			/>
@@ -51,6 +55,7 @@ const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
 						navigation.navigate(feedTabNavigations.FEED_HOME);
 					}}
 					variant={'filled'}
+					disabled={errors.password?.message || !password ? true : false}
 				/>
 			</View>
 		</View>

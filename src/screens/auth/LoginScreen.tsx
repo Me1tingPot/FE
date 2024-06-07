@@ -1,5 +1,7 @@
+import { UseFormProps } from 'react-hook-form';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { NavigationProp } from '@react-navigation/native';
 import GenericForm from '@/components/form/GenericForm';
 import LoginEmail from '@/components/login/LoginEmail';
@@ -8,6 +10,7 @@ import ProgressBar from '@/components/signup/progressBar/ProgressBar';
 import { colors } from '@/constants';
 import { useFunnel } from '@/hooks/useFunnel';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
+import { loginSchema } from '@/schema';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
@@ -33,6 +36,16 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
+	const loginFormOptions: UseFormProps<LoginInputs> = {
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+		resolver: zodResolver(loginSchema),
+		mode: 'onChange',
+		reValidateMode: 'onChange',
+	};
+
 	const onSubmit = async (data: any) => {
 		try {
 			console.log('입력받은 데이터: ', data);
@@ -55,7 +68,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 				activeStepIndex={activeStepIndex}
 				stepLength={loginSteps.length}
 			/>
-			<GenericForm<LoginInputs>>
+			<GenericForm<LoginInputs> formOptions={loginFormOptions}>
 				<Funnel>
 					<Funnel.Step name={LOGIN_STEPS.EMAIL}>
 						<LoginEmail onNext={() => setStep(LOGIN_STEPS.PASSWORD)} />
