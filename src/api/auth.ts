@@ -3,7 +3,7 @@ import { LOGIN_TYPES } from '@/types/api';
 import { IMAGE_DTO } from '@/types/api/types';
 import axiosInstance from './axios';
 
-type signupProps = {
+export type signupProps = {
 	username: string;
 	password: string;
 	name: string;

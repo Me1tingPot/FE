@@ -41,11 +41,11 @@ const countries = [
 ];
 
 type LanguageProps = {
-	onNext: () => void;
 	onSubmit: (data: any) => Promise<void>;
+	isPending?: boolean;
 };
 
-const Language = ({ onNext, onSubmit }: LanguageProps) => {
+const Language = ({ isPending, onSubmit }: LanguageProps) => {
 	const {
 		control,
 		formState: { errors },
@@ -56,17 +56,17 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const [local, setLocal] = useState('');
-	const [language, setLanguage] = useState<string[]>([]);
+	const [languages, setLanguages] = useState<string[]>([]);
 	const [open, setOpen] = useState({ local: false, language: false });
 
 	const toggleSelection = (item: string) => {
-		if (language.includes(item)) {
-			setLanguage(prevLanguages =>
+		if (languages.includes(item)) {
+			setLanguages(prevLanguages =>
 				prevLanguages.filter(language => language !== item),
 			);
 		} else {
-			if (language.length < 3) {
-				setLanguage(prevLanguages => [...prevLanguages, item]);
+			if (languages.length < 3) {
+				setLanguages(prevLanguages => [...prevLanguages, item]);
 			} else {
 				Alert.alert('', '최대 3개의 언어를 선택할 수 있습니다.');
 			}
@@ -150,10 +150,10 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 					<Text style={styles.description}>{t('최소 1개, 최대 3개')}</Text>
 					<Controller
 						control={control}
-						name="language"
+						name="languages"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
-								value={value || language.join(', ')}
+								value={value || languages.join(', ')}
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('사용 언어 선택하기')}
@@ -198,7 +198,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 										key={index}
 										style={[
 											styles.menu,
-											language.includes(item) && {
+											languages.includes(item) && {
 												backgroundColor: colors[theme].GREEN_500,
 											},
 										]}
@@ -217,12 +217,12 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={() => {
-						onNext();
 						setValue('local', local);
-						setValue('language', language);
+						setValue('languages', languages);
 						handleSubmit(onSubmit)();
 					}}
 					variant={'filled'}
+					disabled={isPending}
 				/>
 			</View>
 		</View>
