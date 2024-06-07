@@ -15,7 +15,7 @@ export type signupProps = {
 };
 
 const login = async (email: string, password: string): Promise<LOGIN_TYPES> => {
-	const res = await axiosInstance.post(
+	const { data } = await axiosInstance.post(
 		`${process.env.API_URL}/${API_URL.LOGIN}`,
 		{
 			email: email,
@@ -23,7 +23,7 @@ const login = async (email: string, password: string): Promise<LOGIN_TYPES> => {
 		},
 	);
 	// console.log(res.data);
-	return res.data;
+	return data;
 };
 
 const signup = async ({
@@ -36,7 +36,7 @@ const signup = async ({
 	languages,
 	profileImages,
 }: signupProps) => {
-	const res = await axiosInstance.post(
+	const { data } = await axiosInstance.post(
 		`${process.env.API_URL}/${API_URL.SIGNUP}`,
 		{
 			username: username,
@@ -49,7 +49,7 @@ const signup = async ({
 			profileImages: profileImages,
 		},
 	);
-	return res.data;
+	return data;
 };
 
 export { login, signup };

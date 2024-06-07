@@ -51,6 +51,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 
 	const onSubmit = async (data: LoginInputs) => {
 		const { email, password } = data;
+
 		login(
 			{ email, password },
 			{
