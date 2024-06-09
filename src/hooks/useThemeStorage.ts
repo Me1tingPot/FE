@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { storageKeys } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { getEncryptStorage, setEncryptStorage } from '@/utils';
@@ -14,13 +15,13 @@ function useThemeStorage() {
 	 * AsyncStorage도 OK 하지만, 로그인시 EncryptStorage를 사용하기에 그냥 해당 라이브러리 사용.
 	 */
 	const setMode = async (mode: ThemeMode) => {
-		await setEncryptStorage('themeMode', mode);
+		await setEncryptStorage(storageKeys.THEME_TOKEN, mode);
 		// 전역적 상태 변경
 		setTheme(mode);
 	};
 
 	const setSystem = async (flag: boolean) => {
-		await setEncryptStorage('themeSystem', flag);
+		await setEncryptStorage(storageKeys.THEME_SYSTEM, flag);
 		// 전역적 상태 변경
 		setSystemTheme(flag);
 	};
@@ -28,8 +29,9 @@ function useThemeStorage() {
 	// 앱이 꺼져도, 스토리지 값을 읽어와서 상태 변경 할 수 있게하는 코드.
 	useEffect(() => {
 		(async () => {
-			const mode = (await getEncryptStorage('themeMode')) ?? 'light';
-			const systemMode = (await getEncryptStorage('themeSystem')) ?? 'false';
+			const mode = (await getEncryptStorage(storageKeys.THEME_MODE)) ?? 'light';
+			const systemMode =
+				(await getEncryptStorage(storageKeys.THEME_SYSTEM)) ?? 'false';
 			const newMode = systemMode ? systemTheme : mode;
 			setTheme(newMode);
 			setSystemTheme(systemMode);
