@@ -6,7 +6,7 @@ import { getEncryptStorage } from '@/utils';
 import axiosInstance from './axios';
 
 type signupProps = {
-	username: string;
+	email: string;
 	password: string;
 	name: string;
 	gender: string;
@@ -41,7 +41,7 @@ const logout = async () => {
 };
 
 const signup = async ({
-	username,
+	email,
 	password,
 	name,
 	gender,
@@ -53,7 +53,7 @@ const signup = async ({
 	const { data } = await axiosInstance.post(
 		`${Config.API_URL}/${API_URL.SIGNUP}`,
 		{
-			username,
+			email,
 			password,
 			name,
 			gender,

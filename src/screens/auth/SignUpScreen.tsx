@@ -13,6 +13,7 @@ import {
 	Password,
 	Sex,
 } from '@/components/signup';
+import EmailVerification from '@/components/signup/EmailVerification';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
 import { colors } from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
@@ -24,41 +25,43 @@ import { IMAGE_DTO } from '@/types/api/types';
 import { AuthHomeScreenProps } from './AuthHomeScreen';
 
 enum FUNNEL_STEPS {
-	SEX = 'sex',
+	GENDER = 'gender',
 	NAME = 'name',
 	EMAIL = 'email',
+	EMAIL_VERIFICATION = 'emailVerifycation',
 	PASSWORD = 'password',
 	BIRTH = 'birth',
-	// LOCATION = 'location',
 	FACE_IMG = 'faceImg',
 	LANGUAGE = 'language',
 }
 
 export interface SignupInputs {
-	sex: string;
+	gender: 'FEMALE' | 'MALE' | 'UNKNOUWN';
 	firstName: string;
 	lastName: string;
 	email: string;
+	emailVerifycation: string;
 	password: string;
 	passwordCheck: string;
 	birth: string;
-	faceImgs: IMAGE_DTO[];
-	local: string;
+	profileImages: IMAGE_DTO[];
+	nationality: string;
 	languages: string[];
 }
 
 function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 	const funnelSteps = [
-		FUNNEL_STEPS.SEX,
+		FUNNEL_STEPS.GENDER,
 		FUNNEL_STEPS.NAME,
 		FUNNEL_STEPS.EMAIL,
+		FUNNEL_STEPS.EMAIL_VERIFICATION,
 		FUNNEL_STEPS.PASSWORD,
 		FUNNEL_STEPS.BIRTH,
 		FUNNEL_STEPS.FACE_IMG,
 		FUNNEL_STEPS.LANGUAGE,
 	] as const;
 	const [Funnel, activeStepIndex, setStep] = useFunnel(funnelSteps, {
-		initialStep: FUNNEL_STEPS.SEX,
+		initialStep: FUNNEL_STEPS.GENDER,
 	});
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -72,15 +75,15 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 
 	const onSubmit = async (data: SignupInputs) => {
 		const {
-			sex: gender,
+			gender,
 			firstName,
 			lastName,
 			password,
 			birth,
 			languages,
-			local: nationality,
-			faceImgs: profileImages,
-			email: username,
+			nationality,
+			profileImages,
+			email,
 		} = data;
 		const name = lastName + firstName;
 		signUpMutation.mutate(
@@ -92,10 +95,10 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 				languages,
 				profileImages,
 				nationality,
-				username,
+				email,
 			},
 			{
-				onSuccess: () => loginMutation.mutate({ email: username, password }),
+				onSuccess: () => loginMutation.mutate({ email, password }),
 				onError: error => {
 					Toast.show({
 						type: 'error',
@@ -124,14 +127,17 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 			/>
 			<GenericForm<SignupInputs> formOptions={signupFormOptions}>
 				<Funnel>
-					<Funnel.Step name={FUNNEL_STEPS.SEX}>
+					<Funnel.Step name={FUNNEL_STEPS.GENDER}>
 						<Sex onNext={() => setStep(FUNNEL_STEPS.NAME)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.NAME}>
 						<Name onNext={() => setStep(FUNNEL_STEPS.EMAIL)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.EMAIL}>
-						<Email onNext={() => setStep(FUNNEL_STEPS.PASSWORD)} />
+						<Email onNext={() => setStep(FUNNEL_STEPS.EMAIL_VERIFICATION)} />
+					</Funnel.Step>
+					<Funnel.Step name={FUNNEL_STEPS.EMAIL_VERIFICATION}>
+						<EmailVerification onNext={() => setStep(FUNNEL_STEPS.PASSWORD)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.PASSWORD}>
 						<Password onNext={() => setStep(FUNNEL_STEPS.BIRTH)} />
