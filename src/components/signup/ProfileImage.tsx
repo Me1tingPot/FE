@@ -37,8 +37,6 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 	usePermission('PHOTO');
 	usePermission('CAMERA');
 
-	console.log(formDataImages.uploadedImages.length);
-
 	const handleSubmit = () => {
 		if (formDataImages.uploadedImages.length <= 0) {
 			Toast.show({
@@ -103,6 +101,7 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 					label={t('다음으로')}
 					onPress={handleSubmit}
 					variant={'filled'}
+					isLoading={formDataImages.isLoading}
 				/>
 			</View>
 		</View>

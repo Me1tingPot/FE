@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from 'react-native';
 import { colors } from '@/constants';
-import { FUNNEL_STEPS, SignupInputs } from '@/screens/auth/SignUpScreen';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -17,12 +17,12 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 	const {
 		control,
 		formState: { errors },
+		watch,
 	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-
-	console.log(errors);
+	const emailNum = watch('emailVerifycation');
 
 	return (
 		<View style={styles.container}>
@@ -36,7 +36,7 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 
 				<Controller
 					control={control}
-					name={FUNNEL_STEPS.EMAIL_VERIFICATION}
+					name="emailVerifycation"
 					render={({ field: { onChange, onBlur, value } }) => (
 						<CustomTextInput
 							value={value}
@@ -52,6 +52,7 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 								}
 							}}
 							message={errors.emailVerifycation?.message}
+							maxLength={6}
 						/>
 					)}
 				/>
@@ -62,7 +63,9 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
-					disabled={errors.emailVerifycation?.message ? true : false}
+					disabled={
+						errors.emailVerifycation?.message || !emailNum ? true : false
+					}
 				/>
 			</View>
 		</View>

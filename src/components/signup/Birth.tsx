@@ -8,6 +8,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
@@ -42,6 +43,20 @@ const Birth = ({ onNext }: BirthProps) => {
 		setDate(pickedDate);
 	};
 
+	const handleSubmit = () => {
+		if (!isPicked) {
+			Toast.show({
+				type: 'error',
+				text1: '생년월일을 선택해주세요.',
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+			return;
+		}
+		onNext();
+		setValue('birth', formatDateString);
+	};
+
 	return (
 		<View style={styles.container}>
 			<ScrollView>
@@ -56,7 +71,7 @@ const Birth = ({ onNext }: BirthProps) => {
 
 				<Controller
 					control={control}
-					name={FUNNEL_STEPS.BIRTH}
+					name="birth"
 					render={({ field: { onChange, onBlur, value } }) => (
 						<View>
 							<CustomTextInput
@@ -94,12 +109,8 @@ const Birth = ({ onNext }: BirthProps) => {
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={() => {
-						setValue('birth', formatDateString);
-						onNext();
-					}}
+					onPress={handleSubmit}
 					variant={'filled'}
-					disabled={!formatDateString ? true : false}
 				/>
 			</View>
 		</View>

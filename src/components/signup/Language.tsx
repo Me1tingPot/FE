@@ -10,6 +10,7 @@ import {
 	View,
 } from 'react-native';
 import { ScrollView as GestureHandlerScrollView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import { SignupInputs } from '@/screens/auth/SignUpScreen';
@@ -72,6 +73,21 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 				Alert.alert('', '최대 3개의 언어를 선택할 수 있습니다.');
 			}
 		}
+	};
+
+	const handleSubmitData = () => {
+		if (!local || languages.length <= 0) {
+			Toast.show({
+				type: 'error',
+				text1: '국적 및 사용 언어를 선택해주세요.',
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+			return;
+		}
+		setValue('nationality', local);
+		setValue('languages', languages);
+		handleSubmit(onSubmit)();
 	};
 
 	return (
@@ -220,13 +236,9 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={() => {
-						setValue('nationality', local);
-						setValue('languages', languages);
-						handleSubmit(onSubmit)();
-					}}
+					onPress={handleSubmitData}
 					variant={'filled'}
-					disabled={isPending}
+					isLoading={isPending}
 				/>
 			</View>
 		</View>

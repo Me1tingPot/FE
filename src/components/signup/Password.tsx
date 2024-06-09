@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
-import { FUNNEL_STEPS, SignupInputs } from '@/screens/auth/SignUpScreen';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -16,12 +16,13 @@ const Password = ({ onNext }: PasswordProps) => {
 	const {
 		control,
 		formState: { errors },
+		watch,
 	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-
-	console.log(errors);
+	const password = watch('password');
+	const checkPassword = watch('checkPassword');
 
 	return (
 		<View style={styles.container}>
@@ -34,7 +35,7 @@ const Password = ({ onNext }: PasswordProps) => {
 				<View style={styles.buttonContainer}>
 					<Controller
 						control={control}
-						name={FUNNEL_STEPS.PASSWORD}
+						name="password"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
 								value={value}
@@ -79,7 +80,14 @@ const Password = ({ onNext }: PasswordProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
-					disabled={errors.password || errors.checkPassword ? true : false}
+					disabled={
+						errors.password ||
+						errors.checkPassword ||
+						!password ||
+						!checkPassword
+							? true
+							: false
+					}
 				/>
 			</View>
 		</View>

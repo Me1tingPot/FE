@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { getProfileUploadUrl, uploadImages } from '@/api';
+import { getProfileUploadUrl } from '@/api';
 import { ImageUri } from '@/types';
 import { IMAGE_DTO } from '@/types/api/types';
 import { getFormDataImages } from '@/utils';
@@ -19,6 +19,7 @@ function useProfileImagesPicker({
 }: useProfileImagesPickerProps) {
 	const [imageUris, setImageUris] = useState(initialImages);
 	const [uploadedImages, setUploadedImages] = useState<IMAGE_DTO[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
 	const { t } = useTranslation();
 	const { profileImagesMutation } = useImages();
 
@@ -48,6 +49,7 @@ function useProfileImagesPicker({
 
 	const handleChange = async () => {
 		try {
+			setIsLoading(true);
 			const images = await ImagePicker.openPicker({
 				mediaType: 'photo',
 				multiple: true,
@@ -83,6 +85,8 @@ function useProfileImagesPicker({
 			if (error.code !== 'PICKER_CANCELED') {
 				console.error(error);
 			}
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -92,6 +96,7 @@ function useProfileImagesPicker({
 		handleChange,
 		delete: deleteImageUri,
 		changeOrder: changeImageUrisOrder,
+		isLoading,
 	};
 }
 export default useProfileImagesPicker;

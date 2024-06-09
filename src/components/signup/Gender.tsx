@@ -4,11 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { colors } from '@/constants';
-import {
-	FUNNEL_STEPS,
-	GENDER,
-	SignupInputs,
-} from '@/screens/auth/SignUpScreen';
+import { GENDER, SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -27,7 +23,20 @@ const Gender = ({ onNext }: GenderProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const gender = watch(FUNNEL_STEPS.GENDER);
+	const gender = watch('gender');
+
+	const handleSubmit = () => {
+		if (!gender) {
+			Toast.show({
+				type: 'error',
+				text1: '성별을 선택해주세요.',
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+			return;
+		}
+		onNext();
+	};
 
 	return (
 		<View style={styles.container}>
@@ -42,7 +51,7 @@ const Gender = ({ onNext }: GenderProps) => {
 					<View style={styles.buttonLayout}>
 						<Controller
 							control={control}
-							name={FUNNEL_STEPS.GENDER}
+							name="gender"
 							render={() => (
 								<CustomButton
 									label={t('여성')}
@@ -55,7 +64,7 @@ const Gender = ({ onNext }: GenderProps) => {
 					<View style={styles.buttonLayout}>
 						<Controller
 							control={control}
-							name={FUNNEL_STEPS.GENDER}
+							name="gender"
 							render={() => (
 								<CustomButton
 									label={t('남성')}
@@ -71,9 +80,8 @@ const Gender = ({ onNext }: GenderProps) => {
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={onNext}
+					onPress={handleSubmit}
 					variant={'filled'}
-					disabled={errors?.gender || !gender ? true : false}
 				/>
 			</View>
 		</View>

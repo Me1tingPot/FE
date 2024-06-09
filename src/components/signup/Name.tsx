@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
-import { FUNNEL_STEPS, SignupInputs } from '@/screens/auth/SignUpScreen';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -21,6 +21,7 @@ const Name = ({ onNext }: NameProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const name = watch('name');
 
 	return (
 		<View style={styles.container}>
@@ -36,7 +37,7 @@ const Name = ({ onNext }: NameProps) => {
 				<View style={styles.nameContainer}>
 					<Controller
 						control={control}
-						name={FUNNEL_STEPS.NAME}
+						name="name"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
 								value={value}
@@ -65,7 +66,7 @@ const Name = ({ onNext }: NameProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
-					disabled={errors?.name ? true : false}
+					disabled={errors?.name || !name ? true : false}
 				/>
 			</View>
 		</View>

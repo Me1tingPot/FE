@@ -28,7 +28,14 @@ function emailVerifycationSchema() {
 		.string({ required_error: '인증번호를 입력해주세요.' })
 		.trim()
 		.min(6, { message: '인증번호는 6자리 숫자입니다.' })
-		.max(6, { message: '인증번호는 6자리 숫자입니다.' });
+		.max(6, { message: '인증번호는 6자리 숫자입니다.' })
+		.refine(
+			(value: string) =>
+				!isNaN(Number(value)) && Number.isInteger(Number(value)),
+			{
+				message: '인증번호는 6자리 숫자입니다.',
+			},
+		);
 }
 
 function nameSchema() {

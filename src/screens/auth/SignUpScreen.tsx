@@ -163,7 +163,10 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 						<ProfileImage onNext={() => setStep(FUNNEL_STEPS.LANGUAGE)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.LANGUAGE}>
-						<Language onSubmit={onSubmit} />
+						<Language
+							onSubmit={onSubmit}
+							isPending={signUpMutation.isPending}
+						/>
 					</Funnel.Step>
 				</Funnel>
 			</GenericForm>
