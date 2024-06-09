@@ -50,7 +50,7 @@ const Email = ({ onNext }: EmailProps) => {
 									onNext();
 								}
 							}}
-							message={errors.email?.message as string}
+							message={t(errors.email?.message as string)}
 						/>
 					)}
 				/>

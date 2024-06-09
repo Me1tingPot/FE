@@ -47,7 +47,7 @@ const Name = ({ onNext }: NameProps) => {
 								variant={errors?.name ? 'error' : 'default'}
 								returnKeyType="next"
 								placeholderTextColor={colors[theme].GRAY_300}
-								message={errors.name?.message as string}
+								message={t(errors.name?.message as string)}
 							/>
 						)}
 					/>

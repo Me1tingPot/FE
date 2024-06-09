@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
-import { FUNNEL_STEPS, SignupInputs } from '@/screens/auth/SignUpScreen';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { getDateLocaleFormat } from '@/utils';
@@ -47,7 +47,7 @@ const Birth = ({ onNext }: BirthProps) => {
 		if (!isPicked) {
 			Toast.show({
 				type: 'error',
-				text1: '생년월일을 선택해주세요.',
+				text1: t('생년월일을 선택해주세요.'),
 				visibilityTime: 2000,
 				position: 'bottom',
 			});

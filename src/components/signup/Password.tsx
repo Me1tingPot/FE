@@ -42,7 +42,10 @@ const Password = ({ onNext }: PasswordProps) => {
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('비밀번호 입력')}
-								message={errors.password?.message || t('최소 8자, 최대 20자')}
+								message={
+									t(errors.password?.message as String) ||
+									t('최소 8자, 최대 20자')
+								}
 								variant={errors.password ? 'error' : 'default'}
 								returnKeyType="next"
 								secureTextEntry={true}
@@ -68,7 +71,7 @@ const Password = ({ onNext }: PasswordProps) => {
 								}}
 								secureTextEntry={true}
 								placeholderTextColor={colors[theme].GRAY_300}
-								message={errors.checkPassword?.message}
+								message={t(errors.checkPassword?.message as String)}
 							/>
 						)}
 					/>

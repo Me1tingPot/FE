@@ -41,7 +41,7 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 		if (formDataImages.uploadedImages.length <= 0) {
 			Toast.show({
 				type: 'error',
-				text1: '최소 1개의 이미지를 선택해주세요.',
+				text1: t('최소 1개의 이미지를 선택해주세요.'),
 				visibilityTime: 2000,
 				position: 'bottom',
 			});

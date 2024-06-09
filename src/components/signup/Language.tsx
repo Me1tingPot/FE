@@ -79,7 +79,7 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 		if (!local || languages.length <= 0) {
 			Toast.show({
 				type: 'error',
-				text1: '국적 및 사용 언어를 선택해주세요.',
+				text1: t('국적 및 사용 언어를 선택해주세요.'),
 				visibilityTime: 2000,
 				position: 'bottom',
 			});

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -29,7 +28,7 @@ const Gender = ({ onNext }: GenderProps) => {
 		if (!gender) {
 			Toast.show({
 				type: 'error',
-				text1: '성별을 선택해주세요.',
+				text1: t('성별을 선택해주세요.'),
 				visibilityTime: 2000,
 				position: 'bottom',
 			});

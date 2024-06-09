@@ -51,7 +51,7 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 									onNext();
 								}
 							}}
-							message={errors.emailVerifycation?.message}
+							message={t(errors.emailVerifycation?.message)}
 							maxLength={6}
 						/>
 					)}
