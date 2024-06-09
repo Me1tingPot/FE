@@ -23,3 +23,8 @@ export type SIGNUP_DATA_TYPES = {
 	name: string;
 	tokenDto: TOKEN_DTO;
 };
+
+export type PROFILE_URL_DATA_TYPES = {
+	uploadUrl: string;
+	fileKey: string;
+};

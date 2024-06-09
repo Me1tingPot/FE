@@ -51,7 +51,7 @@ function birthSchema() {
 }
 
 function languagesSchema() {
-	return z.string({ required_error: '언어를 선택해주세요.' }).trim();
+	return z.array(z.string());
 }
 
 function nationalitySchema() {

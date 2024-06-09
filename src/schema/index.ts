@@ -43,7 +43,7 @@ const signupSchema = z
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				path: ['checkPassword'],
-				message: 'Passwords do not match',
+				message: '비밀번호가 일치하지 않습니다.',
 			});
 		}
 	});
