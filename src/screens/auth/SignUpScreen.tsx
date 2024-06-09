@@ -15,7 +15,7 @@ import {
 } from '@/components/signup';
 import EmailVerification from '@/components/signup/EmailVerification';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
-import { colors } from '@/constants';
+import { colors, feedTabNavigations } from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
 import { useFunnel } from '@/hooks/useFunnel';
 import { signupSchema } from '@/schema';
@@ -66,7 +66,7 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 		FUNNEL_STEPS.LANGUAGE,
 	] as const;
 	const [Funnel, activeStepIndex, setStep] = useFunnel(funnelSteps, {
-		initialStep: FUNNEL_STEPS.GENDER,
+		initialStep: FUNNEL_STEPS.FACE_IMG,
 	});
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -112,7 +112,15 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 				email,
 			},
 			{
-				onSuccess: () => loginMutation.mutate({ email, password }),
+				onSuccess: () => {
+					loginMutation.mutate(
+						{ email, password },
+						{
+							onSuccess: () =>
+								navigation.navigate(feedTabNavigations.FEED_HOME),
+						},
+					);
+				},
 				onError: error => {
 					Toast.show({
 						type: 'error',

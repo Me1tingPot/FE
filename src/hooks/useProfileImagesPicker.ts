@@ -24,7 +24,7 @@ function useProfileImagesPicker({
 	const { profileImagesMutation } = useImages();
 
 	const addImageUris = (uris: string[]) => {
-		if (imageUris.length > maxFiles) {
+		if (imageUris.length + uris.length > maxFiles) {
 			Alert.alert(
 				`이미지 개수 초과`,
 				`추가 가능한 이미지는 최대 ${maxFiles}개입니다.`,

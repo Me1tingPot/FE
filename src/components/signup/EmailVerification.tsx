@@ -13,6 +13,7 @@ interface EmailVerificationProps {
 	onNext: () => void;
 }
 
+// TODO : 메일 인증 요청 및 인증 번호 확인 api 연결 필요
 const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 	const {
 		control,
