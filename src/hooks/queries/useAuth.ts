@@ -9,6 +9,7 @@ import { getAccessToken, login, logout, signup } from '@/api/auth';
 import queryClient from '@/api/queryClient';
 import { headers, queryKeys, storageKeys } from '@/constants';
 import {
+	getEncryptStorage,
 	removeEncryptStorage,
 	removeHeader,
 	setEncryptStorage,
@@ -42,7 +43,7 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
 			// 1. Storage에 RefreshToken
 			setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
 			// 2. Storage에 AccessToken
-			setHeader(headers.AUTHORIZATION, accessToken);
+			setHeader(headers.AUTHORIZATION, `Bearer ${accessToken}`);
 		},
 		onSettled: () => {
 			// mutation 완료 후 재 요청할 쿼리 목록
@@ -70,18 +71,19 @@ function useGetAccessToken() {
 		refetchOnReconnect: true,
 		refetchIntervalInBackground: true,
 	});
-	console.log(isSuccess, '성공 여부');
+
+	console.log(data);
 
 	useEffect(() => {
 		if (isSuccess) {
-			setHeader(headers.AUTHORIZATION, `Bearer ${data.accessToken}`);
-			setEncryptStorage(storageKeys.REFRESH_TOKEN, data.refreshToken);
+			setHeader('Authorization', `Bearer ${data.data.accessToken}`);
+			setEncryptStorage(storageKeys.REFRESH_TOKEN, data.data.refreshToken);
 		}
 	}, [isSuccess]);
 
 	useEffect(() => {
 		if (isError) {
-			removeHeader(headers.AUTHORIZATION);
+			removeHeader('Authorization');
 			removeEncryptStorage(storageKeys.REFRESH_TOKEN);
 		}
 	}, [isError]);

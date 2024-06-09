@@ -1,3 +1,4 @@
+import { storageKeys } from '@/constants';
 import { API_URL } from '@/constants/path';
 import { LOGIN_TYPES } from '@/types/api';
 import { IMAGE_DTO } from '@/types/api/types';
@@ -28,6 +29,7 @@ const login = async ({
 		email,
 		password,
 	});
+	console.log(data);
 
 	return data;
 };
@@ -60,18 +62,29 @@ const signup = async ({
 };
 
 type ResponseToken = {
-	accessToken: string;
-	refreshToken: string;
+	timestamp: string;
+	code: string;
+	status: string;
+	detail: string;
+	data: {
+		accountId: number;
+		accessToken: string;
+		refreshToken: string;
+	};
 };
 
 const getAccessToken = async (): Promise<ResponseToken> => {
-	const refreshToken = await getEncryptStorage('refreshToken');
+	const refreshToken = await getEncryptStorage(storageKeys.REFRESH_TOKEN);
 
-	const { data } = await axiosInstance.get(`${API_URL.REISSUE_TOKEN}`, {
-		headers: {
-			Authorization: `Bearer ${refreshToken}`,
-		},
-	});
+	const headers = {
+		RefreshToken: refreshToken,
+	};
+
+	const { data } = await axiosInstance.post(
+		`${API_URL.REISSUE_TOKEN}`,
+		{},
+		{ headers },
+	);
 
 	return data;
 };

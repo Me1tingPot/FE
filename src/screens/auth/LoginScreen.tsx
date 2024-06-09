@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { UseFormProps } from 'react-hook-form';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -9,14 +8,13 @@ import GenericForm from '@/components/form/GenericForm';
 import LoginEmail from '@/components/login/LoginEmail';
 import LoginPassword from '@/components/login/LoginPassword';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
-import { colors, feedTabNavigations } from '@/constants';
+import { colors } from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
 import { useFunnel } from '@/hooks/useFunnel';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import { loginSchema } from '@/schema';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { getEncryptStorage } from '@/utils';
 
 enum LOGIN_STEPS {
 	EMAIL = 'email',
@@ -50,7 +48,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 		reValidateMode: 'onChange',
 	};
 
-	const { loginMutation } = useAuth();
+	const { loginMutation, getNewAccessToken } = useAuth();
 
 	const onSubmit = async (data: LoginInputs) => {
 		const { email, password } = data;

@@ -6,6 +6,7 @@ const queryKeys = {
 
 const storageKeys = {
 	REFRESH_TOKEN: 'refreshToken',
+	ACCESS_TOKEN: 'accessToken',
 	THEME_TOKEN: 'themeToken',
 	THEME_SYSTEM: 'themeSystem',
 	THEME_MODE: 'themeMode',

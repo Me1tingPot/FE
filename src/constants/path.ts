@@ -1,7 +1,7 @@
 const VERSION = 'v1';
 
 const API_BASE = {
-	AUTH: 'auth',
+	AUTH: `auth`,
 };
 
 const API_URL = {
@@ -9,7 +9,7 @@ const API_URL = {
 	LOGIN: `/${API_BASE.AUTH}/signin`,
 	SIGNUP: `/${API_BASE.AUTH}/signup`,
 	LOGOUT: `/${API_BASE.AUTH}/signout`,
-	PROFILE_IMG_URL: `/${API_BASE.AUTH}/image-url`, // 프로필 이미지 url 생성
+	PROFILE_IMG_URL: `/${API_BASE.AUTH}/image-url`,
 	REISSUE_TOKEN: `/${API_BASE.AUTH}/reissue-token`,
 };
 
