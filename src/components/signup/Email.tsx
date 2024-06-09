@@ -2,6 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
+import { FUNNEL_STEPS, SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -15,7 +16,7 @@ const Email = ({ onNext }: EmailProps) => {
 	const {
 		control,
 		formState: { errors },
-	} = useFormContext();
+	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -32,7 +33,7 @@ const Email = ({ onNext }: EmailProps) => {
 
 				<Controller
 					control={control}
-					name="email"
+					name={FUNNEL_STEPS.EMAIL}
 					render={({ field: { onChange, onBlur, value } }) => (
 						<CustomTextInput
 							value={value}
@@ -47,6 +48,7 @@ const Email = ({ onNext }: EmailProps) => {
 									onNext();
 								}
 							}}
+							message={errors.email?.message as string}
 						/>
 					)}
 				/>
@@ -57,6 +59,7 @@ const Email = ({ onNext }: EmailProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
+					disabled={errors.email?.message ? true : false}
 				/>
 			</View>
 		</View>

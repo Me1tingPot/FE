@@ -14,6 +14,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -27,7 +28,7 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 	const {
 		formState: { errors },
 		setValue,
-	} = useFormContext();
+	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const modal = useModal();
 	const styles = styling(theme);
@@ -105,7 +106,7 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 					label={t('다음으로')}
 					onPress={() => {
 						onNext();
-						setValue('faceImg', files);
+						setValue('profileImages', files);
 					}}
 					variant={'filled'}
 				/>

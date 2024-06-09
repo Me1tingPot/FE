@@ -65,22 +65,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 				},
 			},
 		);
-
-		// login(
-		// 	{ email, password },
-		// 	{
-		// 		onSuccess: data => {
-		// 			console.log('로그인 성공:', data);
-		// 			if (data.data.email) {
-		// 				navigation.navigate(feedTabNavigations.FEED_HOME);
-		// 			}
-		// 		},
-		// 		onError: (error: any) => {
-		// 			console.error('로그인 실패:', error);
-		// 			navigation.navigate(authNavigations.AUTH_HOME);
-		// 		},
-		// 	},
-		// );
 	};
 
 	return (

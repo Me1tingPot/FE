@@ -11,6 +11,7 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
+import { FUNNEL_STEPS, SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { getDateLocaleFormat } from '@/utils';
@@ -23,18 +24,14 @@ type BirthProps = {
 };
 
 const Birth = ({ onNext }: BirthProps) => {
-	const {
-		control,
-		formState: { errors },
-		setValue,
-	} = useFormContext();
+	const { control, setValue } = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const [date, setDate] = useState(new Date());
 	const [isPicked, setIsPicked] = useState(false);
 	const dateOption = useModal();
-	const formatDateString = getDateLocaleFormat(date, '/');
+	const formatDateString = getDateLocaleFormat(date, '-');
 
 	const handleConfirmDate = () => {
 		setIsPicked(true);
@@ -59,7 +56,7 @@ const Birth = ({ onNext }: BirthProps) => {
 
 				<Controller
 					control={control}
-					name="birth"
+					name={FUNNEL_STEPS.BIRTH}
 					render={({ field: { onChange, onBlur, value } }) => (
 						<View>
 							<CustomTextInput
@@ -102,6 +99,7 @@ const Birth = ({ onNext }: BirthProps) => {
 						onNext();
 					}}
 					variant={'filled'}
+					disabled={!formatDateString ? true : false}
 				/>
 			</View>
 		</View>

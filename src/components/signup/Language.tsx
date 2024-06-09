@@ -12,6 +12,7 @@ import {
 import { ScrollView as GestureHandlerScrollView } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -51,7 +52,7 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 		formState: { errors },
 		handleSubmit,
 		setValue,
-	} = useFormContext();
+	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -83,7 +84,7 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 					</Text>
 					<Controller
 						control={control}
-						name="local"
+						name="nationality"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
 								value={value || local}
@@ -135,7 +136,10 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 												backgroundColor: colors[theme].GREEN_500,
 											},
 										]}
-										onPress={() => setLocal(item)}
+										onPress={() => {
+											setLocal(item);
+											setOpen(prev => ({ ...prev, local: false }));
+										}}
 									>
 										<Text style={styles.menuText}>{item}</Text>
 									</Pressable>
@@ -153,7 +157,7 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 						name="languages"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
-								value={value || languages.join(', ')}
+								value={languages.join(', ')}
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('사용 언어 선택하기')}
@@ -217,7 +221,7 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={() => {
-						setValue('local', local);
+						setValue('nationality', local);
 						setValue('languages', languages);
 						handleSubmit(onSubmit)();
 					}}

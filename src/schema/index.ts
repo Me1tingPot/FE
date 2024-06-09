@@ -1,5 +1,15 @@
 import { z } from 'zod';
-import { emailSchema, passwordSchema } from './schemas';
+import {
+	birthSchema,
+	emailSchema,
+	emailVerifycationSchema,
+	genderSchema,
+	languagesSchema,
+	nameSchema,
+	nationalitySchema,
+	passwordSchema,
+	profileImagesSchema,
+} from './schemas';
 
 const loginSchema = z.object({
 	email: z
@@ -12,9 +22,30 @@ const loginSchema = z.object({
 		.min(1, { message: '비밀번호는 필수 입력값입니다.' }),
 });
 
-const signupSchema = z.object({
-	email: emailSchema(),
-	password: passwordSchema(),
-});
+const signupSchema = z
+	.object({
+		email: emailSchema(),
+		emailVerifycation: emailVerifycationSchema(),
+		password: passwordSchema(),
+		checkPassword: z
+			.string({ required_error: '비밀번호를 입력해주세요!' })
+			.trim()
+			.min(1, { message: '비밀번호는 필수 입력값입니다.' }),
+		name: nameSchema(),
+		gender: genderSchema(),
+		birth: birthSchema(),
+		nationality: nationalitySchema(),
+		languages: languagesSchema(),
+		profileImages: profileImagesSchema(),
+	})
+	.superRefine((val, ctx) => {
+		if (val.password !== val.checkPassword) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				path: ['checkPassword'],
+				message: 'Passwords do not match',
+			});
+		}
+	});
 
 export { loginSchema, signupSchema };

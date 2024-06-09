@@ -24,7 +24,7 @@ import { ThemeMode } from '@/types';
 import { IMAGE_DTO } from '@/types/api/types';
 import { AuthHomeScreenProps } from './AuthHomeScreen';
 
-enum FUNNEL_STEPS {
+export enum FUNNEL_STEPS {
 	GENDER = 'gender',
 	NAME = 'name',
 	EMAIL = 'email',
@@ -35,14 +35,19 @@ enum FUNNEL_STEPS {
 	LANGUAGE = 'language',
 }
 
+export enum GENDER {
+	FEMALE = 'FEMALE',
+	MALE = 'MALE',
+	UNKNOWN = 'UNKNOWN',
+}
+
 export interface SignupInputs {
-	gender: 'FEMALE' | 'MALE' | 'UNKNOUWN';
-	firstName: string;
-	lastName: string;
+	gender: GENDER;
+	name: string;
 	email: string;
 	emailVerifycation: string;
 	password: string;
-	passwordCheck: string;
+	checkPassword: string;
 	birth: string;
 	profileImages: IMAGE_DTO[];
 	nationality: string;
@@ -67,6 +72,16 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 	const styles = styling(theme);
 
 	const signupFormOptions: UseFormProps<SignupInputs> = {
+		defaultValues: {
+			email: '',
+			password: '',
+			name: '',
+			gender: undefined,
+			birth: '',
+			nationality: '',
+			languages: [],
+			profileImages: [],
+		},
 		resolver: zodResolver(signupSchema),
 		mode: 'onChange',
 		reValidateMode: 'onChange',
@@ -74,10 +89,10 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 	const { loginMutation, signUpMutation } = useAuth();
 
 	const onSubmit = async (data: SignupInputs) => {
+		console.log('입력 받은 데이터: ', data);
 		const {
 			gender,
-			firstName,
-			lastName,
+			name,
 			password,
 			birth,
 			languages,
@@ -85,7 +100,6 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 			profileImages,
 			email,
 		} = data;
-		const name = lastName + firstName;
 		signUpMutation.mutate(
 			{
 				gender,

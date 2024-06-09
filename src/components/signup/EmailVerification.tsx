@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from 'react-native';
 import { colors } from '@/constants';
+import { FUNNEL_STEPS, SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -16,10 +17,12 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 	const {
 		control,
 		formState: { errors },
-	} = useFormContext();
+	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+
+	console.log(errors);
 
 	return (
 		<View style={styles.container}>
@@ -33,21 +36,22 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 
 				<Controller
 					control={control}
-					name="email"
+					name={FUNNEL_STEPS.EMAIL_VERIFICATION}
 					render={({ field: { onChange, onBlur, value } }) => (
 						<CustomTextInput
 							value={value}
 							onChangeText={onChange}
 							onBlur={onBlur}
 							placeholder="인증번호 입력"
-							inputMode="email"
-							variant={errors.email ? 'error' : 'default'}
+							inputMode="numeric"
+							variant={errors.emailVerifycation?.message ? 'error' : 'default'}
 							placeholderTextColor={colors[theme].GRAY_300}
 							onSubmitEditing={({ nativeEvent: { text } }) => {
 								if (text) {
 									onNext();
 								}
 							}}
+							message={errors.emailVerifycation?.message}
 						/>
 					)}
 				/>
@@ -58,6 +62,7 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
+					disabled={errors.emailVerifycation?.message ? true : false}
 				/>
 			</View>
 		</View>
