@@ -19,11 +19,11 @@ import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 import CameraOrLibrary from './CameraOrLibrary';
 
-type FaceImgProps = {
+type ProfileImageProps = {
 	onNext: () => void;
 };
 
-const FaceImg = ({ onNext }: FaceImgProps) => {
+const ProfileImage = ({ onNext }: ProfileImageProps) => {
 	const {
 		formState: { errors },
 		setValue,
@@ -185,4 +185,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default FaceImg;
+export default ProfileImage;

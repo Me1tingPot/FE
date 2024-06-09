@@ -7,11 +7,11 @@ import GenericForm from '@/components/form/GenericForm';
 import {
 	Birth,
 	Email,
-	FaceImg,
+	ProfileImage,
 	Language,
 	Name,
 	Password,
-	Sex,
+	Gender,
 } from '@/components/signup';
 import EmailVerification from '@/components/signup/EmailVerification';
 import ProgressBar from '@/components/signup/progressBar/ProgressBar';
@@ -128,7 +128,7 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 			<GenericForm<SignupInputs> formOptions={signupFormOptions}>
 				<Funnel>
 					<Funnel.Step name={FUNNEL_STEPS.GENDER}>
-						<Sex onNext={() => setStep(FUNNEL_STEPS.NAME)} />
+						<Gender onNext={() => setStep(FUNNEL_STEPS.NAME)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.NAME}>
 						<Name onNext={() => setStep(FUNNEL_STEPS.EMAIL)} />
@@ -146,7 +146,7 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 						<Birth onNext={() => setStep(FUNNEL_STEPS.FACE_IMG)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.FACE_IMG}>
-						<FaceImg onNext={() => setStep(FUNNEL_STEPS.LANGUAGE)} />
+						<ProfileImage onNext={() => setStep(FUNNEL_STEPS.LANGUAGE)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.LANGUAGE}>
 						<Language onSubmit={onSubmit} />

@@ -6,11 +6,11 @@ import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 
-type SexProps = {
+type GenderProps = {
 	onNext: () => void;
 };
 
-const Sex = ({ onNext }: SexProps) => {
+const Gender = ({ onNext }: GenderProps) => {
 	const {
 		control,
 		formState: { errors },
@@ -105,4 +105,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default Sex;
+export default Gender;
