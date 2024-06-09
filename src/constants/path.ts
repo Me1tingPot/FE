@@ -10,6 +10,7 @@ const API_URL = {
 	SIGNUP: `/${API_BASE.AUTH}/signup`,
 	LOGOUT: `/${API_BASE.AUTH}/signout`,
 	PROFILE_IMG_URL: `/${API_BASE.AUTH}/image-url`, // 프로필 이미지 url 생성
+	REISSUE_TOKEN: `/${API_BASE.AUTH}/reissue-token`,
 };
 
 export { VERSION, API_BASE, API_URL };

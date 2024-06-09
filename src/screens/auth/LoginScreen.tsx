@@ -57,10 +57,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 		loginMutation.mutate(
 			{ email, password },
 			{
-				onSuccess: async () => {
-					const refreshToken = await getEncryptStorage('refreshToken');
-					refreshToken && navigation.navigate(feedTabNavigations.FEED_HOME);
-				},
 				onError: error => {
 					Toast.show({
 						type: 'error',

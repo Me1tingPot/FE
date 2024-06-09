@@ -44,6 +44,8 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
 			setHeader('Authorization', accessToken);
 		},
 		onSettled: () => {
+			// mutation 완료 후 재 요청할 쿼리 목록
+			// ['auth', 'getAccessToken']
 			queryClient.refetchQueries({
 				queryKey: ['auth', 'getAccessToken'],
 			});
@@ -67,11 +69,13 @@ function useGetAccessToken() {
 		refetchOnReconnect: true,
 		refetchIntervalInBackground: true,
 	});
+	console.log(isSuccess, '성공 여부');
 
 	useEffect(() => {
 		if (isSuccess) {
 			setHeader('Authorization', `Bearer ${data.accessToken}`);
 			setEncryptStorage('refreshToken', data.refreshToken);
+			console.log('성공', isSuccess);
 		}
 	}, [isSuccess]);
 
@@ -81,6 +85,8 @@ function useGetAccessToken() {
 			removeEncryptStorage('refreshToken');
 		}
 	}, [isError]);
+
+	return { isSuccess, isError };
 }
 
 // Logout
@@ -101,12 +107,15 @@ function useAuth() {
 	const loginMutation = useLogin();
 	const getNewAccessToken = useGetAccessToken();
 	const logoutMutation = useLogout();
+	const isLogin = getNewAccessToken.isSuccess;
+	console.log(isLogin);
 
 	return {
 		signUpMutation,
 		loginMutation,
 		logoutMutation,
 		getNewAccessToken,
+		isLogin,
 	};
 }
 

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import useAuth from '@/hooks/queries/useAuth';
 import AuthStackNavigator from '../stack/AuthStackNavigator';
 import FeedStackNavigator from '../stack/FeedStackNavigator';
 import FeedTabNavigator from '../tab/FeedTabNavigator';
@@ -8,8 +9,9 @@ import FeedTabNavigator from '../tab/FeedTabNavigator';
 interface RootNavigatorProps {}
 
 function RootNavigator({}: RootNavigatorProps) {
-	const isLoggedIn = false;
-	return <>{isLoggedIn ? <FeedStackNavigator /> : <AuthStackNavigator />}</>;
+	const { isLogin } = useAuth();
+	console.log(isLogin);
+	return <>{isLogin ? <FeedStackNavigator /> : <AuthStackNavigator />}</>;
 }
 
 const styles = StyleSheet.create({});
