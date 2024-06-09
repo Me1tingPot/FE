@@ -35,7 +35,9 @@ const login = async ({
 };
 
 const logout = async () => {
-	await axiosInstance.delete(`${API_URL.LOGOUT}`);
+	const refreshToken = await getEncryptStorage(storageKeys.REFRESH_TOKEN);
+
+	await axiosInstance.get(`${API_URL.LOGOUT}?refresh-token=${refreshToken}`);
 };
 
 const signup = async ({
