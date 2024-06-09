@@ -66,7 +66,7 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 		FUNNEL_STEPS.LANGUAGE,
 	] as const;
 	const [Funnel, activeStepIndex, setStep] = useFunnel(funnelSteps, {
-		initialStep: FUNNEL_STEPS.FACE_IMG,
+		initialStep: FUNNEL_STEPS.GENDER,
 	});
 	const { theme } = useThemeStore();
 	const styles = styling(theme);

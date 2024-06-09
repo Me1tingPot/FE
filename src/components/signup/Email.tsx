@@ -50,7 +50,9 @@ const Email = ({ onNext }: EmailProps) => {
 									onNext();
 								}
 							}}
-							message={t(errors.email?.message as string)}
+							message={
+								errors.email?.message && t('올바른 이메일 형식이 아닙니다.')
+							}
 						/>
 					)}
 				/>

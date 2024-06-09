@@ -28,7 +28,7 @@ const signupSchema = z
 		emailVerifycation: emailVerifycationSchema(),
 		password: passwordSchema(),
 		checkPassword: z
-			.string({ required_error: '비밀번호를 입력해주세요!' })
+			.string({ required_error: '비밀번호를 입력해주세요.' })
 			.trim()
 			.min(1, { message: '비밀번호는 필수 입력값입니다.' }),
 		name: nameSchema(),

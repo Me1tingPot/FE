@@ -52,7 +52,10 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 									onNext();
 								}
 							}}
-							message={t(errors.emailVerifycation?.message)}
+							message={
+								errors.emailVerifycation?.message &&
+								t('인증번호는 6자리 숫자입니다.')
+							}
 							maxLength={6}
 						/>
 					)}

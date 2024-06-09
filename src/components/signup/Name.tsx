@@ -47,7 +47,10 @@ const Name = ({ onNext }: NameProps) => {
 								variant={errors?.name ? 'error' : 'default'}
 								returnKeyType="next"
 								placeholderTextColor={colors[theme].GRAY_300}
-								message={t(errors.name?.message as string)}
+								message={
+									errors.name?.message &&
+									t('이름은 문자/특수문자를 포함한 1~20자리입니다.')
+								}
 							/>
 						)}
 					/>

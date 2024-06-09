@@ -40,7 +40,7 @@ function emailVerifycationSchema() {
 
 function nameSchema() {
 	return z
-		.string({ required_error: '이름을 입력해주세요.' })
+		.string({ required_error: '이름은 문자/특수문자를 포함한 1~20자리입니다.' })
 		.trim()
 		.min(1, { message: '이름은 문자/특수문자를 포함한 1~20자리입니다.' })
 		.max(20, { message: '이름은 문자/특수문자를 포함한 1~20자리입니다.' });

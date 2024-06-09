@@ -43,7 +43,10 @@ const Password = ({ onNext }: PasswordProps) => {
 								onBlur={onBlur}
 								placeholder={t('비밀번호 입력')}
 								message={
-									t(errors.password?.message as String) ||
+									(errors.password?.message &&
+										t(
+											'비밀번호는 영문/숫자/특수문자 조합으로 8~20자리 입니다.',
+										)) ||
 									t('최소 8자, 최대 20자')
 								}
 								variant={errors.password ? 'error' : 'default'}
@@ -71,7 +74,10 @@ const Password = ({ onNext }: PasswordProps) => {
 								}}
 								secureTextEntry={true}
 								placeholderTextColor={colors[theme].GRAY_300}
-								message={t(errors.checkPassword?.message as String)}
+								message={
+									errors.checkPassword?.message &&
+									t('비밀번호가 일치하지 않습니다.')
+								}
 							/>
 						)}
 					/>
