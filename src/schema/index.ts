@@ -38,12 +38,12 @@ const signupSchema = z
 		languages: languagesSchema(),
 		profileImages: profileImagesSchema(),
 	})
-	.superRefine((val, ctx) => {
-		if (val.password !== val.checkPassword) {
+	.superRefine(({ checkPassword, password }, ctx) => {
+		if (checkPassword !== password) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
-				path: ['checkPassword'],
 				message: '비밀번호가 일치하지 않습니다.',
+				path: ['checkPassword'],
 			});
 		}
 	});

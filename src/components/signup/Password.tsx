@@ -23,6 +23,7 @@ const Password = ({ onNext }: PasswordProps) => {
 	const { t } = useTranslation();
 	const password = watch('password');
 	const checkPassword = watch('checkPassword');
+	const isChecked = password === checkPassword;
 
 	return (
 		<View style={styles.container}>
@@ -47,9 +48,12 @@ const Password = ({ onNext }: PasswordProps) => {
 										t(
 											'비밀번호는 영문/숫자/특수문자 조합으로 8~20자리 입니다.',
 										)) ||
+									(password && t('사용 가능한 비밀번호 입니다.')) ||
 									t('최소 8자, 최대 20자')
 								}
-								variant={errors.password ? 'error' : 'default'}
+								variant={
+									errors.password ? 'error' : value ? 'success' : 'default'
+								}
 								returnKeyType="next"
 								secureTextEntry={true}
 								placeholderTextColor={colors[theme].GRAY_300}
@@ -66,7 +70,13 @@ const Password = ({ onNext }: PasswordProps) => {
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('비밀번호 확인')}
-								variant={errors.checkPassword ? 'error' : 'default'}
+								variant={
+									isChecked
+										? 'success'
+										: errors.checkPassword?.message || !isChecked
+											? 'error'
+											: 'default'
+								}
 								onSubmitEditing={({ nativeEvent: { text } }) => {
 									if (text) {
 										onNext();
@@ -75,8 +85,10 @@ const Password = ({ onNext }: PasswordProps) => {
 								secureTextEntry={true}
 								placeholderTextColor={colors[theme].GRAY_300}
 								message={
-									errors.checkPassword?.message &&
-									t('비밀번호가 일치하지 않습니다.')
+									(isChecked && t('비밀번호가 일치합니다.')) ||
+									((errors.checkPassword?.message || !isChecked) &&
+										t('비밀번호가 일치하지 않습니다.')) ||
+									''
 								}
 							/>
 						)}
