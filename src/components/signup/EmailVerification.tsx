@@ -29,7 +29,7 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 		<View style={styles.container}>
 			<ScrollView>
 				<View>
-					<Text style={styles.title}>인증메일을 확인해주세요.</Text>
+					<Text style={styles.title}>{t('인증메일을 확인해주세요.')}</Text>
 					<Text style={styles.description}>
 						{t('신분 인증 후에는 해당 이메일로 로그인할 수 있어요.')}
 					</Text>

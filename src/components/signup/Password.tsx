@@ -73,7 +73,7 @@ const Password = ({ onNext }: PasswordProps) => {
 								variant={
 									isChecked
 										? 'success'
-										: errors.checkPassword?.message || !isChecked
+										: errors.checkPassword?.message || (password && !isChecked)
 											? 'error'
 											: 'default'
 								}
@@ -86,9 +86,10 @@ const Password = ({ onNext }: PasswordProps) => {
 								placeholderTextColor={colors[theme].GRAY_300}
 								message={
 									(isChecked && t('비밀번호가 일치합니다.')) ||
-									((errors.checkPassword?.message || !isChecked) &&
+									(password &&
+										!isChecked &&
 										t('비밀번호가 일치하지 않습니다.')) ||
-									''
+									errors.checkPassword?.message
 								}
 							/>
 						)}

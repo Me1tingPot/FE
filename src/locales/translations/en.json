@@ -411,5 +411,6 @@
 	"국적 및 사용 언어를 선택해주세요.": "Please select your informations.",
 	"비밀번호가 일치하지 않습니다.": "The password does not match.",
 	"사용 가능한 비밀번호 입니다.": "This is the password you can use.",
-	"비밀번호가 일치합니다.": "The password matches."
+	"비밀번호가 일치합니다.": "The password matches.",
+	"인증메일을 확인해주세요.": "Please check the authentication mail."
 }
