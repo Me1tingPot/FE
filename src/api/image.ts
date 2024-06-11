@@ -19,9 +19,7 @@ const uploadImages = async (body: FormData): Promise<string[]> => {
 };
 
 const getProfileUploadUrl = async (): Promise<PROFILE_URL_TYPES> => {
-	const { data } = await axiosInstance.get(
-		`${Config.API_URL}/${API_URL.PROFILE_IMG_URL}`,
-	);
+	const { data } = await axiosInstance.get(`${API_URL.PROFILE_IMG_URL}`);
 
 	return data;
 };
