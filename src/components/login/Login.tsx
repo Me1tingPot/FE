@@ -8,20 +8,21 @@ import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
-interface LoginEmailProps {
-	onNext: () => void;
+interface LoginProps {
+	onSubmit: (data: any) => Promise<void>;
 }
 
-const LoginEmail = ({ onNext }: LoginEmailProps) => {
+const Login = ({ onSubmit }: LoginProps) => {
 	const {
 		control,
+		handleSubmit,
 		formState: { errors },
 		watch,
 	} = useFormContext<LoginInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const email = watch('email');
+	const { password, email } = watch();
 
 	return (
 		<View style={styles.container}>
@@ -38,22 +39,43 @@ const LoginEmail = ({ onNext }: LoginEmailProps) => {
 						variant={errors.email?.message ? 'error' : 'default'}
 						placeholder={t('예시) melting_pot@gmail.com')}
 						placeholderTextColor={colors[theme].GRAY_300}
-						onSubmitEditing={({ nativeEvent: { text } }) => {
-							if (text) {
-								onNext();
-							}
-						}}
+						onSubmitEditing={({ nativeEvent: { text } }) => {}}
 						message={errors.email?.message}
+					/>
+				)}
+			/>
+
+			<Text style={styles.title}>{t('비밀번호를 입력해주세요.')}</Text>
+			<Controller
+				control={control}
+				name="password"
+				render={({ field: { onChange, onBlur, value } }) => (
+					<CustomTextInput
+						value={value}
+						onChangeText={onChange}
+						onBlur={onBlur}
+						variant={errors.password ? 'error' : 'default'}
+						placeholder={t('비밀번호 입력')}
+						message={errors.password?.message || t('최소 8자, 최대 20자')}
+						placeholderTextColor={colors[theme].GRAY_300}
+						secureTextEntry
 					/>
 				)}
 			/>
 
 			<View style={styles.buttonLayout}>
 				<CustomButton
-					label={t('다음으로')}
-					onPress={onNext}
+					label={t('로그인')}
 					variant={'filled'}
-					disabled={errors.email?.message || !email ? true : false}
+					onPress={() => handleSubmit(onSubmit)()}
+					disabled={
+						errors.email?.message ||
+						!email ||
+						errors.password?.message ||
+						!password
+							? true
+							: false
+					}
 				/>
 			</View>
 		</View>
@@ -80,4 +102,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default LoginEmail;
+export default Login;

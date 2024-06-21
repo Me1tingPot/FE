@@ -57,7 +57,6 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 			...image,
 			thumbnail: index === selected,
 		}));
-		console.log(updatedImages);
 		onNext();
 		setValue('profileImages', updatedImages);
 	};

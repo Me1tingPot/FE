@@ -5,21 +5,13 @@ import Toast from 'react-native-toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NavigationProp } from '@react-navigation/native';
 import GenericForm from '@/components/form/GenericForm';
-import LoginEmail from '@/components/login/LoginEmail';
-import LoginPassword from '@/components/login/LoginPassword';
-import ProgressBar from '@/components/signup/progressBar/ProgressBar';
+import Login from '@/components/login/Login';
 import { colors } from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
-import { useFunnel } from '@/hooks/useFunnel';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import { loginSchema } from '@/schema';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-
-enum LOGIN_STEPS {
-	EMAIL = 'email',
-	PASSWORD = 'password',
-}
 
 export interface LoginInputs {
 	email: string;
@@ -31,10 +23,6 @@ interface LoginScreenProps {
 }
 
 function LoginScreen({ navigation }: LoginScreenProps) {
-	const loginSteps = [LOGIN_STEPS.EMAIL, LOGIN_STEPS.PASSWORD] as const;
-	const [Funnel, activeStepIndex, setStep] = useFunnel(loginSteps, {
-		initialStep: LOGIN_STEPS.EMAIL,
-	});
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -65,6 +53,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 				},
 			},
 		);
+		console.log(data);
 	};
 
 	return (
@@ -77,19 +66,8 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 				colors={['#DCFFEA', '#C5FFDD', '#A5F2E1']}
 				style={styles.greenCircle}
 			/>
-			<ProgressBar
-				activeStepIndex={activeStepIndex}
-				stepLength={loginSteps.length}
-			/>
 			<GenericForm<LoginInputs> formOptions={loginFormOptions}>
-				<Funnel>
-					<Funnel.Step name={LOGIN_STEPS.EMAIL}>
-						<LoginEmail onNext={() => setStep(LOGIN_STEPS.PASSWORD)} />
-					</Funnel.Step>
-					<Funnel.Step name={LOGIN_STEPS.PASSWORD}>
-						<LoginPassword onSubmit={onSubmit} />
-					</Funnel.Step>
-				</Funnel>
+				<Login onSubmit={onSubmit} />
 			</GenericForm>
 		</SafeAreaView>
 	);
