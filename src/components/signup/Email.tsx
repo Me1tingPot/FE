@@ -1,7 +1,9 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { colors } from '@/constants';
+import useMail from '@/hooks/queries/useMail';
 import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -22,6 +24,26 @@ const Email = ({ onNext }: EmailProps) => {
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const email = watch('email');
+	const { postMailMutation } = useMail();
+
+	const handleNext = () => {
+		postMailMutation.mutate(
+			{ email },
+			{
+				onSuccess: () => {
+					onNext();
+				},
+				onError: error => {
+					Toast.show({
+						type: 'error',
+						text1: error.response?.data.message || '이메일 인증 에러',
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+				},
+			},
+		);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -47,7 +69,6 @@ const Email = ({ onNext }: EmailProps) => {
 							placeholderTextColor={colors[theme].GRAY_300}
 							onSubmitEditing={({ nativeEvent: { text } }) => {
 								if (text) {
-									onNext();
 								}
 							}}
 							message={
@@ -61,7 +82,7 @@ const Email = ({ onNext }: EmailProps) => {
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={onNext}
+					onPress={handleNext}
 					variant={'filled'}
 					disabled={errors.email?.message || !email ? true : false}
 				/>

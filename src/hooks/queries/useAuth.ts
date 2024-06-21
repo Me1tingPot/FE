@@ -16,13 +16,16 @@ import {
 	setHeader,
 } from '@/utils';
 
-type CustomError = AxiosError<{
+export type CustomError = AxiosError<{
 	message: string;
 	statusCode: string;
 	error: string;
 }>;
 
-type UseMutationCustomOptions<TData = unknown, TVariables = unknown> = Omit<
+export type UseMutationCustomOptions<
+	TData = unknown,
+	TVariables = unknown,
+> = Omit<
 	UseMutationOptions<TData, CustomError, TVariables, unknown>,
 	'mutationFn'
 >;
