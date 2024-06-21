@@ -1,10 +1,19 @@
 import Birth from './Birth';
 import Email from './Email';
-import FaceImg from './FaceImg';
+import Gender from './Gender';
 import Language from './Language';
 import Location from './Location';
 import Name from './Name';
 import Password from './Password';
-import Sex from './Sex';
+import ProfileImage from './ProfileImage';
 
-export { Sex, Name, Email, Password, Birth, Location, FaceImg, Language };
+export {
+	Gender,
+	Name,
+	Email,
+	Password,
+	Birth,
+	Location,
+	ProfileImage,
+	Language,
+};

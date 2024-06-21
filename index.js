@@ -12,7 +12,7 @@ async function enableMocking() {
 	const { server } = await import('./src/mocks/server/');
 	server.listen({
 		onUnhandledRequest() {
-			console.trace('Here');
+			// console.trace('Here');
 		},
 	});
 }

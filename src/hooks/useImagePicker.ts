@@ -5,6 +5,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { ImageUri } from '@/types';
 import { getFormDataImages } from '@/utils';
 import useMutateImages from './queries/useMutateImages';
+import useImages from './queries/useMutateImages';
 
 interface useImagePickerProps {
 	initialImages: ImageUri[];
@@ -14,7 +15,7 @@ interface useImagePickerProps {
 function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 	const [imageUris, setImageUris] = useState(initialImages);
 	const { t } = useTranslation();
-	const uploadImages = useMutateImages();
+	const { imagesMutation } = useImages();
 
 	const addImageUris = (uris: string[]) => {
 		if (imageUris.length > maxFiles) {
@@ -58,7 +59,7 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 				// 서버에 저장할 수 있는 형태로 변경
 				const formData = getFormDataImages(images);
 
-				uploadImages.mutate(formData, {
+				imagesMutation.mutate(formData, {
 					onSuccess: data => {
 						addImageUris(data);
 					},

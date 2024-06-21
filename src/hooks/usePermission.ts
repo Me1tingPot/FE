@@ -36,7 +36,6 @@ function usePermission(type: PermissionType) {
 			const permissionOS = isAndroid ? androidPermissions : iosPermissions;
 
 			const checked = await check(permissionOS[type]);
-			console.log(checked);
 
 			const showPermissionAlert = () => {
 				Alert.alert(

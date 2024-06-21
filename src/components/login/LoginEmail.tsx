@@ -2,6 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
+import { LoginInputs } from '@/screens/auth/LoginScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -15,10 +16,12 @@ const LoginEmail = ({ onNext }: LoginEmailProps) => {
 	const {
 		control,
 		formState: { errors },
-	} = useFormContext();
+		watch,
+	} = useFormContext<LoginInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const email = watch('email');
 
 	return (
 		<View style={styles.container}>
@@ -32,7 +35,7 @@ const LoginEmail = ({ onNext }: LoginEmailProps) => {
 						onChangeText={onChange}
 						onBlur={onBlur}
 						inputMode="email"
-						variant={errors.email ? 'error' : 'default'}
+						variant={errors.email?.message ? 'error' : 'default'}
 						placeholder={t('예시) melting_pot@gmail.com')}
 						placeholderTextColor={colors[theme].GRAY_300}
 						onSubmitEditing={({ nativeEvent: { text } }) => {
@@ -40,6 +43,7 @@ const LoginEmail = ({ onNext }: LoginEmailProps) => {
 								onNext();
 							}
 						}}
+						message={errors.email?.message}
 					/>
 				)}
 			/>
@@ -49,6 +53,7 @@ const LoginEmail = ({ onNext }: LoginEmailProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
+					disabled={errors.email?.message || !email ? true : false}
 				/>
 			</View>
 		</View>

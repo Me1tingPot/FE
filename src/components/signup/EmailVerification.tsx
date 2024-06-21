@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import { colors } from '@/constants';
 import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
@@ -8,11 +9,12 @@ import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
-type EmailProps = {
+interface EmailVerificationProps {
 	onNext: () => void;
-};
+}
 
-const Email = ({ onNext }: EmailProps) => {
+// TODO : 메일 인증 요청 및 인증 번호 확인 api 연결 필요
+const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 	const {
 		control,
 		formState: { errors },
@@ -21,13 +23,13 @@ const Email = ({ onNext }: EmailProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const email = watch('email');
+	const emailNum = watch('emailVerifycation');
 
 	return (
 		<View style={styles.container}>
 			<ScrollView>
 				<View>
-					<Text style={styles.title}>{t('이메일을 입력해주세요.')}</Text>
+					<Text style={styles.title}>{t('인증메일을 확인해주세요.')}</Text>
 					<Text style={styles.description}>
 						{t('신분 인증 후에는 해당 이메일로 로그인할 수 있어요.')}
 					</Text>
@@ -35,15 +37,15 @@ const Email = ({ onNext }: EmailProps) => {
 
 				<Controller
 					control={control}
-					name="email"
+					name="emailVerifycation"
 					render={({ field: { onChange, onBlur, value } }) => (
 						<CustomTextInput
 							value={value}
 							onChangeText={onChange}
 							onBlur={onBlur}
-							placeholder={t('예시) melting_pot@gmail.com')}
-							inputMode="email"
-							variant={errors.email ? 'error' : 'default'}
+							placeholder="인증번호 입력"
+							inputMode="numeric"
+							variant={errors.emailVerifycation?.message ? 'error' : 'default'}
 							placeholderTextColor={colors[theme].GRAY_300}
 							onSubmitEditing={({ nativeEvent: { text } }) => {
 								if (text) {
@@ -51,8 +53,10 @@ const Email = ({ onNext }: EmailProps) => {
 								}
 							}}
 							message={
-								errors.email?.message && t('올바른 이메일 형식이 아닙니다.')
+								errors.emailVerifycation?.message &&
+								t('인증번호는 6자리 숫자입니다.')
 							}
+							maxLength={6}
 						/>
 					)}
 				/>
@@ -63,7 +67,9 @@ const Email = ({ onNext }: EmailProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
-					disabled={errors.email?.message || !email ? true : false}
+					disabled={
+						errors.emailVerifycation?.message || !emailNum ? true : false
+					}
 				/>
 			</View>
 		</View>
@@ -95,4 +101,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default Email;
+export default EmailVerification;

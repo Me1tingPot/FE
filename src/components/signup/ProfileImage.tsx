@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,41 +8,47 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
+import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
-import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
+import useProfileImagesPicker from '@/hooks/useProfileImagesPicker';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
-import CameraOrLibrary from './CameraOrLibrary';
 
-type FaceImgProps = {
+type ProfileImageProps = {
 	onNext: () => void;
 };
 
-const FaceImg = ({ onNext }: FaceImgProps) => {
+const ProfileImage = ({ onNext }: ProfileImageProps) => {
 	const {
 		formState: { errors },
 		setValue,
-	} = useFormContext();
+	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
-	const modal = useModal();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const [files, setFiles] = useState<string[]>([]);
+	const formDataImages = useProfileImagesPicker({
+		initialImages: [],
+		maxFiles: 3,
+	});
 	usePermission('PHOTO');
 	usePermission('CAMERA');
 
-	const cameraOptions: CameraOptions = {
-		cameraType: 'front',
-		mediaType: 'photo',
-	};
-
-	const libraryOptions: ImageLibraryOptions = {
-		selectionLimit: 3,
-		mediaType: 'photo',
+	const handleSubmit = () => {
+		if (formDataImages.uploadedImages.length <= 0) {
+			Toast.show({
+				type: 'error',
+				text1: t('최소 1개의 이미지를 선택해주세요.'),
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+			return;
+		}
+		onNext();
+		setValue('profileImages', formDataImages.uploadedImages);
 	};
 
 	return (
@@ -65,7 +70,7 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								style={styles.imageButton}
-								onPress={modal.show}
+								onPress={formDataImages.handleChange}
 							>
 								<MaterialIcons
 									name="camera-alt"
@@ -73,19 +78,10 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 									size={25}
 								/>
 							</TouchableOpacity>
-							{files.map((item, index) => (
-								<View style={styles.imageButton}>
-									{files[index] ? (
-										<Image
-											source={{ uri: files[index] }}
-											style={styles.image}
-										/>
-									) : (
-										<MaterialIcons
-											name={item}
-											color={colors[theme].GRAY_400}
-											size={25}
-										/>
+							{formDataImages.imageUris.map((item, index) => (
+								<View style={styles.imageButton} key={item.id}>
+									{item.uri && (
+										<Image source={{ uri: item.uri }} style={styles.image} />
 									)}
 								</View>
 							))}
@@ -103,20 +99,11 @@ const FaceImg = ({ onNext }: FaceImgProps) => {
 				</Text>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={() => {
-						onNext();
-						setValue('faceImg', files);
-					}}
+					onPress={handleSubmit}
 					variant={'filled'}
+					isLoading={formDataImages.isLoading}
 				/>
 			</View>
-			<CameraOrLibrary
-				isVisible={modal.isVisible}
-				hideOption={modal.hide}
-				cameraOptions={cameraOptions}
-				libraryOptions={libraryOptions}
-				setFiles={setFiles}
-			/>
 		</View>
 	);
 };
@@ -185,4 +172,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default FaceImg;
+export default ProfileImage;

@@ -8,9 +8,11 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useModal from '@/hooks/useModal';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { getDateLocaleFormat } from '@/utils';
@@ -23,18 +25,14 @@ type BirthProps = {
 };
 
 const Birth = ({ onNext }: BirthProps) => {
-	const {
-		control,
-		formState: { errors },
-		setValue,
-	} = useFormContext();
+	const { control, setValue } = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const [date, setDate] = useState(new Date());
 	const [isPicked, setIsPicked] = useState(false);
 	const dateOption = useModal();
-	const formatDateString = getDateLocaleFormat(date, '/');
+	const formatDateString = getDateLocaleFormat(date, '-');
 
 	const handleConfirmDate = () => {
 		setIsPicked(true);
@@ -43,6 +41,20 @@ const Birth = ({ onNext }: BirthProps) => {
 
 	const handleChangeDate = (pickedDate: Date) => {
 		setDate(pickedDate);
+	};
+
+	const handleSubmit = () => {
+		if (!isPicked) {
+			Toast.show({
+				type: 'error',
+				text1: t('생년월일을 선택해주세요.'),
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+			return;
+		}
+		onNext();
+		setValue('birth', formatDateString);
 	};
 
 	return (
@@ -97,10 +109,7 @@ const Birth = ({ onNext }: BirthProps) => {
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={() => {
-						setValue('birth', formatDateString);
-						onNext();
-					}}
+					onPress={handleSubmit}
 					variant={'filled'}
 				/>
 			</View>

@@ -5,6 +5,7 @@ import DarkModeOption from '@/components/my/DarkModeOption';
 import ProfileContainer from '@/components/my/ProfileContainer';
 import SettingItem from '@/components/my/SettingItem';
 import { colors } from '@/constants';
+import useAuth from '@/hooks/queries/useAuth';
 import useModal from '@/hooks/useModal';
 import useThemeStorage from '@/hooks/useThemeStorage';
 import i18n from '@/locales/i18n.config';
@@ -27,6 +28,12 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 			: themeMode === 'light'
 				? t('라이트 모드')
 				: t('다크 모드');
+
+	const { logoutMutation } = useAuth();
+
+	const handlePressLogout = () => {
+		logoutMutation.mutate(null);
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -79,7 +86,7 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 					<Text style={styles.categoryText}>{t('기타')}</Text>
 					<SettingItem title={t('정보 동의 설정')} />
 					<SettingItem title={t('회원 탈퇴')} />
-					<SettingItem title={t('로그아웃')} />
+					<SettingItem title={t('로그아웃')} onPress={handlePressLogout} />
 				</View>
 
 				<DarkModeOption

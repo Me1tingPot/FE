@@ -10,8 +10,10 @@ import {
 	View,
 } from 'react-native';
 import { ScrollView as GestureHandlerScrollView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -41,36 +43,51 @@ const countries = [
 ];
 
 type LanguageProps = {
-	onNext: () => void;
 	onSubmit: (data: any) => Promise<void>;
+	isPending?: boolean;
 };
 
-const Language = ({ onNext, onSubmit }: LanguageProps) => {
+const Language = ({ isPending, onSubmit }: LanguageProps) => {
 	const {
 		control,
 		formState: { errors },
 		handleSubmit,
 		setValue,
-	} = useFormContext();
+	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const [local, setLocal] = useState('');
-	const [language, setLanguage] = useState<string[]>([]);
+	const [languages, setLanguages] = useState<string[]>([]);
 	const [open, setOpen] = useState({ local: false, language: false });
 
 	const toggleSelection = (item: string) => {
-		if (language.includes(item)) {
-			setLanguage(prevLanguages =>
+		if (languages.includes(item)) {
+			setLanguages(prevLanguages =>
 				prevLanguages.filter(language => language !== item),
 			);
 		} else {
-			if (language.length < 3) {
-				setLanguage(prevLanguages => [...prevLanguages, item]);
+			if (languages.length < 3) {
+				setLanguages(prevLanguages => [...prevLanguages, item]);
 			} else {
 				Alert.alert('', '최대 3개의 언어를 선택할 수 있습니다.');
 			}
 		}
+	};
+
+	const handleSubmitData = () => {
+		if (!local || languages.length <= 0) {
+			Toast.show({
+				type: 'error',
+				text1: t('국적 및 사용 언어를 선택해주세요.'),
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+			return;
+		}
+		setValue('nationality', local);
+		setValue('languages', languages);
+		handleSubmit(onSubmit)();
 	};
 
 	return (
@@ -83,7 +100,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 					</Text>
 					<Controller
 						control={control}
-						name="local"
+						name="nationality"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
 								value={value || local}
@@ -135,7 +152,10 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 												backgroundColor: colors[theme].GREEN_500,
 											},
 										]}
-										onPress={() => setLocal(item)}
+										onPress={() => {
+											setLocal(item);
+											setOpen(prev => ({ ...prev, local: false }));
+										}}
 									>
 										<Text style={styles.menuText}>{item}</Text>
 									</Pressable>
@@ -150,10 +170,10 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 					<Text style={styles.description}>{t('최소 1개, 최대 3개')}</Text>
 					<Controller
 						control={control}
-						name="language"
+						name="languages"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
-								value={value || language.join(', ')}
+								value={languages.join(', ')}
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('사용 언어 선택하기')}
@@ -198,7 +218,7 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 										key={index}
 										style={[
 											styles.menu,
-											language.includes(item) && {
+											languages.includes(item) && {
 												backgroundColor: colors[theme].GREEN_500,
 											},
 										]}
@@ -216,13 +236,9 @@ const Language = ({ onNext, onSubmit }: LanguageProps) => {
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={() => {
-						onNext();
-						setValue('local', local);
-						setValue('language', language);
-						handleSubmit(onSubmit)();
-					}}
+					onPress={handleSubmitData}
 					variant={'filled'}
+					isLoading={isPending}
 				/>
 			</View>
 		</View>

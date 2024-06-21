@@ -2,6 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -15,10 +16,12 @@ const Name = ({ onNext }: NameProps) => {
 	const {
 		control,
 		formState: { errors },
-	} = useFormContext();
+		watch,
+	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const name = watch('name');
 
 	return (
 		<View style={styles.container}>
@@ -34,36 +37,20 @@ const Name = ({ onNext }: NameProps) => {
 				<View style={styles.nameContainer}>
 					<Controller
 						control={control}
-						name="firstName"
+						name="name"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
 								value={value}
 								onBlur={onBlur}
 								onChangeText={onChange}
 								placeholder={t('여권상의 영문 이름')}
-								variant={errors?.firstName ? 'error' : 'default'}
+								variant={errors?.name ? 'error' : 'default'}
 								returnKeyType="next"
 								placeholderTextColor={colors[theme].GRAY_300}
-							/>
-						)}
-					/>
-
-					<Controller
-						control={control}
-						name="lastName"
-						render={({ field: { onChange, onBlur, value } }) => (
-							<CustomTextInput
-								value={value}
-								onChangeText={onChange}
-								onBlur={onBlur}
-								placeholder={t('여권상의 영문 성')}
-								variant={errors?.latsName ? 'error' : 'default'}
-								placeholderTextColor={colors[theme].GRAY_300}
-								onSubmitEditing={({ nativeEvent: { text } }) => {
-									if (text) {
-										onNext();
-									}
-								}}
+								message={
+									errors.name?.message &&
+									t('이름은 문자/특수문자를 포함한 1~20자리입니다.')
+								}
 							/>
 						)}
 					/>
@@ -82,6 +69,7 @@ const Name = ({ onNext }: NameProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
+					disabled={errors?.name || !name ? true : false}
 				/>
 			</View>
 		</View>

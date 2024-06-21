@@ -1,28 +1,29 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
-import { colors, feedTabNavigations } from '@/constants';
-import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
+import { colors } from '@/constants';
+import { LoginInputs } from '@/screens/auth/LoginScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
 interface LoginPasswordProps {
-	navigation: NavigationProp<AuthStackParamList>;
 	onSubmit: (data: any) => Promise<void>;
+	isPending?: boolean;
 }
 
-const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
+const LoginPassword = ({ isPending, onSubmit }: LoginPasswordProps) => {
 	const {
 		control,
-		formState: { errors },
 		handleSubmit,
-	} = useFormContext();
+		formState: { errors },
+		watch,
+	} = useFormContext<LoginInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const password = watch('password');
 
 	return (
 		<View style={styles.container}>
@@ -35,10 +36,11 @@ const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
 						value={value}
 						onChangeText={onChange}
 						onBlur={onBlur}
-						variant={errors.email ? 'error' : 'default'}
+						variant={errors.password ? 'error' : 'default'}
 						placeholder={t('비밀번호 입력')}
-						message={t('최소 8자, 최대 20자')}
+						message={errors.password?.message || t('최소 8자, 최대 20자')}
 						placeholderTextColor={colors[theme].GRAY_300}
+						secureTextEntry
 					/>
 				)}
 			/>
@@ -46,11 +48,11 @@ const LoginPassword = ({ navigation, onSubmit }: LoginPasswordProps) => {
 			<View style={styles.buttonLayout}>
 				<CustomButton
 					label={t('로그인')}
-					onPress={() => {
-						handleSubmit(onSubmit)();
-						navigation.navigate(feedTabNavigations.FEED_HOME);
-					}}
+					onPress={() => handleSubmit(onSubmit)()}
 					variant={'filled'}
+					disabled={
+						errors.password?.message || !password || isPending ? true : false
+					}
 				/>
 			</View>
 		</View>

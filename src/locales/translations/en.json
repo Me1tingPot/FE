@@ -399,5 +399,18 @@
 	"변경할 프로필 소개를 입력해주세요.": "Please enter the profile introduction you want to change.",
 	"사진 등록 후 대표사진을 선택해주세요.": "Please select a thumbnail after registering the photo.",
 	"대표": "thumbnail",
-	"프로필 사진": "Profile photo"
+	"프로필 사진": "Profile photo",
+	"성별을 선택해주세요.": "Please choose your gender.",
+	"이름은 문자/특수문자를 포함한 1~20자리입니다.": "The name can be 1 to 20 digits, including characters/special characters.",
+	"올바른 이메일 형식이 아닙니다.": "It is not a valid email format.",
+	"인증번호는 6자리 숫자입니다.": "The authentication number is a six-digit number.",
+	"생년월일을 선택해주세요.": "Please select a date of birth.",
+	"비밀번호는 영문/숫자/특수문자 조합으로 8~20자리 입니다.": "The password is an English/numerical/special character combination of 8 to 20 digits.",
+	"비밀번호는 영문, 숫자를 필수로 하며 특수문자는 선택입니다.": "Passwords must be in English and numbers, and special characters are optional.",
+	"최소 1개의 이미지를 선택해주세요.": "Please select at least one image.",
+	"국적 및 사용 언어를 선택해주세요.": "Please select your informations.",
+	"비밀번호가 일치하지 않습니다.": "The password does not match.",
+	"사용 가능한 비밀번호 입니다.": "This is the password you can use.",
+	"비밀번호가 일치합니다.": "The password matches.",
+	"인증메일을 확인해주세요.": "Please check the authentication mail."
 }

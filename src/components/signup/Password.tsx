@@ -2,6 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants';
+import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
@@ -15,10 +16,14 @@ const Password = ({ onNext }: PasswordProps) => {
 	const {
 		control,
 		formState: { errors },
-	} = useFormContext();
+		watch,
+	} = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const password = watch('password');
+	const checkPassword = watch('checkPassword');
+	const isChecked = password === checkPassword;
 
 	return (
 		<View style={styles.container}>
@@ -38,8 +43,17 @@ const Password = ({ onNext }: PasswordProps) => {
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('비밀번호 입력')}
-								message={t('최소 8자, 최대 20자')}
-								variant={errors.password ? 'error' : 'default'}
+								message={
+									(errors.password?.message &&
+										t(
+											'비밀번호는 영문/숫자/특수문자 조합으로 8~20자리 입니다.',
+										)) ||
+									(password && t('사용 가능한 비밀번호 입니다.')) ||
+									t('최소 8자, 최대 20자')
+								}
+								variant={
+									errors.password ? 'error' : value ? 'success' : 'default'
+								}
 								returnKeyType="next"
 								secureTextEntry={true}
 								placeholderTextColor={colors[theme].GRAY_300}
@@ -49,14 +63,20 @@ const Password = ({ onNext }: PasswordProps) => {
 
 					<Controller
 						control={control}
-						name="passwordCheck"
+						name="checkPassword"
 						render={({ field: { onChange, onBlur, value } }) => (
 							<CustomTextInput
 								value={value}
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('비밀번호 확인')}
-								variant={errors.passwordCheck ? 'error' : 'default'}
+								variant={
+									isChecked
+										? 'success'
+										: errors.checkPassword?.message || (password && !isChecked)
+											? 'error'
+											: 'default'
+								}
 								onSubmitEditing={({ nativeEvent: { text } }) => {
 									if (text) {
 										onNext();
@@ -64,6 +84,13 @@ const Password = ({ onNext }: PasswordProps) => {
 								}}
 								secureTextEntry={true}
 								placeholderTextColor={colors[theme].GRAY_300}
+								message={
+									(isChecked && t('비밀번호가 일치합니다.')) ||
+									(password &&
+										!isChecked &&
+										t('비밀번호가 일치하지 않습니다.')) ||
+									errors.checkPassword?.message
+								}
 							/>
 						)}
 					/>
@@ -75,6 +102,14 @@ const Password = ({ onNext }: PasswordProps) => {
 					label={t('다음으로')}
 					onPress={onNext}
 					variant={'filled'}
+					disabled={
+						errors.password ||
+						errors.checkPassword ||
+						!password ||
+						!checkPassword
+							? true
+							: false
+					}
 				/>
 			</View>
 		</View>
