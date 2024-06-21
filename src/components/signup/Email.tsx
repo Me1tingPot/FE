@@ -34,6 +34,7 @@ const Email = ({ onNext }: EmailProps) => {
 					onNext();
 				},
 				onError: error => {
+					console.log(error.response);
 					Toast.show({
 						type: 'error',
 						text1: error.response?.data.message || '이메일 인증 에러',

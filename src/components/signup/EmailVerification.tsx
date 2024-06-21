@@ -2,7 +2,9 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { colors } from '@/constants';
+import useMail from '@/hooks/queries/useMail';
 import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -23,7 +25,31 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const emailNum = watch('emailVerifycation');
+	const { verificationMailMutation } = useMail();
+	const code = watch('emailVerifycation');
+	const email = watch('email');
+
+	const handleNext = () => {
+		verificationMailMutation.mutate(
+			{
+				email,
+				code,
+			},
+			{
+				onSuccess: () => {
+					onNext();
+				},
+				onError: error => {
+					Toast.show({
+						type: 'error',
+						text1: error.response?.data.message || '이메일 인증 에러',
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+				},
+			},
+		);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -65,11 +91,9 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={onNext}
+					onPress={handleNext}
 					variant={'filled'}
-					disabled={
-						errors.emailVerifycation?.message || !emailNum ? true : false
-					}
+					disabled={errors.emailVerifycation?.message || !code ? true : false}
 				/>
 			</View>
 		</View>
