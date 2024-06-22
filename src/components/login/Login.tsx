@@ -10,9 +10,10 @@ import CustomTextInput from '../common/CustomTextInput';
 
 interface LoginProps {
 	onSubmit: (data: any) => Promise<void>;
+	isPending: boolean;
 }
 
-const Login = ({ onSubmit }: LoginProps) => {
+const Login = ({ onSubmit, isPending }: LoginProps) => {
 	const {
 		control,
 		handleSubmit,
@@ -76,6 +77,7 @@ const Login = ({ onSubmit }: LoginProps) => {
 							? true
 							: false
 					}
+					isLoading={isPending}
 				/>
 			</View>
 		</View>

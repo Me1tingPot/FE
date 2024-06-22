@@ -67,7 +67,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 				style={styles.greenCircle}
 			/>
 			<GenericForm<LoginInputs> formOptions={loginFormOptions}>
-				<Login onSubmit={onSubmit} />
+				<Login onSubmit={onSubmit} isPending={loginMutation.isPending} />
 			</GenericForm>
 		</SafeAreaView>
 	);
