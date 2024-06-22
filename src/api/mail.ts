@@ -21,4 +21,11 @@ const verificationMail = async ({ email, code }: CheckMailProps) => {
 	return data;
 };
 
-export { postMail, verificationMail };
+const duplicationMail = async ({ email }: { email: string }) => {
+	const { data } = await axiosInstance.post(`${API_URL.MAIL_DEPLICATION}`, {
+		email,
+	});
+	return data;
+};
+
+export { postMail, verificationMail, duplicationMail };

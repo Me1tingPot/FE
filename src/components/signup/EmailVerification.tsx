@@ -42,7 +42,7 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 				onError: error => {
 					Toast.show({
 						type: 'error',
-						text1: error.response?.data.message || '이메일 인증 에러',
+						text1: error.response?.data.message || t('이메일 인증 에러'),
 						visibilityTime: 2000,
 						position: 'bottom',
 					});
@@ -94,6 +94,7 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 					onPress={handleNext}
 					variant={'filled'}
 					disabled={errors.emailVerifycation?.message || !code ? true : false}
+					isLoading={verificationMailMutation.isPending}
 				/>
 			</View>
 		</View>

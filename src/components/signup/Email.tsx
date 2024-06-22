@@ -24,20 +24,35 @@ const Email = ({ onNext }: EmailProps) => {
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const email = watch('email');
-	const { postMailMutation } = useMail();
+	const { postMailMutation, duplicationMailMutation } = useMail();
 
 	const handleNext = () => {
-		postMailMutation.mutate(
+		duplicationMailMutation.mutate(
 			{ email },
 			{
 				onSuccess: () => {
-					onNext();
+					postMailMutation.mutate(
+						{ email },
+						{
+							onSuccess: () => {
+								onNext();
+							},
+							onError: error => {
+								console.log(error.response);
+								Toast.show({
+									type: 'error',
+									text1: error.response?.data.message || t('이메일 인증 에러'),
+									visibilityTime: 2000,
+									position: 'bottom',
+								});
+							},
+						},
+					);
 				},
 				onError: error => {
-					console.log(error.response);
 					Toast.show({
 						type: 'error',
-						text1: error.response?.data.message || '이메일 인증 에러',
+						text1: error.response?.data.message || t('이미 가입된 메일입니다.'),
 						visibilityTime: 2000,
 						position: 'bottom',
 					});
@@ -86,6 +101,9 @@ const Email = ({ onNext }: EmailProps) => {
 					onPress={handleNext}
 					variant={'filled'}
 					disabled={errors.email?.message || !email ? true : false}
+					isLoading={
+						duplicationMailMutation.isPending || postMailMutation.isPending
+					}
 				/>
 			</View>
 		</View>

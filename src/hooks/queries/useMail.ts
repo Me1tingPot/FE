@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { verificationMail, postMail } from '@/api/mail';
+import { verificationMail, postMail, duplicationMail } from '@/api/mail';
 import { UseMutationCustomOptions } from './useAuth';
 
 function usePostMail(mutationOptions?: UseMutationCustomOptions) {
@@ -22,11 +22,26 @@ function useVerificationMail(mutationOptions?: UseMutationCustomOptions) {
 	});
 }
 
+function useDuplicationMail(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: duplicationMail,
+		onSuccess: data => {
+			console.log(data);
+		},
+		...mutationOptions,
+	});
+}
+
 function useMail() {
 	const postMailMutation = usePostMail();
 	const verificationMailMutation = useVerificationMail();
+	const duplicationMailMutation = useDuplicationMail();
 
-	return { postMailMutation, verificationMailMutation };
+	return {
+		postMailMutation,
+		verificationMailMutation,
+		duplicationMailMutation,
+	};
 }
 
 export default useMail;
