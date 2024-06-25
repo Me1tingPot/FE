@@ -156,7 +156,10 @@ function SignUpScreen({ navigation }: AuthHomeScreenProps) {
 						<Name onNext={() => setStep(FUNNEL_STEPS.EMAIL)} />
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.EMAIL}>
-						<Email onNext={() => setStep(FUNNEL_STEPS.EMAIL_VERIFICATION)} />
+						<Email
+							onNext={() => setStep(FUNNEL_STEPS.EMAIL_VERIFICATION)}
+							navigation={navigation}
+						/>
 					</Funnel.Step>
 					<Funnel.Step name={FUNNEL_STEPS.EMAIL_VERIFICATION}>
 						<EmailVerification onNext={() => setStep(FUNNEL_STEPS.PASSWORD)} />

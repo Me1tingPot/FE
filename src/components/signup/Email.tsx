@@ -2,8 +2,10 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { colors } from '@/constants';
+import { NavigationProp } from '@react-navigation/native';
+import { authNavigations, colors } from '@/constants';
 import useMail from '@/hooks/queries/useMail';
+import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -11,10 +13,11 @@ import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
 type EmailProps = {
+	navigation: NavigationProp<AuthStackParamList>;
 	onNext: () => void;
 };
 
-const Email = ({ onNext }: EmailProps) => {
+const Email = ({ onNext, navigation }: EmailProps) => {
 	const {
 		control,
 		formState: { errors },
@@ -56,6 +59,7 @@ const Email = ({ onNext }: EmailProps) => {
 						visibilityTime: 2000,
 						position: 'bottom',
 					});
+					navigation.navigate(authNavigations.AUTH_HOME);
 				},
 			},
 		);
