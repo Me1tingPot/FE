@@ -8,12 +8,12 @@ import { ThemeMode } from '@/types';
 import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
-interface LoginPasswordProps {
+interface LoginProps {
 	onSubmit: (data: any) => Promise<void>;
-	isPending?: boolean;
+	isPending: boolean;
 }
 
-const LoginPassword = ({ isPending, onSubmit }: LoginPasswordProps) => {
+const Login = ({ onSubmit, isPending }: LoginProps) => {
 	const {
 		control,
 		handleSubmit,
@@ -23,10 +23,29 @@ const LoginPassword = ({ isPending, onSubmit }: LoginPasswordProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const password = watch('password');
+	const { password, email } = watch();
 
 	return (
 		<View style={styles.container}>
+			<Text style={styles.title}>{t('이메일을 입력해주세요.')}</Text>
+			<Controller
+				control={control}
+				name="email"
+				render={({ field: { onChange, onBlur, value } }) => (
+					<CustomTextInput
+						value={value}
+						onChangeText={onChange}
+						onBlur={onBlur}
+						inputMode="email"
+						variant={errors.email?.message ? 'error' : 'default'}
+						placeholder={t('예시) melting_pot@gmail.com')}
+						placeholderTextColor={colors[theme].GRAY_300}
+						onSubmitEditing={({ nativeEvent: { text } }) => {}}
+						message={errors.email?.message}
+					/>
+				)}
+			/>
+
 			<Text style={styles.title}>{t('비밀번호를 입력해주세요.')}</Text>
 			<Controller
 				control={control}
@@ -48,11 +67,17 @@ const LoginPassword = ({ isPending, onSubmit }: LoginPasswordProps) => {
 			<View style={styles.buttonLayout}>
 				<CustomButton
 					label={t('로그인')}
-					onPress={() => handleSubmit(onSubmit)()}
 					variant={'filled'}
+					onPress={() => handleSubmit(onSubmit)()}
 					disabled={
-						errors.password?.message || !password || isPending ? true : false
+						errors.email?.message ||
+						!email ||
+						errors.password?.message ||
+						!password
+							? true
+							: false
 					}
+					isLoading={isPending}
 				/>
 			</View>
 		</View>
@@ -79,4 +104,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default LoginPassword;
+export default Login;

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -23,6 +24,7 @@ type ProfileImageProps = {
 };
 
 const ProfileImage = ({ onNext }: ProfileImageProps) => {
+	const [selected, setSelected] = useState(0);
 	const {
 		formState: { errors },
 		setValue,
@@ -37,6 +39,10 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 	usePermission('PHOTO');
 	usePermission('CAMERA');
 
+	const handleSelected = (id: number) => {
+		setSelected(id);
+	};
+
 	const handleSubmit = () => {
 		if (formDataImages.uploadedImages.length <= 0) {
 			Toast.show({
@@ -47,8 +53,12 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 			});
 			return;
 		}
+		const updatedImages = formDataImages.uploadedImages.map((image, index) => ({
+			...image,
+			thumbnail: index === selected,
+		}));
 		onNext();
-		setValue('profileImages', formDataImages.uploadedImages);
+		setValue('profileImages', updatedImages);
 	};
 
 	return (
@@ -79,11 +89,34 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 								/>
 							</TouchableOpacity>
 							{formDataImages.imageUris.map((item, index) => (
-								<View style={styles.imageButton} key={item.id}>
+								<TouchableOpacity
+									activeOpacity={0.9}
+									style={styles.imageButton}
+									key={index}
+									onPress={() => handleSelected(index)}
+								>
 									{item.uri && (
-										<Image source={{ uri: item.uri }} style={styles.image} />
+										<>
+											<Image source={{ uri: item.uri }} style={styles.image} />
+											<View
+												style={[
+													styles.unSelectedImg,
+													selected === index && styles.selectedImg,
+												]}
+											>
+												<Text
+													style={
+														selected === index
+															? styles.selectedText
+															: styles.unSelectedText
+													}
+												>
+													{t('대표')}
+												</Text>
+											</View>
+										</>
 									)}
-								</View>
+								</TouchableOpacity>
 							))}
 						</View>
 					</View>
@@ -169,6 +202,28 @@ const styling = (theme: ThemeMode) =>
 			flexWrap: 'wrap',
 			gap: 10,
 			marginTop: 40,
+		},
+		selectedImg: {
+			borderColor: colors[theme].EMERALD_500,
+		},
+		unSelectedImg: {
+			position: 'absolute',
+			top: 15,
+			left: 15,
+			paddingVertical: 3,
+			paddingHorizontal: 10,
+			borderWidth: 0.5,
+			borderColor: colors[theme].GRAY_300,
+			borderRadius: 300,
+			backgroundColor: colors[theme].WHITE,
+		},
+		selectedText: {
+			fontSize: 10,
+			color: colors[theme].EMERALD_500,
+		},
+		unSelectedText: {
+			fontSize: 10,
+			color: colors[theme].GRAY_700,
 		},
 	});
 

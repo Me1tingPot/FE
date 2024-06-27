@@ -74,7 +74,7 @@ function useProfileImagesPicker({
 				uploadedImageData.push({
 					imageKey: fileKey,
 					thumbnail: i === 0,
-					sequence: i + 1,
+					sequence: i,
 				});
 			}
 

@@ -25,8 +25,10 @@ function getDateLocaleFormat(
 	separator: string = '.',
 ) {
 	const { year, month, day } = getDetailsDate(dateString);
+	const paddedMonth = month.toString().padStart(2, '0');
+	const paddedDay = day.toString().padStart(2, '0');
 
-	return `${year}${separator}${month}${separator}${day}`;
+	return `${year}${separator}${paddedMonth}${separator}${paddedDay}`;
 }
 
 // CALENDAR

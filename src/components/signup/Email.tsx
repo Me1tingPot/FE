@@ -1,7 +1,11 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors } from '@/constants';
+import Toast from 'react-native-toast-message';
+import { NavigationProp } from '@react-navigation/native';
+import { authNavigations, colors } from '@/constants';
+import useMail from '@/hooks/queries/useMail';
+import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -9,10 +13,11 @@ import CustomButton from '../common/CustomButton';
 import CustomTextInput from '../common/CustomTextInput';
 
 type EmailProps = {
+	navigation: NavigationProp<AuthStackParamList>;
 	onNext: () => void;
 };
 
-const Email = ({ onNext }: EmailProps) => {
+const Email = ({ onNext, navigation }: EmailProps) => {
 	const {
 		control,
 		formState: { errors },
@@ -22,6 +27,43 @@ const Email = ({ onNext }: EmailProps) => {
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const email = watch('email');
+	const { postMailMutation, duplicationMailMutation } = useMail();
+
+	const handleNext = () => {
+		duplicationMailMutation.mutate(
+			{ email },
+			{
+				onSuccess: () => {
+					postMailMutation.mutate(
+						{ email },
+						{
+							onSuccess: () => {
+								onNext();
+							},
+							onError: error => {
+								console.log(error.response);
+								Toast.show({
+									type: 'error',
+									text1: error.response?.data.message || t('이메일 인증 에러'),
+									visibilityTime: 2000,
+									position: 'bottom',
+								});
+							},
+						},
+					);
+				},
+				onError: error => {
+					Toast.show({
+						type: 'error',
+						text1: error.response?.data.message || t('이미 가입된 메일입니다.'),
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+					navigation.navigate(authNavigations.AUTH_HOME);
+				},
+			},
+		);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -47,7 +89,6 @@ const Email = ({ onNext }: EmailProps) => {
 							placeholderTextColor={colors[theme].GRAY_300}
 							onSubmitEditing={({ nativeEvent: { text } }) => {
 								if (text) {
-									onNext();
 								}
 							}}
 							message={
@@ -61,9 +102,12 @@ const Email = ({ onNext }: EmailProps) => {
 			<View style={styles.buttonPosition}>
 				<CustomButton
 					label={t('다음으로')}
-					onPress={onNext}
+					onPress={handleNext}
 					variant={'filled'}
 					disabled={errors.email?.message || !email ? true : false}
+					isLoading={
+						duplicationMailMutation.isPending || postMailMutation.isPending
+					}
 				/>
 			</View>
 		</View>
