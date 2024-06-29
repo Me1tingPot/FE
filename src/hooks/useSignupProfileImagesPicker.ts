@@ -2,21 +2,21 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { getMypageProfileUploadUrl } from '@/api';
+import { getSignupProfileUploadUrl } from '@/api';
 import { ImageUri } from '@/types';
 import { IMAGE_DTO } from '@/types/api/types';
 import { getFormDataImages } from '@/utils';
 import useImages from './queries/useMutateImages';
 
-interface useProfileImagesPickerProps {
+interface useSignupProfileImagesPickerProps {
 	initialImages: ImageUri[];
 	maxFiles: number;
 }
 
-function useProfileImagesPicker({
+function useSignupProfileImagesPicker({
 	initialImages = [],
 	maxFiles,
-}: useProfileImagesPickerProps) {
+}: useSignupProfileImagesPickerProps) {
 	const [imageUris, setImageUris] = useState(initialImages);
 	const [uploadedImages, setUploadedImages] = useState<IMAGE_DTO[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -63,21 +63,18 @@ function useProfileImagesPicker({
 			const uploadedImageData = [];
 
 			for (let i = 0; i < images.length; i++) {
-				const { data } = await getMypageProfileUploadUrl();
+				const { data } = await getSignupProfileUploadUrl();
 				const { uploadUrl, fileKey } = data;
 
-				try {
-					await profileImagesMutation.mutateAsync({
-						uploadUrl: uploadUrl,
-						body: formData,
-					});
-				} catch (e) {
-					console.error(e);
-				}
+				await profileImagesMutation.mutateAsync({
+					uploadUrl: uploadUrl,
+					body: formData,
+				});
 
 				uploadedImageData.push({
 					imageKey: fileKey,
 					thumbnail: i === 0,
+					sequence: i,
 				});
 			}
 
@@ -92,6 +89,7 @@ function useProfileImagesPicker({
 			setIsLoading(false);
 		}
 	};
+
 	return {
 		uploadedImages,
 		imageUris,
@@ -101,5 +99,4 @@ function useProfileImagesPicker({
 		isLoading,
 	};
 }
-
-export default useProfileImagesPicker;
+export default useSignupProfileImagesPicker;

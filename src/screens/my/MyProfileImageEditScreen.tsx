@@ -16,7 +16,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '@/components/common/CustomButton';
 import { colors } from '@/constants';
 import useUser from '@/hooks/queries/useUser';
-import useImagePicker from '@/hooks/useImagePicker';
 import usePermission from '@/hooks/usePermission';
 import useProfileImagesPicker from '@/hooks/useProfileImagesPicker';
 import useThemeStore from '@/store/useThemeStore';
@@ -33,10 +32,6 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 	const { t } = useTranslation();
 	const { getUserProfileImages, deleteUserProfileImgMutation } = useUser();
 
-	const imagePicker = useImagePicker({
-		initialImages: [],
-		maxFiles: 3,
-	});
 	usePermission('PHOTO');
 	usePermission('CAMERA');
 
@@ -124,7 +119,7 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 								key={item.id}
 								onPress={() => handleSelected(item.sequence)}
 							>
-								{imagePicker.imageUris && (
+								{formDataImages.imageUris && (
 									<>
 										<Image
 											source={{ uri: item.imageUrl }}
@@ -156,6 +151,36 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 												size={15}
 											/>
 										</TouchableOpacity>
+									</>
+								)}
+							</TouchableOpacity>
+						))}
+						{formDataImages.imageUris.map((item, index: number) => (
+							<TouchableOpacity
+								activeOpacity={0.9}
+								style={styles.imageButton}
+								key={item.id}
+								onPress={() => handleSelected(index)}
+							>
+								{formDataImages.imageUris && (
+									<>
+										<Image source={{ uri: item.uri }} style={styles.image} />
+										<View
+											style={[
+												styles.unSelectedImg,
+												selected === index && styles.selectedImg,
+											]}
+										>
+											<Text
+												style={
+													selected === index
+														? styles.selectedText
+														: styles.unSelectedText
+												}
+											>
+												{t('대표')}
+											</Text>
+										</View>
 									</>
 								)}
 							</TouchableOpacity>
