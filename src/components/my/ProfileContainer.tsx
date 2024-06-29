@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, Text } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { colors } from '@/constants';
@@ -13,6 +14,7 @@ interface ProfileContainerProps {
 }
 
 const ProfileContainer = ({ profileData }: ProfileContainerProps) => {
+	const { t } = useTranslation();
 	const navigation = useNavigation<NavigationProp<MyStackParamList>>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -29,24 +31,28 @@ const ProfileContainer = ({ profileData }: ProfileContainerProps) => {
 					<Text style={styles.descriptionText}>
 						{profileData?.bio
 							? profileData?.bio
-							: '아직 소개를 입력하지 않았습니다.'}
+							: t('아직 소개를 입력하지 않았습니다.')}
 					</Text>
 				</CompoundCard.TextContainer>
 				<View style={styles.rowContainer}>
 					<View style={styles.columnContainer}>
-						<Text style={styles.columnText}>주최</Text>
-						<Text style={styles.columnText}>{profileData?.host_count}회</Text>
-					</View>
-					<View style={styles.separator} />
-					<View style={styles.columnContainer}>
-						<Text style={styles.columnText}>참여</Text>
+						<Text style={styles.columnText}>{t('주최')}</Text>
 						<Text style={styles.columnText}>
-							{profileData?.participate_count}회
+							{profileData?.host_count}
+							{t('회')}
 						</Text>
 					</View>
 					<View style={styles.separator} />
 					<View style={styles.columnContainer}>
-						<Text style={styles.columnText}>국적</Text>
+						<Text style={styles.columnText}>{t('참여')}</Text>
+						<Text style={styles.columnText}>
+							{profileData?.participate_count}
+							{t('회')}
+						</Text>
+					</View>
+					<View style={styles.separator} />
+					<View style={styles.columnContainer}>
+						<Text style={styles.columnText}>{t('국적')}</Text>
 						<Text style={styles.columnText}>{profileData?.nationality}</Text>
 					</View>
 				</View>

@@ -118,7 +118,7 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 						<View style={styles.flexRow}>
 							<Text style={styles.menuText}>{`${t('프로필 소개')}`}</Text>
 							<Text style={styles.menuContent}>
-								{profileData?.bio ? profileData?.bio : '아직 소개가 없습니다.'}
+								{profileData?.bio ? profileData?.bio : t('소개가 없습니다.')}
 							</Text>
 						</View>
 					</View>
