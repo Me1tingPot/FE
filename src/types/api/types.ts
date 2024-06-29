@@ -3,6 +3,13 @@ export type IMAGE_DTO = {
 	thumbnail: boolean;
 };
 
+export type PROFILE_IMAGES_DATA_TYPES = {
+	id: number;
+	imageUrl: string;
+	sequence: number;
+	thumbnail: boolean;
+};
+
 export type TOKEN_DTO = {
 	accessToken: string;
 	accessTokenExpiresIn: number;

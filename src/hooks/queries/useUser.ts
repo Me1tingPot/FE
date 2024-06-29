@@ -4,7 +4,12 @@ import {
 	useQuery,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { changeUserBio, changeUserName, getUserProfile } from '@/api/user';
+import {
+	changeUserBio,
+	changeUserName,
+	getUserProfile,
+	getUserProfileImages,
+} from '@/api/user';
 import { queryKeys } from '@/constants';
 
 export type CustomError = AxiosError<{
@@ -21,6 +26,7 @@ export type UseMutationCustomOptions<
 	'mutationFn'
 >;
 
+// GET: 유저 프로필 정보 가져오기
 function useGetUserProfileData() {
 	const { data, error, isSuccess, isError } = useQuery({
 		queryKey: [queryKeys.USER],
@@ -34,6 +40,21 @@ function useGetUserProfileData() {
 	return { isSuccess, isError, data };
 }
 
+// GET: 유저 프로필 이미지 리스트 가져오기
+function useGetUserProfileImages() {
+	const { data, error, isSuccess, isError } = useQuery({
+		queryKey: [queryKeys.USER, queryKeys.ACCOUNT_ID],
+		queryFn: getUserProfileImages,
+	});
+
+	if (error) {
+		console.error(error);
+	}
+
+	return { data, isSuccess, isError };
+}
+
+// PATCH: 유저 소개 수정하기
 function useUserBio(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: changeUserBio,
@@ -44,6 +65,7 @@ function useUserBio(mutationOptions?: UseMutationCustomOptions) {
 	});
 }
 
+// PATCH: 유저 이름 수정하기
 function useUserName(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: changeUserName,
@@ -56,11 +78,13 @@ function useUserName(mutationOptions?: UseMutationCustomOptions) {
 
 function useUser() {
 	const getUserProfile = useGetUserProfileData();
+	const getUserProfileImages = useGetUserProfileImages();
 	const userBioMutation = useUserBio();
 	const userNameMutation = useUserName();
 
 	return {
 		getUserProfile,
+		getUserProfileImages,
 		userBioMutation,
 		userNameMutation,
 	};
