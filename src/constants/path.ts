@@ -22,6 +22,7 @@ const API_URL = {
 
 	// chat-controller
 	GET_CHAT_ROOMS: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}`,
+	POST_CHANGE_ALARM_STATUS: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}/alarm`
 };
 
 export { VERSION, API_BASE, API_URL };

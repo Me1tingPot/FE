@@ -20,5 +20,10 @@ const getChatsList = async ({ page = 1, size = 1 }: InfiniteParams): Promise<Res
   return data;
 };
 
-export { getChatsList };
-export type { ResponseChatRoom };
+
+const postChangeAlarmStatus = async () => {
+  await axiosInstance.get(`${API_URL.POST_CHANGE_ALARM_STATUS}`)
+}
+
+export { getChatsList, postChangeAlarmStatus };
+export type { ResponseChatRoom  };
