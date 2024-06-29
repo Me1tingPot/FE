@@ -66,7 +66,6 @@ function Profile({ size = 'sm', uri, ...props }: ProfileProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const defaultImage = require('@/assets/user-default.png');
-
 	return (
 		<Image
 			style={[styles[`${size}Profile`]]}
@@ -125,7 +124,6 @@ const styling = (theme: ThemeMode) =>
 		container: {
 			height: 160,
 			borderRadius: 20,
-			elevation: 8,
 		},
 		pressedContainer: {
 			backgroundColor: colors[theme].GRAY_100,

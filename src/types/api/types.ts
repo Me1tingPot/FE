@@ -28,3 +28,14 @@ export type PROFILE_URL_DATA_TYPES = {
 	uploadUrl: string;
 	fileKey: string;
 };
+
+export type USER_PROFILE_DATA_TYPES = {
+	id: number;
+	name: string;
+	email: string;
+	bio: string | null;
+	host_count: number;
+	participate_count: number;
+	nationality: string;
+	thumbnail: string;
+};

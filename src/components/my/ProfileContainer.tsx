@@ -5,41 +5,49 @@ import { colors } from '@/constants';
 import { MyStackParamList } from '@/navigations/stack/MyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { USER_PROFILE_DATA_TYPES } from '@/types/api/types';
 import CompoundCard from '../common/CompoundCard';
 
-interface ProfileContainerProps {}
+interface ProfileContainerProps {
+	profileData?: USER_PROFILE_DATA_TYPES;
+}
 
-const ProfileContainer = ({}: ProfileContainerProps) => {
+const ProfileContainer = ({ profileData }: ProfileContainerProps) => {
 	const navigation = useNavigation<NavigationProp<MyStackParamList>>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
 	return (
 		<View style={{ marginVertical: 25 }}>
 			<CompoundCard.Container
 				onPress={() => navigation.navigate('EditProfile')}
 				style={styles.container}
 			>
-				<CompoundCard.Profile size="lg" />
+				<CompoundCard.Profile size="lg" uri={profileData?.thumbnail} />
 				<CompoundCard.TextContainer style={styles.textContainer}>
-					<Text style={styles.nameText}>김용민</Text>
+					<Text style={styles.nameText}>{profileData?.name}</Text>
 					<Text style={styles.descriptionText}>
-						자기소개 자기소개 자기소개 자기소개
+						{profileData?.bio
+							? profileData?.bio
+							: '아직 소개를 입력하지 않았습니다.'}
 					</Text>
 				</CompoundCard.TextContainer>
 				<View style={styles.rowContainer}>
 					<View style={styles.columnContainer}>
 						<Text style={styles.columnText}>주최</Text>
-						<Text style={styles.columnText}>1회</Text>
+						<Text style={styles.columnText}>{profileData?.host_count}회</Text>
 					</View>
 					<View style={styles.separator} />
 					<View style={styles.columnContainer}>
 						<Text style={styles.columnText}>참여</Text>
-						<Text style={styles.columnText}>6회</Text>
+						<Text style={styles.columnText}>
+							{profileData?.participate_count}회
+						</Text>
 					</View>
 					<View style={styles.separator} />
 					<View style={styles.columnContainer}>
 						<Text style={styles.columnText}>국적</Text>
-						<Text style={styles.columnText}>대한민국</Text>
+						<Text style={styles.columnText}>{profileData?.nationality}</Text>
 					</View>
 				</View>
 			</CompoundCard.Container>

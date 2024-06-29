@@ -6,6 +6,7 @@ import ProfileContainer from '@/components/my/ProfileContainer';
 import SettingItem from '@/components/my/SettingItem';
 import { colors } from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
+import useUser from '@/hooks/queries/useUser';
 import useModal from '@/hooks/useModal';
 import useThemeStorage from '@/hooks/useThemeStorage';
 import i18n from '@/locales/i18n.config';
@@ -20,6 +21,7 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 	const changeLanguageOption = useModal();
 	const { theme: themeMode, isSystem } = useThemeStorage();
 	const { theme } = useThemeStore();
+	const { getUserProfile } = useUser();
 	const styles = styling(theme);
 	const whichLanguage = i18n.language === 'ko' ? t('한국어') : t('영어');
 	const isDarkOrSystem =
@@ -42,7 +44,7 @@ function MyHomeScreen({}: MyHomeScreenProps) {
 				style={styles.contentContainer}
 			>
 				{/* TODO:Profile Data 전달 */}
-				<ProfileContainer />
+				<ProfileContainer profileData={getUserProfile?.data?.data} />
 				{/* TODO:기획 완료시, 페이지 연결 */}
 				<View style={styles.menuContainer}>
 					<View style={styles.section}>
