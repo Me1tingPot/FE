@@ -11,6 +11,7 @@ const feedTabNavigations = {
 	WISH_HOME: 'WishHome',
 	COMMUNITY_HOME: 'CommunityHome',
 	MY_HOME: 'MyHome',
+	CHAT_HOME: 'ChatHome'
 } as const;
 
 const wishNavigations = {

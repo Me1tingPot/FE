@@ -28,3 +28,15 @@ export type PROFILE_URL_DATA_TYPES = {
 	uploadUrl: string;
 	fileKey: string;
 };
+
+export type BASE_API_KEY = {
+	timestamp: string,
+  code: string,
+  status: string,
+  detail: string
+}
+
+export type INFINITE_META_DATA = {
+	isFirst: boolean;
+	hasNext: boolean;
+}

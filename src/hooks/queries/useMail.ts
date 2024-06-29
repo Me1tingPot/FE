@@ -16,7 +16,7 @@ function useVerificationMail(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: verificationMail,
 		onSuccess: data => {
-			console.log(data);
+			// console.log(data);
 		},
 		...mutationOptions,
 	});
@@ -26,7 +26,7 @@ function useDuplicationMail(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: duplicationMail,
 		onSuccess: data => {
-			console.log(data);
+			// console.log(data);
 		},
 		...mutationOptions,
 	});

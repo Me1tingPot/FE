@@ -2,6 +2,7 @@ const queryKeys = {
 	AUTH: 'auth',
 	REFRESH_TOKEN: 'refreshToken',
 	GET_ACCESS_TOKEN: 'getAccessToken',
+	CHAT: 'chat'
 } as const;
 
 const storageKeys = {

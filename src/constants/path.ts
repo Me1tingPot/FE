@@ -4,6 +4,7 @@ const API = 'api';
 const API_BASE = {
 	AUTH: `auth`,
 	MAIL: `mail`,
+	CHAT_ROOM: `chatRooms`
 };
 
 const API_URL = {
@@ -18,6 +19,9 @@ const API_URL = {
 	POST_MAIL: `/${API}/${VERSION}/${API_BASE.MAIL}`,
 	MAIL_VERIFICATION: `/${API}/${VERSION}/${API_BASE.MAIL}/verification`,
 	MAIL_DEPLICATION: `/${API}/${VERSION}/${API_BASE.MAIL}/duplication`,
+
+	// chat-controller
+	GET_CHAT_ROOMS: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}`,
 };
 
 export { VERSION, API_BASE, API_URL };

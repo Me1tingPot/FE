@@ -29,7 +29,7 @@ const login = async ({
 		email,
 		password,
 	});
-	console.log(data);
+	// console.log(data);
 
 	return data;
 };

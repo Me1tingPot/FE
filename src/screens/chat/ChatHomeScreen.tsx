@@ -6,16 +6,21 @@ import { colors, feedNavigations } from '@/constants';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { getChatsList } from '@/api/chat';
+import useGetInfiniteChats from '@/hooks/queries/useGetInfiniteChats';
 
 interface ChatHomeScreenProps {
 	navigation: NavigationProp<FeedStackParamList>;
 }
 
-const chatList = [];
 
-function ChatHomeScreen({ navigation }: ChatHomeScreenProps) {
+
+async function ChatHomeScreen({ navigation }: ChatHomeScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { data } = useGetInfiniteChats();
+	const chatList = [];
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView

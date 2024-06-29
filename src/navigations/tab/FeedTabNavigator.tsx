@@ -15,6 +15,7 @@ import MyStackNavigator from '../stack/MyStackNavigator';
 import PartyStackNavigator from '../stack/PartyStackNavigator';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
+import ChatHomeScreen from '@/screens/chat/ChatHomeScreen';
 
 export type FeedTabParamList = {
 	[feedTabNavigations.FEED_HOME]: undefined;
@@ -22,6 +23,7 @@ export type FeedTabParamList = {
 	[feedTabNavigations.WISH_HOME]: undefined;
 	[feedTabNavigations.COMMUNITY_HOME]: undefined;
 	[feedTabNavigations.MY_HOME]: undefined;
+	[feedTabNavigations.CHAT_HOME]: undefined;
 };
 
 const Tab = createBottomTabNavigator<FeedTabParamList>();
@@ -48,6 +50,10 @@ function TabBarIcons(route: RouteProp<FeedTabParamList>, focused: boolean) {
 		}
 		case feedTabNavigations.MY_HOME: {
 			iconName = focused ? 'person-circle' : 'person-circle-outline';
+			break;
+		}
+		case feedTabNavigations.CHAT_HOME: {
+			iconName = focused ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline';
 			break;
 		}
 	}
@@ -138,6 +144,13 @@ function FeedTabNavigator({ navigation }: FeedTabNavigatorProps) {
 				component={MyStackNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('마이페이지')}`,
+				})}
+			/>
+			<Tab.Screen
+				name={feedTabNavigations.CHAT_HOME}
+				component={ChatHomeScreen}
+				options={({ navigation }) => ({
+					tabBarLabel: `${t('채팅')}`,
 				})}
 			/>
 		</Tab.Navigator>

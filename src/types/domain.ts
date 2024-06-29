@@ -11,12 +11,18 @@ interface ImageUri {
 	uri: string;
 }
 
-interface Marker {
-	id: number;
-	latitude: number;
-	longitude: number;
-	color: MarkerColor;
-	score: number;
+interface CHAT_ROOM {
+	chatRoomId: number,
+	leaderName: string,
+	imageKey: string,
+	partySubject: string,
+	partyStatus: string,
+	partyLocationAddress: string,
+	partyStartTime: string,
+	userCnt: number,
+	partyMinParticipant: number,
+	partyMaxParticipant: number,
+	messageCnt: number
 }
 
-export type { ImageUri };
+export type { ImageUri, CHAT_ROOM };

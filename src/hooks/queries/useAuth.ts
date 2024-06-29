@@ -9,7 +9,6 @@ import { getAccessToken, login, logout, signup } from '@/api/auth';
 import queryClient from '@/api/queryClient';
 import { headers, queryKeys, storageKeys } from '@/constants';
 import {
-	getEncryptStorage,
 	removeEncryptStorage,
 	removeHeader,
 	setEncryptStorage,
