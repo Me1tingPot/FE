@@ -1,6 +1,10 @@
-import { UseMutationOptions, useQuery } from '@tanstack/react-query';
+import {
+	UseMutationOptions,
+	useMutation,
+	useQuery,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { getUserProfile } from '@/api/user';
+import { changeUserBio, changeUserName, getUserProfile } from '@/api/user';
 import { queryKeys } from '@/constants';
 
 export type CustomError = AxiosError<{
@@ -30,11 +34,35 @@ function useGetUserProfileData() {
 	return { isSuccess, isError, data };
 }
 
+function useUserBio(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: changeUserBio,
+		onSuccess: data => {
+			console.log(data);
+		},
+		...mutationOptions,
+	});
+}
+
+function useUserName(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: changeUserName,
+		onSuccess: data => {
+			console.log(data);
+		},
+		...mutationOptions,
+	});
+}
+
 function useUser() {
 	const getUserProfile = useGetUserProfileData();
+	const userBioMutation = useUserBio();
+	const userNameMutation = useUserName();
 
 	return {
 		getUserProfile,
+		userBioMutation,
+		userNameMutation,
 	};
 }
 
