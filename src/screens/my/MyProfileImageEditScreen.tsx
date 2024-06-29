@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-toast-message';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '@/components/common/CustomButton';
 import { colors } from '@/constants';
@@ -20,7 +21,7 @@ import usePermission from '@/hooks/usePermission';
 import useProfileImagesPicker from '@/hooks/useProfileImagesPicker';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { IMAGE_DTO, PROFILE_IMAGES_DATA_TYPES } from '@/types/api/types';
+import { PROFILE_IMAGES_DATA_TYPES } from '@/types/api/types';
 
 interface MyProfileImageEditScreen {}
 
@@ -30,7 +31,7 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const { getUserProfileImages } = useUser();
+	const { getUserProfileImages, deleteUserProfileImgMutation } = useUser();
 
 	const imagePicker = useImagePicker({
 		initialImages: [],
@@ -62,6 +63,22 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 			});
 			return;
 		}
+	};
+
+	const handleDeleteImage = (imageId: number) => {
+		deleteUserProfileImgMutation.mutate(imageId, {
+			onSuccess: data => {
+				console.log(data);
+			},
+			onError: error => {
+				Toast.show({
+					type: 'error',
+					text1: error.response?.data.message || '이미지 삭제 에러 발생',
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+			},
+		});
 	};
 
 	return (
@@ -129,6 +146,16 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 												{t('대표')}
 											</Text>
 										</View>
+										<TouchableOpacity
+											style={styles.close}
+											onPress={() => handleDeleteImage(item.id)}
+										>
+											<Ionicons
+												name="close"
+												color={colors[theme].GRAY_500}
+												size={15}
+											/>
+										</TouchableOpacity>
 									</>
 								)}
 							</TouchableOpacity>
@@ -255,6 +282,16 @@ const styling = (theme: ThemeMode) =>
 		unSelectedText: {
 			fontSize: 10,
 			color: colors[theme].GRAY_700,
+		},
+		close: {
+			position: 'absolute',
+			top: 15,
+			right: 15,
+			padding: 2,
+			borderRadius: 11,
+			borderWidth: 1,
+			borderColor: colors[theme].GRAY_500,
+			backgroundColor: colors[theme].WHITE,
 		},
 	});
 

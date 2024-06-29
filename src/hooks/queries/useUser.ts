@@ -7,6 +7,7 @@ import { AxiosError } from 'axios';
 import {
 	changeUserBio,
 	changeUserName,
+	deleteUserProfileImg,
 	getUserProfile,
 	getUserProfileImages,
 } from '@/api/user';
@@ -76,17 +77,30 @@ function useUserName(mutationOptions?: UseMutationCustomOptions) {
 	});
 }
 
+// DELETE: 마이페이지 사용자 프로필 이미지 삭제
+function useDeleteUserProfileImg(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: deleteUserProfileImg,
+		onSuccess: data => {
+			console.log(data);
+		},
+		...mutationOptions,
+	});
+}
+
 function useUser() {
 	const getUserProfile = useGetUserProfileData();
 	const getUserProfileImages = useGetUserProfileImages();
 	const userBioMutation = useUserBio();
 	const userNameMutation = useUserName();
+	const deleteUserProfileImgMutation = useDeleteUserProfileImg();
 
 	return {
 		getUserProfile,
 		getUserProfileImages,
 		userBioMutation,
 		userNameMutation,
+		deleteUserProfileImgMutation,
 	};
 }
 

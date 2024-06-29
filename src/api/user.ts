@@ -32,4 +32,17 @@ const getUserProfileImages = async () => {
 	return data;
 };
 
-export { getUserProfile, changeUserBio, changeUserName, getUserProfileImages };
+const deleteUserProfileImg = async (imageId: number) => {
+	const { data } = await axiosInstance.delete(
+		`${API_URL.USER_PROFILE_IMG}/${imageId}`,
+	);
+	return data;
+};
+
+export {
+	getUserProfile,
+	changeUserBio,
+	changeUserName,
+	getUserProfileImages,
+	deleteUserProfileImg,
+};
