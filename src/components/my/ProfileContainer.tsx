@@ -14,7 +14,7 @@ const ProfileContainer = ({}: ProfileContainerProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
-		<View style={{ marginVertical: 50 }}>
+		<View style={{ marginVertical: 25 }}>
 			<CompoundCard.Container
 				onPress={() => navigation.navigate('EditProfile')}
 				style={styles.container}
@@ -57,7 +57,6 @@ const styling = (theme: ThemeMode) =>
 			gap: 10,
 			height: 300,
 			borderRadius: 20,
-			overflow: 'hidden', // Ensure the gradient doesn't overflow the container
 		},
 		textContainer: {
 			flexDirection: 'column',
@@ -69,6 +68,7 @@ const styling = (theme: ThemeMode) =>
 			fontFamily: 'Pretendard-Bold',
 			fontSize: 22,
 			color: colors[theme].BLACK,
+			marginRight: 10,
 		},
 		descriptionText: {
 			fontFamily: 'Pretendard-Bold',
@@ -81,7 +81,6 @@ const styling = (theme: ThemeMode) =>
 			flexDirection: 'row',
 			alignItems: 'center',
 			justifyContent: 'space-around',
-			backgroundColor: colors[theme].EMERALD_500,
 		},
 		columnContainer: {
 			flex: 1,
@@ -91,11 +90,11 @@ const styling = (theme: ThemeMode) =>
 		separator: {
 			width: 1,
 			height: '60%',
-			backgroundColor: colors[theme].WHITE,
+			backgroundColor: colors[theme].GRAY_300,
 		},
 		columnText: {
 			fontFamily: 'Pretendard-Regular',
-			color: colors[theme].UNCHANGE_BLACK,
+			color: colors[theme].GRAY_700,
 		},
 	});
 
