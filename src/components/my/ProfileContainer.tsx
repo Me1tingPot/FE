@@ -3,21 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, Text } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { colors } from '@/constants';
+import useGetUserData from '@/hooks/useGetUserData';
 import { MyStackParamList } from '@/navigations/stack/MyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { USER_PROFILE_DATA_TYPES } from '@/types/api/types';
 import CompoundCard from '../common/CompoundCard';
 
-interface ProfileContainerProps {
-	profileData?: USER_PROFILE_DATA_TYPES;
-}
+interface ProfileContainerProps {}
 
-const ProfileContainer = ({ profileData }: ProfileContainerProps) => {
+const ProfileContainer = () => {
 	const { t } = useTranslation();
 	const navigation = useNavigation<NavigationProp<MyStackParamList>>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { name, thumbnail, bio, host_count, participate_count, nationality } =
+		useGetUserData();
 
 	return (
 		<View style={{ marginVertical: 25 }}>
@@ -25,20 +25,18 @@ const ProfileContainer = ({ profileData }: ProfileContainerProps) => {
 				onPress={() => navigation.navigate('EditProfile')}
 				style={styles.container}
 			>
-				<CompoundCard.Profile size="lg" uri={profileData?.thumbnail} />
+				<CompoundCard.Profile size="lg" uri={thumbnail} />
 				<CompoundCard.TextContainer style={styles.textContainer}>
-					<Text style={styles.nameText}>{profileData?.name}</Text>
+					<Text style={styles.nameText}>{name}</Text>
 					<Text style={styles.descriptionText}>
-						{profileData?.bio
-							? profileData?.bio
-							: t('아직 소개를 입력하지 않았습니다.')}
+						{bio ? bio : t('아직 소개를 입력하지 않았습니다.')}
 					</Text>
 				</CompoundCard.TextContainer>
 				<View style={styles.rowContainer}>
 					<View style={styles.columnContainer}>
 						<Text style={styles.columnText}>{t('주최')}</Text>
 						<Text style={styles.columnText}>
-							{profileData?.host_count}
+							{host_count}
 							{t('회')}
 						</Text>
 					</View>
@@ -46,14 +44,14 @@ const ProfileContainer = ({ profileData }: ProfileContainerProps) => {
 					<View style={styles.columnContainer}>
 						<Text style={styles.columnText}>{t('참여')}</Text>
 						<Text style={styles.columnText}>
-							{profileData?.participate_count}
+							{participate_count}
 							{t('회')}
 						</Text>
 					</View>
 					<View style={styles.separator} />
 					<View style={styles.columnContainer}>
 						<Text style={styles.columnText}>{t('국적')}</Text>
-						<Text style={styles.columnText}>{profileData?.nationality}</Text>
+						<Text style={styles.columnText}>{nationality}</Text>
 					</View>
 				</View>
 			</CompoundCard.Container>

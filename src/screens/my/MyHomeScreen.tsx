@@ -7,7 +7,7 @@ import ProfileContainer from '@/components/my/ProfileContainer';
 import SettingItem from '@/components/my/SettingItem';
 import { colors, myNavigations } from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
-import useUser from '@/hooks/queries/useUser';
+import useGetUserData from '@/hooks/useGetUserData';
 import useModal from '@/hooks/useModal';
 import useThemeStorage from '@/hooks/useThemeStorage';
 import i18n from '@/locales/i18n.config';
@@ -25,7 +25,7 @@ function MyHomeScreen({ navigation }: MyHomeScreenProps) {
 	const changeLanguageOption = useModal();
 	const { theme: themeMode, isSystem } = useThemeStorage();
 	const { theme } = useThemeStore();
-	const { getUserProfile } = useUser();
+	const { email } = useGetUserData();
 	const styles = styling(theme);
 	const whichLanguage = i18n.language === 'ko' ? t('한국어') : t('영어');
 	const isDarkOrSystem =
@@ -47,15 +47,12 @@ function MyHomeScreen({ navigation }: MyHomeScreenProps) {
 				showsVerticalScrollIndicator={false}
 				style={styles.contentContainer}
 			>
-				<ProfileContainer profileData={getUserProfile?.data?.data} />
+				<ProfileContainer />
 				{/* TODO:기획 완료시, 페이지 연결 */}
 				<View style={styles.menuContainer}>
 					<View style={styles.section}>
 						<Text style={styles.categoryText}>{t('계정')}</Text>
-						<SettingItem
-							title={t('이메일')}
-							subTitle={getUserProfile.data?.data.email}
-						/>
+						<SettingItem title={t('이메일')} subTitle={email} />
 						<SettingItem
 							title={t('비밀번호 변경')}
 							onPress={() => navigation.navigate(myNavigations.PASSWORD_CHANGE)}

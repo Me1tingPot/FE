@@ -16,6 +16,7 @@ import ChangeProfileModal from '@/components/my/ChangeProfileModal';
 import ChangeRevokeModal from '@/components/my/ChangeRevokeModal';
 import { colors, myNavigations } from '@/constants';
 import useUser from '@/hooks/queries/useUser';
+import useGetUserData from '@/hooks/useGetUserData';
 import useModal from '@/hooks/useModal';
 import { MyStackParamList } from '@/navigations/stack/MyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
@@ -31,8 +32,8 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const { userBioMutation, userNameMutation, getUserProfile } = useUser();
-	const profileData = getUserProfile?.data?.data;
+	const { userBioMutation, userNameMutation } = useUser();
+	const { thumbnail, name, email, bio: userBio } = useGetUserData();
 	const profileModal = useModal();
 	const nameModal = useModal();
 	const revokeModal = useModal();
@@ -65,7 +66,7 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 					setBio('');
 				},
 				onError: error => {
-					console.log(error);
+					console.log(error.response);
 				},
 			},
 		);
@@ -80,11 +81,8 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.contentContainer}>
 				<View style={styles.userImg}>
-					{profileData?.thumbnail ? (
-						<Image
-							source={{ uri: profileData?.thumbnail }}
-							style={styles.userImg}
-						/>
+					{thumbnail ? (
+						<Image source={{ uri: thumbnail }} style={styles.userImg} />
 					) : (
 						<Ionicons
 							name="person-sharp"
@@ -107,18 +105,18 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 					<View style={styles.menuContainer}>
 						<View style={styles.flexRow}>
 							<Text style={styles.menuText}>{`${t('이름')}`}</Text>
-							<Text style={styles.menuContent}>{profileData?.name}</Text>
+							<Text style={styles.menuContent}>{name}</Text>
 						</View>
 						<View style={styles.verticalLine} />
 						<View style={styles.flexRow}>
 							<Text style={styles.menuText}>{`${t('이메일')}`}</Text>
-							<Text style={styles.menuContent}>{profileData?.email}</Text>
+							<Text style={styles.menuContent}>{email}</Text>
 						</View>
 						<View style={styles.verticalLine} />
 						<View style={styles.flexRow}>
 							<Text style={styles.menuText}>{`${t('프로필 소개')}`}</Text>
 							<Text style={styles.menuContent}>
-								{profileData?.bio ? profileData?.bio : t('소개가 없습니다.')}
+								{userBio ? userBio : t('소개가 없습니다.')}
 							</Text>
 						</View>
 					</View>
