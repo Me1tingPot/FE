@@ -78,16 +78,21 @@ type ResponseToken = {
 
 const getAccessToken = async (): Promise<ResponseToken> => {
 	const refreshToken = await getEncryptStorage(storageKeys.REFRESH_TOKEN);
+	const accessToken = await getEncryptStorage(storageKeys.ACCESS_TOKEN);
 
 	const headers = {
 		RefreshToken: refreshToken,
+		Authorization: `Bearer ${accessToken}`
 	};
+
+	console.log(headers)
 
 	const { data } = await axiosInstance.post(
 		`${API_URL.REISSUE_TOKEN}`,
 		{},
 		{ headers },
 	);
+	console.log('데이터', data)
 
 	return data;
 };
