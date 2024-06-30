@@ -14,7 +14,7 @@ module.exports = {
 			},
 		},
 	],
-	plugins: ['react-hooks'],
+	plugins: ['react-hooks', 'jest'],
 	rules: {
 		'react/jsx-no-useless-fragment': 'off',
 		'no-empty-pattern': 'off',
