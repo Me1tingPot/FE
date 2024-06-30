@@ -9,14 +9,14 @@ const getUserProfile = async (): Promise<USER_PROFILE_TYPES> => {
 	return data;
 };
 
-const changeUserBio = async (bio: { bio: string }) => {
+const changeUserBio = async (bio: string) => {
 	const { data } = await axiosInstance.patch(`${API_URL.USER_BIO}`, {
 		bio,
 	});
 	return data;
 };
 
-const changeUserName = async (nickname: { nickname: string }) => {
+const changeUserName = async (nickname: string) => {
 	const { data } = await axiosInstance.patch(`${API_URL.USER_NAME}`, {
 		nickname,
 	});

@@ -39,37 +39,29 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 	const revokeModal = useModal();
 
 	const handleChangeName = () => {
-		userNameMutation.mutate(
-			{
-				nickname,
+		userNameMutation.mutate(nickname, {
+			onSuccess: () => {
+				console.log(nickname, '이름이 변경되었습니다.');
+				nameModal.hide();
+				setNickname('');
 			},
-			{
-				onSuccess: () => {
-					console.log(nickname, '이름이 변경되었습니다.');
-					nameModal.hide();
-					setNickname('');
-				},
-				onError: error => {
-					console.error(error.response);
-				},
+			onError: error => {
+				console.error(error.response);
 			},
-		);
+		});
 	};
 
 	const handleChangeIntroduction = () => {
-		userBioMutation.mutate(
-			{ bio },
-			{
-				onSuccess: () => {
-					console.log(bio, '소개가 변경되었습니다.');
-					profileModal.hide();
-					setBio('');
-				},
-				onError: error => {
-					console.log(error.response);
-				},
+		userBioMutation.mutate(bio, {
+			onSuccess: () => {
+				console.log(bio, '소개가 변경되었습니다.');
+				profileModal.hide();
+				setBio('');
 			},
-		);
+			onError: error => {
+				console.log(error.response);
+			},
+		});
 	};
 
 	const handleRevoke = () => {

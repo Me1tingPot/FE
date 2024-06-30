@@ -4,6 +4,7 @@ import {
 	useQuery,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import queryClient from '@/api/queryClient';
 import {
 	changeUserBio,
 	changeUserName,
@@ -61,6 +62,7 @@ function useUserBio(mutationOptions?: UseMutationCustomOptions) {
 		mutationFn: changeUserBio,
 		onSuccess: data => {
 			console.log(data);
+			queryClient.invalidateQueries({ queryKey: [queryKeys.USER] });
 		},
 		...mutationOptions,
 	});
@@ -72,6 +74,7 @@ function useUserName(mutationOptions?: UseMutationCustomOptions) {
 		mutationFn: changeUserName,
 		onSuccess: data => {
 			console.log(data);
+			queryClient.invalidateQueries({ queryKey: [queryKeys.USER] });
 		},
 		...mutationOptions,
 	});
