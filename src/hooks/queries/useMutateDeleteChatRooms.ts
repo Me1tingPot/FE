@@ -1,13 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import { UseMutationCustomOptions } from './useAuth';
-
+import { deleteChatRoom } from '@/api';
 import queryClient from '@/api/queryClient';
 import { queryKeys } from '@/constants';
-import { postChangeAlarmStatus } from '@/api';
 
-function useMutationPostChangeAlarms(mutationOptions?: UseMutationCustomOptions) {
+function useMutationDeleteChatRooms (mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
-    mutationFn: postChangeAlarmStatus,
+    mutationFn: deleteChatRoom,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [queryKeys.CHAT]
@@ -17,4 +16,4 @@ function useMutationPostChangeAlarms(mutationOptions?: UseMutationCustomOptions)
   })
 }
 
-export default useMutationPostChangeAlarms;
+export default useMutationDeleteChatRooms;

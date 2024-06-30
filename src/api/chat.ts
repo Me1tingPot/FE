@@ -47,6 +47,10 @@ const getChatContent = async ({ chatRoomId, page = 1, size = 1 }: TGetChatConten
   return data;
 }
 
+const deleteChatRoom = async ({chatRoomId}: {chatRoomId: number}) => {
+  await axiosInstance.delete(`${API_URL.DELETE_CHAT_ROOM}/${chatRoomId}`)
+}
+
 export type { ResponseChatRoom, ResponseChatList };
-export { getChatsList, postChangeAlarmStatus, getChatContent };
+export { getChatsList, postChangeAlarmStatus, getChatContent, deleteChatRoom };
 
