@@ -17,24 +17,22 @@ interface CameraOrLibraryProps {
 	libraryOptions: ImageLibraryOptions;
 }
 
-const CameraOrLibrary = ({
+function CameraOrLibrary({
 	isVisible,
 	hideOption,
 	setFiles,
 	cameraOptions,
 	libraryOptions,
-}: CameraOrLibraryProps) => {
+}: CameraOrLibraryProps) {
 	const openCamera = async () => {
 		await launchCamera(cameraOptions, (response: ImagePickerResponse) => {
 			if (response.errorCode) {
 				console.error(response.errorCode);
-			} else {
-				if (response.assets) {
-					const fileUris = response.assets
-						.map(asset => asset.uri)
-						.filter(uri => uri !== undefined) as string[];
-					setFiles(fileUris);
-				}
+			} else if (response.assets) {
+				const fileUris = response.assets
+					.map(asset => asset.uri)
+					.filter(uri => uri !== undefined) as string[];
+				setFiles(fileUris);
 			}
 		});
 	};
@@ -45,13 +43,11 @@ const CameraOrLibrary = ({
 			(response: ImagePickerResponse) => {
 				if (response.errorCode) {
 					console.error(response.errorMessage);
-				} else {
-					if (response.assets) {
-						const fileUris = response.assets
-							.map(asset => asset.uri)
-							.filter(uri => uri !== undefined) as string[];
-						setFiles(fileUris);
-					}
+				} else if (response.assets) {
+					const fileUris = response.assets
+						.map(asset => asset.uri)
+						.filter(uri => uri !== undefined) as string[];
+					setFiles(fileUris);
 				}
 			},
 		);
@@ -89,7 +85,7 @@ const CameraOrLibrary = ({
 			</CompoundOption.Background>
 		</CompoundOption>
 	);
-};
+}
 
 const styles = StyleSheet.create({});
 

@@ -23,7 +23,7 @@ type ProfileImageProps = {
 	onNext: () => void;
 };
 
-const ProfileImage = ({ onNext }: ProfileImageProps) => {
+function ProfileImage({ onNext }: ProfileImageProps) {
 	const [selected, setSelected] = useState(0);
 	const {
 		formState: { errors },
@@ -133,13 +133,13 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={handleSubmit}
-					variant={'filled'}
+					variant="filled"
 					isLoading={formDataImages.isLoading}
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

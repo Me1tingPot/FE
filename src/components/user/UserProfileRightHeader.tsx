@@ -3,7 +3,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-const UserProfileRightHeader = () => {
+function UserProfileRightHeader() {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -22,7 +22,7 @@ const UserProfileRightHeader = () => {
 			</TouchableOpacity>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

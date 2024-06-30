@@ -16,7 +16,7 @@ import IconCircleButton from './IconCircleButton';
 
 interface PartyCardProps extends PressableProps {}
 
-const PartyCard = ({ ...props }: PartyCardProps) => {
+function PartyCard({ ...props }: PartyCardProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -93,7 +93,7 @@ const PartyCard = ({ ...props }: PartyCardProps) => {
 			</Pressable>
 		</Swipeable>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

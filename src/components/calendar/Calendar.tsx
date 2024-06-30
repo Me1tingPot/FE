@@ -18,12 +18,12 @@ interface CalendarProps {
 	onChangeMonth: (increment: number) => void;
 }
 
-const Calendar = ({
+function Calendar({
 	monthYear,
 	onChangeMonth,
 	selectedDate,
 	onPressDate,
-}: CalendarProps) => {
+}: CalendarProps) {
 	const { month, year, lastDate, firstDayOfWeek } = monthYear;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -101,7 +101,7 @@ const Calendar = ({
 			/>
 		</>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

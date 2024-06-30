@@ -1,5 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, communityNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -13,7 +12,7 @@ interface CommentsProps {
 	id: number;
 }
 
-const Comments = ({ navigation, id }: CommentsProps) => {
+function Comments({ navigation, id }: CommentsProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -36,7 +35,7 @@ const Comments = ({ navigation, id }: CommentsProps) => {
 			</View>
 		</>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

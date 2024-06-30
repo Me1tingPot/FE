@@ -17,7 +17,7 @@ type EmailProps = {
 	onNext: () => void;
 };
 
-const Email = ({ onNext, navigation }: EmailProps) => {
+function Email({ onNext, navigation }: EmailProps) {
 	const {
 		control,
 		formState: { errors },
@@ -103,8 +103,8 @@ const Email = ({ onNext, navigation }: EmailProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={handleNext}
-					variant={'filled'}
-					disabled={errors.email?.message || !email ? true : false}
+					variant="filled"
+					disabled={!!(errors.email?.message || !email)}
 					isLoading={
 						duplicationMailMutation.isPending || postMailMutation.isPending
 					}
@@ -112,7 +112,7 @@ const Email = ({ onNext, navigation }: EmailProps) => {
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

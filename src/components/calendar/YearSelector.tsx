@@ -24,12 +24,12 @@ interface YearSelectorProps {
 	hide: () => void;
 }
 
-const YearSelector = ({
+function YearSelector({
 	isVisible,
 	currentYear,
 	onChangeYear,
 	hide,
-}: YearSelectorProps) => {
+}: YearSelectorProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [scrollY, setScrollY] = useState(0);
@@ -103,7 +103,7 @@ const YearSelector = ({
 			)}
 		</>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

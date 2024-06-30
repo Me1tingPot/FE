@@ -16,7 +16,7 @@ type QuestionPreviewProps = {
 const testImg =
 	'https://images.unsplash.com/photo-1555437858-e8521a85abc0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
 
-const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
+function QuestionPreview({ navigation, id }: QuestionPreviewProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -70,7 +70,7 @@ const QuestionPreview = ({ navigation, id }: QuestionPreviewProps) => {
 			</View>
 		</TouchableOpacity>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

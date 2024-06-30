@@ -60,9 +60,8 @@ function useSignupProfileImagesPicker({
 			});
 
 			const formData = getFormDataImages(images);
-			const uploadedImageData = [];
 
-			for (let i = 0; i < images.length; i++) {
+			const uploadPromises = images.map(async (image, index) => {
 				const { data } = await getSignupProfileUploadUrl();
 				const { uploadUrl, fileKey } = data;
 
@@ -71,12 +70,14 @@ function useSignupProfileImagesPicker({
 					body: formData,
 				});
 
-				uploadedImageData.push({
+				return {
 					imageKey: fileKey,
-					thumbnail: i === 0,
-					sequence: i,
-				});
-			}
+					thumbnail: index === 0,
+					sequence: index,
+				};
+			});
+
+			const uploadedImageData = await Promise.all(uploadPromises);
 
 			addImageUris(images.map(img => img.path));
 			setUploadedImages(uploadedImageData);

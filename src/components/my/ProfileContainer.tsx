@@ -11,7 +11,7 @@ import CompoundCard from '../common/CompoundCard';
 
 interface ProfileContainerProps {}
 
-const ProfileContainer = () => {
+function ProfileContainer() {
 	const { t } = useTranslation();
 	const navigation = useNavigation<NavigationProp<MyStackParamList>>();
 	const { theme } = useThemeStore();
@@ -44,7 +44,7 @@ const ProfileContainer = () => {
 				<CompoundCard.TextContainer style={styles.textContainer}>
 					<Text style={styles.nameText}>{name}</Text>
 					<Text style={styles.descriptionText}>
-						{bio ? bio : t('아직 소개를 입력하지 않았습니다.')}
+						{bio || t('아직 소개를 입력하지 않았습니다.')}
 					</Text>
 				</CompoundCard.TextContainer>
 				<View style={styles.rowContainer}>
@@ -72,7 +72,7 @@ const ProfileContainer = () => {
 			</CompoundCard.Container>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

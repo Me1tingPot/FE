@@ -12,11 +12,11 @@ interface ChangeRevokeModalProps {
 	hideOption: () => void;
 }
 
-const ChangeRevokeModal = ({
+function ChangeRevokeModal({
 	onSubmit,
 	isVisible,
 	hideOption,
-}: ChangeRevokeModalProps) => {
+}: ChangeRevokeModalProps) {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -45,7 +45,7 @@ const ChangeRevokeModal = ({
 			</CompoundModal.Background>
 		</CompoundModal>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

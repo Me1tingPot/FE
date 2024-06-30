@@ -10,7 +10,7 @@ import CustomButton from '../common/CustomButton';
 
 interface ReservationPartyListProps {}
 
-const ReservationPartyList = ({}: ReservationPartyListProps) => {
+function ReservationPartyList({}: ReservationPartyListProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -29,14 +29,14 @@ const ReservationPartyList = ({}: ReservationPartyListProps) => {
 					</View>
 					<CustomButton
 						label={t('내 주변 파티 구경하러 가기')}
-						size={'medium'}
+						size="medium"
 						onPress={() => navigation.navigate(feedTabNavigations.PARTY_HOME)}
 					/>
 				</View>
 			)}
 		</ScrollView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

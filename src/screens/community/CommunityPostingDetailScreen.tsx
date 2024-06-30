@@ -30,10 +30,10 @@ type CommunityPostingDetailScreenProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
 };
 
-const CommunityPostingDetailScreen = ({
+function CommunityPostingDetailScreen({
 	route,
 	navigation,
-}: CommunityPostingDetailScreenProps) => {
+}: CommunityPostingDetailScreenProps) {
 	const [isChecked, setIsChecked] = useState(false);
 	const [comment, setComment] = useState('');
 	const [refreshing, setRefreshing] = useState(false);
@@ -108,7 +108,7 @@ const CommunityPostingDetailScreen = ({
 			/>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

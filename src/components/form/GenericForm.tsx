@@ -13,13 +13,13 @@ interface GenericFormInterface<TFormData extends FieldValues> {
 	formOptions?: UseFormProps<TFormData>;
 }
 
-const GenericForm = <TFormData extends FieldValues>({
+function GenericForm<TFormData extends FieldValues>({
 	children,
 	formOptions,
-}: GenericFormInterface<TFormData>) => {
+}: GenericFormInterface<TFormData>) {
 	const methods = useForm<TFormData>(formOptions);
 
 	return <FormProvider {...methods}>{children}</FormProvider>;
-};
+}
 
 export default GenericForm;

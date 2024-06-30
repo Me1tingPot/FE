@@ -13,11 +13,11 @@ interface PartyOptionPeriodProps {
 	setSelectedPeriod: (item: string) => void;
 }
 
-const PartyOptionPeriod = ({
+function PartyOptionPeriod({
 	setSelectedPeriod,
 	setSelectedSection,
 	selectedPeriod,
-}: PartyOptionPeriodProps) => {
+}: PartyOptionPeriodProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -60,7 +60,7 @@ const PartyOptionPeriod = ({
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

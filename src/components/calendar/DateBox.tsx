@@ -13,12 +13,7 @@ interface DateBoxProps {
 
 const deviceWidth = Dimensions.get('window').width;
 
-const DateBox = ({
-	date,
-	selectedDate,
-	onPressDate,
-	isToday,
-}: DateBoxProps) => {
+function DateBox({ date, selectedDate, onPressDate, isToday }: DateBoxProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -46,7 +41,7 @@ const DateBox = ({
 			)}
 		</Pressable>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

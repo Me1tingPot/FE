@@ -27,14 +27,14 @@ interface IconCircleButtonProps extends PressableProps {
 	style?: ViewStyle;
 }
 
-const IconCircleButton = ({
+function IconCircleButton({
 	family,
 	name,
 	size = 30,
 	color = '#fff',
 	style,
 	...props
-}: IconCircleButtonProps) => {
+}: IconCircleButtonProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -50,7 +50,7 @@ const IconCircleButton = ({
 			)}
 		</Pressable>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

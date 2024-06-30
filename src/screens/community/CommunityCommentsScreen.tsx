@@ -26,7 +26,7 @@ interface CommunityCommentsScreenProps {
 	};
 }
 
-const CommunityCommentsScreen = ({ route }: CommunityCommentsScreenProps) => {
+function CommunityCommentsScreen({ route }: CommunityCommentsScreenProps) {
 	const { id } = route.params;
 	const [isChecked, setIsChecked] = useState(false);
 	const [comment, setComment] = useState('');
@@ -103,7 +103,7 @@ const CommunityCommentsScreen = ({ route }: CommunityCommentsScreenProps) => {
 			/>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

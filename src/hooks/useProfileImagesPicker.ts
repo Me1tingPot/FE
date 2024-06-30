@@ -60,26 +60,23 @@ function useProfileImagesPicker({
 			});
 
 			const formData = getFormDataImages(images);
-			const uploadedImageData = [];
 
-			for (let i = 0; i < images.length; i++) {
+			const uploadPromises = images.map(async (image, index) => {
 				const { data } = await getMypageProfileUploadUrl();
 				const { uploadUrl, fileKey } = data;
 
-				try {
-					await profileImagesMutation.mutateAsync({
-						uploadUrl: uploadUrl,
-						body: formData,
-					});
-				} catch (e) {
-					console.error(e);
-				}
-
-				uploadedImageData.push({
-					imageKey: fileKey,
-					thumbnail: i === 0,
+				await profileImagesMutation.mutateAsync({
+					uploadUrl: uploadUrl,
+					body: formData,
 				});
-			}
+
+				return {
+					imageKey: fileKey,
+					thumbnail: index === 0,
+				};
+			});
+
+			const uploadedImageData = await Promise.all(uploadPromises);
 
 			addImageUris(images.map(img => img.path));
 			setUploadedImages(uploadedImageData);

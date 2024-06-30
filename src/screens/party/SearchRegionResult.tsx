@@ -21,10 +21,10 @@ interface SearchRegionResultProps {
 	setKeyword?: (text: string) => void;
 }
 
-const SearchRegionResult = ({
+function SearchRegionResult({
 	regionInfo,
 	setKeyword,
-}: SearchRegionResultProps) => {
+}: SearchRegionResultProps) {
 	const navigation = useNavigation();
 	const { setMoveLocation, setSelectLocation } = useLocationStore();
 	const { theme } = useThemeStore();
@@ -92,7 +92,7 @@ const SearchRegionResult = ({
 			)}
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

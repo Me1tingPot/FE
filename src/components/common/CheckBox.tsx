@@ -1,6 +1,11 @@
 import { ReactNode } from 'react';
-import { Pressable, PressableProps, StyleSheet } from 'react-native';
-import { View, ViewStyle } from 'react-native';
+import {
+	Pressable,
+	PressableProps,
+	StyleSheet,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';

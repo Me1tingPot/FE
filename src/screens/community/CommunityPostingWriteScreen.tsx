@@ -25,7 +25,7 @@ import { ThemeMode } from '@/types';
 
 type CommunityPostingWriteScreenProps = {};
 
-const CommunityPostingWriteScreen = ({}: CommunityPostingWriteScreenProps) => {
+function CommunityPostingWriteScreen({}: CommunityPostingWriteScreenProps) {
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
 	const [files, setFiles] = useState<string[]>([]);
@@ -123,7 +123,7 @@ const CommunityPostingWriteScreen = ({}: CommunityPostingWriteScreenProps) => {
 			/>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

@@ -26,7 +26,7 @@ interface MyEditProfileScreenProps {
 	navigation: NavigationProp<MyStackParamList>;
 }
 
-const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
+function MyEditProfileScreen({ navigation }: MyEditProfileScreenProps) {
 	const [nickname, setNickname] = useState('');
 	const [bio, setBio] = useState('');
 	const { theme } = useThemeStore();
@@ -108,7 +108,7 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 						<View style={styles.flexRow}>
 							<Text style={styles.menuText}>{`${t('프로필 소개')}`}</Text>
 							<Text style={styles.menuContent}>
-								{userBio ? userBio : t('소개가 없습니다.')}
+								{userBio || t('소개가 없습니다.')}
 							</Text>
 						</View>
 					</View>
@@ -165,7 +165,7 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 			/>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

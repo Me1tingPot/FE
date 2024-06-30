@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const QuestionScreen = () => {
+function QuestionScreen() {
 	return (
 		<View>
 			<Text>QuestionScreen</Text>
 		</View>
 	);
-};
+}
 
 export default QuestionScreen;

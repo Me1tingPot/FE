@@ -6,7 +6,7 @@ import { ThemeMode } from '@/types';
 
 const userImg = '';
 
-const Comment = () => {
+function Comment() {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -34,7 +34,7 @@ const Comment = () => {
 			<View style={styles.verticalLine} />
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

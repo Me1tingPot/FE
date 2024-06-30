@@ -21,7 +21,7 @@ type AddPostScreenProps = StackScreenProps<
 	typeof partyNavigations.PARTY_WRITE
 >;
 
-const PartyWriteScreen = ({ route }: AddPostScreenProps) => {
+function PartyWriteScreen({ route }: AddPostScreenProps) {
 	const { location } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -56,9 +56,9 @@ const PartyWriteScreen = ({ route }: AddPostScreenProps) => {
 					onChangeOrder={imagePicker.changeOrder}
 				/>
 				<View style={styles.inputContainer}>
-					<CustomTextInput value={address} />
-					<CustomTextInput value="" />
-					<CustomTextInput value="" />
+					<CustomTextInput value={address} onChangeText={() => {}} />
+					<CustomTextInput value="" onChangeText={() => {}} />
+					<CustomTextInput value="" onChangeText={() => {}} />
 					<CustomButton
 						variant="outlined"
 						size="large"
@@ -78,7 +78,7 @@ const PartyWriteScreen = ({ route }: AddPostScreenProps) => {
 			</ScrollView>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
