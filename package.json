@@ -24,6 +24,7 @@
 		"@types/react-native-permissions": "^2.0.0",
 		"@typescript-eslint/eslint-plugin": "^7.9.0",
 		"axios": "^1.6.8",
+		"eslint-plugin-jest": "^28.6.0",
 		"fast-text-encoding": "^1.0.6",
 		"i18next": "^23.11.4",
 		"msw": "^2.3.0",

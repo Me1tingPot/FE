@@ -22,13 +22,13 @@ interface DatePickerOptionProps {
 	hideOption: () => void;
 }
 
-const DatePickerOption = ({
+function DatePickerOption({
 	isVisible,
 	date,
 	hideOption,
 	onChangeDate,
 	onConfirmDate,
-}: DatePickerOptionProps) => {
+}: DatePickerOptionProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -59,7 +59,7 @@ const DatePickerOption = ({
 			</SafeAreaView>
 		</Modal>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

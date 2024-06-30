@@ -18,9 +18,14 @@ const uploadImages = async (body: FormData): Promise<string[]> => {
 	return data;
 };
 
-const getProfileUploadUrl = async (): Promise<PROFILE_URL_TYPES> => {
-	const { data } = await axiosInstance.get(`${API_URL.PROFILE_IMG_URL}`);
+const getSignupProfileUploadUrl = async (): Promise<PROFILE_URL_TYPES> => {
+	const { data } = await axiosInstance.get(`${API_URL.AUTH_PROFILE_IMG_URL}`);
 
+	return data;
+};
+
+const getMypageProfileUploadUrl = async (): Promise<PROFILE_URL_TYPES> => {
+	const { data } = await axiosInstance.get(`${API_URL.USER_PROFILE_IMG_URL}`);
 	return data;
 };
 
@@ -37,4 +42,9 @@ const uploadProfileImages = async ({
 	return data;
 };
 
-export { uploadImages, getProfileUploadUrl, uploadProfileImages };
+export {
+	uploadImages,
+	getSignupProfileUploadUrl,
+	getMypageProfileUploadUrl,
+	uploadProfileImages,
+};

@@ -5,7 +5,7 @@ import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-const DayOfWeeks = () => {
+function DayOfWeeks() {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -32,7 +32,7 @@ const DayOfWeeks = () => {
 			})}
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

@@ -1,5 +1,4 @@
-import { TouchableOpacity } from 'react-native';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, Image, StyleSheet, Text, View } from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { colors } from '@/constants';
@@ -12,7 +11,7 @@ interface PostInfoProps {}
 const testImg =
 	'https://images.unsplash.com/photo-1605100958409-e084833953d4?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
 
-const PostInfo = ({}: PostInfoProps) => {
+function PostInfo({}: PostInfoProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -39,7 +38,7 @@ const PostInfo = ({}: PostInfoProps) => {
 			</TouchableOpacity>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

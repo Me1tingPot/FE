@@ -13,13 +13,13 @@ interface PaginationProps {
 	totalLength: number;
 }
 
-const Pagination = ({
+function Pagination({
 	pageParam,
 	fetchPrevPage,
 	fetchNextPage,
 	hasNextPage,
 	totalLength,
-}: PaginationProps) => {
+}: PaginationProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -69,7 +69,7 @@ const Pagination = ({
 			</Pressable>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

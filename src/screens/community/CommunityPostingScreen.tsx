@@ -19,9 +19,7 @@ type CommunityPostingScreenProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
 };
 
-const CommunityPostingScreen = ({
-	navigation,
-}: CommunityPostingScreenProps) => {
+function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 	const [refreshing, setRefreshing] = useState(false);
 
 	const { theme } = useThemeStore();
@@ -70,7 +68,7 @@ const CommunityPostingScreen = ({
 			</View>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

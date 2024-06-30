@@ -4,7 +4,6 @@ import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ImageUri } from '@/types';
 import { getFormDataImages } from '@/utils';
-import useMutateImages from './queries/useMutateImages';
 import useImages from './queries/useMutateImages';
 
 interface useImagePickerProps {
@@ -51,7 +50,7 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 			mediaType: 'photo',
 			multiple: true,
 			includeBase64: true,
-			maxFiles: maxFiles,
+			maxFiles,
 			cropperChooseText: t('완료'),
 			cropperCancelText: t('취소'),
 		})

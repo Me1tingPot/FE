@@ -10,7 +10,6 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
@@ -67,7 +66,6 @@ function Profile({ size = 'sm', uri, ...props }: ProfileProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const defaultImage = require('@/assets/user-default.png');
-
 	return (
 		<Image
 			style={[styles[`${size}Profile`]]}
@@ -125,18 +123,7 @@ const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
 			height: 160,
-			backgroundColor: colors[theme].WHITE,
 			borderRadius: 20,
-			borderColor: colors[theme].EMERALD_500,
-			borderWidth: 4,
-			shadowColor: colors[theme].UNCHANGE_BLACK,
-			shadowOffset: {
-				width: 0,
-				height: 8,
-			},
-			shadowOpacity: 0.2,
-			shadowRadius: 8.65,
-			elevation: 8,
 		},
 		pressedContainer: {
 			backgroundColor: colors[theme].GRAY_100,

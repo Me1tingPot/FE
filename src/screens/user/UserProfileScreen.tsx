@@ -9,7 +9,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import PartyCard from '@/components/common/PartyCard';
 import QuestionPreview from '@/components/community/QuestionPreview';
 import { colors, userNavigations } from '@/constants';
@@ -31,7 +31,6 @@ function UserProfileScreen({ navigation }: UserProfileScreenProps) {
 	const { theme } = useThemeStore();
 	const { t } = useTranslation();
 	const styles = styling(theme);
-	const userNavigation = useNavigation();
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -40,7 +39,7 @@ function UserProfileScreen({ navigation }: UserProfileScreenProps) {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() =>
-							userNavigation.navigate(userNavigations.USER_PROFILE_IMAGE)
+							navigation.navigate(userNavigations.USER_PROFILE_IMAGE)
 						}
 					>
 						<Image source={{ uri: userImg }} style={styles.userImg} />

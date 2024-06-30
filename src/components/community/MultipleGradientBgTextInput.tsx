@@ -13,7 +13,7 @@ type MultipleGradientBgTextInputProps = {
 	backgroundColors?: string[];
 };
 
-const MultipleGradientBgTextInput = ({
+function MultipleGradientBgTextInput({
 	title,
 	onChangeTitle,
 	titlePlaceholder = '여기에 입력해주세요.',
@@ -21,7 +21,7 @@ const MultipleGradientBgTextInput = ({
 	onChangeContent,
 	contentPlaceholder,
 	backgroundColors = ['#DCFFEA', '#A8D5FF', '#60B3FF'],
-}: MultipleGradientBgTextInputProps) => {
+}: MultipleGradientBgTextInputProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -41,7 +41,7 @@ const MultipleGradientBgTextInput = ({
 			/>
 		</LinearGradient>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

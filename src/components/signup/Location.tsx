@@ -14,7 +14,7 @@ type LocationProps = {
 	onNext: () => void;
 };
 
-const Location = ({ onNext }: LocationProps) => {
+function Location({ onNext }: LocationProps) {
 	const {
 		control,
 		formState: { errors },
@@ -47,10 +47,10 @@ const Location = ({ onNext }: LocationProps) => {
 					render={({ field: { onChange, onBlur, value } }) => (
 						<Pressable onPress={() => console.log('click')}>
 							<CustomTextInput
-								value={location ? location : '위치 선택'}
+								value={location || '위치 선택'}
 								onChangeText={onChange}
 								onBlur={onBlur}
-								variant={'success'}
+								variant="success"
 								icon={
 									<MaterialIcons
 										name="keyboard-arrow-down"
@@ -67,9 +67,9 @@ const Location = ({ onNext }: LocationProps) => {
 				<View style={styles.smallDropDownContainer}>
 					<Pressable onPress={() => console.log('click')} style={{ flex: 1 }}>
 						<CustomTextInput
-							value={city ? city : '시/도'}
+							value={city || '시/도'}
 							onChangeText={() => {}}
-							variant={'default'}
+							variant="default"
 							icon={
 								<MaterialIcons
 									name="keyboard-arrow-down"
@@ -83,9 +83,9 @@ const Location = ({ onNext }: LocationProps) => {
 
 					<Pressable onPress={() => console.log('click')} style={{ flex: 1 }}>
 						<CustomTextInput
-							value={town ? town : '시/군/구'}
+							value={town || '시/군/구'}
 							onChangeText={() => {}}
-							variant={'default'}
+							variant="default"
 							icon={
 								<MaterialIcons
 									name="keyboard-arrow-down"
@@ -100,15 +100,11 @@ const Location = ({ onNext }: LocationProps) => {
 			</ScrollView>
 
 			<View style={styles.buttonPosition}>
-				<CustomButton
-					label={t('다음으로')}
-					onPress={onNext}
-					variant={'filled'}
-				/>
+				<CustomButton label={t('다음으로')} onPress={onNext} variant="filled" />
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

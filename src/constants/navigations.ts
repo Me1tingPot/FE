@@ -41,6 +41,16 @@ const myNavigations = {
 	EDIT_PROFILE: 'EditProfile',
 	MY_WRITE_POST: 'MyWritePost',
 	MY_PROFILE_IMAGE_EDIT: 'MyProfileImageEdit',
+	PASSWORD_CHANGE: 'PasswordChange',
+	USING_RESTRICT: 'UsingRestrict',
+	CHATTING_SETTING: 'ChattingSetting',
+	COMMUNITY_RULES: 'CommunityRules',
+	ALERT_SETTING: 'AlertSetting',
+	APP_VERSION: 'AppVersion',
+	QUESTION: 'Question',
+	NOTICE: 'Notice',
+	SERVICE_USING: 'ServiceUsing',
+	INFO_AGREE_SETTING: 'InfoAgreeSetting',
 } as const;
 
 const feedNavigations = {

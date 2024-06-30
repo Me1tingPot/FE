@@ -8,7 +8,7 @@ import { ThemeMode } from '@/types';
 
 type ChatHomeHeaderLeftProps = StackNavigationProp<FeedStackParamList>;
 
-const ChatHomeHeaderLeft = (navigation: ChatHomeHeaderLeftProps) => {
+function ChatHomeHeaderLeft(navigation: ChatHomeHeaderLeftProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -21,7 +21,7 @@ const ChatHomeHeaderLeft = (navigation: ChatHomeHeaderLeftProps) => {
 			/>
 		</Pressable>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

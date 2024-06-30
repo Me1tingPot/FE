@@ -12,7 +12,7 @@ type GenderProps = {
 	onNext: () => void;
 };
 
-const Gender = ({ onNext }: GenderProps) => {
+function Gender({ onNext }: GenderProps) {
 	const {
 		control,
 		formState: { errors },
@@ -80,12 +80,12 @@ const Gender = ({ onNext }: GenderProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={handleSubmit}
-					variant={'filled'}
+					variant="filled"
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

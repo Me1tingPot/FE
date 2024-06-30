@@ -9,7 +9,7 @@ import { getMonthYearDetails, getNewMonthYear } from '@/utils';
 
 interface WishReservationScreenProps {}
 
-const WishReservationScreen = ({}: WishReservationScreenProps) => {
+function WishReservationScreen({}: WishReservationScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -37,7 +37,7 @@ const WishReservationScreen = ({}: WishReservationScreenProps) => {
 			<ReservationPartyList />
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

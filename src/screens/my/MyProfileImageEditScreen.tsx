@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
 	Image,
@@ -10,36 +10,70 @@ import {
 	View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Toast from 'react-native-toast-message';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '@/components/common/CustomButton';
 import { colors } from '@/constants';
-import useImagePicker from '@/hooks/useImagePicker';
+import useUser from '@/hooks/queries/useUser';
 import usePermission from '@/hooks/usePermission';
+import useProfileImagesPicker from '@/hooks/useProfileImagesPicker';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { PROFILE_IMAGES_DATA_TYPES } from '@/types/api/types';
 
 interface MyProfileImageEditScreen {}
 
-const files = [
-	'https://images.unsplash.com/photo-1717158082997-97d18efbd633?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHx8',
-	'https://plus.unsplash.com/premium_photo-1717478923249-b5bd2551412d?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHx8',
-	'https://images.unsplash.com/photo-1716538878686-38567b89b5a0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8',
-];
-
 function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 	const [selected, setSelected] = useState(0);
+	const [files, setFiles] = useState<PROFILE_IMAGES_DATA_TYPES[]>([]);
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const imagePicker = useImagePicker({
-		initialImages: [],
-		maxFiles: 3,
-	});
+	const { getUserProfileImages, deleteUserProfileImgMutation } = useUser();
+
 	usePermission('PHOTO');
 	usePermission('CAMERA');
 
+	const formDataImages = useProfileImagesPicker({
+		initialImages: [],
+		maxFiles: 3,
+	});
+
+	useEffect(() => {
+		setFiles(getUserProfileImages.data.data);
+	}, [getUserProfileImages]);
+
 	const handleSelected = (id: number) => {
 		setSelected(id);
+	};
+
+	const handleSubmit = () => {
+		if (formDataImages.uploadedImages.length <= 0) {
+			Toast.show({
+				type: 'error',
+				text1: t('최소 1개의 이미지를 선택해주세요.'),
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+			return;
+		}
+	};
+
+	const handleDeleteImage = (imageId: number) => {
+		deleteUserProfileImgMutation.mutate(imageId, {
+			onSuccess: data => {
+				console.log(data);
+			},
+			onError: error => {
+				Toast.show({
+					type: 'error',
+					text1: error.response?.data.message || '이미지 삭제 에러 발생',
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+			},
+		});
 	};
 
 	return (
@@ -69,7 +103,7 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 						<TouchableOpacity
 							activeOpacity={0.8}
 							style={styles.imageButton}
-							onPress={() => imagePicker.handleChange()}
+							onPress={formDataImages.handleChange}
 						>
 							<MaterialIcons
 								name="camera-alt"
@@ -78,16 +112,59 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 							/>
 						</TouchableOpacity>
 						{/* 서버 연결 후 수정 예정 */}
-						{files.map((item, index) => (
+						{files.map((item, index: number) => (
 							<TouchableOpacity
 								activeOpacity={0.9}
 								style={styles.imageButton}
-								key={index}
+								key={item.id}
+								onPress={() => handleSelected(item.sequence)}
+							>
+								{formDataImages.imageUris && (
+									<>
+										<Image
+											source={{ uri: item.imageUrl }}
+											style={styles.image}
+										/>
+										<View
+											style={[
+												styles.unSelectedImg,
+												selected === index && styles.selectedImg,
+											]}
+										>
+											<Text
+												style={
+													selected === index
+														? styles.selectedText
+														: styles.unSelectedText
+												}
+											>
+												{t('대표')}
+											</Text>
+										</View>
+										<TouchableOpacity
+											style={styles.close}
+											onPress={() => handleDeleteImage(item.id)}
+										>
+											<Ionicons
+												name="close"
+												color={colors[theme].GRAY_500}
+												size={15}
+											/>
+										</TouchableOpacity>
+									</>
+								)}
+							</TouchableOpacity>
+						))}
+						{formDataImages.imageUris.map((item, index: number) => (
+							<TouchableOpacity
+								activeOpacity={0.9}
+								style={styles.imageButton}
+								key={item.id}
 								onPress={() => handleSelected(index)}
 							>
-								{imagePicker.imageUris && (
+								{formDataImages.imageUris && (
 									<>
-										<Image source={{ uri: item }} style={styles.image} />
+										<Image source={{ uri: item.uri }} style={styles.image} />
 										<View
 											style={[
 												styles.unSelectedImg,
@@ -120,7 +197,7 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 					</Text>
 					<CustomButton
 						label={t('저장')}
-						onPress={() => console.log('click')}
+						onPress={handleSubmit}
 						variant={'filled'}
 					/>
 				</View>
@@ -230,6 +307,16 @@ const styling = (theme: ThemeMode) =>
 		unSelectedText: {
 			fontSize: 10,
 			color: colors[theme].GRAY_700,
+		},
+		close: {
+			position: 'absolute',
+			top: 15,
+			right: 15,
+			padding: 2,
+			borderRadius: 11,
+			borderWidth: 1,
+			borderColor: colors[theme].GRAY_500,
+			backgroundColor: colors[theme].WHITE,
 		},
 	});
 

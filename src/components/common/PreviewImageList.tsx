@@ -18,11 +18,11 @@ interface PreviewImageListProps {
 	onChangeOrder?: (fromIndex: number, toIndex: number) => void;
 }
 
-const PreviewImageList = ({
+function PreviewImageList({
 	imageUris,
 	onDelete,
 	onChangeOrder,
-}: PreviewImageListProps) => {
+}: PreviewImageListProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -83,7 +83,7 @@ const PreviewImageList = ({
 			</View>
 		</ScrollView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

@@ -31,7 +31,6 @@ import useSearchLocation from '@/hooks/useSearchLocation';
 import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
 import useLocationStore from '@/store/useLocationStore';
 import useThemeStore from '@/store/useThemeStore';
-import mapStyle from '@/style/mapStyle';
 import getMapStyle from '@/style/mapStyle';
 import { ThemeMode } from '@/types';
 import useUserLocation from '../../hooks/useUserLocation';
@@ -49,7 +48,7 @@ const markers = [
 	{ id: 5, coordinate: { latitude: 37.5885, longitude: 127.01 } },
 ];
 
-const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
+function PartyDetailScreen({ navigation }: PartyDetailScreenProps) {
 	const { theme } = useThemeStore();
 	const insets = useSafeAreaInsets();
 	const styles = styling(theme, insets);
@@ -212,7 +211,7 @@ const PartyDetailScreen = ({ navigation }: PartyDetailScreenProps) => {
 			/>
 		</BottomSheetModalProvider>
 	);
-};
+}
 
 const styling = (theme: ThemeMode, insets: { top: number }) =>
 	StyleSheet.create({

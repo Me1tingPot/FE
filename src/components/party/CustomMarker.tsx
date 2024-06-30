@@ -9,7 +9,7 @@ interface CustomMarkerProps extends MapMarkerProps {
 	coordinate: LatLng;
 }
 
-const CustomMarker = ({ coordinate, ...props }: CustomMarkerProps) => {
+function CustomMarker({ coordinate, ...props }: CustomMarkerProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -20,7 +20,7 @@ const CustomMarker = ({ coordinate, ...props }: CustomMarkerProps) => {
 			</View>
 		</Marker>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

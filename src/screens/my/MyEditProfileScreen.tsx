@@ -15,6 +15,8 @@ import ChangeNameModal from '@/components/my/ChangeNameModal';
 import ChangeProfileModal from '@/components/my/ChangeProfileModal';
 import ChangeRevokeModal from '@/components/my/ChangeRevokeModal';
 import { colors, myNavigations } from '@/constants';
+import useUser from '@/hooks/queries/useUser';
+import useGetUserData from '@/hooks/useGetUserData';
 import useModal from '@/hooks/useModal';
 import { MyStackParamList } from '@/navigations/stack/MyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
@@ -24,28 +26,42 @@ interface MyEditProfileScreenProps {
 	navigation: NavigationProp<MyStackParamList>;
 }
 
-const userImg = '';
-
-const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
-	const [name, setName] = useState('');
-	const [introduction, setIntroduction] = useState('');
+function MyEditProfileScreen({ navigation }: MyEditProfileScreenProps) {
+	const [nickname, setNickname] = useState('');
+	const [bio, setBio] = useState('');
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const { userBioMutation, userNameMutation } = useUser();
+	const { thumbnail, name, email, bio: userBio } = useGetUserData();
 	const profileModal = useModal();
 	const nameModal = useModal();
 	const revokeModal = useModal();
 
 	const handleChangeName = () => {
-		console.log(name, '이름이 변경되었습니다.');
-		nameModal.hide();
-		setName('');
+		userNameMutation.mutate(nickname, {
+			onSuccess: () => {
+				console.log(nickname, '이름이 변경되었습니다.');
+				nameModal.hide();
+				setNickname('');
+			},
+			onError: error => {
+				console.error(error.response);
+			},
+		});
 	};
 
 	const handleChangeIntroduction = () => {
-		console.log(introduction, '소개가 변경되었습니다.');
-		profileModal.hide();
-		setIntroduction('');
+		userBioMutation.mutate(bio, {
+			onSuccess: () => {
+				console.log(bio, '소개가 변경되었습니다.');
+				profileModal.hide();
+				setBio('');
+			},
+			onError: error => {
+				console.log(error.response);
+			},
+		});
 	};
 
 	const handleRevoke = () => {
@@ -57,8 +73,8 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.contentContainer}>
 				<View style={styles.userImg}>
-					{userImg ? (
-						<Image source={{ uri: userImg }} style={styles.userImg} />
+					{thumbnail ? (
+						<Image source={{ uri: thumbnail }} style={styles.userImg} />
 					) : (
 						<Ionicons
 							name="person-sharp"
@@ -81,17 +97,19 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 					<View style={styles.menuContainer}>
 						<View style={styles.flexRow}>
 							<Text style={styles.menuText}>{`${t('이름')}`}</Text>
-							<Text style={styles.menuContent}>Sally LEE</Text>
+							<Text style={styles.menuContent}>{name}</Text>
 						</View>
 						<View style={styles.verticalLine} />
 						<View style={styles.flexRow}>
 							<Text style={styles.menuText}>{`${t('이메일')}`}</Text>
-							<Text style={styles.menuContent}>Sally@naver.com</Text>
+							<Text style={styles.menuContent}>{email}</Text>
 						</View>
 						<View style={styles.verticalLine} />
 						<View style={styles.flexRow}>
 							<Text style={styles.menuText}>{`${t('프로필 소개')}`}</Text>
-							<Text style={styles.menuContent}>특기는 여행, 취미는 기록</Text>
+							<Text style={styles.menuContent}>
+								{userBio || t('소개가 없습니다.')}
+							</Text>
 						</View>
 					</View>
 				</View>
@@ -124,20 +142,20 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 				isVisible={nameModal.isVisible}
 				hideOption={() => {
 					nameModal.hide();
-					setName('');
+					setNickname('');
 				}}
-				value={name}
-				setValue={setName}
+				value={nickname}
+				setValue={setNickname}
 				onSubmit={handleChangeName}
 			/>
 			<ChangeProfileModal
 				isVisible={profileModal.isVisible}
 				hideOption={() => {
 					profileModal.hide();
-					setIntroduction('');
+					setBio('');
 				}}
-				value={introduction}
-				setValue={setIntroduction}
+				value={bio}
+				setValue={setBio}
 				onSubmit={handleChangeIntroduction}
 			/>
 			<ChangeRevokeModal
@@ -147,7 +165,7 @@ const MyEditProfileScreen = ({ navigation }: MyEditProfileScreenProps) => {
 			/>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

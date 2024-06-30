@@ -12,11 +12,11 @@ interface PartyOptionRegionProps {
 	setSelectedSection: (section: string) => void;
 }
 
-const PartyOptionRegion = ({
+function PartyOptionRegion({
 	selectedRegion,
 	setSelectedRegion,
 	setSelectedSection,
-}: PartyOptionRegionProps) => {
+}: PartyOptionRegionProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -114,7 +114,7 @@ const PartyOptionRegion = ({
 			</View>
 		</>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

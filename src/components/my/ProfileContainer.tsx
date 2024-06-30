@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { colors } from '@/constants';
+import useGetUserData from '@/hooks/useGetUserData';
 import { MyStackParamList } from '@/navigations/stack/MyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -9,43 +11,68 @@ import CompoundCard from '../common/CompoundCard';
 
 interface ProfileContainerProps {}
 
-const ProfileContainer = ({}: ProfileContainerProps) => {
+function ProfileContainer() {
+	const { t } = useTranslation();
 	const navigation = useNavigation<NavigationProp<MyStackParamList>>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const {
+		name,
+		thumbnail,
+		bio,
+		host_count,
+		participate_count,
+		nationality,
+		isLoading,
+	} = useGetUserData();
+
+	if (isLoading) {
+		return (
+			<View style={styles.loadingContainer}>
+				<ActivityIndicator />
+			</View>
+		);
+	}
+
 	return (
-		<View style={{ marginVertical: 50 }}>
+		<View style={{ marginVertical: 25 }}>
 			<CompoundCard.Container
 				onPress={() => navigation.navigate('EditProfile')}
 				style={styles.container}
 			>
-				<CompoundCard.Profile size="lg" />
+				<CompoundCard.Profile size="lg" uri={thumbnail} />
 				<CompoundCard.TextContainer style={styles.textContainer}>
-					<Text style={styles.nameText}>김용민</Text>
+					<Text style={styles.nameText}>{name}</Text>
 					<Text style={styles.descriptionText}>
-						자기소개 자기소개 자기소개 자기소개
+						{bio || t('아직 소개를 입력하지 않았습니다.')}
 					</Text>
 				</CompoundCard.TextContainer>
 				<View style={styles.rowContainer}>
 					<View style={styles.columnContainer}>
-						<Text style={styles.columnText}>주최</Text>
-						<Text style={styles.columnText}>1회</Text>
+						<Text style={styles.columnText}>{t('주최')}</Text>
+						<Text style={styles.columnText}>
+							{host_count}
+							{t('회')}
+						</Text>
 					</View>
 					<View style={styles.separator} />
 					<View style={styles.columnContainer}>
-						<Text style={styles.columnText}>참여</Text>
-						<Text style={styles.columnText}>6회</Text>
+						<Text style={styles.columnText}>{t('참여')}</Text>
+						<Text style={styles.columnText}>
+							{participate_count}
+							{t('회')}
+						</Text>
 					</View>
 					<View style={styles.separator} />
 					<View style={styles.columnContainer}>
-						<Text style={styles.columnText}>국적</Text>
-						<Text style={styles.columnText}>대한민국</Text>
+						<Text style={styles.columnText}>{t('국적')}</Text>
+						<Text style={styles.columnText}>{nationality}</Text>
 					</View>
 				</View>
 			</CompoundCard.Container>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
@@ -57,7 +84,6 @@ const styling = (theme: ThemeMode) =>
 			gap: 10,
 			height: 300,
 			borderRadius: 20,
-			overflow: 'hidden', // Ensure the gradient doesn't overflow the container
 		},
 		textContainer: {
 			flexDirection: 'column',
@@ -69,6 +95,7 @@ const styling = (theme: ThemeMode) =>
 			fontFamily: 'Pretendard-Bold',
 			fontSize: 22,
 			color: colors[theme].BLACK,
+			marginRight: 10,
 		},
 		descriptionText: {
 			fontFamily: 'Pretendard-Bold',
@@ -81,7 +108,6 @@ const styling = (theme: ThemeMode) =>
 			flexDirection: 'row',
 			alignItems: 'center',
 			justifyContent: 'space-around',
-			backgroundColor: colors[theme].EMERALD_500,
 		},
 		columnContainer: {
 			flex: 1,
@@ -91,11 +117,18 @@ const styling = (theme: ThemeMode) =>
 		separator: {
 			width: 1,
 			height: '60%',
-			backgroundColor: colors[theme].WHITE,
+			backgroundColor: colors[theme].GRAY_300,
 		},
 		columnText: {
 			fontFamily: 'Pretendard-Regular',
-			color: colors[theme].UNCHANGE_BLACK,
+			color: colors[theme].GRAY_700,
+		},
+		loadingContainer: {
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: 300,
 		},
 	});
 
