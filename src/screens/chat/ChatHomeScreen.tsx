@@ -1,49 +1,19 @@
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
-import NoneChatView from '@/components/chat/NoneChatView';
-import PartyCard from '@/components/common/PartyCard';
-import { colors, feedNavigations } from '@/constants';
-import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { getChatsList } from '@/api/chat';
-import useGetInfiniteChats from '@/hooks/queries/useGetInfiniteChats';
-
-interface ChatHomeScreenProps {
-	navigation: NavigationProp<FeedStackParamList>;
-}
+import ChatsList from '@/components/chat/ChatsList';
 
 
 
-async function ChatHomeScreen({ navigation }: ChatHomeScreenProps) {
+
+function ChatHomeScreen() {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-	const { data } = useGetInfiniteChats();
-	const chatList = [];
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView
-				contentContainerStyle={[
-					styles.contentContainer,
-					chatList.length === 0 && styles.flex,
-				]}
-			>
-				{chatList.length > 0 ? (
-					<View style={styles.chatContainer}>
-						{new Array(10).fill(null).map((_, idx) => (
-							<PartyCard
-								key={idx}
-								onPress={() =>
-									navigation.navigate(feedNavigations.CHAT, { id: idx })
-								}
-							/>
-						))}
-					</View>
-				) : (
-					<NoneChatView navigation={navigation} />
-				)}
-			</ScrollView>
+			<ChatsList />
 		</SafeAreaView>
 	);
 }
@@ -53,19 +23,6 @@ const styling = (theme: ThemeMode) =>
 		container: {
 			flex: 1,
 			backgroundColor: colors[theme].WHITE,
-		},
-		contentContainer: {
-			display: 'flex',
-			flexDirection: 'column',
-			justifyContent: 'center',
-			paddingHorizontal: 20,
-		},
-		flex: {
-			flex: 1,
-		},
-		chatContainer: {
-			paddingVertical: 20,
-			gap: 15,
 		},
 	});
 

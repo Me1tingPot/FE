@@ -2,7 +2,6 @@ import React from 'react';
 import {
 	Image,
 	Pressable,
-	PressableProps,
 	StyleSheet,
 	Text,
 	View,
@@ -11,14 +10,30 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
-import { ThemeMode } from '@/types';
+import { CHAT_ROOM, ThemeMode } from '@/types';
 import IconCircleButton from './IconCircleButton';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
+import { ChatStackParamList } from '@/navigations/stack/ChatStackNavigator';
 
-interface PartyCardProps extends PressableProps {}
+dayjs.locale('ko');
 
-const PartyCard = ({ ...props }: PartyCardProps) => {
+interface IPartyCard {
+	post: CHAT_ROOM[]
+}
+
+const PartyCard = ({ post }: IPartyCard) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const navigation = useNavigation<NavigationProp<ChatStackParamList>>();
+
+	const handlePressEnterRoom = (id: number) => {
+		navigation.navigate('ChatDetail', {
+			id
+		})
+	}
 
 	const renderRightActions = () => (
 		<View style={styles.rightActionContainer}>
@@ -32,72 +47,87 @@ const PartyCard = ({ ...props }: PartyCardProps) => {
 	);
 
 	return (
-		<Swipeable renderRightActions={renderRightActions}>
-			<Pressable
-				style={({ pressed }) => [
-					styles.container,
-					pressed && styles.pressedContainer,
-				]}
-				{...props}
-			>
-				<View style={styles.contentContainer}>
-					<View style={styles.badge}>
-						<Text style={styles.badgeText}>모집 중</Text>
-					</View>
-					<View style={styles.imageContainer}>
-						<Image
-							source={require('@/assets/user-default.png')}
-							style={styles.image}
-						/>
-						<View style={styles.textContainer}>
-							<Text style={styles.titleText} numberOfLines={2}>
-								24회 전주국제영화제 뒤풀이 파티로 어서오세요 24회 전주국제영화제
-								뒤풀이 파티로 어서오세요 24회 전주국제영화제 뒤풀이 파
-								어서오세요
-							</Text>
-							<Text style={styles.descText} numberOfLines={1}>
-								전주월드컵경기장 (전주특별자치도 전주시 덕진구 기린대로 1055)
-							</Text>
+		<>
+			{post.map(({
+				partySubject,
+				partyLocationAddress,
+				leaderName,
+				partyStartTime,
+				userCnt,
+				partyMinParticipant,
+				partyMaxParticipant
+			}, index) => (
+				<Swipeable key={index} renderRightActions={renderRightActions}>
+					<Pressable
+						style={({ pressed }) => [
+							styles.container,
+							pressed && styles.pressedContainer,
+						]}
+						onPress={handlePressEnterRoom}
+					>
+						<View style={styles.contentContainer}>
+							<View style={styles.badge}>
+								<Text style={styles.badgeText}>모집 중</Text>
+							</View>
+							<View style={styles.imageContainer}>
+								<Image
+									source={require('@/assets/user-default.png')}
+									style={styles.image}
+								/>
+								<View style={styles.textContainer}>
+									<Text style={styles.titleText} numberOfLines={2}>
+										{partySubject}
+									</Text>
+									<Text style={styles.descText} numberOfLines={1}>
+										{partyLocationAddress}
+									</Text>
+								</View>
+							</View>
+							<View style={styles.dividerContainer}>
+								<View style={styles.divider} />
+							</View>
+							<View style={styles.detailInfoContainer}>
+								<View style={styles.iconContainer}>
+									<Ionicons name="happy" size={20} color={colors[theme].GRAY_500} />
+									<Text style={styles.iconFont}>{leaderName}</Text>
+								</View>
+								<View style={styles.iconContainer}>
+									<Ionicons
+										name="calendar"
+										size={20}
+										color={colors[theme].GRAY_500}
+									/>
+									<Text style={styles.iconFont}>
+										{dayjs(partyStartTime).format('YYYY-MM-DD')}
+									</Text>
+								</View>
+								<View style={styles.iconContainer}>
+									<Ionicons name="time" size={20} color={colors[theme].GRAY_500} />
+									<Text style={styles.iconFont}>
+										{dayjs(partyStartTime).format('hh:mm:ss A')}
+									</Text>
+								</View>
+								<View style={styles.iconContainer}>
+									<Ionicons
+										name="people"
+										size={20}
+										color={colors[theme].GRAY_500}
+									/>
+									<Text style={styles.iconFont}>{userCnt} ({partyMinParticipant}~{partyMaxParticipant})</Text>
+								</View>
+							</View>
 						</View>
-					</View>
-					<View style={styles.dividerContainer}>
-						<View style={styles.divider} />
-					</View>
-					<View style={styles.detailInfoContainer}>
-						<View style={styles.iconContainer}>
-							<Ionicons name="happy" size={20} color={colors[theme].GRAY_500} />
-							<Text style={styles.iconFont}>김용민</Text>
-						</View>
-						<View style={styles.iconContainer}>
-							<Ionicons
-								name="calendar"
-								size={20}
-								color={colors[theme].GRAY_500}
-							/>
-							<Text style={styles.iconFont}>2024/05/27</Text>
-						</View>
-						<View style={styles.iconContainer}>
-							<Ionicons name="time" size={20} color={colors[theme].GRAY_500} />
-							<Text style={styles.iconFont}>16:42</Text>
-						</View>
-						<View style={styles.iconContainer}>
-							<Ionicons
-								name="people"
-								size={20}
-								color={colors[theme].GRAY_500}
-							/>
-							<Text style={styles.iconFont}>5 (4~8)</Text>
-						</View>
-					</View>
-				</View>
-			</Pressable>
-		</Swipeable>
+					</Pressable>
+				</Swipeable>
+			))}
+		</>
 	);
 };
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
+			display: 'flex',
 			height: 160,
 			backgroundColor: colors[theme].WHITE,
 			borderRadius: 20,
@@ -111,6 +141,8 @@ const styling = (theme: ThemeMode) =>
 			shadowOpacity: 0.2,
 			shadowRadius: 8.65,
 			elevation: 8,
+			marginBottom: 10,
+			width: 100
 		},
 		pressedContainer: {
 			backgroundColor: colors[theme].GRAY_100,

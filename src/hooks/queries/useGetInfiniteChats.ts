@@ -19,7 +19,7 @@ function useGetInfiniteChatLists(
   return useInfiniteQuery({
     queryFn: ({ pageParam }) => getChatsList({ page: pageParam, size: 5 }),
     queryKey: [queryKeys.CHAT],
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.hasNext ? allPages.length + 1 : undefined;
     },

@@ -5,6 +5,7 @@ import { IMAGE_DTO } from '@/types/api/types';
 import { getEncryptStorage } from '@/utils';
 import axiosInstance from './axios';
 
+
 type signupProps = {
 	email: string;
 	password: string;
@@ -90,6 +91,10 @@ const getAccessToken = async (): Promise<ResponseToken> => {
 
 	return data;
 };
+
+
+
+
 
 export { login, logout, signup, getAccessToken };
 export type { signupProps, RequestUser, ResponseToken };

@@ -58,6 +58,11 @@ const userNavigations = {
 	USER_PROFILE_IMAGE: 'UserProfileImage',
 } as const;
 
+const chatNavigations = {
+	CHAT_HOME: 'ChatHome',
+	CHAT_DETAIL: 'ChatDetail'
+} as const;
+
 export {
 	authNavigations,
 	feedTabNavigations,
@@ -67,4 +72,5 @@ export {
 	feedNavigations,
 	partyNavigations,
 	userNavigations,
+	chatNavigations
 };

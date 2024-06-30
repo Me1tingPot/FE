@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -6,16 +5,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
-import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedNavigations, feedTabNavigations } from '../../constants';
 import CommunityStackNavigator from '../stack/CommunityStackNavigator';
 import { FeedStackParamList } from '../stack/FeedStackNavigator';
 import MyStackNavigator from '../stack/MyStackNavigator';
 import PartyStackNavigator from '../stack/PartyStackNavigator';
-import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
-import ChatHomeScreen from '@/screens/chat/ChatHomeScreen';
+import ChatStackNavigator from '../stack/ChatStackNavigator';
 
 export type FeedTabParamList = {
 	[feedTabNavigations.FEED_HOME]: undefined;
@@ -148,7 +145,7 @@ function FeedTabNavigator({ navigation }: FeedTabNavigatorProps) {
 			/>
 			<Tab.Screen
 				name={feedTabNavigations.CHAT_HOME}
-				component={ChatHomeScreen}
+				component={ChatStackNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('채팅')}`,
 				})}

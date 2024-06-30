@@ -27,6 +27,7 @@ const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
 			marginLeft: 10,
+			paddingHorizontal: 15,
 		},
 	});
 

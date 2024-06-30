@@ -13,6 +13,10 @@ import { colors } from '@/constants';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import StompJs from '@stomp/stompjs';
+import Config from 'react-native-config';
+import { useStompCli } from '@/hooks/useStompCli';
+
 
 interface FeedHomeScreenProps {
 	navigation: NavigationProp<FeedStackParamList>;
@@ -35,6 +39,14 @@ const partyImg2 =
 function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	const cli = useStompCli();
+	console.log(cli, 'gdfgd')
+
+	// client.client.onConnect((frame) => {
+	// 	console.log(frame)
+
+	// })
 
 	return (
 		<SafeAreaView style={styles.container}>
