@@ -6,6 +6,8 @@ type Category = {
 	[key in MarkerColor]: string;
 };
 
+type MemberRole = 'LEADER' | 'MEMBER'
+
 interface ImageUri {
 	id?: number;
 	uri: string;
@@ -25,4 +27,12 @@ interface CHAT_ROOM {
 	messageCnt: number
 }
 
-export type { ImageUri, CHAT_ROOM };
+interface CHAT_LIST {
+	chatMessageId: number,
+	content: string,
+	memberRole: MemberRole,
+	memberName: string,
+	imageKey: string
+}
+
+export type { ImageUri, CHAT_ROOM, CHAT_LIST };
