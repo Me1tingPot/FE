@@ -7,12 +7,12 @@ function useGetUserData() {
 	const { getUserProfile } = useUser();
 
 	useEffect(() => {
-		if (getUserProfile?.data?.data) {
+		if (getUserProfile?.data) {
 			setUserData(getUserProfile.data.data);
 		}
 	}, [getUserProfile?.data?.data]);
 
-	return { ...userData };
+	return { ...userData, isLoading: getUserProfile.isPending };
 }
 
 export default useGetUserData;

@@ -29,7 +29,7 @@ export type UseMutationCustomOptions<
 
 // GET: 유저 프로필 정보 가져오기
 function useGetUserProfileData() {
-	const { data, error, isSuccess, isError } = useQuery({
+	const { data, error, isSuccess, isError, isPending } = useQuery({
 		queryKey: [queryKeys.USER],
 		queryFn: getUserProfile,
 	});
@@ -38,7 +38,7 @@ function useGetUserProfileData() {
 		console.error(error);
 	}
 
-	return { isSuccess, isError, data };
+	return { isSuccess, isError, data, isPending };
 }
 
 // GET: 유저 프로필 이미지 리스트 가져오기

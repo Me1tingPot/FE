@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { colors } from '@/constants';
 import useGetUserData from '@/hooks/useGetUserData';
@@ -16,8 +16,23 @@ const ProfileContainer = () => {
 	const navigation = useNavigation<NavigationProp<MyStackParamList>>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-	const { name, thumbnail, bio, host_count, participate_count, nationality } =
-		useGetUserData();
+	const {
+		name,
+		thumbnail,
+		bio,
+		host_count,
+		participate_count,
+		nationality,
+		isLoading,
+	} = useGetUserData();
+
+	if (isLoading) {
+		return (
+			<View style={styles.loadingContainer}>
+				<ActivityIndicator />
+			</View>
+		);
+	}
 
 	return (
 		<View style={{ marginVertical: 25 }}>
@@ -107,6 +122,13 @@ const styling = (theme: ThemeMode) =>
 		columnText: {
 			fontFamily: 'Pretendard-Regular',
 			color: colors[theme].GRAY_700,
+		},
+		loadingContainer: {
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: 300,
 		},
 	});
 
