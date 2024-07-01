@@ -48,7 +48,8 @@ const PartyCard = ({ post }: IPartyCard) => {
 
 	return (
 		<>
-			{post.map(({
+			{post?.map(({
+				chatRoomId,
 				partySubject,
 				partyLocationAddress,
 				leaderName,
@@ -63,7 +64,7 @@ const PartyCard = ({ post }: IPartyCard) => {
 							styles.container,
 							pressed && styles.pressedContainer,
 						]}
-						onPress={handlePressEnterRoom}
+						onPress={() => handlePressEnterRoom(chatRoomId)}
 					>
 						<View style={styles.contentContainer}>
 							<View style={styles.badge}>

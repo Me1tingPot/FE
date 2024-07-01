@@ -18,6 +18,10 @@ import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import BoldSend from '../../assets/images/BoldSend.png';
+import { useEffect } from 'react';
+import { useStomp } from '@/hooks/useStomp';
+import UseSubscribeChatRoom from '@/hooks/useSubscribeChatRoom';
+
 
 interface ChatScreenProps {
 	route: {
@@ -32,8 +36,20 @@ const imgUrl =
 	'https://images.unsplash.com/photo-1717097410161-aa16fb3ceb3f?w=1600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8';
 
 function ChatScreen({ route, navigation }: ChatScreenProps) {
-	const { t } = useTranslation();
 	const { id } = route.params;
+
+	useEffect(() => {
+		console.log("hi")
+		UseSubscribeChatRoom(`/chat/sub/chat/${id}`, () => {
+
+		}).then(() => {
+			console.log("구독")
+		})
+	}, [id])
+
+
+
+	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 

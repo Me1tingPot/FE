@@ -6,15 +6,18 @@ import { useState } from 'react';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { colors } from '@/constants';
+import { useStomp } from '@/hooks/useStomp';
 const ChatsList = () => {
   const { theme } = useThemeStore();
   const styles = styling(theme);
+
 
   const { data: chats,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     refetch } = useGetInfiniteChats()
+
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -35,7 +38,6 @@ const ChatsList = () => {
     <FlatList
       data={chats?.pages.flat()}
       renderItem={({ item }) => {
-        console.log(item.data, '123')
         return <PartyCard post={item.data.chatRoomGetResponseList} />
       }}
       keyExtractor={item => String(item.id)}

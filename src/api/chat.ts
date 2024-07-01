@@ -1,10 +1,7 @@
 import { API_URL } from '@/constants/path';
 import axiosInstance from './axios';
 import { CHAT_LIST, CHAT_ROOM } from '@/types';
-import * as StompJs from '@stomp/stompjs';
-import Config from 'react-native-config';
-import { getEncryptStorage } from '@/utils';
-import { storageKeys } from '@/constants';
+
 
 type ResponseChatRoom = {
   chatRoomGetResponseList: CHAT_ROOM[];
@@ -20,7 +17,7 @@ type InfiniteParams = {
 
 const getChatsList = async ({ page, size }: InfiniteParams): Promise<ResponseChatRoom> => {
   const { data } = await axiosInstance.get(`${API_URL.GET_CHAT_ROOMS}?page=${page}&size=${size}`);
-  console.log("hi", data)
+  console.log(await data)
   return data;
 };
 

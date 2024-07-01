@@ -1,72 +1,33 @@
-import { Client, StompConfig, StompSubscription } from "@stomp/stompjs";
-import { useCallback, useEffect } from "react";
+import { storageKeys } from '@/constants';
+import { getEncryptStorage } from '@/utils';
+import { Client } from '@stomp/stompjs';
 
-interface ObjectType {
-  [key: string]: any;
-}
 
-let stompClient: Client;
-let isConnected = false;
-const subscriptions: { [key: string]: StompSubscription } = {};
 
-export function useStomp(config: StompConfig, callback?: () => void) {
-  const connect = useCallback(() => {
-    if (!stompClient) {
-      stompClient = new Client(config);
-      stompClient.activate();
-    }
+export async function useStomp() {
+  const accessToken = await getEncryptStorage(storageKeys.ACCESS_TOKEN);
 
-    stompClient.onConnect = (frame) => {
-      isConnected = true;
-      callback && callback();
-    };
-  }, []);
-
-  const send = useCallback(
-    (path: string, body: ObjectType, headers: ObjectType) => {
-      stompClient.publish({
-        destination: path,
-        headers,
-        body: JSON.stringify(body),
-      });
+  const client = new Client({
+    brokerURL: `wss://meltingpot.kaaa.ng/chat`,
+    connectHeaders: {
+      Authorization: `Bearer ${accessToken}`
     },
-    [stompClient]
-  );
-
-  const subscribe = useCallback(
-    <T>(path: string, callback: (msg: T) => void) => {
-      if (!stompClient) return;
-
-      if (subscriptions[path]) return;
-
-      const subscription = stompClient.subscribe(path, (message) => {
-        const body: T = JSON.parse(message.body);
-        callback(body);
-      });
-      subscriptions[path] = subscription;
+    onConnect: () => {
+      console.log("asdf")
     },
-    []
-  );
+    onDisconnect: (err) => {
+      console.log(err)
+    },
+    debug: (str) => {
+      console.log(str)
+    },
+    reconnectDelay: 10000, //자동 재 연결
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+  })
 
-  const unsubscribe = useCallback((path: string) => {
-    subscriptions[path].unsubscribe();
-    delete subscriptions[path];
-  }, []);
 
-  const disconnect = useCallback(() => {
-    stompClient.deactivate();
-  }, [stompClient]);
+  client.activate();
 
-  useEffect(() => {
-    connect();
-  }, []);
-
-  return {
-    disconnect,
-    subscribe,
-    unsubscribe,
-    subscriptions,
-    send,
-    isConnected,
-  };
+  return { client }
 }
