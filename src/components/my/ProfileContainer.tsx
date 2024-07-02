@@ -20,8 +20,8 @@ function ProfileContainer() {
 		name,
 		thumbnail,
 		bio,
-		host_count,
-		participate_count,
+		host_count: hostCount,
+		participate_count: participateCount,
 		nationality,
 		isLoading,
 	} = useGetUserData();
@@ -51,7 +51,7 @@ function ProfileContainer() {
 					<View style={styles.columnContainer}>
 						<Text style={styles.columnText}>{t('주최')}</Text>
 						<Text style={styles.columnText}>
-							{host_count}
+							{hostCount}
 							{t('회')}
 						</Text>
 					</View>
@@ -59,7 +59,7 @@ function ProfileContainer() {
 					<View style={styles.columnContainer}>
 						<Text style={styles.columnText}>{t('참여')}</Text>
 						<Text style={styles.columnText}>
-							{participate_count}
+							{participateCount}
 							{t('회')}
 						</Text>
 					</View>

@@ -67,7 +67,7 @@ const linking = {
 
 function App() {
 	const { theme } = useThemeStorage();
-	const [token, setToken] = useState();
+	const [token, setToken] = useState('');
 	console.log(token, 'token');
 
 	const getFcmToken = async () => {

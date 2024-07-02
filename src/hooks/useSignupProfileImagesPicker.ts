@@ -5,7 +5,6 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { getSignupProfileUploadUrl } from '@/api';
 import { ImageUri } from '@/types';
 import { IMAGE_DTO } from '@/types/api/types';
-import { getFormDataImages } from '@/utils';
 import useImages from './queries/useMutateImages';
 
 interface useSignupProfileImagesPickerProps {
@@ -59,15 +58,13 @@ function useSignupProfileImagesPicker({
 				cropperCancelText: t('취소'),
 			});
 
-			const formData = getFormDataImages(images);
-
 			const uploadPromises = images.map(async (image, index) => {
 				const { data } = await getSignupProfileUploadUrl();
 				const { uploadUrl, fileKey } = data;
 
 				await profileImagesMutation.mutateAsync({
 					uploadUrl: uploadUrl,
-					body: formData,
+					body: images[index],
 				});
 
 				return {

@@ -4,8 +4,6 @@ import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { getMypageProfileUploadUrl } from '@/api';
 import { ImageUri } from '@/types';
-import { IMAGE_DTO } from '@/types/api/types';
-import { getFormDataImages } from '@/utils';
 import useImages from './queries/useMutateImages';
 
 interface useProfileImagesPickerProps {
@@ -13,12 +11,17 @@ interface useProfileImagesPickerProps {
 	maxFiles: number;
 }
 
+type UploadsFileType = {
+	imageKey: string;
+	sequence: number;
+};
+
 function useProfileImagesPicker({
 	initialImages = [],
 	maxFiles,
 }: useProfileImagesPickerProps) {
 	const [imageUris, setImageUris] = useState(initialImages);
-	const [uploadedImages, setUploadedImages] = useState<IMAGE_DTO[]>([]);
+	const [uploadedImages, setUploadedImages] = useState<UploadsFileType[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { t } = useTranslation();
 	const { profileImagesMutation } = useImages();
@@ -59,20 +62,18 @@ function useProfileImagesPicker({
 				cropperCancelText: t('취소'),
 			});
 
-			const formData = getFormDataImages(images);
-
 			const uploadPromises = images.map(async (image, index) => {
 				const { data } = await getMypageProfileUploadUrl();
 				const { uploadUrl, fileKey } = data;
 
 				await profileImagesMutation.mutateAsync({
 					uploadUrl: uploadUrl,
-					body: formData,
+					body: images[index],
 				});
 
 				return {
 					imageKey: fileKey,
-					thumbnail: index === 0,
+					sequence: 3 - (index + 1),
 				};
 			});
 

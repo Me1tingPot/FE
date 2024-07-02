@@ -4,6 +4,7 @@ import {
 	useQuery,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { addProfileImage, changeThumbnailImage } from '@/api';
 import queryClient from '@/api/queryClient';
 import {
 	changeUserBio,
@@ -80,10 +81,38 @@ function useUserName(mutationOptions?: UseMutationCustomOptions) {
 	});
 }
 
+// PUT: 프로필 대표 이미지 변경하기
+function useChangeThumbnailImage(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: changeThumbnailImage,
+		onSuccess: data => {
+			console.log(data);
+			queryClient.invalidateQueries({
+				queryKey: [queryKeys.USER, queryKeys.ACCOUNT_ID],
+			});
+		},
+		...mutationOptions,
+	});
+}
+
 // DELETE: 마이페이지 사용자 프로필 이미지 삭제
 function useDeleteUserProfileImg(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: deleteUserProfileImg,
+		onSuccess: data => {
+			console.log(data);
+			queryClient.invalidateQueries({
+				queryKey: [queryKeys.USER, queryKeys.ACCOUNT_ID],
+			});
+		},
+		...mutationOptions,
+	});
+}
+
+// POST: 유저 프로필 이미지 추가
+function usePostUserProfileImage(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: addProfileImage,
 		onSuccess: data => {
 			console.log(data);
 		},
@@ -97,6 +126,8 @@ function useUser() {
 	const userBioMutation = useUserBio();
 	const userNameMutation = useUserName();
 	const deleteUserProfileImgMutation = useDeleteUserProfileImg();
+	const postUserProfileImage = usePostUserProfileImage();
+	const changeThumbnailImageMutation = useChangeThumbnailImage();
 
 	return {
 		getUserProfile,
@@ -104,6 +135,8 @@ function useUser() {
 		userBioMutation,
 		userNameMutation,
 		deleteUserProfileImgMutation,
+		postUserProfileImage,
+		changeThumbnailImageMutation,
 	};
 }
 

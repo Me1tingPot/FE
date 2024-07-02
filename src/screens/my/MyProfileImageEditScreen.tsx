@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+	ActivityIndicator,
 	Image,
 	SafeAreaView,
 	ScrollView,
@@ -13,32 +14,49 @@ import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { NavigationProp } from '@react-navigation/native';
 import CustomButton from '@/components/common/CustomButton';
 import { colors } from '@/constants';
 import useUser from '@/hooks/queries/useUser';
 import usePermission from '@/hooks/usePermission';
 import useProfileImagesPicker from '@/hooks/useProfileImagesPicker';
+import { UserProfileStackParamList } from '@/navigations/stack/UserProfileNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { PROFILE_IMAGES_DATA_TYPES } from '@/types/api/types';
 
-interface MyProfileImageEditScreen {}
+interface MyProfileImageEditScreen {
+	navigation: NavigationProp<UserProfileStackParamList>;
+}
 
-function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
-	const [selected, setSelected] = useState(0);
+function MyProfileImageEditScreen({ navigation }: MyProfileImageEditScreen) {
+	const {
+		getUserProfileImages,
+		deleteUserProfileImgMutation,
+		postUserProfileImage,
+		changeThumbnailImageMutation,
+	} = useUser();
+	const thumbnailId = getUserProfileImages?.data.data.filter(
+		(item: PROFILE_IMAGES_DATA_TYPES) => item.thumbnail === true,
+	)[0]?.id;
+	const [selected, setSelected] = useState(thumbnailId);
 	const [files, setFiles] = useState<PROFILE_IMAGES_DATA_TYPES[]>([]);
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const { getUserProfileImages, deleteUserProfileImgMutation } = useUser();
 
 	usePermission('PHOTO');
 	usePermission('CAMERA');
 
 	const formDataImages = useProfileImagesPicker({
 		initialImages: [],
-		maxFiles: 3,
+		maxFiles: 3 - files.length,
 	});
+
+	const loading =
+		formDataImages?.isLoading ||
+		deleteUserProfileImgMutation.isPending ||
+		changeThumbnailImageMutation.isPending;
 
 	useEffect(() => {
 		setFiles(getUserProfileImages.data.data);
@@ -50,21 +68,48 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 
 	const handleSubmit = () => {
 		if (formDataImages.uploadedImages.length <= 0) {
+			handleChangeThumbnail(selected);
 			Toast.show({
-				type: 'error',
-				text1: t('최소 1개의 이미지를 선택해주세요.'),
+				type: 'success',
+				text1: '이미지가 업로드 되었습니다.',
 				visibilityTime: 2000,
 				position: 'bottom',
 			});
+			navigation.goBack();
 			return;
 		}
+		formDataImages.uploadedImages.map((item, index) => {
+			postUserProfileImage.mutate(
+				{
+					...item,
+				},
+				{
+					onSuccess: data => {
+						handleChangeThumbnail(selected);
+						Toast.show({
+							type: 'success',
+							text1: '이미지가 업로드 되었습니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+						navigation.goBack();
+					},
+					onError: error => {
+						Toast.show({
+							type: 'error',
+							text1: '이미지 업로드중 에러가 발생했습니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+					},
+				},
+			);
+			return;
+		});
 	};
 
 	const handleDeleteImage = (imageId: number) => {
 		deleteUserProfileImgMutation.mutate(imageId, {
-			onSuccess: data => {
-				console.log(data);
-			},
 			onError: error => {
 				Toast.show({
 					type: 'error',
@@ -72,6 +117,21 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 					visibilityTime: 2000,
 					position: 'bottom',
 				});
+			},
+		});
+	};
+
+	const handleChangeThumbnail = (imageId: number) => {
+		console.log(imageId);
+		changeThumbnailImageMutation.mutate(imageId, {
+			onError: error => {
+				Toast.show({
+					type: 'error',
+					text1: error.response?.data.message || '썸네일 설정 에러 발생',
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+				console.error(error.response);
 			},
 		});
 	};
@@ -111,13 +171,12 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 								size={25}
 							/>
 						</TouchableOpacity>
-						{/* 서버 연결 후 수정 예정 */}
 						{files.map((item, index: number) => (
 							<TouchableOpacity
 								activeOpacity={0.9}
 								style={styles.imageButton}
 								key={item.id}
-								onPress={() => handleSelected(item.sequence)}
+								onPress={() => handleSelected(item.id)}
 							>
 								{formDataImages.imageUris && (
 									<>
@@ -128,12 +187,12 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 										<View
 											style={[
 												styles.unSelectedImg,
-												selected === index && styles.selectedImg,
+												selected === item.id && styles.selectedImg,
 											]}
 										>
 											<Text
 												style={
-													selected === index
+													selected === item.id
 														? styles.selectedText
 														: styles.unSelectedText
 												}
@@ -160,28 +219,9 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 								activeOpacity={0.9}
 								style={styles.imageButton}
 								key={item.id}
-								onPress={() => handleSelected(index)}
 							>
 								{formDataImages.imageUris && (
-									<>
-										<Image source={{ uri: item.uri }} style={styles.image} />
-										<View
-											style={[
-												styles.unSelectedImg,
-												selected === index && styles.selectedImg,
-											]}
-										>
-											<Text
-												style={
-													selected === index
-														? styles.selectedText
-														: styles.unSelectedText
-												}
-											>
-												{t('대표')}
-											</Text>
-										</View>
-									</>
+									<Image source={{ uri: item.uri }} style={styles.image} />
 								)}
 							</TouchableOpacity>
 						))}
@@ -199,8 +239,12 @@ function MyProfileImageEditScreen({}: MyProfileImageEditScreen) {
 						label={t('저장')}
 						onPress={handleSubmit}
 						variant={'filled'}
+						isLoading={postUserProfileImage.isPending}
 					/>
 				</View>
+				{loading && (
+					<ActivityIndicator style={styles.uploadLoading} size="large" />
+				)}
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -317,6 +361,14 @@ const styling = (theme: ThemeMode) =>
 			borderWidth: 1,
 			borderColor: colors[theme].GRAY_500,
 			backgroundColor: colors[theme].WHITE,
+		},
+		uploadLoading: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			zIndex: 400,
 		},
 	});
 

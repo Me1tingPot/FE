@@ -9,11 +9,11 @@ import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDe
 import CommunityPostingWriteScreen from '@/screens/community/CommunityPostingWriteScreen';
 import CommunityQuestionDetailScreen from '@/screens/community/CommunityQuestionDetailScreen';
 import CommunityQuestionWriteScreen from '@/screens/community/CommunityQuestionWriteScreen';
+import UserProfileImagesScreen from '@/screens/user/UserProfileImagesScreen';
+import UserProfileScreen from '@/screens/user/UserProfileScreen';
 import useThemeStore from '@/store/useThemeStore';
 import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import UserProfileNavigator from './UserProfileNavigator';
-import UserProfileScreen from '@/screens/user/UserProfileScreen';
-import UserProfileImagesScreen from '@/screens/user/UserProfileImagesScreen';
 
 export type CommunityStackParamList = {
 	[communityNavigations.COMMUNITY_TOPTAB]: undefined;
@@ -94,15 +94,15 @@ function CommunityStackNavigator() {
 				component={UserProfileNavigator}
 				options={{ headerShown: false }}
 			/>
-			<Stack.Screen 
+			<Stack.Screen
 				name={userNavigations.USER_PROFILE}
 				component={UserProfileScreen}
-				options={{headerShown: false}}
+				options={{ headerShown: false }}
 			/>
-			<Stack.Screen 
+			<Stack.Screen
 				name={userNavigations.USER_PROFILE_IMAGE}
 				component={UserProfileImagesScreen}
-				options={{headerShown: false}}
+				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
 	);

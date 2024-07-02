@@ -16,6 +16,8 @@ module.exports = {
 	],
 	plugins: ['react-hooks', 'jest'],
 	rules: {
+		'no-undef': 'off',
+		'import/no-extraneous-dependencies': 'off',
 		'no-use-before-define': 'off',
 		'react-hooks/rules-of-hooks': 'off',
 		'react/jsx-curly-brace-presence': 'off',
@@ -50,10 +52,6 @@ module.exports = {
 		'@typescript-eslint/no-unused-vars': 'off',
 		'no-unused-vars': 'off',
 		'react/react-in-jsx-scope': 'off',
-		'no-dupe-keys': [
-			'error',
-			{ functions: true, classes: true, variables: false },
-		],
 		'react/jsx-filename-extension': [
 			2,
 			{ extensions: ['.js', '.jsx', '.ts', '.tsx'] },

@@ -20,7 +20,7 @@ const API_URL = {
 	MAIL_VERIFICATION: `/${API}/${VERSION}/${API_BASE.MAIL}/verification`,
 	MAIL_DEPLICATION: `/${API}/${VERSION}/${API_BASE.MAIL}/duplication`,
 
-	//user-controller
+	// user-controller
 	USER_PROFILE: `/${API}/${VERSION}/${API_BASE.USER}`,
 	USER_PROFILE_IMG: `/${API}/${VERSION}/${API_BASE.USER}/images`,
 	USER_PROFILE_IMG_URL: `/${API}/${VERSION}/${API_BASE.USER}/image-url`,
