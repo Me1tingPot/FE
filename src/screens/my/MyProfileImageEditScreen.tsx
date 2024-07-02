@@ -71,7 +71,7 @@ function MyProfileImageEditScreen({ navigation }: MyProfileImageEditScreen) {
 			handleChangeThumbnail(selected);
 			Toast.show({
 				type: 'success',
-				text1: '이미지가 업로드 되었습니다.',
+				text1: t('이미지가 업로드 되었습니다.'),
 				visibilityTime: 2000,
 				position: 'bottom',
 			});
@@ -88,7 +88,7 @@ function MyProfileImageEditScreen({ navigation }: MyProfileImageEditScreen) {
 						handleChangeThumbnail(selected);
 						Toast.show({
 							type: 'success',
-							text1: '이미지가 업로드 되었습니다.',
+							text1: t('이미지가 업로드 되었습니다.'),
 							visibilityTime: 2000,
 							position: 'bottom',
 						});
