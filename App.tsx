@@ -15,12 +15,12 @@ import queryClient from './src/api/queryClient';
 import RootNavigator from './src/navigations/root/RootNavigator';
 
 /*
-  1. Create the config
+	1. Create the config
 */
 const toastConfig = {
 	/*
-	  Overwrite 'success' type,
-	  by modifying the existing `BaseToast` component
+		Overwrite 'success' type,
+		by modifying the existing `BaseToast` component
 	*/
 	success: (props: BaseToastProps) => (
 		<BaseToast
@@ -34,8 +34,8 @@ const toastConfig = {
 		/>
 	),
 	/*
-	  Overwrite 'error' type,
-	  by modifying the existing `ErrorToast` component
+		Overwrite 'error' type,
+		by modifying the existing `ErrorToast` component
 	*/
 	error: (props: BaseToastProps) => (
 		<ErrorToast
@@ -70,7 +70,7 @@ function App() {
 	const getFcmToken = async () => {
 		try {
 			const fcmToken = await messaging().getToken();
-			console.log('[FCM Token] ', fcmToken);
+			// console.log('[FCM Token] ', fcmToken);
 		} catch (e) {
 			console.log(e);
 		}

@@ -13,6 +13,8 @@ import { colors } from '@/constants';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { useStomp } from '@/hooks/useStomp';
+
 
 interface FeedHomeScreenProps {
 	navigation: NavigationProp<FeedStackParamList>;
@@ -35,6 +37,13 @@ const partyImg2 =
 function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	const client = useStomp();
+	console.log(client, 'hi')
+	// client.client.onConnect((frame) => {
+	// 	console.log(frame)
+
+	// })
 
 	return (
 		<SafeAreaView style={styles.container}>

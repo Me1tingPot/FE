@@ -53,7 +53,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 				},
 			},
 		);
-		console.log(data);
+		// console.log(data);
 	};
 
 	return (

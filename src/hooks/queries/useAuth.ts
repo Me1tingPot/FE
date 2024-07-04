@@ -9,7 +9,6 @@ import { getAccessToken, login, logout, signup } from '@/api/auth';
 import queryClient from '@/api/queryClient';
 import { headers, queryKeys, storageKeys } from '@/constants';
 import {
-	getEncryptStorage,
 	removeEncryptStorage,
 	removeHeader,
 	setEncryptStorage,
@@ -41,9 +40,11 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: login,
 		onSuccess: data => {
+			console.log(data)
 			const accessToken = data.data.tokenDto.accessToken;
 			const refreshToken = data.data.tokenDto.refreshToken;
 			// 1. Storage에 RefreshToken
+			setEncryptStorage(storageKeys.ACCESS_TOKEN, accessToken);
 			setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
 			// 2. Storage에 AccessToken
 			setHeader(headers.AUTHORIZATION, `Bearer ${accessToken}`);
@@ -62,7 +63,7 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
 // RefreshToken
 // AccessToken이 만료될떄 RefreshToken을 활용해서, AccessToken을 재발급
 // 백엔드에서 준 만료시간은 30분
-function useGetAccessToken() {
+function useGetRefreshToken() {
 	const { data, error, isSuccess, isError } = useQuery({
 		queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
 		queryFn: getAccessToken,
@@ -75,11 +76,10 @@ function useGetAccessToken() {
 		refetchIntervalInBackground: true,
 	});
 
-	console.log(data);
-
 	useEffect(() => {
 		if (isSuccess) {
 			setHeader('Authorization', `Bearer ${data.data.accessToken}`);
+			setEncryptStorage(storageKeys.ACCESS_TOKEN, data.data.accessToken);
 			setEncryptStorage(storageKeys.REFRESH_TOKEN, data.data.refreshToken);
 		}
 	}, [isSuccess]);
@@ -91,7 +91,7 @@ function useGetAccessToken() {
 		}
 	}, [isError]);
 
-	return { isSuccess, isError };
+	return { isSuccess, isError, error, data };
 }
 
 // Logout
@@ -110,7 +110,7 @@ function useLogout(mutationOptions?: UseMutationCustomOptions) {
 function useAuth() {
 	const signUpMutation = useSignup();
 	const loginMutation = useLogin();
-	const getNewAccessToken = useGetAccessToken();
+	const getNewAccessToken = useGetRefreshToken();
 	const logoutMutation = useLogout();
 	const isLogin = getNewAccessToken.isSuccess;
 

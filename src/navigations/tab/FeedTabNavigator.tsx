@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -6,15 +5,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
-import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedNavigations, feedTabNavigations } from '../../constants';
 import CommunityStackNavigator from '../stack/CommunityStackNavigator';
 import { FeedStackParamList } from '../stack/FeedStackNavigator';
 import MyStackNavigator from '../stack/MyStackNavigator';
 import PartyStackNavigator from '../stack/PartyStackNavigator';
-import CommunityTopTabNavigator from '../topTab/CommunityTopTabNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
+import ChatStackNavigator from '../stack/ChatStackNavigator';
 
 export type FeedTabParamList = {
 	[feedTabNavigations.FEED_HOME]: undefined;
@@ -22,6 +20,7 @@ export type FeedTabParamList = {
 	[feedTabNavigations.WISH_HOME]: undefined;
 	[feedTabNavigations.COMMUNITY_HOME]: undefined;
 	[feedTabNavigations.MY_HOME]: undefined;
+	[feedTabNavigations.CHAT_HOME]: undefined;
 };
 
 const Tab = createBottomTabNavigator<FeedTabParamList>();
@@ -48,6 +47,10 @@ function TabBarIcons(route: RouteProp<FeedTabParamList>, focused: boolean) {
 		}
 		case feedTabNavigations.MY_HOME: {
 			iconName = focused ? 'person-circle' : 'person-circle-outline';
+			break;
+		}
+		case feedTabNavigations.CHAT_HOME: {
+			iconName = focused ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline';
 			break;
 		}
 	}
@@ -138,6 +141,13 @@ function FeedTabNavigator({ navigation }: FeedTabNavigatorProps) {
 				component={MyStackNavigator}
 				options={({ navigation }) => ({
 					tabBarLabel: `${t('마이페이지')}`,
+				})}
+			/>
+			<Tab.Screen
+				name={feedTabNavigations.CHAT_HOME}
+				component={ChatStackNavigator}
+				options={({ navigation }) => ({
+					tabBarLabel: `${t('채팅')}`,
 				})}
 			/>
 		</Tab.Navigator>

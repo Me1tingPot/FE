@@ -1,4 +1,3 @@
-import Config from 'react-native-config';
 import { API_URL } from '@/constants/path';
 import { PROFILE_URL_TYPES } from '@/types/api';
 import axiosInstance from './axios';
