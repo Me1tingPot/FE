@@ -8,9 +8,9 @@ import FeedTabNavigator from '../tab/FeedTabNavigator';
 
 // 사용자가 가장 먼저 마주하게 되는 로직 작성.
 
-interface RootNavigatorProps { }
+interface RootNavigatorProps {}
 
-function RootNavigator({ }: RootNavigatorProps) {
+function RootNavigator({}: RootNavigatorProps) {
 	const { isLogin, getNewAccessToken } = useAuth();
 	console.log(isLogin, getNewAccessToken);
 	return <>{isLogin ? <FeedStackNavigator /> : <AuthStackNavigator />}</>;

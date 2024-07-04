@@ -87,9 +87,9 @@ function UserProfileScreen({ navigation }: UserProfileScreenProps) {
 					</View>
 				) : (
 					<View style={styles.contents}>
-						{new Array(5).fill(null).map((_, idx) => (
+						{/* {new Array(5).fill(null).map((_, idx) => (
 							<PartyCard key={idx} />
-						))}
+						))} */}
 					</View>
 				)}
 			</ScrollView>

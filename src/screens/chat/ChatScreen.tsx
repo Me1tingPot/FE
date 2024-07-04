@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
 	Image,
@@ -14,14 +15,12 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { colors } from '@/constants';
+import { useStomp } from '@/hooks/useStomp';
+import UseSubscribeChatRoom from '@/hooks/useSubscribeChatRoom';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import BoldSend from '../../assets/images/BoldSend.png';
-import { useEffect } from 'react';
-import { useStomp } from '@/hooks/useStomp';
-import UseSubscribeChatRoom from '@/hooks/useSubscribeChatRoom';
-
 
 interface ChatScreenProps {
 	route: {
@@ -39,15 +38,11 @@ function ChatScreen({ route, navigation }: ChatScreenProps) {
 	const { id } = route.params;
 
 	useEffect(() => {
-		console.log("hi")
-		UseSubscribeChatRoom(`/chat/sub/chat/${id}`, () => {
-
-		}).then(() => {
-			console.log("구독")
-		})
-	}, [id])
-
-
+		console.log('hi');
+		UseSubscribeChatRoom(`/chat/sub/chat/${id}`, () => {}).then(() => {
+			console.log('구독');
+		});
+	}, [id]);
 
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();

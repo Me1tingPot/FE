@@ -6,7 +6,7 @@ type Category = {
 	[key in MarkerColor]: string;
 };
 
-type MemberRole = 'LEADER' | 'MEMBER'
+type MemberRole = 'LEADER' | 'MEMBER';
 
 interface ImageUri {
 	id?: number;
@@ -14,25 +14,25 @@ interface ImageUri {
 }
 
 interface CHAT_ROOM {
-	chatRoomId: number,
-	leaderName: string,
-	imageKey: string,
-	partySubject: string,
-	partyStatus: string,
-	partyLocationAddress: string,
-	partyStartTime: string,
-	userCnt: number,
-	partyMinParticipant: number,
-	partyMaxParticipant: number,
-	messageCnt: number
+	chatRoomId: number;
+	leaderName: string;
+	imageKey: string;
+	partySubject: string;
+	partyStatus: string;
+	partyLocationAddress: string;
+	partyStartTime: string;
+	userCnt: number;
+	partyMinParticipant: number;
+	partyMaxParticipant: number;
+	messageCnt: number;
 }
 
 interface CHAT_LIST {
-	chatMessageId: number,
-	content: string,
-	memberRole: MemberRole,
-	memberName: string,
-	imageKey: string
+	chatMessageId: number;
+	content: string;
+	memberRole: MemberRole;
+	memberName: string;
+	imageKey: string;
 }
 
 export type { ImageUri, CHAT_ROOM, CHAT_LIST };

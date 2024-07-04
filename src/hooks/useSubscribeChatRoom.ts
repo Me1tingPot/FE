@@ -1,11 +1,14 @@
-import { useStomp } from './useStomp'
+import { useStomp } from './useStomp';
 
-const UseSubscribeChatRoom = async (destination: string, callback: () => void) => {
-  const { client } = await useStomp();
+const UseSubscribeChatRoom = async (
+	destination: string,
+	callback: () => void,
+) => {
+	const { client } = await useStomp();
 
-  const subscription = client.subscribe(destination, callback);
+	const subscription = client.subscribe(destination, callback);
 
-  return { subscription }
-}
+	return { subscription };
+};
 
-export default UseSubscribeChatRoom
+export default UseSubscribeChatRoom;

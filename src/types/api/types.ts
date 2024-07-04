@@ -48,14 +48,13 @@ export type USER_PROFILE_DATA_TYPES = {
 };
 
 export type BASE_API_KEY = {
-	timestamp: string,
-  code: string,
-  status: string,
-  detail: string
+	timestamp: string;
+	code: string;
+	status: string;
+	detail: string;
 };
 
 export type INFINITE_META_DATA = {
 	isFirst: boolean;
 	hasNext: boolean;
 };
-

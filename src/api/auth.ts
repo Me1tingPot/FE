@@ -5,7 +5,6 @@ import { IMAGE_DTO } from '@/types/api/types';
 import { getEncryptStorage } from '@/utils';
 import axiosInstance from './axios';
 
-
 type signupProps = {
 	email: string;
 	password: string;
@@ -82,24 +81,20 @@ const getAccessToken = async (): Promise<ResponseToken> => {
 
 	const headers = {
 		RefreshToken: refreshToken,
-		Authorization: `Bearer ${accessToken}`
+		Authorization: `Bearer ${accessToken}`,
 	};
 
-	console.log(headers)
+	console.log(headers);
 
 	const { data } = await axiosInstance.post(
 		`${API_URL.REISSUE_TOKEN}`,
 		{},
 		{ headers },
 	);
-	console.log('데이터', data)
+	console.log('데이터', data);
 
 	return data;
 };
-
-
-
-
 
 export { login, logout, signup, getAccessToken };
 export type { signupProps, RequestUser, ResponseToken };

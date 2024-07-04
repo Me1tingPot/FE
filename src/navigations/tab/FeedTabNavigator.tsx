@@ -7,12 +7,12 @@ import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
 import FeedHomeScreen from '@/screens/feed/FeedHomeScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { colors, feedNavigations, feedTabNavigations } from '../../constants';
+import ChatStackNavigator from '../stack/ChatStackNavigator';
 import CommunityStackNavigator from '../stack/CommunityStackNavigator';
 import { FeedStackParamList } from '../stack/FeedStackNavigator';
 import MyStackNavigator from '../stack/MyStackNavigator';
 import PartyStackNavigator from '../stack/PartyStackNavigator';
 import WishTopTabNavigator from '../topTab/WishTopTabNavigator';
-import ChatStackNavigator from '../stack/ChatStackNavigator';
 
 export type FeedTabParamList = {
 	[feedTabNavigations.FEED_HOME]: undefined;
@@ -50,7 +50,9 @@ function TabBarIcons(route: RouteProp<FeedTabParamList>, focused: boolean) {
 			break;
 		}
 		case feedTabNavigations.CHAT_HOME: {
-			iconName = focused ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline';
+			iconName = focused
+				? 'chatbubble-ellipses'
+				: 'chatbubble-ellipses-outline';
 			break;
 		}
 	}

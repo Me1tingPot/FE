@@ -10,11 +10,10 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationProp } from '@react-navigation/native';
 import { colors } from '@/constants';
+import { useStomp } from '@/hooks/useStomp';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { useStomp } from '@/hooks/useStomp';
-
 
 interface FeedHomeScreenProps {
 	navigation: NavigationProp<FeedStackParamList>;
@@ -39,7 +38,7 @@ function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 	const styles = styling(theme);
 
 	const client = useStomp();
-	console.log(client, 'hi')
+	console.log(client, 'hi');
 	// client.client.onConnect((frame) => {
 	// 	console.log(frame)
 

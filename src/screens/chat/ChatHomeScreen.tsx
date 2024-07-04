@@ -1,11 +1,8 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
+import ChatsList from '@/components/chat/ChatsList';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import ChatsList from '@/components/chat/ChatsList';
-
-
-
 
 function ChatHomeScreen() {
 	const { theme } = useThemeStore();

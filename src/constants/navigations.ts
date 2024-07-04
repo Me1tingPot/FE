@@ -11,7 +11,7 @@ const feedTabNavigations = {
 	WISH_HOME: 'WishHome',
 	COMMUNITY_HOME: 'CommunityHome',
 	MY_HOME: 'MyHome',
-	CHAT_HOME: 'ChatHome'
+	CHAT_HOME: 'ChatHome',
 } as const;
 
 const wishNavigations = {
@@ -70,7 +70,7 @@ const userNavigations = {
 
 const chatNavigations = {
 	CHAT_HOME: 'ChatHome',
-	CHAT_DETAIL: 'ChatDetail'
+	CHAT_DETAIL: 'ChatDetail',
 } as const;
 
 export {
@@ -82,5 +82,5 @@ export {
 	feedNavigations,
 	partyNavigations,
 	userNavigations,
-	chatNavigations
+	chatNavigations,
 };

@@ -1,7 +1,7 @@
 import axiosInstance from '@/api/axios';
 
 function setHeader(key: string, value: string) {
-	console.log("세팅", value, key)
+	console.log('세팅', value, key);
 	axiosInstance.defaults.headers.common[key] = value;
 }
 

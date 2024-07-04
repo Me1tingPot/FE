@@ -58,7 +58,7 @@ function WishSaveScreen({}: WishSaveScreenProps) {
 					/>
 				}
 			>
-				<PartyCard />
+				{/* <PartyCard /> */}
 			</ScrollView>
 		</SafeAreaView>
 	);

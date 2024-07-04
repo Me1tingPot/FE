@@ -1,39 +1,33 @@
 import React from 'react';
-import {
-	Image,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import { colors } from '@/constants';
+import { ChatStackParamList } from '@/navigations/stack/ChatStackNavigator';
+import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { CHAT_ROOM, ThemeMode } from '@/types';
 import IconCircleButton from './IconCircleButton';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
-import { ChatStackParamList } from '@/navigations/stack/ChatStackNavigator';
 
 dayjs.locale('ko');
 
 interface IPartyCard {
-	post: CHAT_ROOM[]
+	post: CHAT_ROOM[];
 }
 
-const PartyCard = ({ post }: IPartyCard) => {
+function PartyCard({ post }: IPartyCard) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const navigation = useNavigation<NavigationProp<ChatStackParamList>>();
 
 	const handlePressEnterRoom = (id: number) => {
 		navigation.navigate('ChatDetail', {
-			id
-		})
-	}
+			id,
+		});
+	};
 
 	const renderRightActions = () => (
 		<View style={styles.rightActionContainer}>
@@ -48,79 +42,94 @@ const PartyCard = ({ post }: IPartyCard) => {
 
 	return (
 		<>
-			{post?.map(({
-				chatRoomId,
-				partySubject,
-				partyLocationAddress,
-				leaderName,
-				partyStartTime,
-				userCnt,
-				partyMinParticipant,
-				partyMaxParticipant
-			}, index) => (
-				<Swipeable key={index} renderRightActions={renderRightActions}>
-					<Pressable
-						style={({ pressed }) => [
-							styles.container,
-							pressed && styles.pressedContainer,
-						]}
-						onPress={() => handlePressEnterRoom(chatRoomId)}
-					>
-						<View style={styles.contentContainer}>
-							<View style={styles.badge}>
-								<Text style={styles.badgeText}>모집 중</Text>
-							</View>
-							<View style={styles.imageContainer}>
-								<Image
-									source={require('@/assets/user-default.png')}
-									style={styles.image}
-								/>
-								<View style={styles.textContainer}>
-									<Text style={styles.titleText} numberOfLines={2}>
-										{partySubject}
-									</Text>
-									<Text style={styles.descText} numberOfLines={1}>
-										{partyLocationAddress}
-									</Text>
+			{post?.map(
+				(
+					{
+						chatRoomId,
+						partySubject,
+						partyLocationAddress,
+						leaderName,
+						partyStartTime,
+						userCnt,
+						partyMinParticipant,
+						partyMaxParticipant,
+					},
+					index,
+				) => (
+					<Swipeable key={index} renderRightActions={renderRightActions}>
+						<Pressable
+							style={({ pressed }) => [
+								styles.container,
+								pressed && styles.pressedContainer,
+							]}
+							onPress={() => handlePressEnterRoom(chatRoomId)}
+						>
+							<View style={styles.contentContainer}>
+								<View style={styles.badge}>
+									<Text style={styles.badgeText}>모집 중</Text>
 								</View>
-							</View>
-							<View style={styles.dividerContainer}>
-								<View style={styles.divider} />
-							</View>
-							<View style={styles.detailInfoContainer}>
-								<View style={styles.iconContainer}>
-									<Ionicons name="happy" size={20} color={colors[theme].GRAY_500} />
-									<Text style={styles.iconFont}>{leaderName}</Text>
-								</View>
-								<View style={styles.iconContainer}>
-									<Ionicons
-										name="calendar"
-										size={20}
-										color={colors[theme].GRAY_500}
+								<View style={styles.imageContainer}>
+									<Image
+										source={require('@/assets/user-default.png')}
+										style={styles.image}
 									/>
-									<Text style={styles.iconFont}>
-										{dayjs(partyStartTime).format('YYYY-MM-DD')}
-									</Text>
+									<View style={styles.textContainer}>
+										<Text style={styles.titleText} numberOfLines={2}>
+											{partySubject}
+										</Text>
+										<Text style={styles.descText} numberOfLines={1}>
+											{partyLocationAddress}
+										</Text>
+									</View>
 								</View>
-								<View style={styles.iconContainer}>
-									<Ionicons name="time" size={20} color={colors[theme].GRAY_500} />
-									<Text style={styles.iconFont}>
-										{dayjs(partyStartTime).format('hh:mm:ss A')}
-									</Text>
+								<View style={styles.dividerContainer}>
+									<View style={styles.divider} />
 								</View>
-								<View style={styles.iconContainer}>
-									<Ionicons
-										name="people"
-										size={20}
-										color={colors[theme].GRAY_500}
-									/>
-									<Text style={styles.iconFont}>{userCnt} ({partyMinParticipant}~{partyMaxParticipant})</Text>
+								<View style={styles.detailInfoContainer}>
+									<View style={styles.iconContainer}>
+										<Ionicons
+											name="happy"
+											size={20}
+											color={colors[theme].GRAY_500}
+										/>
+										<Text style={styles.iconFont}>{leaderName}</Text>
+									</View>
+									<View style={styles.iconContainer}>
+										<Ionicons
+											name="calendar"
+											size={20}
+											color={colors[theme].GRAY_500}
+										/>
+										<Text style={styles.iconFont}>
+											{dayjs(partyStartTime).format('YYYY-MM-DD')}
+										</Text>
+									</View>
+									<View style={styles.iconContainer}>
+										<Ionicons
+											name="time"
+											size={20}
+											color={colors[theme].GRAY_500}
+										/>
+										<Text style={styles.iconFont}>
+											{dayjs(partyStartTime).format('hh:mm:ss A')}
+										</Text>
+									</View>
+									<View style={styles.iconContainer}>
+										<Ionicons
+											name="people"
+											size={20}
+											color={colors[theme].GRAY_500}
+										/>
+										<Text style={styles.iconFont}>
+											{userCnt} ({partyMinParticipant}~{partyMaxParticipant})
+										</Text>
+									</View>
 								</View>
 							</View>
-						</View>
-					</Pressable>
-				</Swipeable>
-			))}
+						</Pressable>
+					</Swipeable>
+				),
+			)}
 		</>
 	);
 }
@@ -143,7 +152,7 @@ const styling = (theme: ThemeMode) =>
 			shadowRadius: 8.65,
 			elevation: 8,
 			marginBottom: 10,
-			width: 100
+			width: 100,
 		},
 		pressedContainer: {
 			backgroundColor: colors[theme].GRAY_100,
