@@ -5,6 +5,7 @@ const API_BASE = {
 	AUTH: `auth`,
 	MAIL: `mail`,
 	USER: `user`,
+	CHAT_ROOM: `chatRooms`
 };
 
 const API_URL = {
@@ -26,6 +27,12 @@ const API_URL = {
 	USER_PROFILE_IMG_URL: `/${API}/${VERSION}/${API_BASE.USER}/image-url`,
 	USER_NAME: `/${API}/${VERSION}/${API_BASE.USER}/name`,
 	USER_BIO: `/${API}/${VERSION}/${API_BASE.USER}/bio`,
+
+	// chat-controller
+	GET_CHAT_ROOMS: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}`,
+	POST_CHANGE_ALARM_STATUS: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}/alarm`,
+	GET_CHAT_CONTENT: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}/chat`,
+	DELETE_CHAT_ROOM: `//${API}/${VERSION}/${API_BASE.CHAT_ROOM}`
 };
 
 export { VERSION, API_BASE, API_URL };

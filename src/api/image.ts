@@ -1,5 +1,6 @@
 import { Image } from 'react-native-image-crop-picker';
 import axios from 'axios';
+
 import { API_URL } from '@/constants/path';
 import { PROFILE_URL_TYPES } from '@/types/api';
 import axiosInstance from './axios';

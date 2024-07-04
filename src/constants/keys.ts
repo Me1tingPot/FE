@@ -4,6 +4,7 @@ const queryKeys = {
 	GET_ACCESS_TOKEN: 'getAccessToken',
 	USER: 'user',
 	ACCOUNT_ID: 'accountId',
+	CHAT: 'chat'
 } as const;
 
 const storageKeys = {

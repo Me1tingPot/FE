@@ -46,3 +46,16 @@ export type USER_PROFILE_DATA_TYPES = {
 	nationality: string;
 	thumbnail: string;
 };
+
+export type BASE_API_KEY = {
+	timestamp: string,
+  code: string,
+  status: string,
+  detail: string
+};
+
+export type INFINITE_META_DATA = {
+	isFirst: boolean;
+	hasNext: boolean;
+};
+
