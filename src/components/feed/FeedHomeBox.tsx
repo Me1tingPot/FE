@@ -10,7 +10,7 @@ interface FeedHomeBoxProps {
 	highlightText?: string;
 }
 
-const FeedHomeBox = ({ text1, text2, highlightText }: FeedHomeBoxProps) => {
+function FeedHomeBox({ text1, text2, highlightText }: FeedHomeBoxProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -36,7 +36,7 @@ const FeedHomeBox = ({ text1, text2, highlightText }: FeedHomeBoxProps) => {
 			</Pressable>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

@@ -12,7 +12,7 @@ type PasswordProps = {
 	onNext: () => void;
 };
 
-const Password = ({ onNext }: PasswordProps) => {
+function Password({ onNext }: PasswordProps) {
 	const {
 		control,
 		formState: { errors },
@@ -101,20 +101,20 @@ const Password = ({ onNext }: PasswordProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={onNext}
-					variant={'filled'}
+					variant="filled"
 					disabled={
-						errors.password ||
-						errors.checkPassword ||
-						!password ||
-						!checkPassword
-							? true
-							: false
+						!!(
+							errors.password ||
+							errors.checkPassword ||
+							!password ||
+							!checkPassword
+						)
 					}
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

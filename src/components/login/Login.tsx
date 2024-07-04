@@ -13,7 +13,7 @@ interface LoginProps {
 	isPending: boolean;
 }
 
-const Login = ({ onSubmit, isPending }: LoginProps) => {
+function Login({ onSubmit, isPending }: LoginProps) {
 	const {
 		control,
 		handleSubmit,
@@ -67,22 +67,22 @@ const Login = ({ onSubmit, isPending }: LoginProps) => {
 			<View style={styles.buttonLayout}>
 				<CustomButton
 					label={t('로그인')}
-					variant={'filled'}
+					variant="filled"
 					onPress={() => handleSubmit(onSubmit)()}
 					disabled={
-						errors.email?.message ||
-						!email ||
-						errors.password?.message ||
-						!password
-							? true
-							: false
+						!!(
+							errors.email?.message ||
+							!email ||
+							errors.password?.message ||
+							!password
+						)
 					}
 					isLoading={isPending}
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

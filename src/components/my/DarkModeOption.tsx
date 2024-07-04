@@ -9,7 +9,7 @@ interface DarkModeOptionProps {
 	hideOption: () => void;
 }
 
-const DarkModeOption = ({ isVisible, hideOption }: DarkModeOptionProps) => {
+function DarkModeOption({ isVisible, hideOption }: DarkModeOptionProps) {
 	const systemDefault = useColorScheme();
 	const { theme, isSystem, setMode, setSystem } = useThemeStorage();
 	const { t } = useTranslation();
@@ -61,7 +61,7 @@ const DarkModeOption = ({ isVisible, hideOption }: DarkModeOptionProps) => {
 			</CompoundOption.Background>
 		</CompoundOption>
 	);
-};
+}
 
 const styles = StyleSheet.create({});
 

@@ -15,13 +15,13 @@ interface ChangeNameModalProps {
 	onSubmit: () => void;
 }
 
-const ChangeNameModal = ({
+function ChangeNameModal({
 	isVisible,
 	hideOption,
 	value,
 	setValue,
 	onSubmit,
-}: ChangeNameModalProps) => {
+}: ChangeNameModalProps) {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -54,7 +54,7 @@ const ChangeNameModal = ({
 			</CompoundModal.Background>
 		</CompoundModal>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

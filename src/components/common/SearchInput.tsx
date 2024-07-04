@@ -9,7 +9,7 @@ interface SearchInputProps extends TextInputProps {
 	onSubmit: () => void;
 }
 
-const SearchInput = ({ onSubmit, ...props }: SearchInputProps) => {
+function SearchInput({ onSubmit, ...props }: SearchInputProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -24,14 +24,14 @@ const SearchInput = ({ onSubmit, ...props }: SearchInputProps) => {
 				{...props}
 			/>
 			<Ionicons
-				name={'search'}
+				name="search"
 				color={colors[theme].GRAY_700}
 				size={20}
 				onPress={onSubmit}
 			/>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

@@ -1,10 +1,13 @@
+import { Image } from 'react-native-image-crop-picker';
+import axios from 'axios';
+
 import { API_URL } from '@/constants/path';
 import { PROFILE_URL_TYPES } from '@/types/api';
 import axiosInstance from './axios';
 
 type RequestProfileurl = {
 	uploadUrl: string;
-	body: FormData;
+	body: Image;
 };
 
 const uploadImages = async (body: FormData): Promise<string[]> => {
@@ -17,9 +20,35 @@ const uploadImages = async (body: FormData): Promise<string[]> => {
 	return data;
 };
 
-const getProfileUploadUrl = async (): Promise<PROFILE_URL_TYPES> => {
-	const { data } = await axiosInstance.get(`${API_URL.PROFILE_IMG_URL}`);
+const getSignupProfileUploadUrl = async (): Promise<PROFILE_URL_TYPES> => {
+	const { data } = await axiosInstance.get(`${API_URL.AUTH_PROFILE_IMG_URL}`);
 
+	return data;
+};
+
+const getMypageProfileUploadUrl = async (): Promise<PROFILE_URL_TYPES> => {
+	const { data } = await axiosInstance.get(`${API_URL.USER_PROFILE_IMG_URL}`);
+	return data;
+};
+
+const addProfileImage = async ({
+	imageKey,
+	sequence,
+}: {
+	imageKey: string;
+	sequence: number;
+}) => {
+	const { data } = await axiosInstance.post(`${API_URL.USER_PROFILE_IMG}`, {
+		imageKey,
+		sequence,
+	});
+	return data;
+};
+
+const changeThumbnailImage = async (imageId: number) => {
+	const { data } = await axiosInstance.put(
+		`${API_URL.USER_PROFILE_IMG}/${imageId}`,
+	);
 	return data;
 };
 
@@ -27,13 +56,16 @@ const uploadProfileImages = async ({
 	uploadUrl,
 	body,
 }: RequestProfileurl): Promise<any> => {
-	const { data } = await axiosInstance.put(uploadUrl, body, {
-		headers: {
-			'Content-Type': 'multipart/form-data',
-		},
-	});
+	const { data } = await axios.put(uploadUrl, body);
 
 	return data;
 };
 
-export { uploadImages, getProfileUploadUrl, uploadProfileImages };
+export {
+	addProfileImage,
+	uploadImages,
+	getSignupProfileUploadUrl,
+	getMypageProfileUploadUrl,
+	uploadProfileImages,
+	changeThumbnailImage,
+};

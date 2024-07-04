@@ -47,7 +47,7 @@ type LanguageProps = {
 	isPending?: boolean;
 };
 
-const Language = ({ isPending, onSubmit }: LanguageProps) => {
+function Language({ isPending, onSubmit }: LanguageProps) {
 	const {
 		control,
 		formState: { errors },
@@ -66,12 +66,10 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 			setLanguages(prevLanguages =>
 				prevLanguages.filter(language => language !== item),
 			);
+		} else if (languages.length < 3) {
+			setLanguages(prevLanguages => [...prevLanguages, item]);
 		} else {
-			if (languages.length < 3) {
-				setLanguages(prevLanguages => [...prevLanguages, item]);
-			} else {
-				Alert.alert('', '최대 3개의 언어를 선택할 수 있습니다.');
-			}
+			Alert.alert('', '최대 3개의 언어를 선택할 수 있습니다.');
 		}
 	};
 
@@ -237,13 +235,13 @@ const Language = ({ isPending, onSubmit }: LanguageProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={handleSubmitData}
-					variant={'filled'}
+					variant="filled"
 					isLoading={isPending}
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

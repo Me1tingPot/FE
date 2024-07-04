@@ -15,7 +15,7 @@ import { ThemeMode } from '@/types';
 
 interface WishSaveScreenProps {}
 
-const WishSaveScreen = ({}: WishSaveScreenProps) => {
+function WishSaveScreen({}: WishSaveScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -62,7 +62,7 @@ const WishSaveScreen = ({}: WishSaveScreenProps) => {
 			</ScrollView>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

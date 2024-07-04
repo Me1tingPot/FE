@@ -415,5 +415,11 @@
 	"인증메일을 확인해주세요.": "Please check the authentication mail.",
 	"이메일 인증 에러": "Email authentication error",
 	"이미 가입된 메일입니다.": "This mail is already registered.",
+	"주최": "Host",
+	"참여": "Participation",
+	"회": "",
+	"아직 소개를 입력하지 않았습니다.": "There is no introduction here yet.",
+	"소개가 없습니다.": "There is no introduction.",
+	"이미지가 업로드 되었습니다.": "The image has been uploaded."
 	"채팅": "Chat"
 }

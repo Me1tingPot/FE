@@ -18,9 +18,7 @@ interface CommunityQuestionScreenProps {
 	navigation: NavigationProp<CommunityStackParamList>;
 }
 
-const CommunityQuestionScreen = ({
-	navigation,
-}: CommunityQuestionScreenProps) => {
+function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [refreshing, setRefreshing] = useState(false);
@@ -62,7 +60,7 @@ const CommunityQuestionScreen = ({
 			</View>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

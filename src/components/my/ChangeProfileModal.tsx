@@ -15,13 +15,13 @@ interface ChangeProfileModalProps {
 	onSubmit: () => void;
 }
 
-const ChangeProfileModal = ({
+function ChangeProfileModal({
 	value,
 	setValue,
 	isVisible,
 	hideOption,
 	onSubmit,
-}: ChangeProfileModalProps) => {
+}: ChangeProfileModalProps) {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -54,7 +54,7 @@ const ChangeProfileModal = ({
 			</CompoundModal.Background>
 		</CompoundModal>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

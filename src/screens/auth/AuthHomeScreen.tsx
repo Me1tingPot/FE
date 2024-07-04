@@ -1,6 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
-import { ScrollView } from 'react-native';
+import {
+	SafeAreaView,
+	StatusBar,
+	StyleSheet,
+	Text,
+	View,
+	ScrollView,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { StackScreenProps } from '@react-navigation/stack';
 import CustomButton from '@/components/common/CustomButton';

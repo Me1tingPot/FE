@@ -7,7 +7,7 @@ import { ThemeMode } from '@/types';
 
 interface PostContentsProps {}
 
-const PostContents = ({}: PostContentsProps) => {
+function PostContents({}: PostContentsProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -38,7 +38,7 @@ const PostContents = ({}: PostContentsProps) => {
 			<View style={styles.verticalLine} />
 		</>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

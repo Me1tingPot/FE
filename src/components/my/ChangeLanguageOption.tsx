@@ -9,10 +9,10 @@ interface ChangeLanguageOptionProps {
 	hideOption: () => void;
 }
 
-const ChangeLanguageOption = ({
+function ChangeLanguageOption({
 	isVisible,
 	hideOption,
-}: ChangeLanguageOptionProps) => {
+}: ChangeLanguageOptionProps) {
 	const { t } = useTranslation();
 
 	const onChangeKorean = () => {
@@ -50,7 +50,7 @@ const ChangeLanguageOption = ({
 			</CompoundOption.Background>
 		</CompoundOption>
 	);
-};
+}
 
 const styles = StyleSheet.create({});
 

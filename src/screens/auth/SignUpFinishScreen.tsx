@@ -22,7 +22,7 @@ const backgroundGradientColor = [
 	'#D3FFF5',
 ];
 
-const SignUpFinishScreen = ({ navigation }: AuthHomeScreenProps) => {
+function SignUpFinishScreen({ navigation }: AuthHomeScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -41,13 +41,13 @@ const SignUpFinishScreen = ({ navigation }: AuthHomeScreenProps) => {
 				</ScrollView>
 				<CustomButton
 					label="시작하기"
-					variant={'filled'}
+					variant="filled"
 					onPress={() => navigation.navigate('Login')}
 				/>
 			</LinearGradient>
 		</SafeAreaView>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

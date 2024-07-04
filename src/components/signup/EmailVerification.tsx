@@ -1,7 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet } from 'react-native';
-import { Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { colors } from '@/constants';
 import useMail from '@/hooks/queries/useMail';
@@ -16,7 +15,7 @@ interface EmailVerificationProps {
 }
 
 // TODO : 메일 인증 요청 및 인증 번호 확인 api 연결 필요
-const EmailVerification = ({ onNext }: EmailVerificationProps) => {
+function EmailVerification({ onNext }: EmailVerificationProps) {
 	const {
 		control,
 		formState: { errors },
@@ -92,14 +91,14 @@ const EmailVerification = ({ onNext }: EmailVerificationProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={handleNext}
-					variant={'filled'}
-					disabled={errors.emailVerifycation?.message || !code ? true : false}
+					variant="filled"
+					disabled={!!(errors.emailVerifycation?.message || !code)}
 					isLoading={verificationMailMutation.isPending}
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

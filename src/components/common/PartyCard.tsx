@@ -123,7 +123,7 @@ const PartyCard = ({ post }: IPartyCard) => {
 			))}
 		</>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

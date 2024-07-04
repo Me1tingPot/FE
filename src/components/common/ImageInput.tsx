@@ -10,7 +10,7 @@ interface ImageInputProps {
 	size?: 'large' | 'medium' | 'small';
 }
 
-const ImageInput = ({ onChange, size = 'small' }: ImageInputProps) => {
+function ImageInput({ onChange, size = 'small' }: ImageInputProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -32,7 +32,7 @@ const ImageInput = ({ onChange, size = 'small' }: ImageInputProps) => {
 			<Text style={styles.inputText}>사진 추가</Text>
 		</Pressable>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

@@ -2,6 +2,8 @@ const queryKeys = {
 	AUTH: 'auth',
 	REFRESH_TOKEN: 'refreshToken',
 	GET_ACCESS_TOKEN: 'getAccessToken',
+	USER: 'user',
+	ACCOUNT_ID: 'accountId',
 	CHAT: 'chat'
 } as const;
 
@@ -11,6 +13,7 @@ const storageKeys = {
 	THEME_TOKEN: 'themeToken',
 	THEME_SYSTEM: 'themeSystem',
 	THEME_MODE: 'themeMode',
+	ACCOUNT_ID: 'accountId',
 } as const;
 
 export { queryKeys, storageKeys };

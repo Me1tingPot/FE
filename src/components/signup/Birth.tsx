@@ -24,7 +24,7 @@ type BirthProps = {
 	onNext: () => void;
 };
 
-const Birth = ({ onNext }: BirthProps) => {
+function Birth({ onNext }: BirthProps) {
 	const { control, setValue } = useFormContext<SignupInputs>();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -79,7 +79,7 @@ const Birth = ({ onNext }: BirthProps) => {
 								onChangeText={onChange}
 								onBlur={onBlur}
 								placeholder={t('----년 --월 --일')}
-								variant={'success'}
+								variant="success"
 								icon={
 									<MaterialIcons
 										name="calendar-month"
@@ -110,12 +110,12 @@ const Birth = ({ onNext }: BirthProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={handleSubmit}
-					variant={'filled'}
+					variant="filled"
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

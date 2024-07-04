@@ -40,12 +40,13 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: login,
 		onSuccess: data => {
-			console.log(data)
+			const accountId = data.data.id;
 			const accessToken = data.data.tokenDto.accessToken;
 			const refreshToken = data.data.tokenDto.refreshToken;
 			// 1. Storage에 RefreshToken
 			setEncryptStorage(storageKeys.ACCESS_TOKEN, accessToken);
 			setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
+			setEncryptStorage(storageKeys.ACCOUNT_ID, accountId);
 			// 2. Storage에 AccessToken
 			setHeader(headers.AUTHORIZATION, `Bearer ${accessToken}`);
 		},

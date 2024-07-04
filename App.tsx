@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast, {
@@ -67,6 +67,9 @@ const linking = {
 
 function App() {
 	const { theme } = useThemeStorage();
+	const [token, setToken] = useState('');
+	console.log(token, 'token');
+
 	const getFcmToken = async () => {
 		try {
 			const fcmToken = await messaging().getToken();

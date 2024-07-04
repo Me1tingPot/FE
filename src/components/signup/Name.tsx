@@ -12,7 +12,7 @@ type NameProps = {
 	onNext: () => void;
 };
 
-const Name = ({ onNext }: NameProps) => {
+function Name({ onNext }: NameProps) {
 	const {
 		control,
 		formState: { errors },
@@ -68,13 +68,13 @@ const Name = ({ onNext }: NameProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={onNext}
-					variant={'filled'}
-					disabled={errors?.name || !name ? true : false}
+					variant="filled"
+					disabled={!!(errors?.name || !name)}
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

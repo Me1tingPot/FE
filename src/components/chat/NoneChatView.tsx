@@ -12,7 +12,7 @@ interface NoneChatViewProps {
 	navigation: NavigationProp<FeedStackParamList>;
 }
 
-const NoneChatView = ({ navigation }: NoneChatViewProps) => {
+function NoneChatView({ navigation }: NoneChatViewProps) {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -37,7 +37,7 @@ const NoneChatView = ({ navigation }: NoneChatViewProps) => {
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

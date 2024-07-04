@@ -10,7 +10,7 @@ interface AlertBoxProps {
 	onPress?: () => void;
 }
 
-const AlertBox = ({ onPress }: AlertBoxProps) => {
+function AlertBox({ onPress }: AlertBoxProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -30,7 +30,7 @@ const AlertBox = ({ onPress }: AlertBoxProps) => {
 			<Image source={{ uri: userImage }} style={styles.image} />
 		</TouchableOpacity>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

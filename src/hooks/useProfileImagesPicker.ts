@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { getProfileUploadUrl } from '@/api';
+import { getMypageProfileUploadUrl } from '@/api';
 import { ImageUri } from '@/types';
-import { IMAGE_DTO } from '@/types/api/types';
-import { getFormDataImages } from '@/utils';
 import useImages from './queries/useMutateImages';
 
 interface useProfileImagesPickerProps {
@@ -13,12 +11,17 @@ interface useProfileImagesPickerProps {
 	maxFiles: number;
 }
 
+type UploadsFileType = {
+	imageKey: string;
+	sequence: number;
+};
+
 function useProfileImagesPicker({
 	initialImages = [],
 	maxFiles,
 }: useProfileImagesPickerProps) {
 	const [imageUris, setImageUris] = useState(initialImages);
-	const [uploadedImages, setUploadedImages] = useState<IMAGE_DTO[]>([]);
+	const [uploadedImages, setUploadedImages] = useState<UploadsFileType[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { t } = useTranslation();
 	const { profileImagesMutation } = useImages();
@@ -59,24 +62,22 @@ function useProfileImagesPicker({
 				cropperCancelText: t('취소'),
 			});
 
-			const formData = getFormDataImages(images);
-			const uploadedImageData = [];
-
-			for (let i = 0; i < images.length; i++) {
-				const { data } = await getProfileUploadUrl();
+			const uploadPromises = images.map(async (image, index) => {
+				const { data } = await getMypageProfileUploadUrl();
 				const { uploadUrl, fileKey } = data;
 
 				await profileImagesMutation.mutateAsync({
 					uploadUrl: uploadUrl,
-					body: formData,
+					body: images[index],
 				});
 
-				uploadedImageData.push({
+				return {
 					imageKey: fileKey,
-					thumbnail: i === 0,
-					sequence: i,
-				});
-			}
+					sequence: 3 - (index + 1),
+				};
+			});
+
+			const uploadedImageData = await Promise.all(uploadPromises);
 
 			addImageUris(images.map(img => img.path));
 			setUploadedImages(uploadedImageData);
@@ -89,7 +90,6 @@ function useProfileImagesPicker({
 			setIsLoading(false);
 		}
 	};
-
 	return {
 		uploadedImages,
 		imageUris,
@@ -99,4 +99,5 @@ function useProfileImagesPicker({
 		isLoading,
 	};
 }
+
 export default useProfileImagesPicker;

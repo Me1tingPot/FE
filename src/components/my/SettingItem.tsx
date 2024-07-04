@@ -17,13 +17,13 @@ interface SettingItemProps extends PressableProps {
 	color?: string;
 }
 
-const SettingItem = ({
+function SettingItem({
 	title,
 	subTitle,
 	icon = null,
 	color,
 	...props
-}: SettingItemProps) => {
+}: SettingItemProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -45,7 +45,7 @@ const SettingItem = ({
 			</View>
 		</Pressable>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

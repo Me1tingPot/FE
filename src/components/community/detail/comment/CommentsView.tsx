@@ -5,7 +5,7 @@ import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import Comment from './Comment';
 
-const CommentsView = () => {
+function CommentsView() {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	return (
@@ -22,7 +22,7 @@ const CommentsView = () => {
 			))}
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

@@ -12,11 +12,11 @@ interface PartyOptionStatusProps {
 	handleCloseModal: () => void;
 }
 
-const PartyOptionStatus = ({
+function PartyOptionStatus({
 	selectedStatus,
 	setSelectedStatus,
 	handleCloseModal,
-}: PartyOptionStatusProps) => {
+}: PartyOptionStatusProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -57,7 +57,7 @@ const PartyOptionStatus = ({
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

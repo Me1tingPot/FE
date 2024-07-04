@@ -25,106 +25,105 @@ import { ThemeMode } from '@/types';
 
 type CommunityQuestionWriteScreenProps = {};
 
-const CommunityQuestionWriteScreen =
-	({}: CommunityQuestionWriteScreenProps) => {
-		const [title, setTitle] = useState('');
-		const [content, setContent] = useState('');
-		const [files, setFiles] = useState<string[]>([]);
-		const { theme } = useThemeStore();
-		const styles = styling(theme);
-		const { t } = useTranslation();
-		const modal = useModal();
+function CommunityQuestionWriteScreen({}: CommunityQuestionWriteScreenProps) {
+	const [title, setTitle] = useState('');
+	const [content, setContent] = useState('');
+	const [files, setFiles] = useState<string[]>([]);
+	const { theme } = useThemeStore();
+	const styles = styling(theme);
+	const { t } = useTranslation();
+	const modal = useModal();
 
-		usePermission('PHOTO');
-		usePermission('CAMERA');
+	usePermission('PHOTO');
+	usePermission('CAMERA');
 
-		const cameraOptions: CameraOptions = {
-			cameraType: 'front',
-			mediaType: 'photo',
-		};
-
-		const libraryOptions: ImageLibraryOptions = {
-			selectionLimit: 10,
-			mediaType: 'photo',
-		};
-
-		const deleteImage = (img: string) => {
-			const imgList = files.filter(item => item !== img);
-			setFiles(imgList);
-		};
-
-		return (
-			<SafeAreaView style={styles.container}>
-				<KeyboardAvoidingView
-					style={styles.keyBoardView}
-					behavior="padding"
-					keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 70}
-				>
-					<ScrollView contentContainerStyle={styles.contentContainer}>
-						<MultipleGradientBgTextInput
-							title={title}
-							onChangeTitle={t => setTitle(t)}
-							titlePlaceholder={t(`궁금한 것을 물어보세요!`)}
-							content={content}
-							onChangeContent={t => setContent(t)}
-							contentPlaceholder={t(`상세 내용을 작성해주세요.`)}
-						/>
-					</ScrollView>
-					<View style={[styles.displayRow, styles.imageContainer]}>
-						<FlatList
-							data={files}
-							horizontal
-							renderItem={({ item, index }) => (
-								<View key={index} style={styles.imageLayout}>
-									<Image source={{ uri: item }} style={styles.image} />
-									<Pressable
-										style={styles.imageDelete}
-										onPress={() => deleteImage(item)}
-									>
-										<Ionicons
-											name="close-outline"
-											size={15}
-											color={colors[theme].BLACK}
-										/>
-									</Pressable>
-								</View>
-							)}
-						/>
-					</View>
-					<View style={[styles.displayRow, styles.menu]}>
-						<TouchableOpacity activeOpacity={0.8} onPress={modal.show}>
-							<Ionicons
-								name="camera-outline"
-								color={colors[theme].GRAY_400}
-								size={30}
-							/>
-						</TouchableOpacity>
-						<View style={[styles.displayRow]}>
-							<Pressable
-								style={styles.menuBtn}
-								onPress={() => console.log('click')}
-							>
-								<Text style={styles.menuText}>{t('임시저장')}</Text>
-							</Pressable>
-							<Pressable
-								style={styles.menuBtn}
-								onPress={() => console.log('click')}
-							>
-								<Text style={styles.menuText}>{t('게시하기')}</Text>
-							</Pressable>
-						</View>
-					</View>
-				</KeyboardAvoidingView>
-				<CameraOrLibrary
-					isVisible={modal.isVisible}
-					hideOption={modal.hide}
-					cameraOptions={cameraOptions}
-					libraryOptions={libraryOptions}
-					setFiles={setFiles}
-				/>
-			</SafeAreaView>
-		);
+	const cameraOptions: CameraOptions = {
+		cameraType: 'front',
+		mediaType: 'photo',
 	};
+
+	const libraryOptions: ImageLibraryOptions = {
+		selectionLimit: 10,
+		mediaType: 'photo',
+	};
+
+	const deleteImage = (img: string) => {
+		const imgList = files.filter(item => item !== img);
+		setFiles(imgList);
+	};
+
+	return (
+		<SafeAreaView style={styles.container}>
+			<KeyboardAvoidingView
+				style={styles.keyBoardView}
+				behavior="padding"
+				keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 70}
+			>
+				<ScrollView contentContainerStyle={styles.contentContainer}>
+					<MultipleGradientBgTextInput
+						title={title}
+						onChangeTitle={t => setTitle(t)}
+						titlePlaceholder={t(`궁금한 것을 물어보세요!`)}
+						content={content}
+						onChangeContent={t => setContent(t)}
+						contentPlaceholder={t(`상세 내용을 작성해주세요.`)}
+					/>
+				</ScrollView>
+				<View style={[styles.displayRow, styles.imageContainer]}>
+					<FlatList
+						data={files}
+						horizontal
+						renderItem={({ item, index }) => (
+							<View key={index} style={styles.imageLayout}>
+								<Image source={{ uri: item }} style={styles.image} />
+								<Pressable
+									style={styles.imageDelete}
+									onPress={() => deleteImage(item)}
+								>
+									<Ionicons
+										name="close-outline"
+										size={15}
+										color={colors[theme].BLACK}
+									/>
+								</Pressable>
+							</View>
+						)}
+					/>
+				</View>
+				<View style={[styles.displayRow, styles.menu]}>
+					<TouchableOpacity activeOpacity={0.8} onPress={modal.show}>
+						<Ionicons
+							name="camera-outline"
+							color={colors[theme].GRAY_400}
+							size={30}
+						/>
+					</TouchableOpacity>
+					<View style={[styles.displayRow]}>
+						<Pressable
+							style={styles.menuBtn}
+							onPress={() => console.log('click')}
+						>
+							<Text style={styles.menuText}>{t('임시저장')}</Text>
+						</Pressable>
+						<Pressable
+							style={styles.menuBtn}
+							onPress={() => console.log('click')}
+						>
+							<Text style={styles.menuText}>{t('게시하기')}</Text>
+						</Pressable>
+					</View>
+				</View>
+			</KeyboardAvoidingView>
+			<CameraOrLibrary
+				isVisible={modal.isVisible}
+				hideOption={modal.hide}
+				cameraOptions={cameraOptions}
+				libraryOptions={libraryOptions}
+				setFiles={setFiles}
+			/>
+		</SafeAreaView>
+	);
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

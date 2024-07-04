@@ -25,7 +25,7 @@ const testImg =
 
 const imageList = new Array(4).fill(testImg);
 
-const PostingPreview = ({ navigation, id }: PostingPreviewProps) => {
+function PostingPreview({ navigation, id }: PostingPreviewProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -71,7 +71,7 @@ const PostingPreview = ({ navigation, id }: PostingPreviewProps) => {
 			</View>
 		</TouchableOpacity>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image } from 'react-native';
 import {
+	Image,
 	StyleSheet,
 	Text,
 	TextInput,
 	TouchableOpacity,
 	View,
+	GestureResponderEvent,
 } from 'react-native';
-import { GestureResponderEvent } from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import CheckBox from '@/components/common/CheckBox';
 import { colors } from '@/constants';
@@ -26,7 +26,7 @@ interface InputBottomProps {
 	onSubmit: () => void;
 }
 
-const InputBottom = ({
+function InputBottom({
 	id,
 	isChecked,
 	onPress,
@@ -34,7 +34,7 @@ const InputBottom = ({
 	setComment,
 	onSubmit,
 	onPressCamera,
-}: InputBottomProps) => {
+}: InputBottomProps) {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -70,7 +70,7 @@ const InputBottom = ({
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

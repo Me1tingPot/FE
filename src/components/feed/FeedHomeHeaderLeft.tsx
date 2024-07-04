@@ -5,7 +5,7 @@ import { ThemeMode } from '@/types';
 
 interface FeedHomeHeaderLeftProps {}
 
-const FeedHomeHeaderLeft = ({}: FeedHomeHeaderLeftProps) => {
+function FeedHomeHeaderLeft({}: FeedHomeHeaderLeftProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
@@ -20,7 +20,7 @@ const FeedHomeHeaderLeft = ({}: FeedHomeHeaderLeftProps) => {
 			<Image style={styles.logo} source={logoSource} resizeMode="contain" />
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({

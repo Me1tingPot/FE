@@ -9,7 +9,7 @@ interface ProgressBarProps {
 	stepLength: number;
 }
 
-const ProgressBar = ({ activeStepIndex, stepLength }: ProgressBarProps) => {
+function ProgressBar({ activeStepIndex, stepLength }: ProgressBarProps) {
 	const progressPercentage = useMemo(() => {
 		return ((activeStepIndex + 1) / stepLength) * 100;
 	}, [activeStepIndex, stepLength]);
@@ -35,7 +35,7 @@ const ProgressBar = ({ activeStepIndex, stepLength }: ProgressBarProps) => {
 			<Animated.View style={styles.progressBar} />
 		</View>
 	);
-};
+}
 
 const styling = ({
 	theme,

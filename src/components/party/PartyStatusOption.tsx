@@ -7,10 +7,7 @@ interface PartyStatusOptionProps {
 	hideOption: () => void;
 }
 
-const PartyStatusOption = ({
-	isVisible,
-	hideOption,
-}: PartyStatusOptionProps) => {
+function PartyStatusOption({ isVisible, hideOption }: PartyStatusOptionProps) {
 	return (
 		<CompoundOption isVisible={isVisible} hideOption={hideOption}>
 			<CompoundOption.Background>
@@ -23,7 +20,7 @@ const PartyStatusOption = ({
 			</CompoundOption.Background>
 		</CompoundOption>
 	);
-};
+}
 
 const styles = StyleSheet.create({});
 

@@ -13,7 +13,7 @@ import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import usePermission from '@/hooks/usePermission';
-import useProfileImagesPicker from '@/hooks/useProfileImagesPicker';
+import useSignupProfileImagesPicker from '@/hooks/useSignupProfileImagesPicker';
 import { SignupInputs } from '@/screens/auth/SignUpScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -23,7 +23,7 @@ type ProfileImageProps = {
 	onNext: () => void;
 };
 
-const ProfileImage = ({ onNext }: ProfileImageProps) => {
+function ProfileImage({ onNext }: ProfileImageProps) {
 	const [selected, setSelected] = useState(0);
 	const {
 		formState: { errors },
@@ -32,7 +32,7 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
-	const formDataImages = useProfileImagesPicker({
+	const formDataImages = useSignupProfileImagesPicker({
 		initialImages: [],
 		maxFiles: 3,
 	});
@@ -133,13 +133,13 @@ const ProfileImage = ({ onNext }: ProfileImageProps) => {
 				<CustomButton
 					label={t('다음으로')}
 					onPress={handleSubmit}
-					variant={'filled'}
+					variant="filled"
 					isLoading={formDataImages.isLoading}
 				/>
 			</View>
 		</View>
 	);
-};
+}
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
