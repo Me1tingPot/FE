@@ -6,6 +6,7 @@ const API_BASE = {
 	MAIL: `mail`,
 	USER: `user`,
 	CHAT_ROOM: `chatRooms`,
+	POSTS: `posts`
 };
 
 const API_URL = {
@@ -33,6 +34,10 @@ const API_URL = {
 	POST_CHANGE_ALARM_STATUS: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}/alarm`,
 	GET_CHAT_CONTENT: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}/chat`,
 	DELETE_CHAT_ROOM: `//${API}/${VERSION}/${API_BASE.CHAT_ROOM}`,
+
+	// post-controller
+	POST: `/${API}/${VERSION}/${API_BASE.POSTS}`,
+	GET_POSTS_LIST: `${API}/${VERSION}/${API_BASE.POSTS}/type`
 };
 
 export { VERSION, API_BASE, API_URL };

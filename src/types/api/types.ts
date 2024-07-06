@@ -58,3 +58,18 @@ export type INFINITE_META_DATA = {
 	isFirst: boolean;
 	hasNext: boolean;
 };
+
+export type POST_DTO = {
+	postId: number;
+	name: string;
+	title: string;
+	content: string;
+	commentCount: number;
+	updatedAt: string;
+}
+
+export type POST_DATA = {
+	pageDtos: POST_DTO[];
+	nextCursor: number;
+	isLast: boolean;
+}
