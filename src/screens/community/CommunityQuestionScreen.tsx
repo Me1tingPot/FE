@@ -7,9 +7,11 @@ import {
 	View,
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { POST_TYPE } from '@/api/community';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import QuestionPreview from '@/components/community/QuestionPreview';
 import { colors, communityNavigations } from '@/constants';
+import useCommunity from '@/hooks/queries/useCommunity';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -22,6 +24,12 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [refreshing, setRefreshing] = useState(false);
+	const { useGetPosts } = useCommunity();
+	const PostData = useGetPosts({
+		postType: POST_TYPE.QUESTION,
+		cursor: 1,
+		pageSize: 10,
+	});
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -43,8 +51,13 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 					/>
 				}
 			>
-				{new Array(10).fill(null).map((item, index) => (
-					<QuestionPreview key={index} navigation={navigation} id={index} />
+				{PostData.data?.data.pageDtos.map((post, index) => (
+					<QuestionPreview
+						key={index}
+						navigation={navigation}
+						id={index}
+						post={post}
+					/>
 				))}
 			</ScrollView>
 			<View style={styles.buttonList}>

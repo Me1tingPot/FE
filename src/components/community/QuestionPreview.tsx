@@ -5,21 +5,24 @@ import { colors, communityNavigations, userNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { POST_DTO } from '@/types/api/types';
+import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 import Comment from '../../assets/images/Comment.png';
 import Report from '../../assets/images/Report.png';
 
 type QuestionPreviewProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
 	id: number;
+	post: POST_DTO;
 };
 
-const testImg =
-	'https://images.unsplash.com/photo-1555437858-e8521a85abc0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
-
-function QuestionPreview({ navigation, id }: QuestionPreviewProps) {
+function QuestionPreview({ navigation, id, post }: QuestionPreviewProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const date = getDateLocaleFormat(post.updatedAt);
+	const time = getFormattedTime(post.updatedAt);
+
 	return (
 		<TouchableOpacity
 			style={styles.container}
@@ -34,11 +37,14 @@ function QuestionPreview({ navigation, id }: QuestionPreviewProps) {
 				<TouchableOpacity
 					onPress={() => navigation.navigate(userNavigations.USER)}
 				>
-					<Image source={{ uri: testImg }} style={styles.profileImg} />
+					{/* API 수정되면 유저 정보 표시 */}
+					<Image source={{ uri: '/' }} style={styles.profileImg} />
 				</TouchableOpacity>
 				<View style={styles.userInfo}>
-					<Text style={styles.name}>Sunny Kim</Text>
-					<Text style={styles.date}>24/07/07</Text>
+					<Text style={styles.name}>{post.name}</Text>
+					<Text style={styles.date}>
+						{date} {time}
+					</Text>
 				</View>
 				<TouchableOpacity
 					activeOpacity={0.8}
@@ -49,14 +55,9 @@ function QuestionPreview({ navigation, id }: QuestionPreviewProps) {
 			</View>
 			<View style={styles.contents}>
 				<View style={styles.titleLayout}>
-					<Text style={styles.title}>
-						잠실에서 모임 열건데 추천 맛집있나요?
-					</Text>
+					<Text style={styles.title}>{post.title}</Text>
 				</View>
-				<Text style={styles.content}>
-					이번주에 잠실에서 만나려고 하는데요, 일단 저 포함 3명이고, 한국인 2명
-					있어요.
-				</Text>
+				<Text style={styles.content}>{post.content}</Text>
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}
@@ -66,7 +67,7 @@ function QuestionPreview({ navigation, id }: QuestionPreviewProps) {
 			</View>
 			<View style={styles.bottom}>
 				<Image source={Comment} />
-				<Text style={styles.commentCount}>3</Text>
+				<Text style={styles.commentCount}>{post.commentCount}</Text>
 			</View>
 		</TouchableOpacity>
 	);
