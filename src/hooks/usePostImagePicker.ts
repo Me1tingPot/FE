@@ -1,0 +1,95 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
+import { getSignupProfileUploadUrl } from '@/api';
+import { ImageUri } from '@/types';
+import useImages from './queries/useMutateImages';
+
+interface usePostImagePickerProps {
+	initialImages: ImageUri[];
+	maxFiles: number;
+}
+
+function usePostImagePicker({
+	initialImages = [],
+	maxFiles,
+}: usePostImagePickerProps) {
+	const [imageUris, setImageUris] = useState(initialImages);
+	const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const { t } = useTranslation();
+	const { profileImagesMutation } = useImages();
+
+	const addImageUris = (uris: string[]) => {
+		if (imageUris.length + uris.length > maxFiles) {
+			Alert.alert(
+				`이미지 개수 초과`,
+				`추가 가능한 이미지는 최대 ${maxFiles}개입니다.`,
+			);
+			return;
+		}
+
+		setImageUris(prev => [...prev, ...uris.map(uri => ({ uri }))]);
+	};
+
+	const deleteImageUri = (uri: string) => {
+		const newImageUris = imageUris.filter(image => image.uri !== uri);
+		setImageUris(newImageUris);
+	};
+
+	const changeImageUrisOrder = (fromIndex: number, toIndex: number) => {
+		const copyImageUris = [...imageUris];
+		const [removedImage] = copyImageUris.splice(fromIndex, 1);
+		copyImageUris.splice(toIndex, 0, removedImage);
+		setImageUris(copyImageUris);
+	};
+
+	const handleChange = async () => {
+		try {
+			setIsLoading(true);
+			const images = await ImagePicker.openPicker({
+				mediaType: 'photo',
+				multiple: true,
+				includeBase64: true,
+				maxFiles: maxFiles,
+				cropperChooseText: t('완료'),
+				cropperCancelText: t('취소'),
+			});
+
+			const uploadPromises = images.map(async (image, index) => {
+				const { data } = await getSignupProfileUploadUrl();
+				const { uploadUrl, fileKey } = data;
+
+				await profileImagesMutation.mutateAsync({
+					uploadUrl: uploadUrl,
+					body: images[index],
+				});
+
+				return fileKey;
+			});
+
+         const uploadedImageKeys = await Promise.all(uploadPromises);
+
+			addImageUris(images.map(img => img.path));
+			setUploadedImages(uploadedImageKeys); // 키만 배열로 설정
+			return uploadedImageKeys;
+		} catch (error: any) {
+			if (error.code !== 'PICKER_CANCELED') {
+				console.error(error);
+			}
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	return {
+		uploadedImages,
+		imageUris,
+		handleChange,
+		delete: deleteImageUri,
+		changeOrder: changeImageUrisOrder,
+		isLoading,
+	};
+}
+export default usePostImagePicker;

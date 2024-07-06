@@ -21,6 +21,7 @@ export interface GetPostsProps {
 }
 
 const post = async ({title, content, postType, imageKeys}: PostProps) => {
+   console.log({title, content, postType, imageKeys})
    const { data } = await axiosInstance.post(`${API_URL.POST}`, {
       title,
       content,

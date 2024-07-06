@@ -17,15 +17,23 @@ import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MultipleGradientBgTextInput from '@/components/community/MultipleGradientBgTextInput';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
-import { colors } from '@/constants';
+import { colors, feedTabNavigations } from '@/constants';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import useCommunity from '@/hooks/queries/useCommunity';
+import { POST_TYPE } from '@/api/community';
+import usePostImagePicker from '@/hooks/usePostImagePicker';
+import Toast from 'react-native-toast-message';
+import { NavigationProp } from '@react-navigation/native';
+import { FeedTabParamList } from '@/navigations/tab/FeedTabNavigator';
 
-type CommunityQuestionWriteScreenProps = {};
+type CommunityQuestionWriteScreenProps = {
+	navigation: NavigationProp<FeedTabParamList>
+};
 
-function CommunityQuestionWriteScreen({}: CommunityQuestionWriteScreenProps) {
+function CommunityQuestionWriteScreen({ navigation }: CommunityQuestionWriteScreenProps) {
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
 	const [files, setFiles] = useState<string[]>([]);
@@ -33,6 +41,11 @@ function CommunityQuestionWriteScreen({}: CommunityQuestionWriteScreenProps) {
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const modal = useModal();
+	const { postMutation } = useCommunity();
+	const { imageUris, uploadedImages } = usePostImagePicker({
+		initialImages: [],
+		maxFiles: 10,
+	});
 
 	usePermission('PHOTO');
 	usePermission('CAMERA');
@@ -51,6 +64,33 @@ function CommunityQuestionWriteScreen({}: CommunityQuestionWriteScreenProps) {
 		const imgList = files.filter(item => item !== img);
 		setFiles(imgList);
 	};
+
+	const handleOnSubmit = () => {
+		postMutation.mutate({
+			title,
+			content,
+			postType: POST_TYPE.QUESTION,
+			imageKeys: uploadedImages
+		}, {
+			onSuccess: data => {
+				Toast.show({
+					type: 'success',
+					text1: '게시물이 업로드 되었습니다.',
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+				navigation.navigate(feedTabNavigations.COMMUNITY_HOME);
+			},
+			onError: error => {
+				Toast.show({
+					type: 'error',
+					text1: error.response?.data.message || '게시물 업로드 오류입니다.',
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+			}
+		})
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -107,7 +147,7 @@ function CommunityQuestionWriteScreen({}: CommunityQuestionWriteScreenProps) {
 						</Pressable>
 						<Pressable
 							style={styles.menuBtn}
-							onPress={() => console.log('click')}
+							onPress={handleOnSubmit}
 						>
 							<Text style={styles.menuText}>{t('게시하기')}</Text>
 						</Pressable>
