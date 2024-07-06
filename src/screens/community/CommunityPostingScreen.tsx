@@ -8,9 +8,11 @@ import {
 	View,
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { POST_TYPE } from '@/api/community';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import PostingPreview from '@/components/community/PostingPreview';
 import { colors, communityNavigations } from '@/constants';
+import useCommunity from '@/hooks/queries/useCommunity';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -21,6 +23,12 @@ type CommunityPostingScreenProps = {
 
 function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 	const [refreshing, setRefreshing] = useState(false);
+	const { useGetPosts } = useCommunity();
+	const PostData = useGetPosts({
+		postType: POST_TYPE.POSTING,
+		cursor: 1,
+		pageSize: 10,
+	});
 
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -50,8 +58,13 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 						/>
 					}
 				>
-					{new Array(10).fill(null).map((_, idx) => (
-						<PostingPreview key={idx} navigation={navigation} id={idx} />
+					{PostData.data?.data.pageDtos.map((post, idx) => (
+						<PostingPreview
+							key={idx}
+							navigation={navigation}
+							id={idx}
+							post={post}
+						/>
 					))}
 				</ScrollView>
 			</View>

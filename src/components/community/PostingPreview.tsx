@@ -1,34 +1,28 @@
 import { useTranslation } from 'react-i18next';
-import {
-	FlatList,
-	Image,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, communityNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { POST_DTO } from '@/types/api/types';
+import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 import Comment from '../../assets/images/Comment.png';
 import Report from '../../assets/images/Report.png';
 
 type PostingPreviewProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
 	id: number;
+	post: POST_DTO;
 };
 
-const testImg =
-	'https://images.unsplash.com/photo-1605100958409-e084833953d4?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
-
-const imageList = new Array(4).fill(testImg);
-
-function PostingPreview({ navigation, id }: PostingPreviewProps) {
+function PostingPreview({ navigation, id, post }: PostingPreviewProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
+	const date = getDateLocaleFormat(post.updatedAt);
+	const time = getFormattedTime(post.updatedAt);
+
 	return (
 		<TouchableOpacity
 			style={styles.container}
@@ -40,8 +34,9 @@ function PostingPreview({ navigation, id }: PostingPreviewProps) {
 			}
 		>
 			<View style={styles.row}>
-				<Image source={{ uri: testImg }} style={styles.userImg} />
-				<Text style={styles.flexText}>Sunny Kim</Text>
+				{/* API 수정되면 유저 정보 표시 */}
+				<Image source={{ uri: '/' }} style={styles.userImg} />
+				<Text style={styles.flexText}>{post.name}</Text>
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}
@@ -50,24 +45,26 @@ function PostingPreview({ navigation, id }: PostingPreviewProps) {
 				</TouchableOpacity>
 			</View>
 			<View style={[styles.innerPadding, styles.contentContainer]}>
-				<Text style={styles.title}>경복궁 파티 어쩌구</Text>
-				<Text style={styles.content}>
-					이번주에 잠실에서 만나려고 하는데요, 일단 저 포함 3명이고, 한국인 2명
-					있어요.
-				</Text>
-				<FlatList
-					data={imageList}
+				<Text style={styles.title}>{post.title}</Text>
+				<Text style={styles.content}>{post.content}</Text>
+				{/* API 수정되면 이미지 표시 */}
+				{/* <FlatList
+					data={post}
 					horizontal={true}
 					renderItem={({ item, index }) => (
 						<Image key={index} source={{ uri: item }} style={styles.image} />
 					)}
-				/>
+				/> */}
 			</View>
 			<View style={styles.verticalLine} />
 			<View style={[styles.row, styles.innerPadding]}>
 				<Image source={Comment} />
-				<Text style={styles.flexText}>{`${t('댓글')}`} 3</Text>
-				<Text style={styles.date}>2024/05/31</Text>
+				<Text style={styles.flexText}>
+					{`${t('댓글')}`} {post.commentCount}
+				</Text>
+				<Text style={styles.date}>
+					{date} {time}
+				</Text>
 			</View>
 		</TouchableOpacity>
 	);
