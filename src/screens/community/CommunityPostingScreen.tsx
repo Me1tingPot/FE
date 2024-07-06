@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import {
+	ActivityIndicator,
+	FlatList,
 	RefreshControl,
 	SafeAreaView,
-	ScrollView,
 	StatusBar,
 	StyleSheet,
 	View,
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { POST_TYPE } from '@/api/community';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import PostingPreview from '@/components/community/PostingPreview';
 import { colors, communityNavigations } from '@/constants';
@@ -16,6 +16,7 @@ import useCommunity from '@/hooks/queries/useCommunity';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { POST_DTO } from '@/types/api/types';
 
 type CommunityPostingScreenProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
@@ -23,22 +24,34 @@ type CommunityPostingScreenProps = {
 
 function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 	const [refreshing, setRefreshing] = useState(false);
-	const { useGetPosts } = useCommunity();
-	const PostData = useGetPosts({
-		postType: POST_TYPE.POSTING,
-		cursor: 1,
-		pageSize: 10,
-	});
+	const { useGetInfinitePostingPostLists } = useCommunity();
+	const { data, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
+		useGetInfinitePostingPostLists();
 
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
-		setTimeout(() => {
+		refetch().finally(() => {
 			setRefreshing(false);
-		}, 2000);
-	}, []);
+		});
+	}, [refetch]);
+
+	const loadMore = useCallback(() => {
+		if (hasNextPage && !isFetchingNextPage) {
+			fetchNextPage();
+		}
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+	const renderItem = ({ item }: { item: POST_DTO }) => (
+		<PostingPreview
+			key={item.postId}
+			navigation={navigation}
+			id={item.postId}
+			post={item}
+		/>
+	);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -47,26 +60,31 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 				backgroundColor={colors[theme].WHITE}
 			/>
 			<View style={styles.contentContainer}>
-				<ScrollView
+				<FlatList
+					data={data?.pages}
 					contentContainerStyle={styles.scrollStyle}
-					refreshControl={
-						<RefreshControl
-							refreshing={refreshing}
-							onRefresh={onRefresh}
-							colors={[colors[theme].BLACK]}
-							tintColor={colors[theme].BLACK}
+					renderItem={({ item }) => (
+						<FlatList
+							data={item.data.pageDtos}
+							renderItem={renderItem}
+							keyExtractor={item => `${item.postId}`}
+							refreshControl={
+								<RefreshControl
+									refreshing={refreshing}
+									onRefresh={onRefresh}
+									colors={[colors[theme].BLACK]}
+									tintColor={colors[theme].BLACK}
+								/>
+							}
+							onEndReached={loadMore}
+							onEndReachedThreshold={0.5}
+							ListFooterComponent={
+								isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+							}
+							ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
 						/>
-					}
-				>
-					{PostData.data?.data.pageDtos.map((post, idx) => (
-						<PostingPreview
-							key={idx}
-							navigation={navigation}
-							id={idx}
-							post={post}
-						/>
-					))}
-				</ScrollView>
+					)}
+				/>
 			</View>
 			<View style={styles.buttonList}>
 				<IconCircleButton
@@ -102,6 +120,9 @@ const styling = (theme: ThemeMode) =>
 			position: 'absolute',
 			bottom: 30,
 			right: 15,
+		},
+		gapStyle: {
+			height: 10,
 		},
 	});
 

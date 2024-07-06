@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 import {
+	ActivityIndicator,
+	FlatList,
 	RefreshControl,
 	SafeAreaView,
-	ScrollView,
 	StyleSheet,
 	View,
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { POST_TYPE } from '@/api/community';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import QuestionPreview from '@/components/community/QuestionPreview';
 import { colors, communityNavigations } from '@/constants';
@@ -15,6 +15,7 @@ import useCommunity from '@/hooks/queries/useCommunity';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { POST_DTO } from '@/types/api/types';
 
 interface CommunityQuestionScreenProps {
 	navigation: NavigationProp<CommunityStackParamList>;
@@ -24,42 +25,57 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const [refreshing, setRefreshing] = useState(false);
-	const { useGetPosts } = useCommunity();
-	const PostData = useGetPosts({
-		postType: POST_TYPE.QUESTION,
-		cursor: 1,
-		pageSize: 10,
-	});
+	const { useGetInfiniteQuestionPostLists } = useCommunity();
+	const { data, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
+		useGetInfiniteQuestionPostLists();
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
-		setTimeout(() => {
+		refetch().finally(() => {
 			setRefreshing(false);
-		}, 2000);
-	}, []);
+		});
+	}, [refetch]);
+
+	const loadMore = useCallback(() => {
+		if (hasNextPage && !isFetchingNextPage) {
+			fetchNextPage();
+		}
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+	const renderItem = ({ item }: { item: POST_DTO }) => (
+		<QuestionPreview navigation={navigation} post={item} id={item.postId} />
+	);
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView
-				contentContainerStyle={styles.contentContainer}
-				refreshControl={
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-						colors={[colors[theme].BLACK]}
-						tintColor={colors[theme].BLACK}
-					/>
-				}
-			>
-				{PostData.data?.data.pageDtos.map((post, index) => (
-					<QuestionPreview
-						key={index}
-						navigation={navigation}
-						id={index}
-						post={post}
-					/>
-				))}
-			</ScrollView>
+			<View style={styles.contentContainer}>
+				<FlatList
+					data={data?.pages}
+					contentContainerStyle={styles.contentContainer}
+					renderItem={({ item }) => (
+						<FlatList
+							data={item.data.pageDtos}
+							renderItem={renderItem}
+							keyExtractor={item => `${item.postId}`}
+							refreshControl={
+								<RefreshControl
+									refreshing={refreshing}
+									onRefresh={onRefresh}
+									colors={[colors[theme].BLACK]}
+									tintColor={colors[theme].BLACK}
+								/>
+							}
+							onEndReached={loadMore}
+							onEndReachedThreshold={0.5}
+							ListFooterComponent={
+								isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+							}
+							ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
+						/>
+					)}
+					keyExtractor={(item, index) => `${item.data.nextCursor}-${index}`}
+				/>
+			</View>
 			<View style={styles.buttonList}>
 				<IconCircleButton
 					family="Octicons"
@@ -85,13 +101,16 @@ const styling = (theme: ThemeMode) =>
 			display: 'flex',
 			flexDirection: 'column',
 			gap: 10,
-			paddingHorizontal: 20,
-			paddingVertical: 20,
+			paddingHorizontal: 10,
+			paddingVertical: 10,
 		},
 		buttonList: {
 			position: 'absolute',
 			bottom: 30,
 			right: 15,
+		},
+		gapStyle: {
+			height: 10,
 		},
 	});
 export default CommunityQuestionScreen;
