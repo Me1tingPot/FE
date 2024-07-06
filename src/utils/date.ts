@@ -36,12 +36,8 @@ function getFormattedTime(dateString: Date | string) {
 	const hours = date.getHours();
 	const minutes = date.getMinutes();
 
-	const isAM = hours < 12;
-	const period = isAM ? '오전' : '오후';
-
-	const formattedHours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
 	const formattedMinutes = String(minutes).padStart(2, '0');
-	const formattedTime = `${period} ${String(formattedHours).padStart(2, '0')}:${formattedMinutes}`;
+	const formattedTime = `${String(hours).padStart(2, '0')}:${formattedMinutes}`;
 
 	return formattedTime;
 }

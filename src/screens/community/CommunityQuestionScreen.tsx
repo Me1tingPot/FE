@@ -71,6 +71,7 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 								isFetchingNextPage ? <ActivityIndicator size="small" /> : null
 							}
 							ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
+							inverted
 						/>
 					)}
 					keyExtractor={(item, index) => `${item.data.nextCursor}-${index}`}

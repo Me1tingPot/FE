@@ -82,6 +82,7 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 								isFetchingNextPage ? <ActivityIndicator size="small" /> : null
 							}
 							ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
+							inverted
 						/>
 					)}
 				/>
