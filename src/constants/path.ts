@@ -6,7 +6,8 @@ const API_BASE = {
 	MAIL: `mail`,
 	USER: `user`,
 	CHAT_ROOM: `chatRooms`,
-	POSTS: `posts`
+	POSTS: `posts`,
+	PARTY: `party`,
 };
 
 const API_URL = {
@@ -37,7 +38,12 @@ const API_URL = {
 
 	// post-controller
 	POST: `/${API}/${VERSION}/${API_BASE.POSTS}`,
-	GET_POSTS_LIST: `${API}/${VERSION}/${API_BASE.POSTS}/type`
+	GET_POSTS_LIST: `${API}/${VERSION}/${API_BASE.POSTS}/type`,
+
+	// party-controller
+	PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}`,
+	GET_TEMP_SAVED_PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}/temp-saved`,
+	PARTY_IMG_URL: `/${API}/${VERSION}/${API_BASE.PARTY}/image-url`,
 };
 
 export { VERSION, API_BASE, API_URL };

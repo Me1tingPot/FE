@@ -66,10 +66,47 @@ export type POST_DTO = {
 	content: string;
 	commentCount: number;
 	updatedAt: string;
-}
+};
 
 export type POST_DATA = {
 	pageDtos: POST_DTO[];
 	nextCursor: number;
 	isLast: boolean;
-}
+};
+
+export type OWNER_DTO = {
+	name: string;
+	introduction: string;
+	nationality: string;
+	country: string;
+	language: string[];
+	city: string;
+	profileImages: string[];
+	partyParticipantCount: number;
+	partyCreationCount: number;
+};
+
+type PARTICIPANTS_TYPE = {
+	name: string;
+};
+
+type CONTENTS_TYPE = {
+	lang: string;
+	content: string;
+};
+
+export type PARTY_DATA = {
+	id: number;
+	owner: OWNER_DTO;
+	subject: string;
+	partyStatus: string;
+	startTime: string;
+	locationAddress: string;
+	locationDetail: string;
+	locationReserved: boolean;
+	locationCanBeChanged: boolean;
+	minParticipant: number;
+	maxParticipant: number;
+	participants: PARTICIPANTS_TYPE[];
+	contents: CONTENTS_TYPE[];
+};

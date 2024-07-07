@@ -1,5 +1,6 @@
 import {
 	LOGIN_DATA_TYPES,
+	PARTY_DATA,
 	POST_DATA,
 	PROFILE_URL_DATA_TYPES,
 	SIGNUP_DATA_TYPES,
@@ -31,5 +32,9 @@ export type USER_PROFILE_TYPES = RETURN_TYPES & {
 };
 
 export type POST_TYPES = RETURN_TYPES & {
-	data: POST_DATA
-}
+	data: POST_DATA;
+};
+
+export type PARY_TYPES = RETURN_TYPES & {
+	data: PARTY_DATA;
+};
