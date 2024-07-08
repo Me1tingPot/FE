@@ -34,7 +34,7 @@ function useGetTempSavedParty() {
 	});
 
 	if (error) {
-		console.error(error.response);
+		console.error(error);
 	}
 
 	return { data, isSuccess, isError, isPending };
