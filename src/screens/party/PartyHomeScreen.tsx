@@ -16,13 +16,12 @@ import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import MainSearchInput from '@/components/common/MainSearchInput';
 import Pagination from '@/components/common/Pagination';
-import SearchInput from '@/components/common/SearchInput';
 import CustomMarker from '@/components/party/CustomMarker';
 import MarkerDetailModal from '@/components/party/MarkerDetailModal';
 import PartyOptionBottomSheet, {
 	IFilter,
 } from '@/components/party/PartyOptionBottomSheet';
-import { alerts, colors } from '@/constants';
+import { alerts } from '@/constants';
 import { numbers } from '@/constants/numbers';
 import useModal from '@/hooks/useModal';
 import useMoveMapView from '@/hooks/useMoveMapView';
