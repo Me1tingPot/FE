@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+	Image,
 	KeyboardAvoidingView,
 	Platform,
 	SafeAreaView,
@@ -41,35 +42,64 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 	});
 	const address = useGetAddress(location);
 
-	const [date, setDate] = useState(new Date());
-	const [time, setTime] = useState(new Date());
-	const [isBookedPlace, setIsBookedPlace] = useState(false);
-	const [isChangePlace, setIsChangePlace] = useState(false);
+	const [party, setParty] = useState({
+		date: new Date(),
+		time: new Date(),
+		isBookedPlace: false,
+		isChangePlace: false,
+		title: '',
+		detailPlace: '',
+		minParticipants: '',
+		maxParticipants: '',
+		detailParty: '',
+		isDatePicked: false,
+		isTimepicked: false,
+		image: [],
+	});
 
-	const [isDatePicked, setIsDatePicked] = useState(false);
-	const [isTimePicked, setIsTimePicked] = useState(false);
 	const dateModal = useModal();
 	const timeModal = useModal();
 	const selectBookedPlaceTrueOrNot = useModal();
 	const selectChangePlaceTrueOrNot = useModal();
 
+	const handleChangeTitle = (value: string) => {
+		setParty(prev => ({ ...prev, title: value }));
+	};
+	const handleDetailPlace = (value: string) => {
+		setParty(prev => ({ ...prev, detailPlace: value }));
+	};
+	const handleMinParticipants = (value: string) => {
+		setParty(prev => ({ ...prev, minParticipants: value }));
+	};
+	const hanldeMaxParticipants = (value: string) => {
+		setParty(prev => ({ ...prev, maxParticipants: value }));
+	};
 	const handleConfirmDate = () => {
-		setIsDatePicked(true);
+		setParty(prev => ({ ...prev, isDatePicked: true }));
 		dateModal.hide();
 	};
-
 	const handleConfirmTime = () => {
-		setIsTimePicked(true);
+		setParty(prev => ({ ...prev, isTimepicked: true }));
 		timeModal.hide();
 	};
-
 	const handleChangeDate = (pickedDate: Date) => {
-		setDate(pickedDate);
+		setParty(prev => ({ ...prev, date: pickedDate }));
+	};
+	const handleChangeTime = (pickedTime: Date) => {
+		setParty(prev => ({ ...prev, time: pickedTime }));
+	};
+	const handleIsBookedPlace = (value: boolean) => {
+		setParty(prev => ({ ...prev, isBookedPlace: value }));
+	};
+	const handleIsChangePlace = (value: boolean) => {
+		setParty(prev => ({ ...prev, isChangePlace: value }));
+	};
+	const handleChangeDetailParty = (value: string) => {
+		setParty(prev => ({ ...prev, detailParty: value }));
 	};
 
-	const handleChangeTime = (pickedTime: Date) => {
-		console.log(pickedTime);
-		setTime(pickedTime);
+	const handleOnSubmit = () => {
+		console.log('업로드 데이터: ', party);
 	};
 
 	return (
@@ -81,6 +111,10 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 			<SafeAreaView style={styles.container}>
 				<ScrollView contentContainerStyle={styles.contentContainer}>
 					<ImageInput onChange={imagePicker.handleChange} size="medium" />
+					{imagePicker.imageUris.length > 0 &&
+						imagePicker.imageUris.map(image => (
+							<Image source={{ uri: image.uri }} width={20} height={20} />
+						))}
 					<PreviewImageList
 						imageUris={imagePicker.imageUris}
 						onDelete={imagePicker.delete}
@@ -90,14 +124,17 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 						<Text style={styles.inputTitle}>
 							파티 제목<Text style={styles.privateInput}>*</Text>
 						</Text>
-						<CustomTextInput value="" onChangeText={() => {}} />
+						<CustomTextInput
+							value={party.title}
+							onChangeText={handleChangeTitle}
+						/>
 						<Text style={styles.inputTitle}>
 							파티 장소<Text style={styles.privateInput}>*</Text>
 						</Text>
 						<CustomTextInput value={address} onChangeText={() => {}} />
 						<CustomTextInput
-							value=""
-							onChangeText={() => {}}
+							value={party.detailPlace}
+							onChangeText={handleDetailPlace}
 							placeholder="상세 주소를 입력해주세요"
 						/>
 						<Text style={styles.inputTitle}>
@@ -105,16 +142,16 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 						</Text>
 						<CustomTextInput
 							inputMode="numeric"
-							value=""
-							onChangeText={() => {}}
+							value={party.minParticipants}
+							onChangeText={handleMinParticipants}
 						/>
 						<Text style={styles.inputTitle}>
 							최대 인원<Text style={styles.privateInput}>*</Text>
 						</Text>
 						<CustomTextInput
 							inputMode="numeric"
-							value=""
-							onChangeText={() => {}}
+							value={party.maxParticipants}
+							onChangeText={hanldeMaxParticipants}
 						/>
 						<Text style={styles.inputTitle}>
 							파티 날짜<Text style={styles.privateInput}>*</Text>
@@ -123,7 +160,9 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 							variant="outlined"
 							size="large"
 							label={
-								isDatePicked ? getDateWithSeparator(date, '. ') : '날짜 선택'
+								party.date
+									? getDateWithSeparator(party.date, '. ')
+									: '날짜 선택'
 							}
 							onPress={dateModal.show}
 						/>
@@ -134,7 +173,9 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 							variant="outlined"
 							size="large"
 							label={
-								isTimePicked && time ? getFormattedTime(time) : '시간 선택'
+								party.time && party.time
+									? getFormattedTime(party.time)
+									: '시간 선택'
 							}
 							onPress={timeModal.show}
 						/>
@@ -144,7 +185,7 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 						<CustomButton
 							variant="outlined"
 							size="large"
-							label={isBookedPlace ? '예' : '아니오'}
+							label={party.isBookedPlace ? '예' : '아니오'}
 							onPress={selectBookedPlaceTrueOrNot.show}
 						/>
 						<Text style={styles.inputTitle}>
@@ -153,15 +194,19 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 						<CustomButton
 							variant="outlined"
 							size="large"
-							label={isChangePlace ? '예' : '아니오'}
+							label={party.isChangePlace ? '예' : '아니오'}
 							onPress={selectChangePlaceTrueOrNot.show}
 						/>
 						<Text style={styles.inputTitle}>상세 설명</Text>
-						<CustomTextInput multiline value="" onChangeText={() => {}} />
+						<CustomTextInput
+							multiline
+							value={party.detailParty}
+							onChangeText={handleChangeDetailParty}
+						/>
 					</View>
 					<DatePickerOption
 						mode="date"
-						date={date}
+						date={party.date}
 						isVisible={dateModal.isVisible}
 						onChangeDate={handleChangeDate}
 						onConfirmDate={handleConfirmDate}
@@ -169,7 +214,7 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 					/>
 					<DatePickerOption
 						mode="time"
-						date={time}
+						date={party.time}
 						isVisible={timeModal.isVisible}
 						onChangeDate={handleChangeTime}
 						onConfirmDate={handleConfirmTime}
@@ -178,13 +223,14 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 					<SelectTrueOrNot
 						isVisible={selectBookedPlaceTrueOrNot.isVisible}
 						hideOption={selectBookedPlaceTrueOrNot.hide}
-						setter={setIsBookedPlace}
+						setter={handleIsBookedPlace}
 					/>
 					<SelectTrueOrNot
 						isVisible={selectChangePlaceTrueOrNot.isVisible}
 						hideOption={selectChangePlaceTrueOrNot.hide}
-						setter={setIsChangePlace}
+						setter={handleIsChangePlace}
 					/>
+					<CustomButton onPress={handleOnSubmit} label="작성 완료" />
 				</ScrollView>
 			</SafeAreaView>
 		</KeyboardAvoidingView>
@@ -207,6 +253,7 @@ const styling = (theme: ThemeMode) =>
 		inputTitle: {
 			fontSize: 18,
 			fontFamily: 'Pretendard-Light',
+			color: colors[theme].BLACK,
 		},
 		privateInput: {
 			fontSize: 18,

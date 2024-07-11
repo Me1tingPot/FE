@@ -16,6 +16,7 @@ module.exports = {
 	],
 	plugins: ['react-hooks', 'jest'],
 	rules: {
+		radix: 'off',
 		'no-undef': 'off',
 		'import/no-extraneous-dependencies': 'off',
 		'no-use-before-define': 'off',

@@ -54,6 +54,7 @@ function CustomTextInput({
 					value={value}
 					onChangeText={onChangeText}
 					placeholder={placeholder}
+					placeholderTextColor={colors[theme].GRAY_400}
 					style={styles.text}
 					{...props}
 				/>
