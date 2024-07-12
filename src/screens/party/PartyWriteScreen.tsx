@@ -17,14 +17,19 @@ import PreviewImageList from '@/components/common/PreviewImageList';
 import SelectTrueOrNot from '@/components/party/SelectTrueOrNot';
 import DatePickerOption from '@/components/signup/DatePickerOption';
 import { colors, partyNavigations } from '@/constants';
+import useParty from '@/hooks/queries/useParty';
 import useGetAddress from '@/hooks/useGetAddress';
-import useImagePicker from '@/hooks/useImagePicker';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
+import usePostImagePicker from '@/hooks/usePostImagePicker';
 import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import { getDateWithSeparator, getFormattedTime } from '@/utils';
+import {
+	combineDateAndTime,
+	getDateWithSeparator,
+	getFormattedTime,
+} from '@/utils';
 
 type AddPostScreenProps = StackScreenProps<
 	PartyStackParamList,
@@ -34,13 +39,15 @@ type AddPostScreenProps = StackScreenProps<
 function PartyWriteScreen({ route }: AddPostScreenProps) {
 	const { location } = route.params;
 	const { theme } = useThemeStore();
+	const { createPartyMutation } = useParty();
 	const styles = styling(theme);
 	usePermission('PHOTO');
-	const imagePicker = useImagePicker({
+	const imagePicker = usePostImagePicker({
 		initialImages: [],
 		maxFiles: 10,
 	});
-	const address = useGetAddress(location);
+	const { address, placeId, formattedLatitude, formattedLongitude } =
+		useGetAddress(location);
 
 	const [party, setParty] = useState({
 		date: new Date(),
@@ -99,7 +106,32 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 	};
 
 	const handleOnSubmit = () => {
-		console.log('업로드 데이터: ', party);
+		const startTime = combineDateAndTime(party.date, party.time);
+		const partyData = {
+			subject: party.title,
+			imageKey: imagePicker.uploadedImages,
+			locationAddress: address,
+			locationDetail: party.detailPlace,
+			description: party.detailParty,
+			descriptionLanguage: 'ko-KR', // TODO: 수정 필요 (사용자 사용 언어)
+			startTime: startTime,
+			areaId: placeId,
+			partyMinParticipant: parseInt(party.minParticipants),
+			partyMaxParticipant: parseInt(party.maxParticipants),
+			locationIsReserved: party.isBookedPlace,
+			locationCanBeChanged: party.isChangePlace,
+			isTempSave: false,
+			locationLatitude: formattedLatitude,
+			locationLongitude: formattedLongitude,
+		};
+		createPartyMutation.mutate(partyData, {
+			onSuccess: data => {
+				console.log('요청 성공!', data);
+			},
+			onError: error => {
+				console.error('요청 실패!', error);
+			},
+		});
 	};
 
 	return (

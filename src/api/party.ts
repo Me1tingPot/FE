@@ -1,6 +1,24 @@
 import { API_URL } from '@/constants/path';
 import axiosInstance from './axios';
 
+type createPatyProps = {
+	subject: string;
+	imageKey: string[];
+	locationAddress: string;
+	locationDetail: string;
+	description: string;
+	descriptionLanguage: string;
+	startTime: string;
+	areaId: string;
+	partyMinParticipant: number;
+	partyMaxParticipant: number;
+	locationIsReserved: boolean;
+	locationCanBeChanged: boolean;
+	isTempSave: boolean;
+	locationLatitude: number;
+	locationLongitude: number;
+};
+
 const getPartyData = async (partyId: number) => {
 	const { data } = await axiosInstance.get(`${API_URL.PARTY}/${partyId}`);
 	return data;
@@ -16,8 +34,10 @@ const deleteParty = async (partyId: number) => {
 	return data;
 };
 
-const createParty = async () => {
-	const { data } = await axiosInstance.post(`${API_URL.PARTY}`);
+const createParty = async ({ ...partyData }: createPatyProps) => {
+	const { data } = await axiosInstance.post(`${API_URL.PARTY}`, {
+		...partyData,
+	});
 	return data;
 };
 

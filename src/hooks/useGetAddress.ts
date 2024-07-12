@@ -6,7 +6,12 @@ import { errorMessages } from '@/constants';
 
 function useGetAddress(location: LatLng) {
 	const { latitude, longitude } = location;
-	const [address, setAddress] = useState('');
+	const [addressData, setAdressData] = useState({
+		address: '',
+		placeId: '',
+		formattedLatitude: 0,
+		formattedLongitude: 0,
+	});
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
@@ -22,13 +27,30 @@ function useGetAddress(location: LatLng) {
 					? data.results[0].formatted_address
 					: `${latitude.toFixed(3)}, ${longitude.toFixed(3)}`;
 
-				setAddress(address);
+				const placeId = data.results.length
+					? data.results[0].place_id
+					: `${latitude.toFixed(3)}, ${longitude.toFixed(3)}`;
+
+				const formattedLatitude = parseFloat(latitude.toFixed(3));
+				const formattedLongitude = parseFloat(longitude.toFixed(3));
+
+				setAdressData({
+					address,
+					placeId,
+					formattedLatitude,
+					formattedLongitude,
+				});
 			} catch (error) {
 				if (axios.isCancel(error)) {
 					console.log('Request canceled', error.message);
 				} else {
 					console.log(error);
-					setAddress(errorMessages.CANNOT_GET_ADDRESS);
+					setAdressData(prev => ({
+						address: errorMessages.CANNOT_GET_ADDRESS,
+						placeId: errorMessages.CANNOT_GET_ADDRESS,
+						formattedLatitude: 0,
+						formattedLongitude: 0,
+					}));
 				}
 			}
 		})();
@@ -38,7 +60,7 @@ function useGetAddress(location: LatLng) {
 		};
 	}, [latitude, longitude]);
 
-	return address;
+	return { ...addressData };
 }
 
 export default useGetAddress;

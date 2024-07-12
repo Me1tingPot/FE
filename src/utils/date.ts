@@ -91,6 +91,18 @@ function changeEnMonth(year: number, month: number) {
 	return date.toLocaleString('en-US', { month: 'long' });
 }
 
+function combineDateAndTime(date: Date, time: Date) {
+	const combined = new Date(
+		date.getFullYear(),
+		date.getMonth(),
+		date.getDate(),
+		time.getHours(),
+		time.getMinutes(),
+		time.getSeconds(),
+	);
+	return combined.toISOString();
+}
+
 export type { MonthYear };
 
 export {
@@ -102,4 +114,5 @@ export {
 	isSameAsCurrentDate,
 	changeEnMonth,
 	getFormattedTime,
+	combineDateAndTime,
 };
