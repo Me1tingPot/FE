@@ -7,6 +7,7 @@ const queryKeys = {
 	CHAT: 'chat',
 	POST: 'post',
 	PARTY: 'party',
+	AREA: 'area',
 } as const;
 
 const storageKeys = {

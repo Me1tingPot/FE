@@ -46,7 +46,7 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 		initialImages: [],
 		maxFiles: 10,
 	});
-	const { address, placeId, formattedLatitude, formattedLongitude } =
+	const { address, areaId, formattedLatitude, formattedLongitude } =
 		useGetAddress(location);
 
 	const [party, setParty] = useState({
@@ -115,7 +115,7 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 			description: party.detailParty,
 			descriptionLanguage: 'ko-KR', // TODO: 수정 필요 (사용자 사용 언어)
 			startTime: startTime,
-			areaId: placeId,
+			areaId: areaId,
 			partyMinParticipant: parseInt(party.minParticipants),
 			partyMaxParticipant: parseInt(party.maxParticipants),
 			locationIsReserved: party.isBookedPlace,

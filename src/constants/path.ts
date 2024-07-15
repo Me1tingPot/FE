@@ -8,6 +8,7 @@ const API_BASE = {
 	CHAT_ROOM: `chatRooms`,
 	POSTS: `posts`,
 	PARTY: `party`,
+	AREA: `area`,
 };
 
 const API_URL = {
@@ -44,6 +45,10 @@ const API_URL = {
 	PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}`,
 	GET_TEMP_SAVED_PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}/temp-saved`,
 	PARTY_IMG_URL: `/${API}/${VERSION}/${API_BASE.PARTY}/image-url`,
+
+	// area-controller
+	AREA: `${API}/${VERSION}/${API_BASE.AREA}`,
+	AREA_SEARCH: `${API}/${VERSION}/${API_BASE.AREA}/search-by-coord`,
 };
 
 export { VERSION, API_BASE, API_URL };

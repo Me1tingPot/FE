@@ -3,15 +3,19 @@ import Config from 'react-native-config';
 import { LatLng } from 'react-native-maps';
 import axios from 'axios';
 import { errorMessages } from '@/constants';
+import useArea from './queries/useArea';
 
 function useGetAddress(location: LatLng) {
 	const { latitude, longitude } = location;
 	const [addressData, setAdressData] = useState({
 		address: '',
-		placeId: '',
+		areaId: '',
 		formattedLatitude: 0,
 		formattedLongitude: 0,
 	});
+	const { useSearchAreaByCoord } = useArea();
+	const { data } = useSearchAreaByCoord(latitude, longitude);
+	const areaId = data?.data?.areaId;
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
@@ -26,17 +30,12 @@ function useGetAddress(location: LatLng) {
 				const address = data.results.length
 					? data.results[0].formatted_address
 					: `${latitude.toFixed(3)}, ${longitude.toFixed(3)}`;
-
-				const placeId = data.results.length
-					? data.results[0].place_id
-					: `${latitude.toFixed(3)}, ${longitude.toFixed(3)}`;
-
 				const formattedLatitude = parseFloat(latitude.toFixed(3));
 				const formattedLongitude = parseFloat(longitude.toFixed(3));
 
 				setAdressData({
 					address,
-					placeId,
+					areaId,
 					formattedLatitude,
 					formattedLongitude,
 				});
@@ -47,7 +46,7 @@ function useGetAddress(location: LatLng) {
 					console.log(error);
 					setAdressData(prev => ({
 						address: errorMessages.CANNOT_GET_ADDRESS,
-						placeId: errorMessages.CANNOT_GET_ADDRESS,
+						areaId: errorMessages.CANNOT_GET_ADDRESS,
 						formattedLatitude: 0,
 						formattedLongitude: 0,
 					}));
