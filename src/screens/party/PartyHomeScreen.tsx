@@ -8,20 +8,15 @@ import MapView, {
 	PROVIDER_GOOGLE,
 } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import {
-	BottomSheetModal,
-	BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationProp } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import MainSearchInput from '@/components/common/MainSearchInput';
 import Pagination from '@/components/common/Pagination';
 import CustomMarker from '@/components/party/CustomMarker';
 import MarkerDetailModal from '@/components/party/MarkerDetailModal';
-import PartyOptionBottomSheet, {
-	IFilter,
-} from '@/components/party/PartyOptionBottomSheet';
-import { alerts } from '@/constants';
+import { IFilter } from '@/components/party/PartyOptionBottomSheet';
+import { alerts, partyNavigations } from '@/constants';
 import { numbers } from '@/constants/numbers';
 import useModal from '@/hooks/useModal';
 import useMoveMapView from '@/hooks/useMoveMapView';
@@ -51,22 +46,12 @@ function PartyDetailScreen({ navigation }: PartyDetailScreenProps) {
 	const { theme } = useThemeStore();
 	const insets = useSafeAreaInsets();
 	const styles = styling(theme, insets);
-	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 	const { userLocation, isUserLocationError } = useUserLocation();
 	const { selectLocation, setSelectLocation } = useLocationStore();
 	const [markerId, setMarkerId] = useState<number | null>(null);
 	const markerDetailModal = useModal();
 	const { mapRef, moveMapView, handleChangeDelta } = useMoveMapView();
 	usePermission('LOCATION');
-
-	const handleClosePress = () => bottomSheetModalRef.current?.close();
-	const handleOpenPress = () => bottomSheetModalRef.current?.present();
-
-	const [filter, setFilter] = useState<IFilter>({
-		region: '',
-		duration: '',
-		status: '',
-	});
 
 	const handlePressUserLocation = () => {
 		if (isUserLocationError) {
@@ -103,10 +88,6 @@ function PartyDetailScreen({ navigation }: PartyDetailScreenProps) {
 		setSelectLocation(nativeEvent.coordinate);
 	};
 
-	const handlePressSearch = () => {
-		navigation.navigate('PartySearch');
-	};
-
 	const [keyword, setKeyword] = useState<string>('');
 	const { regionInfo, pageParam, fetchNextPage, fetchPrevPage, hasNextPage } =
 		useSearchLocation(keyword, userLocation);
@@ -116,7 +97,7 @@ function PartyDetailScreen({ navigation }: PartyDetailScreenProps) {
 	};
 
 	return (
-		<BottomSheetModalProvider>
+		<>
 			<MapView
 				ref={mapRef}
 				style={styles.container}
@@ -164,7 +145,7 @@ function PartyDetailScreen({ navigation }: PartyDetailScreenProps) {
 				<IconCircleButton
 					family="MaterialIcons"
 					name="filter"
-					onPress={handleOpenPress}
+					onPress={() => navigation.navigate(partyNavigations.PARTY_LIST)}
 				/>
 			</View>
 			<View style={styles.searchContainer}>
@@ -202,13 +183,7 @@ function PartyDetailScreen({ navigation }: PartyDetailScreenProps) {
 				markerId={markerId}
 				hide={markerDetailModal.hide}
 			/>
-			<PartyOptionBottomSheet
-				ref={bottomSheetModalRef}
-				handleClosePress={handleClosePress}
-				filter={filter}
-				setFilter={setFilter}
-			/>
-		</BottomSheetModalProvider>
+		</>
 	);
 }
 

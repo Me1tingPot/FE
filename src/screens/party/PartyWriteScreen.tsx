@@ -163,7 +163,7 @@ function PartyWriteScreen({ route }: AddPostScreenProps) {
 						<Text style={styles.inputTitle}>
 							파티 장소<Text style={styles.privateInput}>*</Text>
 						</Text>
-						<CustomTextInput value={address} onChangeText={() => {}} />
+						<CustomTextInput value={address} editable={false} />
 						<CustomTextInput
 							value={party.detailPlace}
 							onChangeText={handleDetailPlace}

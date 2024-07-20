@@ -19,7 +19,7 @@ type inputVariant = (typeof inputVariants)[number];
 
 interface CustomTextInput extends TextInputProps {
 	value: string;
-	onChangeText: (text: string) => void;
+	onChangeText?: (text: string) => void;
 	placeholder?: string;
 	style?: StyleProp<ViewStyle>;
 	textStyle?: StyleProp<TextStyle>;

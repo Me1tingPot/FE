@@ -13,6 +13,7 @@ function useGetAddress(location: LatLng) {
 		formattedLatitude: 0,
 		formattedLongitude: 0,
 	});
+
 	const { useSearchAreaByCoord } = useArea();
 	const { data } = useSearchAreaByCoord(latitude, longitude);
 	const areaId = data?.data?.areaId;

@@ -7,6 +7,7 @@ import {
 import { colors, partyNavigations } from '@/constants';
 import PartyDetailScreen from '@/screens/party/PartyDetailScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
+import PartyListScreen from '@/screens/party/PartyListScreen';
 import PartySearchScreen from '@/screens/party/PartySearchScreen';
 import PartyWriteScreen from '@/screens/party/PartyWriteScreen';
 import useThemeStore from '@/store/useThemeStore';
@@ -16,6 +17,7 @@ export type PartyStackParamList = {
 	[partyNavigations.PARTY_WRITE]: { location: LatLng };
 	[partyNavigations.PARTY_DETAIL]: undefined;
 	[partyNavigations.PARTY_SEARCH]: undefined;
+	[partyNavigations.PARTY_LIST]: undefined;
 };
 
 const Stack = createStackNavigator<PartyStackParamList>();
@@ -67,6 +69,15 @@ function PartyStackNavigator() {
 					presentation: 'modal',
 					headerShown: true,
 					headerTitle: '장소 검색',
+				}}
+			/>
+			<Stack.Screen
+				name={partyNavigations.PARTY_LIST}
+				component={PartyListScreen}
+				options={{
+					headerShown: true,
+					headerTitle: '파티 목록',
+					...commonHeaderOptions,
 				}}
 			/>
 		</Stack.Navigator>
