@@ -1,4 +1,5 @@
 import { API_URL } from '@/constants/path';
+import { PARTY_LISTS_TYPE } from '@/types/api';
 import axiosInstance from './axios';
 
 type createPatyProps = {
@@ -21,15 +22,15 @@ type createPatyProps = {
 
 export type SearchPartyProps = {
 	page: number;
-	query: string;
-	areaIdFilter: string;
-	temporalFilter: string[];
-	statusFilter: string;
-	coordLeftTopFilter: {
+	query?: string;
+	areaIdFilter?: string;
+	temporalFilter?: string[];
+	statusFilter?: string;
+	coordLeftTopFilter?: {
 		latitude: number;
 		longitude: number;
 	};
-	coordRightBottomFilter: {
+	coordRightBottomFilter?: {
 		latitude: number;
 		longitude: number;
 	};
@@ -74,7 +75,9 @@ const joinParty = async (partyId: number) => {
 	return data;
 };
 
-const searchParty = async ({ ...searchData }: SearchPartyProps) => {
+const searchParty = async ({
+	...searchData
+}: SearchPartyProps): Promise<PARTY_LISTS_TYPE> => {
 	const { data } = await axiosInstance.post(`${API_URL.PARTY_SEARCH}`, {
 		...searchData,
 	});

@@ -118,3 +118,8 @@ export type SEARCH_PARTY_DATA = {
 	totalPage: number;
 	totalCount: number;
 };
+
+export type AREA_DATA = {
+	areaId: string;
+	areaName: string;
+};

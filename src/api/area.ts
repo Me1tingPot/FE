@@ -1,4 +1,5 @@
 import { API_URL } from '@/constants/path';
+import { AREA_TYPE } from '@/types/api';
 import axiosInstance from './axios';
 
 interface SearchAreaByCoordProps {
@@ -6,7 +7,7 @@ interface SearchAreaByCoordProps {
 	longitude: number;
 }
 
-const getChildArea = async (parentAreaId: string) => {
+const getChildArea = async (parentAreaId: string): Promise<AREA_TYPE> => {
 	const { data } = await axiosInstance.get(`${API_URL.AREA}/${parentAreaId}`);
 	return data;
 };
@@ -26,8 +27,8 @@ const searchAreaByCoord = async ({
 	return data;
 };
 
-const getArea = async () => {
-	const { data } = await axiosInstance.get(`${API_URL.AREA}`);
+const getArea = async (): Promise<AREA_TYPE> => {
+	const { data } = await axiosInstance.get(`${API_URL.AREA}/`);
 	return data;
 };
 

@@ -1,4 +1,5 @@
 import {
+	AREA_DATA,
 	LOGIN_DATA_TYPES,
 	PARTY_DATA,
 	POST_DATA,
@@ -42,4 +43,8 @@ export type PARTY_TYPES = RETURN_TYPES & {
 
 export type PARTY_LISTS_TYPE = RETURN_TYPES & {
 	data: SEARCH_PARTY_DATA;
+};
+
+export type AREA_TYPE = RETURN_TYPES & {
+	data: AREA_DATA[];
 };

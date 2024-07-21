@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors, districts } from '@/constants';
+import { colors } from '@/constants';
+import useArea from '@/hooks/queries/useArea';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { AREA_DATA } from '@/types/api/types';
 import CustomButton from '../common/CustomButton';
 
 interface PartyOptionRegionProps {
-	selectedRegion: string | null;
-	setSelectedRegion: (item: string) => void;
+	selectedRegion: AREA_DATA | null;
+	setSelectedRegion: (item: AREA_DATA) => void;
 	setSelectedSection: (section: string) => void;
 }
 
@@ -19,16 +21,31 @@ function PartyOptionRegion({
 }: PartyOptionRegionProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-	const [selectedItem, setSelectedItem] = useState<string | null>(null);
+	const [selectedItem, setSelectedItem] = useState<AREA_DATA>({
+		areaId: '',
+		areaName: '',
+	});
+	const [region, setRegion] = useState<AREA_DATA[] | undefined>();
+	const [districtList, setDistrictList] = useState<AREA_DATA[] | undefined>();
 	const { t } = useTranslation();
+	const { useSearchArea, useGetChildArea } = useArea();
 
-	const region = t('지역 모임', { returnObjects: true });
+	const { data: allArea } = useSearchArea();
+	const { data: childArea } = useGetChildArea(selectedItem?.areaId);
 
-	const handlePress = (item: string) => {
+	useEffect(() => {
+		setRegion(allArea?.data);
+	}, [allArea]);
+
+	useEffect(() => {
+		setDistrictList(childArea?.data);
+	}, [selectedItem]);
+
+	const handlePress = (item: AREA_DATA) => {
 		setSelectedItem(item);
 	};
 
-	const handleSelectRegion = (item: string) => {
+	const handleSelectRegion = (item: AREA_DATA) => {
 		setSelectedRegion(item);
 	};
 
@@ -41,11 +58,9 @@ function PartyOptionRegion({
 			);
 		}
 
-		const districtList = districts[selectedItem] || [];
-
 		return (
 			<View>
-				{districtList.map((district: string, idx: number) => (
+				{districtList?.map((district: AREA_DATA, idx: number) => (
 					<Pressable
 						key={idx}
 						onPress={() => handleSelectRegion(district)}
@@ -60,7 +75,7 @@ function PartyOptionRegion({
 								selectedRegion === district && styles.selectedText,
 							]}
 						>
-							{district}
+							{district.areaName}
 						</Text>
 					</Pressable>
 				))}
@@ -78,23 +93,23 @@ function PartyOptionRegion({
 		<>
 			<View style={styles.container}>
 				<ScrollView contentContainerStyle={styles.leftContainer}>
-					{region.map((item, idx) => (
+					{region?.map((area: AREA_DATA, idx: number) => (
 						<Pressable
 							key={idx}
 							style={({ pressed }) => [
 								styles.item,
-								selectedItem === item && styles.selectedItem,
+								selectedItem === area && styles.selectedItem,
 								pressed && { opacity: 0.5 },
 							]}
-							onPress={() => handlePress(item)}
+							onPress={() => handlePress(area)}
 						>
 							<Text
 								style={[
 									styles.itemText,
-									selectedItem === item && styles.selectedText,
+									selectedItem === area && styles.selectedText,
 								]}
 							>
-								{item}
+								{area.areaName}
 							</Text>
 						</Pressable>
 					))}

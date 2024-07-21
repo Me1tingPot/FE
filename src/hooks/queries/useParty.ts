@@ -16,13 +16,27 @@ import {
 	reportParty,
 	searchParty,
 	searchPartyNearby,
-	SearchPartyProps,
 	updateParty,
 } from '@/api/party';
 import { queryKeys } from '@/constants';
 import { ResponseError } from '@/types';
 import { PARTY_LISTS_TYPE } from '@/types/api';
 import { UseMutationCustomOptions } from './useAuth';
+
+interface SearchPartyInfiniteLIstsProps {
+	query?: string;
+	areaIdFilter?: string;
+	temporalFilter?: string[];
+	statusFilter?: string;
+	coordLeftTopFilter?: {
+		latitude: number;
+		longitude: number;
+	};
+	coordRightBottomFilter?: {
+		latitude: number;
+		longitude: number;
+	};
+}
 
 // GET: 파티 정보 조회
 function useGetParty(partyId: number) {
@@ -100,8 +114,8 @@ function useJoinParty(mutationOptions?: UseMutationCustomOptions) {
 }
 
 // POST: 파티 검색
-function useSearchPartyInfiniteLIsts(
-	partyData: SearchPartyProps,
+function useSearchPartyInfiniteLists(
+	partyData: SearchPartyInfiniteLIstsProps,
 	queryOptions?: UseInfiniteQueryOptions<
 		PARTY_LISTS_TYPE,
 		ResponseError,
@@ -125,8 +139,9 @@ function useSearchPartyInfiniteLIsts(
 		queryKey: [queryKeys.PARTY],
 		initialPageParam: 1,
 		getNextPageParam: (lastPage, _) => {
-			console.log(lastPage);
-			return undefined;
+			return lastPage.data.page < lastPage.data.totalPage
+				? lastPage.data.page + 1
+				: undefined;
 		},
 		...queryOptions,
 	});
@@ -182,7 +197,7 @@ function useParty() {
 		joinPartyMutation,
 		updatePartyMutation,
 		deletePartyMutation,
-		useSearchPartyInfiniteLIsts,
+		useSearchPartyInfiniteLists,
 	};
 }
 
