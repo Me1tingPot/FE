@@ -110,3 +110,11 @@ export type PARTY_DATA = {
 	participants: PARTICIPANTS_TYPE[];
 	contents: CONTENTS_TYPE[];
 };
+
+export type SEARCH_PARTY_DATA = {
+	content: PARTY_DATA[];
+	page: number;
+	size: number;
+	totalPage: number;
+	totalCount: number;
+};

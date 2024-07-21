@@ -1,4 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+	InfiniteData,
+	QueryKey,
+	useInfiniteQuery,
+	UseInfiniteQueryOptions,
+	useMutation,
+	useQuery,
+} from '@tanstack/react-query';
 import {
 	createParty,
 	deleteParty,
@@ -7,9 +14,14 @@ import {
 	getTempSavedParty,
 	joinParty,
 	reportParty,
+	searchParty,
+	searchPartyNearby,
+	SearchPartyProps,
 	updateParty,
 } from '@/api/party';
 import { queryKeys } from '@/constants';
+import { ResponseError } from '@/types';
+import { PARTY_LISTS_TYPE } from '@/types/api';
 import { UseMutationCustomOptions } from './useAuth';
 
 // GET: 파티 정보 조회
@@ -87,6 +99,51 @@ function useJoinParty(mutationOptions?: UseMutationCustomOptions) {
 	});
 }
 
+// POST: 파티 검색
+function useSearchPartyInfiniteLIsts(
+	partyData: SearchPartyProps,
+	queryOptions?: UseInfiniteQueryOptions<
+		PARTY_LISTS_TYPE,
+		ResponseError,
+		InfiniteData<PARTY_LISTS_TYPE, number>,
+		PARTY_LISTS_TYPE,
+		QueryKey,
+		number
+	>,
+) {
+	return useInfiniteQuery({
+		queryFn: ({ pageParam }) =>
+			searchParty({
+				page: pageParam,
+				query: partyData.query,
+				areaIdFilter: partyData.areaIdFilter,
+				temporalFilter: partyData.temporalFilter,
+				statusFilter: partyData.statusFilter,
+				coordLeftTopFilter: partyData.coordLeftTopFilter,
+				coordRightBottomFilter: partyData.coordRightBottomFilter,
+			}),
+		queryKey: [queryKeys.PARTY],
+		initialPageParam: 1,
+		getNextPageParam: (lastPage, _) => {
+			console.log(lastPage);
+			return undefined;
+		},
+		...queryOptions,
+	});
+}
+
+// POST: 내 주변 파티 검색
+// TODO: infiniteQuery로 변경
+// function useSearchPartyNearby(mutationOptions?: UseMutationCustomOptions) {
+// 	return useMutation({
+// 		mutationFn: searchPartyNearby,
+// 		onSuccess: data => {
+// 			console.log(data);
+// 		},
+// 		...mutationOptions,
+// 	});
+// }
+
 // PUT: 파티 수정
 function useUpdateParty(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
@@ -125,6 +182,7 @@ function useParty() {
 		joinPartyMutation,
 		updatePartyMutation,
 		deletePartyMutation,
+		useSearchPartyInfiniteLIsts,
 	};
 }
 

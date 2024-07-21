@@ -19,6 +19,27 @@ type createPatyProps = {
 	locationLongitude: number;
 };
 
+export type SearchPartyProps = {
+	page: number;
+	query: string;
+	areaIdFilter: string;
+	temporalFilter: string[];
+	statusFilter: string;
+	coordLeftTopFilter: {
+		latitude: number;
+		longitude: number;
+	};
+	coordRightBottomFilter: {
+		latitude: number;
+		longitude: number;
+	};
+};
+
+type SearchPartyNearbyProps = {
+	page: number;
+	areaId: string;
+};
+
 const getPartyData = async (partyId: number) => {
 	const { data } = await axiosInstance.get(`${API_URL.PARTY}/${partyId}`);
 	return data;
@@ -53,6 +74,21 @@ const joinParty = async (partyId: number) => {
 	return data;
 };
 
+const searchParty = async ({ ...searchData }: SearchPartyProps) => {
+	const { data } = await axiosInstance.post(`${API_URL.PARTY_SEARCH}`, {
+		...searchData,
+	});
+	return data;
+};
+
+const searchPartyNearby = async ({ page, areaId }: SearchPartyNearbyProps) => {
+	const { data } = await axiosInstance.post(`${API_URL.PARTY_SEARCH_NEARBY}`, {
+		page,
+		areaId,
+	});
+	return data;
+};
+
 const getTempSavedParty = async () => {
 	const { data } = await axiosInstance.get(`${API_URL.GET_TEMP_SAVED_PARTY}`);
 	return data;
@@ -72,4 +108,6 @@ export {
 	joinParty,
 	getTempSavedParty,
 	getPartyImageUrl,
+	searchParty,
+	searchPartyNearby,
 };

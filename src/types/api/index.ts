@@ -3,6 +3,7 @@ import {
 	PARTY_DATA,
 	POST_DATA,
 	PROFILE_URL_DATA_TYPES,
+	SEARCH_PARTY_DATA,
 	SIGNUP_DATA_TYPES,
 	USER_PROFILE_DATA_TYPES,
 } from './types';
@@ -35,6 +36,10 @@ export type POST_TYPES = RETURN_TYPES & {
 	data: POST_DATA;
 };
 
-export type PARY_TYPES = RETURN_TYPES & {
+export type PARTY_TYPES = RETURN_TYPES & {
 	data: PARTY_DATA;
+};
+
+export type PARTY_LISTS_TYPE = RETURN_TYPES & {
+	data: SEARCH_PARTY_DATA;
 };

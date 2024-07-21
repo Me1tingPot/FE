@@ -9,6 +9,7 @@ const API_BASE = {
 	POSTS: `posts`,
 	PARTY: `party`,
 	AREA: `area`,
+	SEARCH: `search`,
 };
 
 const API_URL = {
@@ -45,6 +46,10 @@ const API_URL = {
 	PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}`,
 	GET_TEMP_SAVED_PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}/temp-saved`,
 	PARTY_IMG_URL: `/${API}/${VERSION}/${API_BASE.PARTY}/image-url`,
+
+	// party-search-controller
+	PARTY_SEARCH: `/${API}/${VERSION}/${API_BASE.SEARCH}`,
+	PARTY_SEARCH_NEARBY: `/${API}/${VERSION}/${API_BASE.SEARCH}/nearby`,
 
 	// area-controller
 	AREA: `${API}/${VERSION}/${API_BASE.AREA}`,
