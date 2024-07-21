@@ -6,12 +6,15 @@ import {
 	SafeAreaView,
 	StyleSheet,
 	FlatList,
+	RefreshControl,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
 	BottomSheetModal,
 	BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 import { NavigationProp } from '@react-navigation/native';
+import CustomButton from '@/components/common/CustomButton';
 import PartyCard from '@/components/common/PartyCard';
 import PartyBox from '@/components/party/PartyBox';
 import PartyOptionBottomSheet, {
@@ -84,11 +87,13 @@ function PartyListScreen({ navigation }: PartyListScreenProps) {
 		<BottomSheetModalProvider>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.contentContainer}>
-					{/* 파티 리스트 개발 */}
-					<Text>PartyListScreen</Text>
-					<TouchableOpacity onPress={handleOpenPress}>
-						<Text>이거 누르면 창 열림</Text>
-					</TouchableOpacity>
+					<CustomButton
+						label="필터링"
+						icon={
+							<Ionicons name="filter" size={20} color={colors[theme].WHITE} />
+						}
+						onPress={handleOpenPress}
+					/>
 
 					<FlatList
 						data={partyList?.pages}
@@ -98,6 +103,15 @@ function PartyListScreen({ navigation }: PartyListScreenProps) {
 								renderItem={({ item, index }) => (
 									<PartyBox navigation={navigation} partyData={item} />
 								)}
+								onEndReached={loadMore}
+								refreshControl={
+									<RefreshControl
+										refreshing={refreshing}
+										onRefresh={onRefresh}
+										colors={[colors[theme].BLACK]}
+										tintColor={colors[theme].BLACK}
+									/>
+								}
 							/>
 						)}
 					/>
@@ -123,8 +137,12 @@ const styling = (theme: ThemeMode) =>
 		contentContainer: {
 			paddingVertical: 10,
 			paddingHorizontal: 15,
+			marginBottom: 30,
+			gap: 10,
 		},
-		partyListLayout: {},
+		// filterLayout: {
+
+		// }
 	});
 
 export default PartyListScreen;

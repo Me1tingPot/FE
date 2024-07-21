@@ -1,5 +1,6 @@
 import { API_URL } from '@/constants/path';
-import { PARTY_LISTS_TYPE } from '@/types/api';
+import { PARTY_LISTS_TYPE, PARTY_TYPES } from '@/types/api';
+import { PARTY_DATA } from '@/types/api/types';
 import axiosInstance from './axios';
 
 type createPatyProps = {
@@ -41,7 +42,7 @@ type SearchPartyNearbyProps = {
 	areaId: string;
 };
 
-const getPartyData = async (partyId: number) => {
+const getPartyData = async (partyId: number): Promise<PARTY_TYPES> => {
 	const { data } = await axiosInstance.get(`${API_URL.PARTY}/${partyId}`);
 	return data;
 };

@@ -15,7 +15,7 @@ import useThemeStore from '@/store/useThemeStore';
 export type PartyStackParamList = {
 	[partyNavigations.PARTY_HOME]: undefined;
 	[partyNavigations.PARTY_WRITE]: { location: LatLng };
-	[partyNavigations.PARTY_DETAIL]: undefined;
+	[partyNavigations.PARTY_DETAIL]: { id: number };
 	[partyNavigations.PARTY_SEARCH]: undefined;
 	[partyNavigations.PARTY_LIST]: undefined;
 };

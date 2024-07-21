@@ -30,8 +30,9 @@ function PartyBox({ navigation, partyData }: PartyBoxProps) {
 	} = partyData;
 
 	const handlePressEnterRoom = (id: number) => {
-		// TODO: id 넘기기
-		navigation.navigate(`${partyNavigations.PARTY_DETAIL}`);
+		navigation.navigate(`${partyNavigations.PARTY_DETAIL}`, {
+			id: id,
+		});
 	};
 
 	const renderRightActions = () => (
