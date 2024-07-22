@@ -16,6 +16,7 @@ import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSh
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { AREA_DATA } from '@/types/api/types';
 import PartyOptionPeriod from './PartyOptionPeriod';
 import PartyOptionRegion from './PartyOptionRegion';
 import PartyOptionStatus from './PartyOptionStatus';
@@ -23,8 +24,8 @@ import PartyOptionStatus from './PartyOptionStatus';
 type Ref = BottomSheet;
 
 export interface IFilter {
-	region: string;
-	duration: string;
+	region: AREA_DATA | null;
+	duration: string[];
 	status: string;
 }
 

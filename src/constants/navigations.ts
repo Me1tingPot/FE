@@ -24,6 +24,7 @@ const partyNavigations = {
 	PARTY_WRITE: 'PartyWrite',
 	PARTY_DETAIL: 'PartyDetail',
 	PARTY_SEARCH: 'PartySearch',
+	PARTY_LIST: 'PartyList',
 } as const;
 
 const communityNavigations = {

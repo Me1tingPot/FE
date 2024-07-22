@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Theme } from '@react-navigation/native';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -8,9 +7,9 @@ import CheckBox from '../common/CheckBox';
 import CustomButton from '../common/CustomButton';
 
 interface PartyOptionPeriodProps {
-	selectedPeriod: string | null;
+	selectedPeriod: string[] | null;
 	setSelectedSection: (section: string) => void;
-	setSelectedPeriod: (item: string) => void;
+	setSelectedPeriod: (item: string[]) => void;
 }
 
 function PartyOptionPeriod({
@@ -20,18 +19,42 @@ function PartyOptionPeriod({
 }: PartyOptionPeriodProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-	const [selectedItem, setSelectedItem] = useState<string | null>(null);
+	const [selectedItems, setSelectedItems] = useState<string[]>(
+		selectedPeriod || [],
+	);
 
 	const handlePress = (item: string) => {
-		setSelectedItem(item);
-		setSelectedPeriod(item);
+		setSelectedItems(prevSelectedItems => {
+			const isRecentPeriod = (i: string) =>
+				i === '최근 일주일 내' || i === '최근 한달 내';
+			const isSortOrder = (i: string) => i === '최신 순' || i === '오래된 순';
+
+			if (prevSelectedItems.includes(item)) {
+				return prevSelectedItems.filter(selectedItem => selectedItem !== item);
+			}
+			if (isRecentPeriod(item)) {
+				return [
+					...prevSelectedItems.filter(
+						selectedItem => !isRecentPeriod(selectedItem),
+					),
+					item,
+				];
+			}
+			if (isSortOrder(item)) {
+				return [
+					...prevSelectedItems.filter(
+						selectedItem => !isSortOrder(selectedItem),
+					),
+					item,
+				];
+			}
+			return [...prevSelectedItems, item];
+		});
 	};
 
-	const handleNavigateToNextSection = () => {
-		if (selectedItem) {
-			setSelectedSection('모집 상태');
-		}
-	};
+	useEffect(() => {
+		setSelectedPeriod(selectedItems);
+	}, [selectedItems]);
 
 	return (
 		<View style={styles.container}>
@@ -43,7 +66,7 @@ function PartyOptionPeriod({
 					<CheckBox
 						key={idx}
 						size="l"
-						isChecked={selectedPeriod === item}
+						isChecked={selectedItems.includes(item)}
 						onChangeCheck={() => handlePress(item)}
 					>
 						<Text style={styles.checkboxText}>{item}</Text>
@@ -54,7 +77,6 @@ function PartyOptionPeriod({
 				<CustomButton
 					label="모집 상태 선택하기"
 					variant="outlined"
-					onPress={handleNavigateToNextSection}
 					size="medium"
 				/>
 			</View>

@@ -15,14 +15,16 @@ import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
 interface DatePickerOptionProps {
+	mode?: 'date' | 'time' | 'datetime';
 	isVisible: boolean;
-	date: Date;
-	onChangeDate: (date: Date) => void;
+	date: any;
+	onChangeDate: (date: any) => void;
 	onConfirmDate: () => void;
 	hideOption: () => void;
 }
 
 function DatePickerOption({
+	mode = 'date',
 	isVisible,
 	date,
 	hideOption,
@@ -39,7 +41,7 @@ function DatePickerOption({
 				<View style={styles.optionContainer}>
 					<View style={styles.pickerContainer}>
 						<DatePicker
-							mode="date"
+							mode={mode}
 							date={date}
 							onDateChange={onChangeDate}
 							locale={getLocales()[0].languageCode}

@@ -23,7 +23,7 @@ export const buttonSizes = ['large', 'medium', 'small'] as const;
 type buttonSize = (typeof buttonSizes)[number];
 
 interface CustomButtonProps extends PressableProps {
-	label: string;
+	label?: string;
 	variant?: buttonVariant;
 	size?: buttonSize;
 	inValid?: boolean;

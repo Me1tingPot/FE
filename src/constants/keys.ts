@@ -5,6 +5,9 @@ const queryKeys = {
 	USER: 'user',
 	ACCOUNT_ID: 'accountId',
 	CHAT: 'chat',
+	POST: 'post',
+	PARTY: 'party',
+	AREA: 'area',
 } as const;
 
 const storageKeys = {

@@ -19,7 +19,7 @@ type inputVariant = (typeof inputVariants)[number];
 
 interface CustomTextInput extends TextInputProps {
 	value: string;
-	onChangeText: (text: string) => void;
+	onChangeText?: (text: string) => void;
 	placeholder?: string;
 	style?: StyleProp<ViewStyle>;
 	textStyle?: StyleProp<TextStyle>;
@@ -54,6 +54,7 @@ function CustomTextInput({
 					value={value}
 					onChangeText={onChangeText}
 					placeholder={placeholder}
+					placeholderTextColor={colors[theme].GRAY_400}
 					style={styles.text}
 					{...props}
 				/>

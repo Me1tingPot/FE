@@ -14,18 +14,28 @@ import {
 	View,
 } from 'react-native';
 import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
+import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NavigationProp } from '@react-navigation/native';
+import { POST_TYPE } from '@/api/community';
 import MultipleGradientBgTextInput from '@/components/community/MultipleGradientBgTextInput';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
-import { colors } from '@/constants';
+import { colors, feedTabNavigations } from '@/constants';
+import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
+import usePostImagePicker from '@/hooks/usePostImagePicker';
+import { FeedTabParamList } from '@/navigations/tab/FeedTabNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-type CommunityPostingWriteScreenProps = {};
+type CommunityPostingWriteScreenProps = {
+	navigation: NavigationProp<FeedTabParamList>;
+};
 
-function CommunityPostingWriteScreen({}: CommunityPostingWriteScreenProps) {
+function CommunityPostingWriteScreen({
+	navigation,
+}: CommunityPostingWriteScreenProps) {
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
 	const [files, setFiles] = useState<string[]>([]);
@@ -33,6 +43,11 @@ function CommunityPostingWriteScreen({}: CommunityPostingWriteScreenProps) {
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const modal = useModal();
+	const { postMutation } = useCommunity();
+	const { imageUris, uploadedImages } = usePostImagePicker({
+		initialImages: [],
+		maxFiles: 10,
+	});
 
 	usePermission('PHOTO');
 	usePermission('CAMERA');
@@ -50,6 +65,38 @@ function CommunityPostingWriteScreen({}: CommunityPostingWriteScreenProps) {
 	const deleteImage = (img: string) => {
 		const imgList = files.filter(item => item !== img);
 		setFiles(imgList);
+	};
+
+	const handleOnSubmit = () => {
+		postMutation.mutate(
+			{
+				title,
+				content,
+				postType: POST_TYPE.POSTING,
+				imageKeys: uploadedImages,
+			},
+			{
+				onSuccess: data => {
+					Toast.show({
+						type: 'success',
+						text1: '게시물이 업로드 되었습니다.',
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+					// TODO: post detail API 연결 후, 해당 게시글로 바로 이동하는 로직으로 변경
+					navigation.navigate(feedTabNavigations.COMMUNITY_HOME);
+				},
+				onError: error => {
+					Toast.show({
+						type: 'error',
+						text1: error.response?.data.message || '게시물 업로드 오류입니다.',
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+					console.error(error.response);
+				},
+			},
+		);
 	};
 
 	return (
@@ -105,10 +152,7 @@ function CommunityPostingWriteScreen({}: CommunityPostingWriteScreenProps) {
 						>
 							<Text style={styles.menuText}>{t('임시저장')}</Text>
 						</Pressable>
-						<Pressable
-							style={styles.menuBtn}
-							onPress={() => console.log('click')}
-						>
+						<Pressable style={styles.menuBtn} onPress={handleOnSubmit}>
 							<Text style={styles.menuText}>{t('게시하기')}</Text>
 						</Pressable>
 					</View>

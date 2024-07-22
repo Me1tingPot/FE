@@ -58,3 +58,68 @@ export type INFINITE_META_DATA = {
 	isFirst: boolean;
 	hasNext: boolean;
 };
+
+export type POST_DTO = {
+	postId: number;
+	name: string;
+	title: string;
+	content: string;
+	commentCount: number;
+	updatedAt: string;
+};
+
+export type POST_DATA = {
+	pageDtos: POST_DTO[];
+	nextCursor: number;
+	isLast: boolean;
+};
+
+export type OWNER_DTO = {
+	name: string;
+	introduction: string;
+	nationality: string;
+	country: string;
+	language: string[];
+	city: string;
+	profileImages: string[];
+	partyParticipantCount: number;
+	partyCreationCount: number;
+};
+
+type PARTICIPANTS_TYPE = {
+	name: string;
+};
+
+type CONTENTS_TYPE = {
+	lang: string;
+	content: string;
+};
+
+export type PARTY_DATA = {
+	id: number;
+	owner: OWNER_DTO;
+	subject: string;
+	partyStatus: string;
+	startTime: string;
+	locationAddress: string;
+	locationDetail: string;
+	locationReserved: boolean;
+	locationCanBeChanged: boolean;
+	minParticipant: number;
+	maxParticipant: number;
+	participants: PARTICIPANTS_TYPE[];
+	contents: CONTENTS_TYPE[];
+};
+
+export type SEARCH_PARTY_DATA = {
+	content: PARTY_DATA[];
+	page: number;
+	size: number;
+	totalPage: number;
+	totalCount: number;
+};
+
+export type AREA_DATA = {
+	areaId: string;
+	areaName: string;
+};

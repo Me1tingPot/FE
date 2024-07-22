@@ -31,6 +31,17 @@ function getDateLocaleFormat(
 	return `${year}${separator}${paddedMonth}${separator}${paddedDay}`;
 }
 
+function getFormattedTime(dateString: Date | string) {
+	const date = new Date(dateString);
+	const hours = date.getHours();
+	const minutes = date.getMinutes();
+
+	const formattedMinutes = String(minutes).padStart(2, '0');
+	const formattedTime = `${String(hours).padStart(2, '0')}:${formattedMinutes}`;
+
+	return formattedTime;
+}
+
 // CALENDAR
 function getMonthYearDetails(initialDate: Date) {
 	const month = initialDate.getMonth() + 1;
@@ -80,6 +91,18 @@ function changeEnMonth(year: number, month: number) {
 	return date.toLocaleString('en-US', { month: 'long' });
 }
 
+function combineDateAndTime(date: Date, time: Date) {
+	const combined = new Date(
+		date.getFullYear(),
+		date.getMonth(),
+		date.getDate(),
+		time.getHours(),
+		time.getMinutes(),
+		time.getSeconds(),
+	);
+	return combined.toISOString();
+}
+
 export type { MonthYear };
 
 export {
@@ -90,4 +113,6 @@ export {
 	getNewMonthYear,
 	isSameAsCurrentDate,
 	changeEnMonth,
+	getFormattedTime,
+	combineDateAndTime,
 };

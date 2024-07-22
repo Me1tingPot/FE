@@ -1,21 +1,26 @@
 import { useTranslation } from 'react-i18next';
+import { Image } from 'react-native';
 import { LatLng } from 'react-native-maps';
 import {
 	StackNavigationOptions,
 	createStackNavigator,
 } from '@react-navigation/stack';
+import PartyDetailLeftHeader from '@/components/party/PartyDetailLeftHeader';
 import { colors, partyNavigations } from '@/constants';
 import PartyDetailScreen from '@/screens/party/PartyDetailScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
+import PartyListScreen from '@/screens/party/PartyListScreen';
 import PartySearchScreen from '@/screens/party/PartySearchScreen';
 import PartyWriteScreen from '@/screens/party/PartyWriteScreen';
 import useThemeStore from '@/store/useThemeStore';
+import MeltingUs from '../../assets/images/MeltingUs.png';
 
 export type PartyStackParamList = {
 	[partyNavigations.PARTY_HOME]: undefined;
 	[partyNavigations.PARTY_WRITE]: { location: LatLng };
-	[partyNavigations.PARTY_DETAIL]: undefined;
+	[partyNavigations.PARTY_DETAIL]: { id: number };
 	[partyNavigations.PARTY_SEARCH]: undefined;
+	[partyNavigations.PARTY_LIST]: undefined;
 };
 
 const Stack = createStackNavigator<PartyStackParamList>();
@@ -59,6 +64,12 @@ function PartyStackNavigator() {
 			<Stack.Screen
 				name={partyNavigations.PARTY_DETAIL}
 				component={PartyDetailScreen}
+				options={{
+					headerShown: true,
+					headerRight: () => <PartyDetailLeftHeader />,
+					headerTitle: () => <Image source={MeltingUs} />,
+					...commonHeaderOptions,
+				}}
 			/>
 			<Stack.Screen
 				name={partyNavigations.PARTY_SEARCH}
@@ -67,6 +78,15 @@ function PartyStackNavigator() {
 					presentation: 'modal',
 					headerShown: true,
 					headerTitle: '장소 검색',
+				}}
+			/>
+			<Stack.Screen
+				name={partyNavigations.PARTY_LIST}
+				component={PartyListScreen}
+				options={{
+					headerShown: true,
+					headerTitle: '파티 목록',
+					...commonHeaderOptions,
 				}}
 			/>
 		</Stack.Navigator>

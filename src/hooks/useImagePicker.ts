@@ -25,6 +25,8 @@ function useImagePicker({ initialImages = [], maxFiles }: useImagePickerProps) {
 			return;
 		}
 
+		console.log(uris);
+
 		setImageUris(prev => [...prev, ...uris.map(uri => ({ uri }))]);
 	};
 

@@ -6,6 +6,10 @@ const API_BASE = {
 	MAIL: `mail`,
 	USER: `user`,
 	CHAT_ROOM: `chatRooms`,
+	POSTS: `posts`,
+	PARTY: `party`,
+	AREA: `area`,
+	SEARCH: `search`,
 };
 
 const API_URL = {
@@ -33,6 +37,23 @@ const API_URL = {
 	POST_CHANGE_ALARM_STATUS: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}/alarm`,
 	GET_CHAT_CONTENT: `/${API}/${VERSION}/${API_BASE.CHAT_ROOM}/chat`,
 	DELETE_CHAT_ROOM: `//${API}/${VERSION}/${API_BASE.CHAT_ROOM}`,
+
+	// post-controller
+	POST: `/${API}/${VERSION}/${API_BASE.POSTS}`,
+	GET_POSTS_LIST: `${API}/${VERSION}/${API_BASE.POSTS}/type`,
+
+	// party-controller
+	PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}`,
+	GET_TEMP_SAVED_PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}/temp-saved`,
+	PARTY_IMG_URL: `/${API}/${VERSION}/${API_BASE.PARTY}/image-url`,
+
+	// party-search-controller
+	PARTY_SEARCH: `/${API}/${VERSION}/${API_BASE.SEARCH}`,
+	PARTY_SEARCH_NEARBY: `/${API}/${VERSION}/${API_BASE.SEARCH}/nearby`,
+
+	// area-controller
+	AREA: `${API}/${VERSION}/${API_BASE.AREA}`,
+	AREA_SEARCH: `${API}/${VERSION}/${API_BASE.AREA}/search-by-coord`,
 };
 
 export { VERSION, API_BASE, API_URL };

@@ -1,6 +1,10 @@
 import {
+	AREA_DATA,
 	LOGIN_DATA_TYPES,
+	PARTY_DATA,
+	POST_DATA,
 	PROFILE_URL_DATA_TYPES,
+	SEARCH_PARTY_DATA,
 	SIGNUP_DATA_TYPES,
 	USER_PROFILE_DATA_TYPES,
 } from './types';
@@ -27,4 +31,20 @@ export type PROFILE_URL_TYPES = RETURN_TYPES & {
 
 export type USER_PROFILE_TYPES = RETURN_TYPES & {
 	data: USER_PROFILE_DATA_TYPES;
+};
+
+export type POST_TYPES = RETURN_TYPES & {
+	data: POST_DATA;
+};
+
+export type PARTY_TYPES = RETURN_TYPES & {
+	data: PARTY_DATA;
+};
+
+export type PARTY_LISTS_TYPE = RETURN_TYPES & {
+	data: SEARCH_PARTY_DATA;
+};
+
+export type AREA_TYPE = RETURN_TYPES & {
+	data: AREA_DATA[];
 };
