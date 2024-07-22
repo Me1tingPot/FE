@@ -34,6 +34,39 @@ const login = async ({
 	return data;
 };
 
+type SocialRequestUser = {
+	type: 'KAKAO' | 'APPLE | "GOOGLE';
+	code: string;
+	pushToken: string;
+};
+
+type ResponseSocialToken = {
+	timestamp: string;
+	code: string;
+	status: string;
+	detail: string;
+	data: {
+		grantType: string;
+		accessToken: string;
+		accessTokenExpiresIn: number;
+		refreshToken: string;
+	};
+};
+
+const socialLogin = async ({
+	type,
+	code,
+	pushToken,
+}: SocialRequestUser): Promise<ResponseSocialToken> => {
+	const { data } = await axiosInstance.post(`${API_URL.SOCIAL_LOGIN}`, {
+		type,
+		code,
+		pushToken,
+	});
+
+	return data;
+};
+
 const logout = async () => {
 	const refreshToken = await getEncryptStorage(storageKeys.REFRESH_TOKEN);
 
@@ -91,10 +124,10 @@ const getAccessToken = async (): Promise<ResponseToken> => {
 		{},
 		{ headers },
 	);
-	console.log('데이터', data);
+	// console.log('데이터', data);
 
 	return data;
 };
 
-export { login, logout, signup, getAccessToken };
+export { login, logout, signup, getAccessToken, socialLogin };
 export type { signupProps, RequestUser, ResponseToken };

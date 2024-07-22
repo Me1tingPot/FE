@@ -8,9 +8,15 @@ import {
 	ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {
+	login,
+	loginWithKakaoAccount,
+	getProfile,
+} from '@react-native-seoul/kakao-login';
 import { StackScreenProps } from '@react-navigation/stack';
 import CustomButton from '@/components/common/CustomButton';
 import { authNavigations, colors } from '@/constants';
+// import useAuth from '@/hooks/queries/useAuth';
 import useModal from '@/hooks/useModal';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
@@ -33,6 +39,20 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 	const styles = styling(theme);
 	const modal = useModal();
 	const { t } = useTranslation();
+	// const { socialLoginMutation } = useAuth();
+
+	const handlePressKakaoLoginButton = async () => {
+		try {
+			const { idToken } = await loginWithKakaoAccount();
+			// const profile = await getProfile();
+		} catch (error) {
+			console.log(error);
+		}
+		// socialLoginMutation.mutate({
+		// 	type: 'KAKAO',
+		// 	idToken,
+		// });
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -52,6 +72,10 @@ function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 				<ScrollView contentContainerStyle={styles.contentContainer}>
 					<Text style={styles.title}>{t('멜팅팟에 오신 걸 환영합니다!')}</Text>
 					<View style={styles.buttonContainer}>
+						<CustomButton
+							label={'카카오 로그인'}
+							onPress={handlePressKakaoLoginButton}
+						/>
 						<CustomButton
 							label={t('로그인 화면으로 이동')}
 							onPress={() => navigation.navigate(authNavigations.LOGIN)}
