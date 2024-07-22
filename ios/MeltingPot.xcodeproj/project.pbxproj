@@ -15,6 +15,7 @@
 		2E091EECC3BF4C96A60B4AC6 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C5893B26809146F0A77BCC09 /* Pretendard-Regular.otf */; };
 		302E36182C07AE46000CD12A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 302E36172C07AE46000CD12A /* GoogleService-Info.plist */; };
 		5D04FD034D2B4BC7949E4DF0 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3651743D3445479CB3722DD2 /* Pretendard-ExtraLight.otf */; };
+		638CD62E2C4DEE2B00DC9714 /* SwiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638CD62D2C4DEE2B00DC9714 /* SwiftBridge.swift */; };
 		63E097302BF13C4C000AB620 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63E0972E2BF137E8000AB620 /* Ionicons.ttf */; };
 		63E097312BF13C4C000AB620 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63E0972D2BF137E8000AB620 /* MaterialIcons.ttf */; };
 		63E097322BF13C4C000AB620 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63E0972F2BF137E8000AB620 /* Octicons.ttf */; };
@@ -54,6 +55,8 @@
 		5709B34CF0A7D63546082F79 /* Pods-MeltingPot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeltingPot.release.xcconfig"; path = "Target Support Files/Pods-MeltingPot/Pods-MeltingPot.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-MeltingPot-MeltingPotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeltingPot-MeltingPotTests.debug.xcconfig"; path = "Target Support Files/Pods-MeltingPot-MeltingPotTests/Pods-MeltingPot-MeltingPotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-MeltingPot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MeltingPot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		638CD62C2C4DEE2B00DC9714 /* MeltingPot-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MeltingPot-Bridging-Header.h"; sourceTree = "<group>"; };
+		638CD62D2C4DEE2B00DC9714 /* SwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBridge.swift; sourceTree = "<group>"; };
 		63E0972D2BF137E8000AB620 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		63E0972E2BF137E8000AB620 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		63E0972F2BF137E8000AB620 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -163,6 +166,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				638CD62D2C4DEE2B00DC9714 /* SwiftBridge.swift */,
 				13B07FAE1A68108700A75B9A /* MeltingPot */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MeltingPotTests */,
@@ -170,6 +174,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				3CAD56A228694BD9BF3E8AB6 /* Resources */,
+				638CD62C2C4DEE2B00DC9714 /* MeltingPot-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -255,7 +260,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1540;
 					};
 				};
 			};
@@ -469,6 +474,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				638CD62E2C4DEE2B00DC9714 /* SwiftBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,6 +493,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-MeltingPot-MeltingPotTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -514,6 +521,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-MeltingPot-MeltingPotTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = MeltingPotTests/Info.plist;
@@ -555,6 +563,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MeltingPot;
+				SWIFT_OBJC_BRIDGING_HEADER = "MeltingPot-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -581,6 +590,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MeltingPot;
+				SWIFT_OBJC_BRIDGING_HEADER = "MeltingPot-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
