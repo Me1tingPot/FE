@@ -38,7 +38,7 @@ function PartyOptionRegion({
 	}, [allArea]);
 
 	useEffect(() => {
-		setDistrictList(childArea?.data);
+		if (selectedItem.areaId) setDistrictList(childArea?.data);
 	}, [selectedItem]);
 
 	const handlePress = (item: AREA_DATA) => {
@@ -93,26 +93,27 @@ function PartyOptionRegion({
 		<>
 			<View style={styles.container}>
 				<ScrollView contentContainerStyle={styles.leftContainer}>
-					{region?.map((area: AREA_DATA, idx: number) => (
-						<Pressable
-							key={idx}
-							style={({ pressed }) => [
-								styles.item,
-								selectedItem === area && styles.selectedItem,
-								pressed && { opacity: 0.5 },
-							]}
-							onPress={() => handlePress(area)}
-						>
-							<Text
-								style={[
-									styles.itemText,
-									selectedItem === area && styles.selectedText,
+					{region?.length &&
+						region?.map((area: AREA_DATA, idx: number) => (
+							<Pressable
+								key={idx}
+								style={({ pressed }) => [
+									styles.item,
+									selectedItem === area && styles.selectedItem,
+									pressed && { opacity: 0.5 },
 								]}
+								onPress={() => handlePress(area)}
 							>
-								{area.areaName}
-							</Text>
-						</Pressable>
-					))}
+								<Text
+									style={[
+										styles.itemText,
+										selectedItem === area && styles.selectedText,
+									]}
+								>
+									{area.areaName}
+								</Text>
+							</Pressable>
+						))}
 				</ScrollView>
 				<View style={styles.rightContainer}>
 					<ScrollView>{renderRightContent()}</ScrollView>

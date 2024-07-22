@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
 	View,
-	Text,
-	TouchableOpacity,
 	SafeAreaView,
 	StyleSheet,
 	FlatList,
@@ -15,7 +13,6 @@ import {
 } from '@gorhom/bottom-sheet';
 import { NavigationProp } from '@react-navigation/native';
 import CustomButton from '@/components/common/CustomButton';
-import PartyCard from '@/components/common/PartyCard';
 import PartyBox from '@/components/party/PartyBox';
 import PartyOptionBottomSheet, {
 	IFilter,
@@ -43,15 +40,28 @@ function PartyListScreen({ navigation }: PartyListScreenProps) {
 	const styles = styling(theme);
 
 	// TODO: 검색 결과 필터링 구현
-	// const partyData = {
-	// 	query: '파티',
-	// 	areaIdFilter: filter.region?.areaId,
-	// 	temporalFilter: filter.duration,
-	// 	statusFilter: filter.status,
-	// };
-	// const { data, error } = useSearchPartyInfiniteLists(partyData);
-	// console.log('받은 데이터: ', data);
-	// console.error('에러: ', error?.response);
+	// 검색 결과를 위한 상태 설정
+	// const [partyData, setPartyData] = useState({
+	// 	query: '',
+	// 	areaIdFilter: '',
+	// 	temporalFilter: [],
+	// 	statusFilter: '',
+	// 	coordLeftTopFilter: null,
+	// 	coordRightBottomFilter: null,
+	// });
+
+	const party = { query: '' };
+
+	// if (partyData.areaIdFilter) {
+	// 	party = {
+	// 		query: 'aa',
+	// 		areaIdFilter: partyData?.areaIdFilter,
+	// 		temporalFilter: partyData?.temporalFilter,
+	// 		statusFilter: partyData?.statusFilter,
+	// 		coordLeftTopFilter: partyData?.coordLeftTopFilter,
+	// 		coordRightBottomFilter: partyData?.coordRightBottomFilter,
+	// 	};
+	// }
 
 	const {
 		data: partyList,
@@ -59,16 +69,35 @@ function PartyListScreen({ navigation }: PartyListScreenProps) {
 		hasNextPage,
 		fetchNextPage,
 		isFetchingNextPage,
-	} = useSearchPartyInfiniteLists({ query: '' });
+		error,
+	} = useSearchPartyInfiniteLists(party);
+
+	// useEffect(() => {
+	// 	refetch().finally(() => {
+	// 		console.log('search');
+	// 		console.log(error.response);
+	// 	});
+	// }, [partyData]);
 
 	const handleClosePress = () => {
+		// setPartyData({
+		// 	query: '파티',
+		// 	areaIdFilter: filter.region?.areaId,
+		// 	temporalFilter: filter.duration,
+		// 	statusFilter: filter.status,
+		// 	coordLeftTopFilter: {
+		// 		latitude: 0,
+		// 		longitude: 0,
+		// 	},
+		// 	coordRightBottomFilter: {
+		// 		latitude: 0,
+		// 		longitude: 0,
+		// 	},
+		// });
 		bottomSheetModalRef.current?.close();
 	};
-	const handleOpenPress = () => bottomSheetModalRef.current?.present();
 
-	const handlePressSearch = () => {
-		console.log('search');
-	};
+	const handleOpenPress = () => bottomSheetModalRef.current?.present();
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -97,6 +126,7 @@ function PartyListScreen({ navigation }: PartyListScreenProps) {
 
 					<FlatList
 						data={partyList?.pages}
+						contentContainerStyle={styles.listContentContainer}
 						renderItem={({ item, index }) => (
 							<FlatList
 								data={item.data.content}
@@ -139,6 +169,9 @@ const styling = (theme: ThemeMode) =>
 			paddingHorizontal: 15,
 			marginBottom: 30,
 			gap: 10,
+		},
+		listContentContainer: {
+			paddingBottom: 20,
 		},
 		// filterLayout: {
 

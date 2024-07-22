@@ -45,15 +45,22 @@ function PartyDetailScreen({ route }: PartyDetailScreenProps) {
 					<View style={styles.partyInfoContainer}>
 						<View style={styles.titleContainer}>
 							<Text style={styles.title}>{partyData?.subject}</Text>
-							<TouchableOpacity style={styles.tanslateButton}>
+							<TouchableOpacity
+								activeOpacity={0.7}
+								style={styles.tanslateButton}
+							>
 								<MaterialIcons
 									name="translate"
-									color={colors[theme].WHITE}
+									color={colors[theme].UNCHANGE_WHITE}
 									size={25}
 								/>
 							</TouchableOpacity>
 						</View>
-						<Text style={styles.content}>{partyData?.contents[0].content}</Text>
+						<ScrollView>
+							<Text style={styles.content}>
+								{partyData?.contents[0].content}
+							</Text>
+						</ScrollView>
 						<View style={styles.hashTagContainer}>
 							{partyData?.locationCanBeChanged && (
 								<Text style={styles.hashTag}>#추후변동가능성있음</Text>
@@ -126,29 +133,28 @@ const styling = (theme: ThemeMode) =>
 			backgroundColor: colors[theme].WHITE,
 		},
 		scrollviewContainer: {
-			flex: 1,
+			flexGrow: 1,
 			display: 'flex',
 			flexDirection: 'column',
 		},
 		partyContainer: {
 			position: 'relative',
-			width: '100%',
-			flex: 2,
+			height: 500,
 		},
 		contentContainer: {
 			flex: 1,
-			justifyContent: 'space-between',
 		},
 		profileContainer: {
-			flex: 1,
 			flexDirection: 'row',
+			flex: 1,
 			gap: 20,
 			alignItems: 'center',
-			paddingHorizontal: 20,
+			padding: 20,
 			borderBottomColor: colors[theme].GRAY_200,
 			borderBottomWidth: 1,
 		},
 		buttonContainer: {
+			flex: 1,
 			display: 'flex',
 			flexDirection: 'row',
 			alignItems: 'center',
@@ -158,7 +164,8 @@ const styling = (theme: ThemeMode) =>
 		},
 		partyInfoContainer: {
 			width: '100%',
-			maxHeight: 400,
+			maxHeight: 300,
+			minHeight: 200,
 			overflow: 'scroll',
 			position: 'absolute',
 			gap: 15,
@@ -173,6 +180,7 @@ const styling = (theme: ThemeMode) =>
 			display: 'flex',
 			flexDirection: 'row',
 			gap: 10,
+			marginTop: 'auto',
 		},
 		partyImg: {
 			width: '100%',
@@ -237,8 +245,8 @@ const styling = (theme: ThemeMode) =>
 			display: 'flex',
 			flexDirection: 'row',
 			paddingBottom: 5,
-			borderBottomColor: colors[theme].GRAY_400,
-			borderBottomWidth: 0.2,
+			borderBottomColor: colors[theme].GRAY_500,
+			borderBottomWidth: 0.5,
 		},
 		tanslateButton: {
 			padding: 1,

@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next';
+import { Image } from 'react-native';
 import { LatLng } from 'react-native-maps';
 import {
 	StackNavigationOptions,
 	createStackNavigator,
 } from '@react-navigation/stack';
+import PartyDetailLeftHeader from '@/components/party/PartyDetailLeftHeader';
 import { colors, partyNavigations } from '@/constants';
 import PartyDetailScreen from '@/screens/party/PartyDetailScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
@@ -11,6 +13,7 @@ import PartyListScreen from '@/screens/party/PartyListScreen';
 import PartySearchScreen from '@/screens/party/PartySearchScreen';
 import PartyWriteScreen from '@/screens/party/PartyWriteScreen';
 import useThemeStore from '@/store/useThemeStore';
+import MeltingUs from '../../assets/images/MeltingUs.png';
 
 export type PartyStackParamList = {
 	[partyNavigations.PARTY_HOME]: undefined;
@@ -61,6 +64,12 @@ function PartyStackNavigator() {
 			<Stack.Screen
 				name={partyNavigations.PARTY_DETAIL}
 				component={PartyDetailScreen}
+				options={{
+					headerShown: true,
+					headerRight: () => <PartyDetailLeftHeader />,
+					headerTitle: () => <Image source={MeltingUs} />,
+					...commonHeaderOptions,
+				}}
 			/>
 			<Stack.Screen
 				name={partyNavigations.PARTY_SEARCH}

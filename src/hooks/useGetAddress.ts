@@ -17,6 +17,7 @@ function useGetAddress(location: LatLng) {
 	const { useSearchAreaByCoord } = useArea();
 	const { data } = useSearchAreaByCoord(latitude, longitude);
 	const areaId = data?.data?.areaId;
+	console.log(areaId);
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();

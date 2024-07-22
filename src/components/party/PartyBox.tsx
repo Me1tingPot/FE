@@ -120,18 +120,10 @@ const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
 		container: {
 			display: 'flex',
-			backgroundColor: colors[theme].WHITE,
+			backgroundColor: colors[theme].GRAY_100,
 			borderRadius: 20,
-			borderColor: colors[theme].EMERALD_500,
-			borderWidth: 4,
-			shadowColor: colors[theme].UNCHANGE_BLACK,
-			shadowOffset: {
-				width: 0,
-				height: 8,
-			},
-			shadowOpacity: 0.2,
-			shadowRadius: 8.65,
-			elevation: 8,
+			borderColor: colors[theme].GRAY_200,
+			borderWidth: 0.3,
 			marginBottom: 10,
 			padding: 10,
 		},
