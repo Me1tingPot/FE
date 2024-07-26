@@ -12,8 +12,10 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '@/components/common/CustomButton';
+import CustomPopOver from '@/components/common/CustomPopOver';
 import { colors } from '@/constants';
 import useParty from '@/hooks/queries/useParty';
+import usePopOver from '@/hooks/usePopOver';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
@@ -36,6 +38,7 @@ function PartyDetailScreen({ route }: PartyDetailScreenProps) {
 	const { t } = useTranslation();
 	const { data } = useGetParty(id);
 	const partyData = data?.data;
+	const { isOpen, handlePopOver } = usePopOver();
 
 	return (
 		<SafeAreaView style={styles.container}>
