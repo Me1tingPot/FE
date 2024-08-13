@@ -47,13 +47,20 @@ type SearchPartyNearbyProps = {
 	areaId: string;
 };
 
+type UpdatePartyProps = {
+	partyId: number;
+	partyData: createPatyProps;
+};
+
 const getPartyData = async (partyId: number): Promise<PARTY_TYPES> => {
 	const { data } = await axiosInstance.get(`${API_URL.PARTY}/${partyId}`);
 	return data;
 };
 
-const updateParty = async (partyId: number) => {
-	const { data } = await axiosInstance.put(`${API_URL.PARTY}/${partyId}`);
+const updateParty = async ({ partyId, partyData }: UpdatePartyProps) => {
+	const { data } = await axiosInstance.put(`${API_URL.PARTY}/${partyId}`, {
+		...partyData,
+	});
 	return data;
 };
 

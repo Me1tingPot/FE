@@ -101,7 +101,7 @@ function PartyDetailLeftHeader({ id, navigation }: PartyDetailLeftHeaderProps) {
 		{
 			name: '수정하기',
 			onPress: () => {
-				console.log('수정하기');
+				navigation.navigate('PartyEdit', { id });
 			},
 		},
 		{
