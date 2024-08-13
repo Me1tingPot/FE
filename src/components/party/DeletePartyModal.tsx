@@ -5,17 +5,17 @@ import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { CompoundModal } from '../common/CompoundModal';
 
-interface ReportPartyModalProps {
+interface DeletePartyModalProps {
 	onSubmit: () => void;
 	isVisible: boolean;
 	hideOption: () => void;
 }
 
-function ReportPartyModal({
+function DeletePartyModal({
 	onSubmit,
 	isVisible,
 	hideOption,
-}: ReportPartyModalProps) {
+}: DeletePartyModalProps) {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -25,7 +25,7 @@ function ReportPartyModal({
 				<CompoundModal.Container>
 					<CompoundModal.ContentContainer>
 						<View style={styles.container}>
-							<Text>이 파티를 신고할까요?</Text>
+							<Text>이 파티를 삭제할까요?</Text>
 						</View>
 					</CompoundModal.ContentContainer>
 					<CompoundModal.ButtonRowContainer>
@@ -54,4 +54,4 @@ const styling = (theme: ThemeMode) =>
 		},
 	});
 
-export default ReportPartyModal;
+export default DeletePartyModal;

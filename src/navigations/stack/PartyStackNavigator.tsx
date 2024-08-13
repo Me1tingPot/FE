@@ -64,9 +64,14 @@ function PartyStackNavigator() {
 			<Stack.Screen
 				name={partyNavigations.PARTY_DETAIL}
 				component={PartyDetailScreen}
-				options={({ route }) => ({
+				options={({ route, navigation }) => ({
 					headerShown: true,
-					headerRight: () => <PartyDetailLeftHeader id={route.params.id} />,
+					headerRight: () => (
+						<PartyDetailLeftHeader
+							id={route.params.id}
+							navigation={navigation}
+						/>
+					),
 					headerTitle: () => <Image source={MeltingUs} />,
 					...commonHeaderOptions,
 				})}

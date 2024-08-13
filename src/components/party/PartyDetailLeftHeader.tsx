@@ -1,25 +1,38 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NavigationProp } from '@react-navigation/native';
 import { colors } from '@/constants';
 import useParty from '@/hooks/queries/useParty';
 import useModal from '@/hooks/useModal';
 import usePopOver from '@/hooks/usePopOver';
+import { PartyStackParamList } from '@/navigations/stack/PartyStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import CustomPopOver from '../common/CustomPopOver';
+import DeletePartyModal from './DeletePartyModal';
 import ReportPartyModal from './ReportPartyModal';
 
-function PartyDetailLeftHeader({ id }: { id: number }) {
+interface PartyDetailLeftHeaderProps {
+	id: number;
+	navigation: NavigationProp<PartyStackParamList>;
+}
+
+function PartyDetailLeftHeader({ id, navigation }: PartyDetailLeftHeaderProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { isOpen, handlePopOver } = usePopOver();
-	const { reportPartyMutation } = useParty();
+	const { reportPartyMutation, deletePartyMutation } = useParty();
 	const {
 		isVisible: reportIsVisible,
 		show: reportShow,
 		hide: reportHide,
+	} = useModal();
+	const {
+		isVisible: deleteIsVisible,
+		show: deleteShow,
+		hide: deleteHide,
 	} = useModal();
 
 	const handleReport = () => {
@@ -30,13 +43,52 @@ function PartyDetailLeftHeader({ id }: { id: number }) {
 			},
 			{
 				onSuccess: data => {
-					console.log(data);
+					Toast.show({
+						type: 'success',
+						text1: '신고가 완료되었습니다.',
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+					handlePopOver();
 				},
 				onError: error => {
-					console.log(error);
+					Toast.show({
+						type: 'success',
+						text1: error.response?.data?.detail,
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+					console.log(error.response?.data);
 				},
 			},
 		);
+		reportHide();
+	};
+
+	const handleDelete = () => {
+		deletePartyMutation.mutate(id, {
+			onSuccess: data => {
+				console.log(data);
+				Toast.show({
+					type: 'success',
+					text1: '파티가 삭제되었습니다.',
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+				// 이전 페이지로 이동
+				navigation.goBack();
+			},
+			onError: error => {
+				Toast.show({
+					type: 'success',
+					text1: error.response?.data?.detail,
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+				console.log(error.response?.data);
+			},
+		});
+		deleteHide();
 	};
 
 	const menuList = [
@@ -54,9 +106,7 @@ function PartyDetailLeftHeader({ id }: { id: number }) {
 		},
 		{
 			name: '삭제하기',
-			onPress: () => {
-				console.log('삭제하기');
-			},
+			onPress: deleteShow,
 		},
 		{
 			name: '신고하기',
@@ -92,18 +142,13 @@ function PartyDetailLeftHeader({ id }: { id: number }) {
 			/>
 			<ReportPartyModal
 				hideOption={reportHide}
-				onSubmit={() => {
-					handleReport();
-					reportHide();
-					Toast.show({
-						type: 'success',
-						text1: '신고가 완료되었습니다.',
-						visibilityTime: 2000,
-						position: 'bottom',
-					});
-					handlePopOver();
-				}}
+				onSubmit={handleReport}
 				isVisible={reportIsVisible}
+			/>
+			<DeletePartyModal
+				hideOption={deleteHide}
+				onSubmit={handleDelete}
+				isVisible={deleteIsVisible}
 			/>
 		</View>
 	);
