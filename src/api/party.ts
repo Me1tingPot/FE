@@ -3,6 +3,11 @@ import { PARTY_LISTS_TYPE, PARTY_TYPES } from '@/types/api';
 import { PARTY_DATA } from '@/types/api/types';
 import axiosInstance from './axios';
 
+type reportPartyProps = {
+	partyId: number;
+	reportContent: string;
+};
+
 type createPatyProps = {
 	subject: string;
 	imageKey: string[];
@@ -64,9 +69,12 @@ const createParty = async ({ ...partyData }: createPatyProps) => {
 	return data;
 };
 
-const reportParty = async (partyId: number) => {
+const reportParty = async ({ partyId, reportContent }: reportPartyProps) => {
 	const { data } = await axiosInstance.post(
 		`${API_URL.PARTY}/${partyId}/report`,
+		{
+			reportContent,
+		},
 	);
 	return data;
 };

@@ -64,12 +64,12 @@ function PartyStackNavigator() {
 			<Stack.Screen
 				name={partyNavigations.PARTY_DETAIL}
 				component={PartyDetailScreen}
-				options={{
+				options={({ route }) => ({
 					headerShown: true,
-					headerRight: () => <PartyDetailLeftHeader />,
+					headerRight: () => <PartyDetailLeftHeader id={route.params.id} />,
 					headerTitle: () => <Image source={MeltingUs} />,
 					...commonHeaderOptions,
-				}}
+				})}
 			/>
 			<Stack.Screen
 				name={partyNavigations.PARTY_SEARCH}

@@ -12,6 +12,7 @@ import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
 interface CustomPopOverProps {
+	// 여기 타입 다시 생각보기 (제너럴)
 	menu: {
 		onPress: () => void;
 		name: string;

@@ -12,7 +12,6 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '@/components/common/CustomButton';
-import CustomPopOver from '@/components/common/CustomPopOver';
 import { colors } from '@/constants';
 import useParty from '@/hooks/queries/useParty';
 import usePopOver from '@/hooks/usePopOver';
