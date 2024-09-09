@@ -19,6 +19,7 @@ export type CustomError = AxiosError<{
 	message: string;
 	statusCode: string;
 	error: string;
+	detail: string;
 }>;
 
 export type UseMutationCustomOptions<

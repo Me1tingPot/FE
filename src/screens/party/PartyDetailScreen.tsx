@@ -9,11 +9,13 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '@/components/common/CustomButton';
 import { colors } from '@/constants';
 import useParty from '@/hooks/queries/useParty';
+import usePopOver from '@/hooks/usePopOver';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
@@ -32,10 +34,34 @@ function PartyDetailScreen({ route }: PartyDetailScreenProps) {
 	const { id } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
-	const { useGetParty } = useParty();
+	const { useGetParty, joinPartyMutation } = useParty();
 	const { t } = useTranslation();
 	const { data } = useGetParty(id);
 	const partyData = data?.data;
+	const { isOpen, handlePopOver } = usePopOver();
+
+	const handleJoinParty = () => {
+		joinPartyMutation.mutate(id, {
+			onSuccess: data => {
+				console.log(data);
+				Toast.show({
+					type: 'success',
+					text1: '신청 완료 되었습니다.',
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+			},
+			onError: error => {
+				console.log(error.response);
+				Toast.show({
+					type: 'error',
+					text1: error.response?.data?.detail,
+					visibilityTime: 2000,
+					position: 'bottom',
+				});
+			},
+		});
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -105,7 +131,7 @@ function PartyDetailScreen({ route }: PartyDetailScreenProps) {
 					</View>
 					<View style={styles.buttonContainer}>
 						<View style={{ flex: 3 }}>
-							<CustomButton label="참여 신청" />
+							<CustomButton label="참여 신청" onPress={handleJoinParty} />
 						</View>
 						<View style={{ flex: 1 }}>
 							<CustomButton

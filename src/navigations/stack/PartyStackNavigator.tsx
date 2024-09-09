@@ -8,6 +8,7 @@ import {
 import PartyDetailLeftHeader from '@/components/party/PartyDetailLeftHeader';
 import { colors, partyNavigations } from '@/constants';
 import PartyDetailScreen from '@/screens/party/PartyDetailScreen';
+import PartyEditScreen from '@/screens/party/PartyEditScreen';
 import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import PartyListScreen from '@/screens/party/PartyListScreen';
 import PartySearchScreen from '@/screens/party/PartySearchScreen';
@@ -21,6 +22,7 @@ export type PartyStackParamList = {
 	[partyNavigations.PARTY_DETAIL]: { id: number };
 	[partyNavigations.PARTY_SEARCH]: undefined;
 	[partyNavigations.PARTY_LIST]: undefined;
+	[partyNavigations.PARTY_EDIT]: { id: number };
 };
 
 const Stack = createStackNavigator<PartyStackParamList>();
@@ -64,12 +66,17 @@ function PartyStackNavigator() {
 			<Stack.Screen
 				name={partyNavigations.PARTY_DETAIL}
 				component={PartyDetailScreen}
-				options={{
+				options={({ route, navigation }) => ({
 					headerShown: true,
-					headerRight: () => <PartyDetailLeftHeader />,
+					headerRight: () => (
+						<PartyDetailLeftHeader
+							id={route.params.id}
+							navigation={navigation}
+						/>
+					),
 					headerTitle: () => <Image source={MeltingUs} />,
 					...commonHeaderOptions,
-				}}
+				})}
 			/>
 			<Stack.Screen
 				name={partyNavigations.PARTY_SEARCH}
@@ -86,6 +93,15 @@ function PartyStackNavigator() {
 				options={{
 					headerShown: true,
 					headerTitle: '파티 목록',
+					...commonHeaderOptions,
+				}}
+			/>
+			<Stack.Screen
+				name={partyNavigations.PARTY_EDIT}
+				component={PartyEditScreen}
+				options={{
+					headerShown: true,
+					headerTitle: '파티 수정',
 					...commonHeaderOptions,
 				}}
 			/>
