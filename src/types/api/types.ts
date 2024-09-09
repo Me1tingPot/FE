@@ -69,9 +69,42 @@ export type POST_DTO = {
 };
 
 export type POST_DATA = {
-	pageDtos: POST_DTO[];
+	postsList: POST_DTO[];
 	nextCursor: number;
 	isLast: boolean;
+};
+
+export type POST_IMAGE_TYPE = {
+	imageId: number;
+	imageUrl: string;
+};
+
+export type COMMENT_DTO = {
+	commentId: number;
+	parentId: number;
+	userId: number;
+	content: string;
+	name: string;
+	isAnonymous: boolean;
+	imageUrl: string;
+	updatedAt: string;
+};
+
+export type COMMENT_LIST_TYPE = {
+	commentsList: COMMENT_DTO[];
+	nextCursor: number;
+	isLast: boolean;
+};
+
+export type POST_DETAIL_DATA = {
+	postId: number;
+	name: string;
+	title: string;
+	content: string;
+	imgData: POST_IMAGE_TYPE[];
+	commentCount: number;
+	commentsList: COMMENT_LIST_TYPE;
+	updatedAt: string;
 };
 
 export type OWNER_DTO = {

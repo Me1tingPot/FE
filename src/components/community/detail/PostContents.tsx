@@ -5,9 +5,12 @@ import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
-interface PostContentsProps {}
+interface PostContentsProps {
+	title?: string;
+	content?: string;
+}
 
-function PostContents({}: PostContentsProps) {
+function PostContents({ title, content }: PostContentsProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -15,14 +18,9 @@ function PostContents({}: PostContentsProps) {
 		<>
 			<View style={styles.contents}>
 				<View style={styles.titleLayout}>
-					<Text style={styles.title}>
-						잠실에서 모임 열건데 추천 맛집있나요?
-					</Text>
+					<Text style={styles.title}>{title}</Text>
 				</View>
-				<Text style={styles.content}>
-					이번주에 잠실에서 만나려고 하는데요, 일단 저 포함 3명이고, 한국인 2명
-					있어요.
-				</Text>
+				<Text style={styles.content}>{content}</Text>
 			</View>
 
 			<TouchableOpacity

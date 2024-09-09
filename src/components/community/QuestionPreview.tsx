@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, communityNavigations, userNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -38,7 +39,17 @@ function QuestionPreview({ navigation, id, post }: QuestionPreviewProps) {
 					onPress={() => navigation.navigate(userNavigations.USER)}
 				>
 					{/* API 수정되면 유저 정보 표시 */}
-					<Image source={{ uri: '/' }} style={styles.profileImg} />
+					{post.userImg ? (
+						<Image source={{ uri: '/' }} style={styles.profileImg} />
+					) : (
+						<View style={styles.profileImg}>
+							<Ionicons
+								name="person-sharp"
+								color={colors[theme].GRAY_300}
+								size={20}
+							/>
+						</View>
+					)}
 				</TouchableOpacity>
 				<View style={styles.userInfo}>
 					<Text style={styles.name}>{post.name}</Text>
@@ -107,9 +118,13 @@ const styling = (theme: ThemeMode) =>
 			alignSelf: 'center',
 		},
 		profileImg: {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			justifyContent: 'center',
 			width: 30,
 			height: 30,
-			backgroundColor: colors[theme].GRAY_300,
+			backgroundColor: colors[theme].GRAY_100,
 			borderRadius: 500,
 		},
 		title: {

@@ -41,6 +41,7 @@ const API_URL = {
 	// post-controller
 	POST: `/${API}/${VERSION}/${API_BASE.POSTS}`,
 	GET_POSTS_LIST: `${API}/${VERSION}/${API_BASE.POSTS}/type`,
+	GET_POST_DETAIL: `${API}/${VERSION}/${API_BASE.POSTS}`,
 
 	// party-controller
 	PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}`,

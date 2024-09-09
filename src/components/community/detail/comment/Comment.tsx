@@ -1,14 +1,31 @@
+import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 
-const userImg = '';
+interface CommentProps {
+	name: string;
+	postDate: string;
+	content: string;
+	userImg: string;
+}
 
-function Comment() {
+function Comment({ name, postDate, content, userImg }: CommentProps) {
+	const [date, setDate] = useState(getDateLocaleFormat(new Date()));
+	const [time, setTime] = useState(getFormattedTime(new Date()));
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	useEffect(() => {
+		if (postDate) {
+			setDate(getDateLocaleFormat(postDate));
+			setTime(getFormattedTime(postDate));
+		}
+	}, [postDate]);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.commentTop}>
@@ -24,12 +41,14 @@ function Comment() {
 					</View>
 				)}
 				<View style={styles.userInfo}>
-					<Text style={styles.comment}>익명</Text>
-					<Text style={styles.infoText}>2024/07/07 13:22</Text>
+					<Text style={styles.comment}>{name}</Text>
+					<Text style={styles.infoText}>
+						{date} {time}
+					</Text>
 				</View>
 			</View>
 			<View style={styles.commentLayout}>
-				<Text style={styles.comment}>Comment</Text>
+				<Text style={styles.comment}>{content}</Text>
 			</View>
 			<View style={styles.verticalLine} />
 		</View>

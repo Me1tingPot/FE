@@ -4,11 +4,12 @@ import {
 	UseInfiniteQueryOptions,
 	useInfiniteQuery,
 	useMutation,
+	useQuery,
 } from '@tanstack/react-query';
-import { POST_TYPE, getPosts, post } from '@/api/community';
+import { POST_TYPE, getPostDetail, getPosts, post } from '@/api/community';
 import { queryKeys } from '@/constants';
 import { ResponseError } from '@/types';
-import { POST_TYPES } from '@/types/api';
+import { POST_DATAIL_TYPES, POST_TYPES } from '@/types/api';
 import { UseMutationCustomOptions } from './useAuth';
 
 // POST: 게시물 작성하기
@@ -76,6 +77,14 @@ function useGetInfinitePostingPostLists(
 	});
 }
 
+// 커뮤니티 게시글 조회
+function useGetPostDetail(postId: number) {
+	return useQuery({
+		queryKey: [queryKeys.POST, postId],
+		queryFn: () => getPostDetail({ postId }),
+	});
+}
+
 function useCommunity() {
 	const postMutation = usePost();
 
@@ -83,6 +92,7 @@ function useCommunity() {
 		postMutation,
 		useGetInfiniteQuestionPostLists,
 		useGetInfinitePostingPostLists,
+		useGetPostDetail,
 	};
 }
 

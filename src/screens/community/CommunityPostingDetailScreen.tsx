@@ -15,6 +15,7 @@ import PostInfo from '@/components/community/detail/PostInfo';
 import Comments from '@/components/community/detail/comment/Comments';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors } from '@/constants';
+import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -43,6 +44,10 @@ function CommunityPostingDetailScreen({
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const modal = useModal();
+
+	const { useGetPostDetail } = useCommunity();
+	const { data, refetch, isPending } = useGetPostDetail(id);
+
 	usePermission('CAMERA');
 	usePermission('PHOTO');
 
@@ -67,6 +72,10 @@ function CommunityPostingDetailScreen({
 		mediaType: 'photo',
 	};
 
+	if (isPending) {
+		return <></>;
+	}
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<KeyboardAvoidingView
@@ -85,9 +94,17 @@ function CommunityPostingDetailScreen({
 						/>
 					}
 				>
-					<PostInfo />
-					<PostContents />
-					<Comments navigation={navigation} id={id} />
+					<PostInfo
+						writerName={data?.data.name}
+						postDate={data?.data.updatedAt}
+					/>
+					<PostContents title={data?.data.title} content={data?.data.content} />
+					<Comments
+						navigation={navigation}
+						id={id}
+						commentCount={data?.data.commentCount}
+						commentList={data?.data.commentsList}
+					/>
 				</ScrollView>
 				<InputBottom
 					id={id}

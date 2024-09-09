@@ -50,31 +50,16 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 		<SafeAreaView style={styles.container}>
 			<View style={styles.contentContainer}>
 				<FlatList
-					data={data?.pages}
-					contentContainerStyle={styles.contentContainer}
-					renderItem={({ item }) => (
-						<FlatList
-							data={item.data.pageDtos}
-							renderItem={renderItem}
-							keyExtractor={item => `${item.postId}`}
-							refreshControl={
-								<RefreshControl
-									refreshing={refreshing}
-									onRefresh={onRefresh}
-									colors={[colors[theme].BLACK]}
-									tintColor={colors[theme].BLACK}
-								/>
-							}
-							onEndReached={loadMore}
-							onEndReachedThreshold={0.5}
-							ListFooterComponent={
-								isFetchingNextPage ? <ActivityIndicator size="small" /> : null
-							}
-							ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
-							inverted
-						/>
-					)}
-					keyExtractor={(item, index) => `${item.data.nextCursor}-${index}`}
+					data={data?.pages.flatMap(page => page.data.postsList)}
+					renderItem={renderItem}
+					onEndReached={loadMore}
+					onEndReachedThreshold={0.5}
+					ListFooterComponent={
+						isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+					}
+					ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
+					refreshing={refreshing}
+					onRefresh={onRefresh}
 				/>
 			</View>
 			<View style={styles.buttonList}>
@@ -101,6 +86,7 @@ const styling = (theme: ThemeMode) =>
 		contentContainer: {
 			display: 'flex',
 			flexDirection: 'column',
+			flex: 1,
 			gap: 10,
 			paddingHorizontal: 10,
 			paddingVertical: 10,

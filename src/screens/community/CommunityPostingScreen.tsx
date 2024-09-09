@@ -55,36 +55,19 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<StatusBar
-				barStyle="light-content"
-				backgroundColor={colors[theme].WHITE}
-			/>
 			<View style={styles.contentContainer}>
 				<FlatList
-					data={data?.pages}
+					data={data?.pages.flatMap(page => page.data.postsList)}
+					renderItem={renderItem}
 					contentContainerStyle={styles.scrollStyle}
-					renderItem={({ item }) => (
-						<FlatList
-							data={item.data.pageDtos}
-							renderItem={renderItem}
-							keyExtractor={item => `${item.postId}`}
-							refreshControl={
-								<RefreshControl
-									refreshing={refreshing}
-									onRefresh={onRefresh}
-									colors={[colors[theme].BLACK]}
-									tintColor={colors[theme].BLACK}
-								/>
-							}
-							onEndReached={loadMore}
-							onEndReachedThreshold={0.5}
-							ListFooterComponent={
-								isFetchingNextPage ? <ActivityIndicator size="small" /> : null
-							}
-							ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
-							inverted
-						/>
-					)}
+					onEndReached={loadMore}
+					onEndReachedThreshold={0.5}
+					ListFooterComponent={
+						isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+					}
+					ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
+					refreshing={refreshing}
+					onRefresh={onRefresh}
 				/>
 			</View>
 			<View style={styles.buttonList}>
@@ -109,6 +92,7 @@ const styling = (theme: ThemeMode) =>
 			backgroundColor: colors[theme].WHITE,
 		},
 		contentContainer: {
+			flex: 1,
 			paddingHorizontal: 20,
 			paddingVertical: 30,
 		},

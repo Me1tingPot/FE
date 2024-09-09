@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, communityNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -35,7 +36,17 @@ function PostingPreview({ navigation, id, post }: PostingPreviewProps) {
 		>
 			<View style={styles.row}>
 				{/* API 수정되면 유저 정보 표시 */}
-				<Image source={{ uri: '/' }} style={styles.userImg} />
+				{post.userImg ? (
+					<Image source={{ uri: '/' }} style={styles.userImg} />
+				) : (
+					<View style={styles.userImg}>
+						<Ionicons
+							name="person-sharp"
+							color={colors[theme].GRAY_300}
+							size={20}
+						/>
+					</View>
+				)}
 				<Text style={styles.flexText}>{post.name}</Text>
 				<TouchableOpacity
 					activeOpacity={0.8}
@@ -90,9 +101,13 @@ const styling = (theme: ThemeMode) =>
 			paddingHorizontal: 30,
 		},
 		userImg: {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			justifyContent: 'center',
 			width: 30,
 			height: 30,
-			backgroundColor: colors[theme].GRAY_300,
+			backgroundColor: colors[theme].GRAY_100,
 			borderRadius: 500,
 		},
 		flexText: {
