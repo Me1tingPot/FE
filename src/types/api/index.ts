@@ -1,5 +1,6 @@
 import {
 	AREA_DATA,
+	COMMENT_LIST_TYPE,
 	LOGIN_DATA_TYPES,
 	PARTY_DATA,
 	POST_DATA,
@@ -40,6 +41,10 @@ export type POST_TYPES = RETURN_TYPES & {
 
 export type POST_DATAIL_TYPES = RETURN_TYPES & {
 	data: POST_DETAIL_DATA;
+};
+
+export type POST_COMMENT_TYPES = RETURN_TYPES & {
+	data: COMMENT_LIST_TYPE;
 };
 
 export type PARTY_TYPES = RETURN_TYPES & {

@@ -1,18 +1,20 @@
 import { useCallback, useState } from 'react';
 import {
+	FlatList,
 	KeyboardAvoidingView,
 	Platform,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
 	StyleSheet,
+	View,
 } from 'react-native';
 import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
 import { NavigationProp } from '@react-navigation/native';
 import InputBottom from '@/components/community/detail/InputBottom';
 import PostContents from '@/components/community/detail/PostContents';
 import PostInfo from '@/components/community/detail/PostInfo';
-import Comments from '@/components/community/detail/comment/Comments';
+import CommentsView from '@/components/community/detail/comment/CommentsView';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors } from '@/constants';
 import useCommunity from '@/hooks/queries/useCommunity';
@@ -45,22 +47,38 @@ function CommunityPostingDetailScreen({
 	const styles = styling(theme);
 	const modal = useModal();
 
-	const { useGetPostDetail } = useCommunity();
+	const { useGetPostDetail, useGetInfinitePostComments } = useCommunity();
 	const { data, refetch, isPending } = useGetPostDetail(id);
+
+	const {
+		data: comments,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+		refetch: refetchComment,
+	} = useGetInfinitePostComments(id);
 
 	usePermission('CAMERA');
 	usePermission('PHOTO');
 
-	const onSubmit = () => {
-		console.log(comment, '익명 유무: ', isChecked);
-	};
-
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
 		setTimeout(() => {
+			refetch();
+			refetchComment();
 			setRefreshing(false);
 		}, 2000);
 	}, []);
+
+	const handleEndReached = () => {
+		if (hasNextPage && !isFetchingNextPage) {
+			fetchNextPage();
+		}
+	};
+
+	const onSubmit = () => {
+		console.log(comment, '익명 유무: ', isChecked);
+	};
 
 	const cameraOptions: CameraOptions = {
 		cameraType: 'front',
@@ -83,7 +101,8 @@ function CommunityPostingDetailScreen({
 				behavior="padding"
 				keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 70}
 			>
-				<ScrollView
+				<FlatList
+					data={comments?.pages.flatMap(page => page.data.commentsList)}
 					contentContainerStyle={styles.contentContainer}
 					refreshControl={
 						<RefreshControl
@@ -93,19 +112,22 @@ function CommunityPostingDetailScreen({
 							tintColor={colors[theme].BLACK}
 						/>
 					}
-				>
-					<PostInfo
-						writerName={data?.data.name}
-						postDate={data?.data.updatedAt}
-					/>
-					<PostContents title={data?.data.title} content={data?.data.content} />
-					<Comments
-						navigation={navigation}
-						id={id}
-						commentCount={data?.data.commentCount}
-						commentList={data?.data.commentsList}
-					/>
-				</ScrollView>
+					ListHeaderComponent={
+						<View style={styles.postInfoContainer}>
+							<PostInfo
+								writerName={data?.data.name}
+								postDate={data?.data.updatedAt}
+							/>
+							<PostContents
+								title={data?.data.title}
+								content={data?.data.content}
+								commentCount={data?.data.commentCount}
+							/>
+						</View>
+					}
+					renderItem={({ item }) => <CommentsView comment={item} />}
+					onEndReached={handleEndReached}
+				/>
 				<InputBottom
 					id={id}
 					isChecked={isChecked}
@@ -139,6 +161,9 @@ const styling = (theme: ThemeMode) =>
 		},
 		keyboardView: {
 			flex: 1,
+		},
+		postInfoContainer: {
+			gap: 15,
 		},
 	});
 

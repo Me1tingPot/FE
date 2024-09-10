@@ -7,6 +7,7 @@ const API_BASE = {
 	USER: `user`,
 	CHAT_ROOM: `chatRooms`,
 	POSTS: `posts`,
+	COMMENTS: `comments`,
 	PARTY: `party`,
 	AREA: `area`,
 	SEARCH: `search`,
@@ -42,6 +43,11 @@ const API_URL = {
 	POST: `/${API}/${VERSION}/${API_BASE.POSTS}`,
 	GET_POSTS_LIST: `${API}/${VERSION}/${API_BASE.POSTS}/type`,
 	GET_POST_DETAIL: `${API}/${VERSION}/${API_BASE.POSTS}`,
+
+	// comment-controller
+	COMMENT: `/${API}/${VERSION}/${API_BASE.COMMENTS}`,
+	GET_COMMENTS_LIST: `/${API}/${VERSION}/${API_BASE.COMMENTS}/list`,
+	CHILD_COMMENT: `/${API}/${VERSION}/${API_BASE.COMMENTS}/child`,
 
 	// party-controller
 	PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}`,

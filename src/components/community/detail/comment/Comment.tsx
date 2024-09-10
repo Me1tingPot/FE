@@ -7,10 +7,10 @@ import { ThemeMode } from '@/types';
 import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 
 interface CommentProps {
-	name: string;
-	postDate: string;
-	content: string;
-	userImg: string;
+	name?: string;
+	postDate?: string;
+	content?: string;
+	userImg?: string;
 }
 
 function Comment({ name, postDate, content, userImg }: CommentProps) {
@@ -88,8 +88,8 @@ const styling = (theme: ThemeMode) =>
 			backgroundColor: colors[theme].GRAY_100,
 		},
 		infoText: {
-			color: colors[theme].GRAY_700,
-			fontSize: 12,
+			color: colors[theme].GRAY_500,
+			fontSize: 11,
 		},
 		comment: {
 			color: colors[theme].BLACK,
@@ -98,8 +98,6 @@ const styling = (theme: ThemeMode) =>
 		verticalLine: {
 			width: '95%',
 			alignSelf: 'center',
-			borderBottomWidth: 0.5,
-			borderBottomColor: colors[theme].GRAY_300,
 		},
 	});
 

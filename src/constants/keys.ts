@@ -8,6 +8,7 @@ const queryKeys = {
 	POST: 'post',
 	PARTY: 'party',
 	AREA: 'area',
+	COMMENT: 'comment',
 } as const;
 
 const storageKeys = {

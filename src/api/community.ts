@@ -1,5 +1,5 @@
 import { API_URL } from '@/constants/path';
-import { POST_DATAIL_TYPES, POST_TYPES } from '@/types/api';
+import { POST_COMMENT_TYPES, POST_DATAIL_TYPES, POST_TYPES } from '@/types/api';
 import axiosInstance from './axios';
 
 export enum POST_TYPE {
@@ -55,4 +55,20 @@ const getPostDetail = async ({
 	return data;
 };
 
-export { post, getPosts, getPostDetail };
+const getGetPostComment = async ({
+	postId,
+	cursor,
+	pageSize,
+}: {
+	postId: number;
+	cursor: number;
+	pageSize: number;
+}): Promise<POST_COMMENT_TYPES> => {
+	const { data } = await axiosInstance.get(
+		`${API_URL.GET_COMMENTS_LIST}/${postId}?cursor=${cursor}&pageSize=${pageSize}`,
+	);
+
+	return data;
+};
+
+export { post, getPosts, getPostDetail, getGetPostComment };

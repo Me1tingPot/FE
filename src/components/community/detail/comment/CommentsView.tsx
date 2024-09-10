@@ -7,7 +7,7 @@ import { COMMENT_DTO } from '@/types/api/types';
 import Comment from './Comment';
 
 interface CommentsViewProps {
-	comment: COMMENT_DTO;
+	comment?: COMMENT_DTO;
 }
 
 function CommentsView({ comment }: CommentsViewProps) {
@@ -16,10 +16,10 @@ function CommentsView({ comment }: CommentsViewProps) {
 	return (
 		<View>
 			<Comment
-				name={comment.name}
-				postDate={comment.updatedAt}
-				content={comment.content}
-				userImg={comment.imageUrl}
+				name={comment?.name}
+				postDate={comment?.updatedAt}
+				content={comment?.content}
+				userImg={comment?.imageUrl}
 			/>
 			{/* {new Array(3).fill(null).map((_, idx) => (
 				<View style={styles.recommntContainer} key={idx}>
