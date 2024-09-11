@@ -11,6 +11,7 @@ interface CommentsViewProps {
 	show: () => void;
 	setCommentId: (id: number | null) => void;
 	commentId: number | null;
+	setTargetCommentId: (id: number) => void;
 }
 
 function CommentsView({
@@ -18,6 +19,7 @@ function CommentsView({
 	show,
 	setCommentId,
 	commentId,
+	setTargetCommentId,
 }: CommentsViewProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -29,6 +31,7 @@ function CommentsView({
 				show={show}
 				setCommentId={setCommentId}
 				selectedCommentId={commentId}
+				setTargetCommentId={setTargetCommentId}
 			/>
 		</View>
 	);

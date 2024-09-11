@@ -13,6 +13,7 @@ interface CommentProps {
 	show: () => void;
 	setCommentId: (id: number | null) => void;
 	selectedCommentId: number | null;
+	setTargetCommentId: (id: number) => void;
 }
 
 function Comment({
@@ -20,6 +21,7 @@ function Comment({
 	show,
 	setCommentId,
 	selectedCommentId,
+	setTargetCommentId,
 }: CommentProps) {
 	const [date, setDate] = useState(getDateLocaleFormat(new Date()));
 	const [time, setTime] = useState(getFormattedTime(new Date()));
@@ -86,7 +88,15 @@ function Comment({
 							/>
 						</TouchableOpacity>
 					)}
-					<TouchableOpacity activeOpacity={0.8} onPress={show}>
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							show();
+							if (comment?.commentId) {
+								setTargetCommentId(comment?.commentId);
+							}
+						}}
+					>
 						<Ionicons name="ellipsis-vertical" color="#000" size={18} />
 					</TouchableOpacity>
 				</View>

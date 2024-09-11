@@ -48,6 +48,9 @@ function CommunityPostingDetailScreen({
 	const [refreshing, setRefreshing] = useState(false);
 	const [files, setFiles] = useState<string[]>([]);
 	const [commentId, setCommentId] = useState<number | null>(null);
+	const [targetCommentId, setTargetCommentId] = useState<number | undefined>(
+		undefined,
+	);
 
 	const { id } = route.params;
 	const { theme } = useThemeStore();
@@ -220,6 +223,7 @@ function CommunityPostingDetailScreen({
 							show={commentOption.show}
 							setCommentId={(id: number | null) => handleCommentId(id)}
 							commentId={commentId}
+							setTargetCommentId={setTargetCommentId}
 						/>
 					)}
 					onEndReached={handleEndReached}
@@ -250,6 +254,7 @@ function CommunityPostingDetailScreen({
 			<CommentOption
 				isVisible={commentOption.isVisible}
 				hideOption={commentOption.hide}
+				targetCommentId={targetCommentId}
 			/>
 		</SafeAreaView>
 	);
