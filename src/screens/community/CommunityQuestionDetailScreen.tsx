@@ -18,16 +18,19 @@ import PostInfo from '@/components/community/detail/PostInfo';
 import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
 import CommentOption from '@/components/community/detail/comment/CommentOption';
 import CommentsView from '@/components/community/detail/comment/CommentsView';
+import OtherCommentOption from '@/components/community/detail/comment/OtherCommentOption';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors, queryKeys } from '@/constants';
 import useComment from '@/hooks/queries/useComment';
 import useCommunity from '@/hooks/queries/useCommunity';
+import useGetUserData from '@/hooks/useGetUserData';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { COMMENT_DTO } from '@/types/api/types';
 
 type CommunityQuestionDetailScreenProps = {
 	route: {
@@ -47,9 +50,10 @@ function CommunityQuestionDetailScreen({
 	const [refreshing, setRefreshing] = useState(false);
 	const [files, setFiles] = useState<string[]>([]);
 	const [commentId, setCommentId] = useState<number | null>(null);
-	const [targetCommentId, setTargetCommentId] = useState<number | undefined>(
+	const [targetComment, setTargetComment] = useState<COMMENT_DTO | undefined>(
 		undefined,
 	);
+	const { id: userId } = useGetUserData();
 
 	const { id } = route.params;
 	const { theme } = useThemeStore();
@@ -109,6 +113,9 @@ function CommunityQuestionDetailScreen({
 						queryClient.invalidateQueries({
 							queryKey: [queryKeys.POST, queryKeys.COMMENT, data?.data.postId],
 						});
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, data?.data.postId],
+						});
 						setComment('');
 						setIsChecked(false);
 					},
@@ -150,6 +157,9 @@ function CommunityQuestionDetailScreen({
 					onSuccess: () => {
 						queryClient.invalidateQueries({
 							queryKey: [queryKeys.POST, queryKeys.COMMENT, data?.data.postId],
+						});
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, data?.data.postId],
 						});
 						setCommentId(null);
 						setComment('');
@@ -218,7 +228,7 @@ function CommunityQuestionDetailScreen({
 							show={commentOption.show}
 							setCommentId={(id: number | null) => handleCommentId(id)}
 							commentId={commentId}
-							setTargetCommentId={setTargetCommentId}
+							setTargetComment={setTargetComment}
 						/>
 					)}
 					onEndReached={handleEndReached}
@@ -246,11 +256,19 @@ function CommunityQuestionDetailScreen({
 				postType={'Question'}
 				navigation={navigation}
 			/>
-			<CommentOption
-				isVisible={commentOption.isVisible}
-				hideOption={commentOption.hide}
-				targetCommentId={targetCommentId}
-			/>
+			{userId === targetComment?.userId ? (
+				<CommentOption
+					isVisible={commentOption.isVisible}
+					hideOption={commentOption.hide}
+					targetComment={targetComment}
+				/>
+			) : (
+				<OtherCommentOption
+					isVisible={commentOption.isVisible}
+					hideOption={commentOption.hide}
+					targetComment={targetComment}
+				/>
+			)}
 		</SafeAreaView>
 	);
 }

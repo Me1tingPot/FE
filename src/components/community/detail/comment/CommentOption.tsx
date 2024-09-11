@@ -1,36 +1,41 @@
 import { useTranslation } from 'react-i18next';
-import Toast from 'react-native-toast-message';
 import queryClient from '@/api/queryClient';
 import { CompoundOption } from '@/components/common/CompoundOption';
 import { queryKeys } from '@/constants';
 import useComment from '@/hooks/queries/useComment';
+import { COMMENT_DTO } from '@/types/api/types';
 
 interface CommentOptionProps {
 	isVisible: boolean;
 	hideOption: () => void;
-	targetCommentId?: number;
+	targetComment?: COMMENT_DTO;
 }
 
 function CommentOption({
 	isVisible,
 	hideOption,
-	targetCommentId,
+	targetComment,
 }: CommentOptionProps) {
 	const { t } = useTranslation();
 	const { deleteCommentMutation } = useComment();
 
-	const handleUpdateComment = () => {};
+	const handleUpdateComment = () => {
+		hideOption();
+	};
 
 	const handleDeleteComment = async () => {
-		if (targetCommentId) {
+		if (targetComment?.commentId) {
 			deleteCommentMutation.mutate(
 				{
-					commentId: targetCommentId,
+					commentId: targetComment?.commentId,
 				},
 				{
 					onSuccess: () => {
 						queryClient.invalidateQueries({
 							queryKey: [queryKeys.POST, queryKeys.COMMENT],
+						});
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST],
 						});
 						hideOption();
 					},

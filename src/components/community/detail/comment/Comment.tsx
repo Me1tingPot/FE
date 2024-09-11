@@ -13,7 +13,7 @@ interface CommentProps {
 	show: () => void;
 	setCommentId: (id: number | null) => void;
 	selectedCommentId: number | null;
-	setTargetCommentId: (id: number) => void;
+	setTargetComment: (comment: COMMENT_DTO) => void;
 }
 
 function Comment({
@@ -21,7 +21,7 @@ function Comment({
 	show,
 	setCommentId,
 	selectedCommentId,
-	setTargetCommentId,
+	setTargetComment,
 }: CommentProps) {
 	const [date, setDate] = useState(getDateLocaleFormat(new Date()));
 	const [time, setTime] = useState(getFormattedTime(new Date()));
@@ -92,8 +92,8 @@ function Comment({
 						activeOpacity={0.8}
 						onPress={() => {
 							show();
-							if (comment?.commentId) {
-								setTargetCommentId(comment?.commentId);
+							if (comment) {
+								setTargetComment(comment);
 							}
 						}}
 					>
