@@ -10,14 +10,16 @@ import {
 	View,
 } from 'react-native';
 import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
+import Toast from 'react-native-toast-message';
 import { NavigationProp } from '@react-navigation/native';
+import queryClient from '@/api/queryClient';
 import InputBottom from '@/components/community/detail/InputBottom';
 import PostContents from '@/components/community/detail/PostContents';
 import PostInfo from '@/components/community/detail/PostInfo';
 import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
 import CommentsView from '@/components/community/detail/comment/CommentsView';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
-import { colors } from '@/constants';
+import { colors, queryKeys } from '@/constants';
 import useComment from '@/hooks/queries/useComment';
 import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
@@ -53,7 +55,7 @@ function CommunityQuestionDetailScreen({
 	const questtionOption = useModal();
 
 	const { useGetPostDetail } = useCommunity();
-	const { useGetInfinitePostComments } = useComment();
+	const { useGetInfinitePostComments, commentMutation } = useComment();
 	const { data, refetch, isPending } = useGetPostDetail(id);
 	const {
 		data: comments,
@@ -87,8 +89,42 @@ function CommunityQuestionDetailScreen({
 		}
 	};
 
-	const onSubmit = () => {
-		console.log(comment, '익명 유무: ', isChecked);
+	const onSubmit = async () => {
+		if (comment && data?.data) {
+			commentMutation.mutate(
+				{
+					postId: data?.data.postId,
+					content: comment,
+					isAnonymous: isChecked,
+					imageKey: null,
+				},
+				{
+					onSuccess: () => {
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, queryKeys.COMMENT, data?.data.postId],
+						});
+						setComment('');
+						setIsChecked(false);
+					},
+					onError: error => {
+						console.log(error.response);
+						Toast.show({
+							type: 'error',
+							text1: error.response?.data.message || '댓글 업로드 오류입니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+					},
+				},
+			);
+		} else {
+			Toast.show({
+				type: 'error',
+				text1: '댓글을 작성해주세요.',
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+		}
 	};
 
 	const cameraOptions: CameraOptions = {

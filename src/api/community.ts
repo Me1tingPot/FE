@@ -30,9 +30,10 @@ interface GetPostDetailProps {
 }
 
 interface writeCommentProps {
+	postId: number;
 	content: string;
 	isAnonymous: boolean;
-	imageKey: string;
+	imageKey: string | null;
 }
 
 interface writeChildCommentProps extends writeCommentProps {
@@ -123,11 +124,12 @@ const getGetPostComment = async ({
 };
 
 const writeComment = async ({
+	postId,
 	content,
 	isAnonymous,
 	imageKey,
 }: writeCommentProps) => {
-	const { data } = await axiosInstance.post(`${API_URL.COMMENT}`, {
+	const { data } = await axiosInstance.post(`${API_URL.COMMENT}/${postId}`, {
 		content,
 		isAnonymous,
 		imageKey,

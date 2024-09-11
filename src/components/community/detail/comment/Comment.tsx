@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
@@ -11,12 +12,20 @@ interface CommentProps {
 	postDate?: string;
 	content?: string;
 	userImg?: string;
+	isAnonymous?: boolean;
 }
 
-function Comment({ name, postDate, content, userImg }: CommentProps) {
+function Comment({
+	name,
+	postDate,
+	content,
+	userImg,
+	isAnonymous,
+}: CommentProps) {
 	const [date, setDate] = useState(getDateLocaleFormat(new Date()));
 	const [time, setTime] = useState(getFormattedTime(new Date()));
 	const { theme } = useThemeStore();
+	const { t } = useTranslation();
 	const styles = styling(theme);
 
 	useEffect(() => {
@@ -41,7 +50,7 @@ function Comment({ name, postDate, content, userImg }: CommentProps) {
 					</View>
 				)}
 				<View style={styles.userInfo}>
-					<Text style={styles.comment}>{name}</Text>
+					<Text style={styles.comment}>{isAnonymous ? t('익명') : name}</Text>
 					<Text style={styles.infoText}>
 						{date} {time}
 					</Text>

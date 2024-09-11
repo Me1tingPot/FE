@@ -20,6 +20,7 @@ function CommentsView({ comment }: CommentsViewProps) {
 				postDate={comment?.updatedAt}
 				content={comment?.content}
 				userImg={comment?.imageUrl}
+				isAnonymous={comment?.isAnonymous}
 			/>
 			{/* {new Array(3).fill(null).map((_, idx) => (
 				<View style={styles.recommntContainer} key={idx}>

@@ -103,7 +103,6 @@ function CommunityPostingWriteScreen({
 							visibilityTime: 2000,
 							position: 'bottom',
 						});
-						console.error(error.response);
 					},
 				},
 			);
