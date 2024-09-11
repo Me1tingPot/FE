@@ -43,6 +43,7 @@ const API_URL = {
 	POST: `/${API}/${VERSION}/${API_BASE.POSTS}`,
 	GET_POSTS_LIST: `${API}/${VERSION}/${API_BASE.POSTS}/type`,
 	GET_POST_DETAIL: `${API}/${VERSION}/${API_BASE.POSTS}`,
+	GET_TEMP_SAVED_POST: `${API}/${VERSION}/${API_BASE.POSTS}/temp-saved`,
 
 	// comment-controller
 	COMMENT: `/${API}/${VERSION}/${API_BASE.COMMENTS}`,

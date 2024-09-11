@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
 	FlatList,
 	KeyboardAvoidingView,
@@ -14,6 +14,7 @@ import { NavigationProp } from '@react-navigation/native';
 import InputBottom from '@/components/community/detail/InputBottom';
 import PostContents from '@/components/community/detail/PostContents';
 import PostInfo from '@/components/community/detail/PostInfo';
+import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
 import CommentsView from '@/components/community/detail/comment/CommentsView';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors } from '@/constants';
@@ -21,6 +22,7 @@ import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
@@ -46,6 +48,8 @@ function CommunityPostingDetailScreen({
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const modal = useModal();
+	const { setPost } = usePostStore();
+	const postingOption = useModal();
 
 	const { useGetPostDetail, useGetInfinitePostComments } = useCommunity();
 	const { data, refetch, isPending } = useGetPostDetail(id);
@@ -60,6 +64,12 @@ function CommunityPostingDetailScreen({
 
 	usePermission('CAMERA');
 	usePermission('PHOTO');
+
+	useEffect(() => {
+		if (data) {
+			setPost(data?.data);
+		}
+	}, [setPost, data]);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -117,6 +127,7 @@ function CommunityPostingDetailScreen({
 							<PostInfo
 								writerName={data?.data.name}
 								postDate={data?.data.updatedAt}
+								show={postingOption.show}
 							/>
 							<PostContents
 								title={data?.data.title}
@@ -144,6 +155,12 @@ function CommunityPostingDetailScreen({
 				cameraOptions={cameraOptions}
 				libraryOptions={libraryOptions}
 				setFiles={setFiles}
+			/>
+			<UpdatePostOption
+				isVisible={postingOption.isVisible}
+				hideOption={postingOption.hide}
+				postType={'Post'}
+				navigation={navigation}
 			/>
 		</SafeAreaView>
 	);

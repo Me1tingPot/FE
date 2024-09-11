@@ -11,12 +11,13 @@ import Report from '../../../assets/images/Report.png';
 interface PostInfoProps {
 	writerName?: string;
 	postDate?: string;
+	show: () => void;
 }
 
 const testImg =
 	'https://images.unsplash.com/photo-1605100958409-e084833953d4?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
 
-function PostInfo({ writerName, postDate }: PostInfoProps) {
+function PostInfo({ writerName, postDate, show }: PostInfoProps) {
 	const [date, setDate] = useState(getDateLocaleFormat(new Date()));
 	const [time, setTime] = useState(getFormattedTime(new Date()));
 	const { theme } = useThemeStore();
@@ -45,11 +46,15 @@ function PostInfo({ writerName, postDate }: PostInfoProps) {
 					</View>
 				</View>
 			</View>
+
 			<TouchableOpacity
 				activeOpacity={0.8}
 				onPress={() => console.log('click')}
 			>
 				<Image source={Report} style={styles.report} />
+			</TouchableOpacity>
+			<TouchableOpacity activeOpacity={0.8} onPress={show}>
+				<IonIcons name="ellipsis-vertical" color="#000" size={20} />
 			</TouchableOpacity>
 		</View>
 	);

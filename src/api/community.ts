@@ -12,6 +12,11 @@ interface PostProps {
 	content: string;
 	postType: POST_TYPE;
 	imageKeys: string[];
+	isDraft: boolean;
+}
+
+interface UpdatePostProps extends Omit<PostProps, 'isDraft'> {
+	postId: number;
 }
 
 export interface GetPostsProps {
@@ -24,13 +29,22 @@ interface GetPostDetailProps {
 	postId: number;
 }
 
-const post = async ({ title, content, postType, imageKeys }: PostProps) => {
-	const { data } = await axiosInstance.post(`${API_URL.POST}`, {
-		title,
-		content,
-		postType,
-		imageKeys,
-	});
+const post = async ({
+	title,
+	content,
+	postType,
+	imageKeys,
+	isDraft,
+}: PostProps) => {
+	const { data } = await axiosInstance.post(
+		`${API_URL.POST}?isDraft=${isDraft}`,
+		{
+			title,
+			content,
+			postType,
+			imageKeys,
+		},
+	);
 	return data;
 };
 
@@ -71,4 +85,39 @@ const getGetPostComment = async ({
 	return data;
 };
 
-export { post, getPosts, getPostDetail, getGetPostComment };
+const updatePost = async ({
+	postId,
+	title,
+	content,
+	postType,
+	imageKeys,
+}: UpdatePostProps) => {
+	const { data } = await axiosInstance.put(`${API_URL.POST}/${postId}`, {
+		title,
+		content,
+		postType,
+		imageKeys,
+	});
+
+	return data;
+};
+
+const deletePost = async ({ postId }: { postId: number }) => {
+	const { data } = await axiosInstance.delete(`${API_URL.POST}/${postId}`);
+	return data;
+};
+
+const getTempSavedPost = async ({}) => {
+	const { data } = await axiosInstance.get(`${API_URL.GET_TEMP_SAVED_POST}`);
+	return data;
+};
+
+export {
+	post,
+	getPosts,
+	getPostDetail,
+	getGetPostComment,
+	updatePost,
+	deletePost,
+	getTempSavedPost,
+};

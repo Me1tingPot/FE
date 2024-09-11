@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
 	ActivityIndicator,
 	FlatList,
@@ -8,12 +8,13 @@ import {
 	StyleSheet,
 	View,
 } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import PostingPreview from '@/components/community/PostingPreview';
 import { colors, communityNavigations } from '@/constants';
 import useCommunity from '@/hooks/queries/useCommunity';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { POST_DTO } from '@/types/api/types';
@@ -27,6 +28,7 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 	const { useGetInfinitePostingPostLists } = useCommunity();
 	const { data, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
 		useGetInfinitePostingPostLists();
+	const { setPost } = usePostStore();
 
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
@@ -53,11 +55,17 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 		/>
 	);
 
+	useFocusEffect(
+		useCallback(() => {
+			setPost(null);
+		}, [setPost]),
+	);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.contentContainer}>
 				<FlatList
-					data={data?.pages.flatMap(page => page.data.postsList)}
+					data={data?.pages.flatMap(page => page.data.postsList).reverse()}
 					renderItem={renderItem}
 					contentContainerStyle={styles.scrollStyle}
 					onEndReached={loadMore}

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
 	FlatList,
 	KeyboardAvoidingView,
@@ -14,6 +14,7 @@ import { NavigationProp } from '@react-navigation/native';
 import InputBottom from '@/components/community/detail/InputBottom';
 import PostContents from '@/components/community/detail/PostContents';
 import PostInfo from '@/components/community/detail/PostInfo';
+import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
 import CommentsView from '@/components/community/detail/comment/CommentsView';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors } from '@/constants';
@@ -21,6 +22,7 @@ import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
@@ -46,6 +48,8 @@ function CommunityQuestionDetailScreen({
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const modal = useModal();
+	const { setPost } = usePostStore();
+	const questtionOption = useModal();
 
 	const { useGetPostDetail, useGetInfinitePostComments } = useCommunity();
 	const { data, refetch, isPending } = useGetPostDetail(id);
@@ -59,6 +63,12 @@ function CommunityQuestionDetailScreen({
 
 	usePermission('CAMERA');
 	usePermission('PHOTO');
+
+	useEffect(() => {
+		if (data?.data) {
+			setPost(data?.data);
+		}
+	}, [setPost, data]);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -112,6 +122,7 @@ function CommunityQuestionDetailScreen({
 							<PostInfo
 								writerName={data?.data.name}
 								postDate={data?.data.updatedAt}
+								show={questtionOption.show}
 							/>
 							<PostContents
 								title={data?.data.title}
@@ -139,6 +150,12 @@ function CommunityQuestionDetailScreen({
 				cameraOptions={cameraOptions}
 				libraryOptions={libraryOptions}
 				setFiles={setFiles}
+			/>
+			<UpdatePostOption
+				isVisible={questtionOption.isVisible}
+				hideOption={questtionOption.hide}
+				postType={'Question'}
+				navigation={navigation}
 			/>
 		</SafeAreaView>
 	);

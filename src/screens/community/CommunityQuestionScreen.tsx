@@ -2,17 +2,17 @@ import { useCallback, useState } from 'react';
 import {
 	ActivityIndicator,
 	FlatList,
-	RefreshControl,
 	SafeAreaView,
 	StyleSheet,
 	View,
 } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import QuestionPreview from '@/components/community/QuestionPreview';
 import { colors, communityNavigations } from '@/constants';
 import useCommunity from '@/hooks/queries/useCommunity';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import { POST_DTO } from '@/types/api/types';
@@ -28,6 +28,13 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 	const { useGetInfiniteQuestionPostLists } = useCommunity();
 	const { data, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
 		useGetInfiniteQuestionPostLists();
+	const { setPost } = usePostStore();
+
+	useFocusEffect(
+		useCallback(() => {
+			setPost(null);
+		}, [setPost]),
+	);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -50,7 +57,7 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 		<SafeAreaView style={styles.container}>
 			<View style={styles.contentContainer}>
 				<FlatList
-					data={data?.pages.flatMap(page => page.data.postsList)}
+					data={data?.pages.flatMap(page => page.data.postsList).reverse()}
 					renderItem={renderItem}
 					onEndReached={loadMore}
 					onEndReachedThreshold={0.5}

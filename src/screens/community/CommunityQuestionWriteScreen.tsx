@@ -14,38 +14,47 @@ import {
 	View,
 } from 'react-native';
 import { CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
+import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NavigationProp } from '@react-navigation/native';
+import { POST_TYPE } from '@/api/community';
+import queryClient from '@/api/queryClient';
 import MultipleGradientBgTextInput from '@/components/community/MultipleGradientBgTextInput';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
-import { colors, feedTabNavigations } from '@/constants';
+import { colors, communityNavigations, queryKeys } from '@/constants';
+import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
+import usePostImagePicker from '@/hooks/usePostImagePicker';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
-import useCommunity from '@/hooks/queries/useCommunity';
-import { POST_TYPE } from '@/api/community';
-import usePostImagePicker from '@/hooks/usePostImagePicker';
-import Toast from 'react-native-toast-message';
-import { NavigationProp } from '@react-navigation/native';
-import { FeedTabParamList } from '@/navigations/tab/FeedTabNavigator';
 
 type CommunityQuestionWriteScreenProps = {
-	navigation: NavigationProp<FeedTabParamList>
+	navigation: NavigationProp<CommunityStackParamList>;
 };
 
-function CommunityQuestionWriteScreen({ navigation }: CommunityQuestionWriteScreenProps) {
-	const [title, setTitle] = useState('');
-	const [content, setContent] = useState('');
-	const [files, setFiles] = useState<string[]>([]);
+function CommunityQuestionWriteScreen({
+	navigation,
+}: CommunityQuestionWriteScreenProps) {
+	const { post } = usePostStore();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const modal = useModal();
-	const { postMutation } = useCommunity();
+	const { postMutation, updatePostMutation } = useCommunity();
 	const { imageUris, uploadedImages } = usePostImagePicker({
 		initialImages: [],
 		maxFiles: 10,
 	});
+
+	const isEdit = !!post;
+	const postImgData = post?.imgData.map(img => img.imageUrl);
+	const [title, setTitle] = useState(post?.title || '');
+	const [content, setContent] = useState(post?.content || '');
+	const [files, setFiles] = useState<string[]>(postImgData || []);
+	const [isDraft, setIsDraft] = useState(false);
 
 	usePermission('PHOTO');
 	usePermission('CAMERA');
@@ -66,31 +75,98 @@ function CommunityQuestionWriteScreen({ navigation }: CommunityQuestionWriteScre
 	};
 
 	const handleOnSubmit = () => {
-		postMutation.mutate({
-			title,
-			content,
-			postType: POST_TYPE.QUESTION,
-			imageKeys: uploadedImages
-		}, {
-			onSuccess: data => {
-				Toast.show({
-					type: 'success',
-					text1: '게시물이 업로드 되었습니다.',
-					visibilityTime: 2000,
-					position: 'bottom',
-				});
-				navigation.navigate(feedTabNavigations.COMMUNITY_HOME);
+		if (isEdit) {
+			updatePostMutation.mutate(
+				{
+					postId: post.postId,
+					title,
+					content,
+					postType: POST_TYPE.QUESTION,
+					imageKeys: uploadedImages,
+				},
+				{
+					onSuccess: () => {
+						navigation.navigate(
+							communityNavigations.COMMUNITY_QUESTION_DETAIL,
+							{
+								id: post.postId,
+							},
+						);
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, post.postId],
+						});
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, POST_TYPE.QUESTION],
+						});
+					},
+					onError: error => {
+						Toast.show({
+							type: 'error',
+							text1:
+								error.response?.data.message || '게시물 업로드 오류입니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+						console.error(error.response);
+					},
+				},
+			);
+		} else {
+			postMutation.mutate(
+				{
+					title,
+					content,
+					postType: POST_TYPE.QUESTION,
+					imageKeys: uploadedImages,
+					isDraft,
+				},
+				{
+					onSuccess: () => {
+						navigation.goBack();
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, POST_TYPE.QUESTION],
+						});
+					},
+					onError: error => {
+						console.log(error.response);
+						Toast.show({
+							type: 'error',
+							text1:
+								error.response?.data.message || '게시물 업로드 오류입니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+					},
+				},
+			);
+		}
+	};
+
+	const handleOnTempSaved = () => {
+		postMutation.mutate(
+			{
+				title,
+				content,
+				postType: POST_TYPE.QUESTION,
+				imageKeys: uploadedImages,
+				isDraft,
 			},
-			onError: error => {
-				Toast.show({
-					type: 'error',
-					text1: error.response?.data.message || '게시물 업로드 오류입니다.',
-					visibilityTime: 2000,
-					position: 'bottom',
-				});
-			}
-		})
-	}
+			{
+				onSuccess: () => {
+					navigation.goBack();
+				},
+				onError: error => {
+					console.log(error.response);
+					Toast.show({
+						type: 'error',
+						text1: error.response?.data.message || '게시물 업로드 오류입니다.',
+						visibilityTime: 2000,
+						position: 'bottom',
+					});
+				},
+			},
+		);
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -139,16 +215,12 @@ function CommunityQuestionWriteScreen({ navigation }: CommunityQuestionWriteScre
 						/>
 					</TouchableOpacity>
 					<View style={[styles.displayRow]}>
-						<Pressable
-							style={styles.menuBtn}
-							onPress={() => console.log('click')}
-						>
-							<Text style={styles.menuText}>{t('임시저장')}</Text>
-						</Pressable>
-						<Pressable
-							style={styles.menuBtn}
-							onPress={handleOnSubmit}
-						>
+						{!isEdit && (
+							<Pressable style={styles.menuBtn} onPress={handleOnTempSaved}>
+								<Text style={styles.menuText}>{t('임시저장')}</Text>
+							</Pressable>
+						)}
+						<Pressable style={styles.menuBtn} onPress={handleOnSubmit}>
 							<Text style={styles.menuText}>{t('게시하기')}</Text>
 						</Pressable>
 					</View>

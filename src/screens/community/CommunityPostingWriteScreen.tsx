@@ -18,36 +18,42 @@ import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { POST_TYPE } from '@/api/community';
+import queryClient from '@/api/queryClient';
 import MultipleGradientBgTextInput from '@/components/community/MultipleGradientBgTextInput';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
-import { colors, feedTabNavigations } from '@/constants';
+import { colors, communityNavigations, queryKeys } from '@/constants';
 import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import usePostImagePicker from '@/hooks/usePostImagePicker';
-import { FeedTabParamList } from '@/navigations/tab/FeedTabNavigator';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
 type CommunityPostingWriteScreenProps = {
-	navigation: NavigationProp<FeedTabParamList>;
+	navigation: NavigationProp<CommunityStackParamList>;
 };
 
 function CommunityPostingWriteScreen({
 	navigation,
 }: CommunityPostingWriteScreenProps) {
-	const [title, setTitle] = useState('');
-	const [content, setContent] = useState('');
-	const [files, setFiles] = useState<string[]>([]);
+	const { post } = usePostStore();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const modal = useModal();
-	const { postMutation } = useCommunity();
+	const { postMutation, updatePostMutation } = useCommunity();
 	const { imageUris, uploadedImages } = usePostImagePicker({
 		initialImages: [],
 		maxFiles: 10,
 	});
+
+	const isEdit = !!post;
+	const postImgData = post?.imgData.map(img => img.imageUrl);
+	const [title, setTitle] = useState(post?.title || '');
+	const [content, setContent] = useState(post?.content || '');
+	const [files, setFiles] = useState<string[]>(postImgData || []);
 
 	usePermission('PHOTO');
 	usePermission('CAMERA');
@@ -68,23 +74,82 @@ function CommunityPostingWriteScreen({
 	};
 
 	const handleOnSubmit = () => {
+		if (isEdit) {
+			updatePostMutation.mutate(
+				{
+					postId: post.postId,
+					title,
+					content,
+					postType: POST_TYPE.POSTING,
+					imageKeys: uploadedImages,
+				},
+				{
+					onSuccess: () => {
+						navigation.navigate(communityNavigations.COMMUNITY_POSTING_DETAIL, {
+							id: post.postId,
+						});
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, post.postId],
+						});
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, POST_TYPE.POSTING],
+						});
+					},
+					onError: error => {
+						Toast.show({
+							type: 'error',
+							text1:
+								error.response?.data.message || '게시물 업로드 오류입니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+						console.error(error.response);
+					},
+				},
+			);
+		} else {
+			postMutation.mutate(
+				{
+					title,
+					content,
+					postType: POST_TYPE.POSTING,
+					imageKeys: uploadedImages,
+					isDraft: false,
+				},
+				{
+					onSuccess: () => {
+						navigation.goBack();
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, POST_TYPE.POSTING],
+						});
+					},
+					onError: error => {
+						Toast.show({
+							type: 'error',
+							text1:
+								error.response?.data.message || '게시물 업로드 오류입니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+						console.error(error.response);
+					},
+				},
+			);
+		}
+	};
+
+	const handleOnTempSaved = () => {
 		postMutation.mutate(
 			{
 				title,
 				content,
 				postType: POST_TYPE.POSTING,
 				imageKeys: uploadedImages,
+				isDraft: true,
 			},
 			{
-				onSuccess: data => {
-					Toast.show({
-						type: 'success',
-						text1: '게시물이 업로드 되었습니다.',
-						visibilityTime: 2000,
-						position: 'bottom',
-					});
-					// TODO: post detail API 연결 후, 해당 게시글로 바로 이동하는 로직으로 변경
-					navigation.navigate(feedTabNavigations.COMMUNITY_HOME);
+				onSuccess: () => {
+					navigation.goBack();
 				},
 				onError: error => {
 					Toast.show({
@@ -146,12 +211,11 @@ function CommunityPostingWriteScreen({
 						/>
 					</TouchableOpacity>
 					<View style={[styles.displayRow]}>
-						<Pressable
-							style={styles.menuBtn}
-							onPress={() => console.log('click')}
-						>
-							<Text style={styles.menuText}>{t('임시저장')}</Text>
-						</Pressable>
+						{!isEdit && (
+							<Pressable style={styles.menuBtn} onPress={handleOnTempSaved}>
+								<Text style={styles.menuText}>{t('임시저장')}</Text>
+							</Pressable>
+						)}
 						<Pressable style={styles.menuBtn} onPress={handleOnSubmit}>
 							<Text style={styles.menuText}>{t('게시하기')}</Text>
 						</Pressable>
