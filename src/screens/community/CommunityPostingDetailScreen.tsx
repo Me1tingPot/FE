@@ -14,6 +14,7 @@ import Toast from 'react-native-toast-message';
 import { NavigationProp } from '@react-navigation/native';
 import queryClient from '@/api/queryClient';
 import InputBottom from '@/components/community/detail/InputBottom';
+import OtherPostOption from '@/components/community/detail/OtherPostOption';
 import PostContents from '@/components/community/detail/PostContents';
 import PostInfo from '@/components/community/detail/PostInfo';
 import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
@@ -255,10 +256,25 @@ function CommunityPostingDetailScreen({
 				libraryOptions={libraryOptions}
 				setFiles={setFiles}
 			/>
+			{/* TODO: API 수정 필요 */}
+			{/* {userId === data?.data?.userId ? (
+				<UpdatePostOption
+					isVisible={postingOption.isVisible}
+					hideOption={postingOption.hide}
+					postType={'Question'}
+					navigation={navigation}
+				/>
+			) : (
+				<OtherPostOption
+					isVisible={postingOption.isVisible}
+					hideOption={postingOption.hide}
+					postId={data?.data.postId}
+				/>
+			)} */}
 			<UpdatePostOption
 				isVisible={postingOption.isVisible}
 				hideOption={postingOption.hide}
-				postType={'Post'}
+				postType={'Question'}
 				navigation={navigation}
 			/>
 			{userId === targetComment?.userId ? (

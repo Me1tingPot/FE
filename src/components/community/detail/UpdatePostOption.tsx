@@ -45,15 +45,9 @@ function UpdatePostOption({
 				{
 					onSuccess: () => {
 						navigation.goBack();
-						if (postType === 'Post') {
-							queryClient.invalidateQueries({
-								queryKey: [queryKeys.POST, POST_TYPE.POSTING],
-							});
-						} else if (postType === 'Question') {
-							queryClient.invalidateQueries({
-								queryKey: [queryKeys.POST, POST_TYPE.QUESTION],
-							});
-						}
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST],
+						});
 					},
 					onError: error => {
 						Toast.show({

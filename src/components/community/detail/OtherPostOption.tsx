@@ -1,18 +1,17 @@
 import { useTranslation } from 'react-i18next';
 import { CompoundOption } from '@/components/common/CompoundOption';
-import { COMMENT_DTO } from '@/types/api/types';
 
-interface OtherCommentOptionProps {
+interface OtherPostOptionProps {
 	isVisible: boolean;
 	hideOption: () => void;
-	targetComment?: COMMENT_DTO;
+	postId?: number;
 }
 
-function OtherCommentOption({
+function OtherPostOption({
 	isVisible,
 	hideOption,
-	targetComment,
-}: OtherCommentOptionProps) {
+	postId,
+}: OtherPostOptionProps) {
 	const { t } = useTranslation();
 
 	const handleReportComment = () => {
@@ -37,4 +36,4 @@ function OtherCommentOption({
 	);
 }
 
-export default OtherCommentOption;
+export default OtherPostOption;
