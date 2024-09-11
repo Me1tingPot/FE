@@ -36,7 +36,7 @@ interface writeCommentProps {
 	imageKey: string | null;
 }
 
-interface writeChildCommentProps extends writeCommentProps {
+interface writeChildCommentProps extends Omit<writeCommentProps, 'postId'> {
 	commentId: number;
 }
 

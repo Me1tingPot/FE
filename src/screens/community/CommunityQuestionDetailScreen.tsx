@@ -5,7 +5,6 @@ import {
 	Platform,
 	RefreshControl,
 	SafeAreaView,
-	ScrollView,
 	StyleSheet,
 	View,
 } from 'react-native';
@@ -17,6 +16,7 @@ import InputBottom from '@/components/community/detail/InputBottom';
 import PostContents from '@/components/community/detail/PostContents';
 import PostInfo from '@/components/community/detail/PostInfo';
 import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
+import CommentOption from '@/components/community/detail/comment/CommentOption';
 import CommentsView from '@/components/community/detail/comment/CommentsView';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors, queryKeys } from '@/constants';
@@ -46,6 +46,7 @@ function CommunityQuestionDetailScreen({
 	const [comment, setComment] = useState('');
 	const [refreshing, setRefreshing] = useState(false);
 	const [files, setFiles] = useState<string[]>([]);
+	const [commentId, setCommentId] = useState<number | null>(null);
 
 	const { id } = route.params;
 	const { theme } = useThemeStore();
@@ -53,9 +54,11 @@ function CommunityQuestionDetailScreen({
 	const modal = useModal();
 	const { setPost } = usePostStore();
 	const questtionOption = useModal();
+	const commentOption = useModal();
 
 	const { useGetPostDetail } = useCommunity();
-	const { useGetInfinitePostComments, commentMutation } = useComment();
+	const { useGetInfinitePostComments, commentMutation, childCommentMutation } =
+		useComment();
 	const { data, refetch, isPending } = useGetPostDetail(id);
 	const {
 		data: comments,
@@ -127,6 +130,43 @@ function CommunityQuestionDetailScreen({
 		}
 	};
 
+	const handleCommentId = (id: number | null) => {
+		setCommentId(id);
+	};
+
+	const handleWriteChildComment = async () => {
+		if (comment && data?.data && commentId) {
+			childCommentMutation.mutate(
+				{
+					commentId,
+					content: comment,
+					isAnonymous: isChecked,
+					imageKey: null,
+				},
+				{
+					onSuccess: () => {
+						queryClient.invalidateQueries({
+							queryKey: [queryKeys.POST, queryKeys.COMMENT, data?.data.postId],
+						});
+						setCommentId(null);
+						setComment('');
+						setIsChecked(false);
+					},
+					onError: error => {
+						console.log(error.response);
+						Toast.show({
+							type: 'error',
+							text1:
+								error.response?.data.message || '대댓글 업로드 오류입니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+					},
+				},
+			);
+		}
+	};
+
 	const cameraOptions: CameraOptions = {
 		cameraType: 'front',
 		mediaType: 'photo',
@@ -169,7 +209,14 @@ function CommunityQuestionDetailScreen({
 							/>
 						</View>
 					}
-					renderItem={({ item }) => <CommentsView comment={item} />}
+					renderItem={({ item }) => (
+						<CommentsView
+							comment={item}
+							show={commentOption.show}
+							setCommentId={(id: number | null) => handleCommentId(id)}
+							commentId={commentId}
+						/>
+					)}
 					onEndReached={handleEndReached}
 				/>
 				<InputBottom
@@ -178,7 +225,7 @@ function CommunityQuestionDetailScreen({
 					onPress={() => setIsChecked(prev => !prev)}
 					comment={comment}
 					setComment={setComment}
-					onSubmit={onSubmit}
+					onSubmit={commentId ? handleWriteChildComment : onSubmit}
 					onPressCamera={modal.show}
 				/>
 			</KeyboardAvoidingView>
@@ -195,6 +242,10 @@ function CommunityQuestionDetailScreen({
 				postType={'Question'}
 				navigation={navigation}
 			/>
+			<CommentOption
+				isVisible={commentOption.isVisible}
+				hideOption={commentOption.hide}
+			/>
 		</SafeAreaView>
 	);
 }
@@ -207,13 +258,13 @@ const styling = (theme: ThemeMode) =>
 		},
 		contentContainer: {
 			gap: 15,
-			padding: 20,
 		},
 		keyboardView: {
 			flex: 1,
 		},
 		postInfoContainer: {
 			gap: 15,
+			padding: 20,
 		},
 	});
 

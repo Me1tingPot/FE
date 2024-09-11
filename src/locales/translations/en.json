@@ -423,5 +423,6 @@
 	"이미지가 업로드 되었습니다.": "The image has been uploaded.",
 	"채팅": "Chat",
 	"수정하기": "Edit Post",
-	"삭제하기": "Delete Post"
+	"삭제하기": "Delete Post",
+	"대댓글 작성하기": "Recomment Post"
 }

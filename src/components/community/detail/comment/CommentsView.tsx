@@ -8,35 +8,37 @@ import Comment from './Comment';
 
 interface CommentsViewProps {
 	comment?: COMMENT_DTO;
+	show: () => void;
+	setCommentId: (id: number | null) => void;
+	commentId: number | null;
 }
 
-function CommentsView({ comment }: CommentsViewProps) {
+function CommentsView({
+	comment,
+	show,
+	setCommentId,
+	commentId,
+}: CommentsViewProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
 	return (
-		<View>
+		<View style={styles.container}>
 			<Comment
-				name={comment?.name}
-				postDate={comment?.updatedAt}
-				content={comment?.content}
-				userImg={comment?.imageUrl}
-				isAnonymous={comment?.isAnonymous}
+				comment={comment}
+				show={show}
+				setCommentId={setCommentId}
+				selectedCommentId={commentId}
 			/>
-			{/* {new Array(3).fill(null).map((_, idx) => (
-				<View style={styles.recommntContainer} key={idx}>
-					<MaterialIcons
-						name="subdirectory-arrow-right"
-						color={colors[theme].BLACK}
-					/>
-					<Comment />
-				</View>
-			))} */}
 		</View>
 	);
 }
 
 const styling = (theme: ThemeMode) =>
 	StyleSheet.create({
+		container: {
+			paddingHorizontal: 20,
+		},
 		recommntContainer: {
 			display: 'flex',
 			flexDirection: 'row',
