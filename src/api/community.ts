@@ -29,6 +29,16 @@ interface GetPostDetailProps {
 	postId: number;
 }
 
+interface writeCommentProps {
+	content: string;
+	isAnonymous: boolean;
+	imageKey: string;
+}
+
+interface writeChildCommentProps extends writeCommentProps {
+	commentId: number;
+}
+
 const post = async ({
 	title,
 	content,
@@ -69,22 +79,6 @@ const getPostDetail = async ({
 	return data;
 };
 
-const getGetPostComment = async ({
-	postId,
-	cursor,
-	pageSize,
-}: {
-	postId: number;
-	cursor: number;
-	pageSize: number;
-}): Promise<POST_COMMENT_TYPES> => {
-	const { data } = await axiosInstance.get(
-		`${API_URL.GET_COMMENTS_LIST}/${postId}?cursor=${cursor}&pageSize=${pageSize}`,
-	);
-
-	return data;
-};
-
 const updatePost = async ({
 	postId,
 	title,
@@ -112,6 +106,73 @@ const getTempSavedPost = async ({}) => {
 	return data;
 };
 
+const getGetPostComment = async ({
+	postId,
+	cursor,
+	pageSize,
+}: {
+	postId: number;
+	cursor: number;
+	pageSize: number;
+}): Promise<POST_COMMENT_TYPES> => {
+	const { data } = await axiosInstance.get(
+		`${API_URL.GET_COMMENTS_LIST}/${postId}?cursor=${cursor}&pageSize=${pageSize}`,
+	);
+
+	return data;
+};
+
+const writeComment = async ({
+	content,
+	isAnonymous,
+	imageKey,
+}: writeCommentProps) => {
+	const { data } = await axiosInstance.post(`${API_URL.COMMENT}`, {
+		content,
+		isAnonymous,
+		imageKey,
+	});
+	return data;
+};
+
+const writeChildComment = async ({
+	commentId,
+	content,
+	isAnonymous,
+	imageKey,
+}: writeChildCommentProps) => {
+	const { data } = await axiosInstance.post(
+		`${API_URL.CHILD_COMMENT}/${commentId}`,
+		{
+			content,
+			isAnonymous,
+			imageKey,
+		},
+	);
+	return data;
+};
+
+const deleteComment = async ({ commentId }: { commentId: number }) => {
+	const { data } = await axiosInstance.delete(
+		`${API_URL.COMMENT}/${commentId}`,
+	);
+	return data;
+};
+
+const updateComment = async ({
+	commentId,
+	content,
+	isAnonymous,
+	imageKey,
+}: writeChildCommentProps) => {
+	const { data } = await axiosInstance.put(`${API_URL.COMMENT}/${commentId}`, {
+		content,
+		isAnonymous,
+		imageKey,
+	});
+	return data;
+};
+
 export {
 	post,
 	getPosts,
@@ -120,4 +181,8 @@ export {
 	updatePost,
 	deletePost,
 	getTempSavedPost,
+	writeComment,
+	writeChildComment,
+	deleteComment,
+	updateComment,
 };

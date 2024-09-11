@@ -18,6 +18,7 @@ import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
 import CommentsView from '@/components/community/detail/comment/CommentsView';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors } from '@/constants';
+import useComment from '@/hooks/queries/useComment';
 import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
@@ -51,7 +52,8 @@ function CommunityQuestionDetailScreen({
 	const { setPost } = usePostStore();
 	const questtionOption = useModal();
 
-	const { useGetPostDetail, useGetInfinitePostComments } = useCommunity();
+	const { useGetPostDetail } = useCommunity();
+	const { useGetInfinitePostComments } = useComment();
 	const { data, refetch, isPending } = useGetPostDetail(id);
 	const {
 		data: comments,

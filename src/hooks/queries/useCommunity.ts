@@ -17,7 +17,7 @@ import {
 } from '@/api/community';
 import { queryKeys } from '@/constants';
 import { ResponseError } from '@/types';
-import { POST_COMMENT_TYPES, POST_TYPES } from '@/types/api';
+import { POST_TYPES } from '@/types/api';
 import { UseMutationCustomOptions } from './useAuth';
 
 // POST: 게시물 작성하기
@@ -93,34 +93,6 @@ function useGetPostDetail(postId: number) {
 	});
 }
 
-// 커뮤니티 댓글 가져오기
-function useGetInfinitePostComments(
-	postId: number,
-	queryOptions?: UseInfiniteQueryOptions<
-		POST_COMMENT_TYPES,
-		ResponseError,
-		InfiniteData<POST_COMMENT_TYPES, number>,
-		POST_COMMENT_TYPES,
-		QueryKey,
-		number
-	>,
-) {
-	return useInfiniteQuery({
-		queryFn: ({ pageParam }) =>
-			getGetPostComment({
-				postId,
-				cursor: pageParam,
-				pageSize: 10,
-			}),
-		queryKey: [queryKeys.POST, queryKeys.COMMENT, postId],
-		initialPageParam: 1,
-		getNextPageParam: lastPage => {
-			return lastPage.data.isLast ? undefined : lastPage.data.nextCursor;
-		},
-		...queryOptions,
-	});
-}
-
 // 커뮤니티 글 수정하기
 function useUpdatePost(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
@@ -162,7 +134,6 @@ function useCommunity() {
 		deletePostMutation,
 		useGetInfiniteQuestionPostLists,
 		useGetInfinitePostingPostLists,
-		useGetInfinitePostComments,
 		useGetPostDetail,
 		useGetTempSavedPost,
 	};
