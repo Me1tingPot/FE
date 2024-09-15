@@ -37,6 +37,7 @@ const communityNavigations = {
 	COMMUNITY_POSTING_DETAIL: 'CommunityPostingDetail',
 	COMMUNITY_POSTING_WRITE: 'CommunityPostingWrite',
 	COMMUNITY_COMMENTS: 'CommunityComments',
+	COMMUNITY_COMMENT_EDIT: 'CommunityCommentEdit',
 } as const;
 
 const myNavigations = {

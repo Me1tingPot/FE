@@ -278,6 +278,8 @@ function CommunityQuestionDetailScreen({
 					isVisible={commentOption.isVisible}
 					hideOption={commentOption.hide}
 					targetComment={targetComment}
+					navigation={navigation}
+					postId={data?.data.postId}
 				/>
 			) : (
 				<OtherCommentOption

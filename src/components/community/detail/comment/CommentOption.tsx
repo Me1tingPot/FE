@@ -1,26 +1,40 @@
 import { useTranslation } from 'react-i18next';
+import { NavigationProp } from '@react-navigation/native';
 import queryClient from '@/api/queryClient';
 import { CompoundOption } from '@/components/common/CompoundOption';
-import { queryKeys } from '@/constants';
+import { communityNavigations, queryKeys } from '@/constants';
 import useComment from '@/hooks/queries/useComment';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import useCommentStore from '@/store/useComment';
 import { COMMENT_DTO } from '@/types/api/types';
 
 interface CommentOptionProps {
 	isVisible: boolean;
 	hideOption: () => void;
 	targetComment?: COMMENT_DTO;
+	navigation: NavigationProp<CommunityStackParamList>;
+	postId?: number;
 }
 
 function CommentOption({
 	isVisible,
 	hideOption,
 	targetComment,
+	navigation,
+	postId,
 }: CommentOptionProps) {
 	const { t } = useTranslation();
 	const { deleteCommentMutation } = useComment();
+	const { setComment } = useCommentStore();
 
 	const handleUpdateComment = () => {
 		hideOption();
+		if (targetComment && postId) {
+			setComment(targetComment);
+			navigation.navigate(communityNavigations.COMMUNITY_COMMENT_EDIT, {
+				id: postId,
+			});
+		}
 	};
 
 	const handleDeleteComment = async () => {

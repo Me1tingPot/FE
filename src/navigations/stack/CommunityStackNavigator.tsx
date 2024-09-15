@@ -4,6 +4,7 @@ import {
 	createStackNavigator,
 } from '@react-navigation/stack';
 import { colors, communityNavigations, userNavigations } from '@/constants';
+import CommentEditScreen from '@/screens/community/Comment/CommentEditScreen';
 import CommunityCommentsScreen from '@/screens/community/CommunityCommentsScreen';
 import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDetailScreen';
 import CommunityPostingWriteScreen from '@/screens/community/CommunityPostingWriteScreen';
@@ -29,6 +30,7 @@ export type CommunityStackParamList = {
 	[userNavigations.USER]: undefined;
 	[userNavigations.USER_PROFILE]: undefined;
 	[userNavigations.USER_PROFILE_IMAGE]: undefined;
+	[communityNavigations.COMMUNITY_COMMENT_EDIT]: { id: number };
 };
 
 function CommunityStackNavigator() {
@@ -103,6 +105,11 @@ function CommunityStackNavigator() {
 				name={userNavigations.USER_PROFILE_IMAGE}
 				component={UserProfileImagesScreen}
 				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name={communityNavigations.COMMUNITY_COMMENT_EDIT}
+				component={CommentEditScreen}
+				options={{ headerTitle: `${t('댓글 수정')}`, ...commonHeaderOptions }}
 			/>
 		</Stack.Navigator>
 	);
