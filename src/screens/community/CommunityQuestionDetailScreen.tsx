@@ -280,6 +280,7 @@ function CommunityQuestionDetailScreen({
 					targetComment={targetComment}
 					navigation={navigation}
 					postId={data?.data.postId}
+					postType="QUESTION"
 				/>
 			) : (
 				<OtherCommentOption

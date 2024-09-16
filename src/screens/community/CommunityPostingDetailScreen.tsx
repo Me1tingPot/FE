@@ -284,6 +284,7 @@ function CommunityPostingDetailScreen({
 					targetComment={targetComment}
 					navigation={navigation}
 					postId={data?.data.postId}
+					postType="POSTING"
 				/>
 			) : (
 				<OtherCommentOption

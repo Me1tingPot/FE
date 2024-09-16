@@ -30,7 +30,10 @@ export type CommunityStackParamList = {
 	[userNavigations.USER]: undefined;
 	[userNavigations.USER_PROFILE]: undefined;
 	[userNavigations.USER_PROFILE_IMAGE]: undefined;
-	[communityNavigations.COMMUNITY_COMMENT_EDIT]: { id: number };
+	[communityNavigations.COMMUNITY_COMMENT_EDIT]: {
+		id: number;
+		postType: 'POSTING' | 'QUESTION';
+	};
 };
 
 function CommunityStackNavigator() {

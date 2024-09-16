@@ -14,6 +14,7 @@ interface CommentOptionProps {
 	targetComment?: COMMENT_DTO;
 	navigation: NavigationProp<CommunityStackParamList>;
 	postId?: number;
+	postType: 'POSTING' | 'QUESTION';
 }
 
 function CommentOption({
@@ -22,6 +23,7 @@ function CommentOption({
 	targetComment,
 	navigation,
 	postId,
+	postType,
 }: CommentOptionProps) {
 	const { t } = useTranslation();
 	const { deleteCommentMutation } = useComment();
@@ -33,6 +35,7 @@ function CommentOption({
 			setComment(targetComment);
 			navigation.navigate(communityNavigations.COMMUNITY_COMMENT_EDIT, {
 				id: postId,
+				postType,
 			});
 		}
 	};
