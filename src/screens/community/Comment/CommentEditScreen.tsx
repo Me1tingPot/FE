@@ -7,6 +7,8 @@ import {
 	ScrollView,
 	TextInput,
 	Text,
+	KeyboardAvoidingView,
+	Platform,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
@@ -30,8 +32,10 @@ function CommentEditScreen({ navigation, route }: CommentEditScreenProps) {
 	const styles = styling(theme);
 	const { comment } = useCommentStore();
 	const { t } = useTranslation();
-	const id = route.params?.id;
-	const postType = route?.params?.postType;
+
+	const params = route?.params;
+	const id = params?.id;
+	const postType = params && 'postType' in params ? params.postType : undefined;
 	const [editedComment, setEditedComment] = useState(comment?.content);
 	const [editIsAnonymous, setEditIsAnonymous] = useState(
 		comment?.isAnonymous || false,
@@ -39,7 +43,7 @@ function CommentEditScreen({ navigation, route }: CommentEditScreenProps) {
 	const { updateCommentMutation } = useComment();
 
 	const handleOnSubmit = () => {
-		if (editedComment && comment) {
+		if (postType && id && editedComment && comment) {
 			updateCommentMutation.mutate(
 				{
 					commentId: comment?.commentId,
@@ -92,27 +96,39 @@ function CommentEditScreen({ navigation, route }: CommentEditScreenProps) {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView contentContainerStyle={styles.scrollContainer}>
-				<View style={styles.commentContainer}>
-					<TextInput
-						multiline
-						onChangeText={text => setEditedComment(text)}
-						value={editedComment}
-					/>
-				</View>
-				<View style={[styles.rowGap5, styles.anonymousContainer]}>
-					<CheckBox
-						isChecked={editIsAnonymous}
-						onPress={() => setEditIsAnonymous(prev => !prev)}
-						children={
-							<Text style={styles.anomynousText}>{`${t('익명')}`}</Text>
-						}
-					/>
-				</View>
-				<View style={{ marginTop: 'auto' }}>
-					<CustomButton label="댓글 수정" onPress={handleOnSubmit} />
-				</View>
-			</ScrollView>
+			<KeyboardAvoidingView
+				style={styles.keyBoardView}
+				behavior={'padding'}
+				keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 90}
+			>
+				<ScrollView contentContainerStyle={styles.scrollContainer}>
+					<View style={styles.commentContainer}>
+						<TextInput
+							multiline
+							onChangeText={text => setEditedComment(text)}
+							value={editedComment}
+						/>
+					</View>
+
+					<View style={[styles.rowGap5, styles.anonymousContainer]}>
+						<CheckBox
+							isChecked={editIsAnonymous}
+							onPress={() => setEditIsAnonymous(prev => !prev)}
+							children={
+								<Text style={styles.anomynousText}>{`${t('익명')}`}</Text>
+							}
+						/>
+					</View>
+				</ScrollView>
+			</KeyboardAvoidingView>
+
+			<View style={styles.buttonContainer}>
+				<CustomButton
+					label={t('댓글 수정')}
+					onPress={handleOnSubmit}
+					isLoading={updateCommentMutation.isPending}
+				/>
+			</View>
 		</SafeAreaView>
 	);
 }
@@ -123,8 +139,13 @@ const styling = (theme: ThemeMode) =>
 			flex: 1,
 			backgroundColor: colors[theme].WHITE,
 		},
+		keyBoardView: {
+			flex: 1,
+		},
 		scrollContainer: {
+			flex: 1,
 			padding: 20,
+			paddingBottom: 50,
 			gap: 20,
 		},
 		commentContainer: {
@@ -148,6 +169,10 @@ const styling = (theme: ThemeMode) =>
 		anomynousText: {
 			fontSize: 12,
 			color: colors[theme].GRAY_700,
+		},
+		buttonContainer: {
+			padding: 20,
+			paddingTop: 0,
 		},
 	});
 
