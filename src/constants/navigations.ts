@@ -46,6 +46,7 @@ const myNavigations = {
 	MY_WRITE_POST: 'MyWritePost',
 	MY_PROFILE_IMAGE_EDIT: 'MyProfileImageEdit',
 	PASSWORD_CHANGE: 'PasswordChange',
+	TEMPORARY_SAVE_POST: 'Temporary Save Post',
 	USING_RESTRICT: 'UsingRestrict',
 	CHATTING_SETTING: 'ChattingSetting',
 	COMMUNITY_RULES: 'CommunityRules',
