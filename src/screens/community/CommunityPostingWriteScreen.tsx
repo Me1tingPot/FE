@@ -76,53 +76,94 @@ function CommunityPostingWriteScreen({
 	};
 
 	const handleOnSubmit = useThrottle(() => {
-		if (isEdit) {
-			updatePostMutation.mutate(
-				{
-					postId: post.postId,
-					title,
-					content,
-					postType: POST_TYPE.POSTING,
-					imageKeys: uploadedImages,
-				},
-				{
-					onSuccess: () => {
-						navigation.navigate(communityNavigations.COMMUNITY_POSTING_DETAIL, {
-							id: post.postId,
-						});
-						queryClient.invalidateQueries({
-							queryKey: [queryKeys.POST, post.postId],
-						});
-						queryClient.invalidateQueries({
-							queryKey: [queryKeys.POST, POST_TYPE.POSTING],
-						});
+		if (title && content) {
+			if (isEdit) {
+				updatePostMutation.mutate(
+					{
+						postId: post.postId,
+						title,
+						content,
+						postType: POST_TYPE.POSTING,
+						imageKeys: uploadedImages,
 					},
-					onError: error => {
-						Toast.show({
-							type: 'error',
-							text1:
-								error.response?.data.message || '게시물 업로드 오류입니다.',
-							visibilityTime: 2000,
-							position: 'bottom',
-						});
+					{
+						onSuccess: () => {
+							navigation.navigate(
+								communityNavigations.COMMUNITY_POSTING_DETAIL,
+								{
+									id: post.postId,
+								},
+							);
+							queryClient.invalidateQueries({
+								queryKey: [queryKeys.POST, post.postId],
+							});
+							queryClient.invalidateQueries({
+								queryKey: [queryKeys.POST, POST_TYPE.POSTING],
+							});
+						},
+						onError: error => {
+							Toast.show({
+								type: 'error',
+								text1:
+									error.response?.data.message || '게시물 업로드 오류입니다.',
+								visibilityTime: 2000,
+								position: 'bottom',
+							});
+						},
 					},
-				},
-			);
+				);
+			} else {
+				postMutation.mutate(
+					{
+						title,
+						content,
+						postType: POST_TYPE.POSTING,
+						imageKeys: uploadedImages,
+						isDraft: false,
+					},
+					{
+						onSuccess: () => {
+							navigation.goBack();
+							queryClient.invalidateQueries({
+								queryKey: [queryKeys.POST, POST_TYPE.POSTING],
+							});
+						},
+						onError: error => {
+							Toast.show({
+								type: 'error',
+								text1:
+									error.response?.data.message || '게시물 업로드 오류입니다.',
+								visibilityTime: 2000,
+								position: 'bottom',
+							});
+							console.error(error.response);
+						},
+					},
+				);
+			}
 		} else {
+			Toast.show({
+				type: 'error',
+				text1: t('내용을 입력해주세요.'),
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+		}
+	});
+
+	const handleOnTempSaved = useThrottle(() => {
+		if (title && content) {
 			postMutation.mutate(
 				{
 					title,
 					content,
 					postType: POST_TYPE.POSTING,
 					imageKeys: uploadedImages,
-					isDraft: false,
+					isDraft: true,
 				},
 				{
 					onSuccess: () => {
 						navigation.goBack();
-						queryClient.invalidateQueries({
-							queryKey: [queryKeys.POST, POST_TYPE.POSTING],
-						});
 					},
 					onError: error => {
 						Toast.show({
@@ -136,33 +177,14 @@ function CommunityPostingWriteScreen({
 					},
 				},
 			);
+		} else {
+			Toast.show({
+				type: 'error',
+				text1: t('내용을 입력해주세요.'),
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
 		}
-	});
-
-	const handleOnTempSaved = useThrottle(() => {
-		postMutation.mutate(
-			{
-				title,
-				content,
-				postType: POST_TYPE.POSTING,
-				imageKeys: uploadedImages,
-				isDraft: true,
-			},
-			{
-				onSuccess: () => {
-					navigation.goBack();
-				},
-				onError: error => {
-					Toast.show({
-						type: 'error',
-						text1: error.response?.data.message || '게시물 업로드 오류입니다.',
-						visibilityTime: 2000,
-						position: 'bottom',
-					});
-					console.error(error.response);
-				},
-			},
-		);
 	});
 
 	return (
