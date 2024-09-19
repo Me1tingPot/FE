@@ -11,6 +11,7 @@ import {
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import PostingPreview from '@/components/community/PostingPreview';
+import CommunityPostingSkeletonScreen from '@/components/community/skeleton/CommunityPostingSkeletonScreen';
 import { colors, communityNavigations } from '@/constants';
 import useCommunity from '@/hooks/queries/useCommunity';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -26,8 +27,14 @@ type CommunityPostingScreenProps = {
 function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 	const [refreshing, setRefreshing] = useState(false);
 	const { useGetInfinitePostingPostLists } = useCommunity();
-	const { data, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
-		useGetInfinitePostingPostLists();
+	const {
+		data,
+		isFetchingNextPage,
+		fetchNextPage,
+		hasNextPage,
+		refetch,
+		isPending,
+	} = useGetInfinitePostingPostLists();
 	const { setPost } = usePostStore();
 
 	const { theme } = useThemeStore();
@@ -59,6 +66,21 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 			setPost(null);
 		}, [setPost]),
 	);
+
+	if (isPending) {
+		return (
+			<SafeAreaView style={styles.container}>
+				<View style={styles.contentContainer}>
+					<FlatList
+						scrollEnabled={false}
+						data={Array(5).fill(null)}
+						renderItem={() => <CommunityPostingSkeletonScreen />}
+						contentContainerStyle={styles.scrollStyle}
+					/>
+				</View>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>

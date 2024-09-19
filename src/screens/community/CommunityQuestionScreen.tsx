@@ -9,6 +9,7 @@ import {
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import IconCircleButton from '@/components/common/IconCircleButton';
 import QuestionPreview from '@/components/community/QuestionPreview';
+import CommunityQuestionSkeletonScreen from '@/components/community/skeleton/CommunityQuestionSkeletonScreen';
 import { colors, communityNavigations } from '@/constants';
 import useCommunity from '@/hooks/queries/useCommunity';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -26,8 +27,14 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 	const styles = styling(theme);
 	const [refreshing, setRefreshing] = useState(false);
 	const { useGetInfiniteQuestionPostLists } = useCommunity();
-	const { data, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
-		useGetInfiniteQuestionPostLists();
+	const {
+		data,
+		isFetchingNextPage,
+		fetchNextPage,
+		hasNextPage,
+		refetch,
+		isPending,
+	} = useGetInfiniteQuestionPostLists();
 	const { setPost } = usePostStore();
 
 	useFocusEffect(
@@ -51,6 +58,21 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 	const renderItem = ({ item }: { item: POST_DTO }) => (
 		<QuestionPreview navigation={navigation} post={item} id={item.postId} />
 	);
+
+	if (isPending) {
+		return (
+			<SafeAreaView style={styles.container}>
+				<View style={styles.contentContainer}>
+					<FlatList
+						scrollEnabled={false}
+						data={Array(5).fill(null)}
+						renderItem={() => <CommunityQuestionSkeletonScreen />}
+						ItemSeparatorComponent={() => <View style={styles.gapStyle} />}
+					/>
+				</View>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
