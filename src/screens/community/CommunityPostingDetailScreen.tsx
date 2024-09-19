@@ -28,6 +28,7 @@ import useCommunity from '@/hooks/queries/useCommunity';
 import useGetUserData from '@/hooks/useGetUserData';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
+import useThrottle from '@/hooks/useThrottle';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
@@ -102,7 +103,7 @@ function CommunityPostingDetailScreen({
 		}
 	};
 
-	const onSubmit = async () => {
+	const onSubmit = useThrottle(async () => {
 		if (comment && data?.data) {
 			commentMutation.mutate(
 				{
@@ -140,13 +141,13 @@ function CommunityPostingDetailScreen({
 				position: 'bottom',
 			});
 		}
-	};
+	});
 
 	const handleCommentId = (id: number | null) => {
 		setCommentId(id);
 	};
 
-	const handleWriteChildComment = async () => {
+	const handleWriteChildComment = useThrottle(async () => {
 		if (comment && data?.data && commentId) {
 			childCommentMutation.mutate(
 				{
@@ -180,7 +181,7 @@ function CommunityPostingDetailScreen({
 				},
 			);
 		}
-	};
+	});
 
 	const cameraOptions: CameraOptions = {
 		cameraType: 'front',

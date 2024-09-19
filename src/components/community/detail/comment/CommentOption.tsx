@@ -4,6 +4,7 @@ import queryClient from '@/api/queryClient';
 import { CompoundOption } from '@/components/common/CompoundOption';
 import { communityNavigations, queryKeys } from '@/constants';
 import useComment from '@/hooks/queries/useComment';
+import useThrottle from '@/hooks/useThrottle';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useCommentStore from '@/store/useComment';
 import { COMMENT_DTO } from '@/types/api/types';
@@ -40,7 +41,7 @@ function CommentOption({
 		}
 	};
 
-	const handleDeleteComment = async () => {
+	const handleDeleteComment = useThrottle(async () => {
 		if (targetComment?.commentId) {
 			deleteCommentMutation.mutate(
 				{
@@ -62,7 +63,7 @@ function CommentOption({
 				},
 			);
 		}
-	};
+	});
 
 	return (
 		<CompoundOption isVisible={isVisible} hideOption={hideOption}>

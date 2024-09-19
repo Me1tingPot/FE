@@ -27,6 +27,7 @@ import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import usePostImagePicker from '@/hooks/usePostImagePicker';
+import useThrottle from '@/hooks/useThrottle';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
@@ -74,7 +75,7 @@ function CommunityQuestionWriteScreen({
 		setFiles(imgList);
 	};
 
-	const handleOnSubmit = () => {
+	const handleOnSubmit = useThrottle(() => {
 		if (isEdit) {
 			updatePostMutation.mutate(
 				{
@@ -140,9 +141,9 @@ function CommunityQuestionWriteScreen({
 				},
 			);
 		}
-	};
+	});
 
-	const handleOnTempSaved = () => {
+	const handleOnTempSaved = useThrottle(() => {
 		postMutation.mutate(
 			{
 				title,
@@ -166,7 +167,7 @@ function CommunityQuestionWriteScreen({
 				},
 			},
 		);
-	};
+	});
 
 	return (
 		<SafeAreaView style={styles.container}>

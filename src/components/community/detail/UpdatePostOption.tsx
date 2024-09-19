@@ -6,6 +6,7 @@ import queryClient from '@/api/queryClient';
 import { CompoundOption } from '@/components/common/CompoundOption';
 import { communityNavigations, queryKeys } from '@/constants';
 import useCommunity from '@/hooks/queries/useCommunity';
+import useThrottle from '@/hooks/useThrottle';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import usePostStore from '@/store/usePostStore';
 
@@ -36,7 +37,7 @@ function UpdatePostOption({
 		}
 	};
 
-	const handleDeletePost = async () => {
+	const handleDeletePost = useThrottle(async () => {
 		if (post?.postId) {
 			deletePostMutation.mutate(
 				{
@@ -62,7 +63,7 @@ function UpdatePostOption({
 				},
 			);
 		}
-	};
+	});
 
 	return (
 		<CompoundOption isVisible={isVisible} hideOption={hideOption}>

@@ -17,6 +17,7 @@ import CheckBox from '@/components/common/CheckBox';
 import CustomButton from '@/components/common/CustomButton';
 import { colors, communityNavigations, queryKeys } from '@/constants';
 import useComment from '@/hooks/queries/useComment';
+import useThrottle from '@/hooks/useThrottle';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
 import useCommentStore from '@/store/useComment';
 import useThemeStore from '@/store/useThemeStore';
@@ -42,7 +43,7 @@ function CommentEditScreen({ navigation, route }: CommentEditScreenProps) {
 	);
 	const { updateCommentMutation } = useComment();
 
-	const handleOnSubmit = () => {
+	const handleOnSubmit = useThrottle(() => {
 		if (postType && id && editedComment && comment) {
 			updateCommentMutation.mutate(
 				{
@@ -92,7 +93,7 @@ function CommentEditScreen({ navigation, route }: CommentEditScreenProps) {
 				position: 'bottom',
 			});
 		}
-	};
+	});
 
 	return (
 		<SafeAreaView style={styles.container}>
