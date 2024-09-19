@@ -20,6 +20,8 @@ import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
 import CommentOption from '@/components/community/detail/comment/CommentOption';
 import CommentsView from '@/components/community/detail/comment/CommentsView';
 import OtherCommentOption from '@/components/community/detail/comment/OtherCommentOption';
+import CommunityCommentSkeletonScreen from '@/components/community/skeleton/CommunityCommentSkeletonScreen';
+import CommunityDetailSkeletonScreen from '@/components/community/skeleton/CommunityDetailSkeletonScreen';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors, queryKeys } from '@/constants';
 import useComment from '@/hooks/queries/useComment';
@@ -191,6 +193,24 @@ function CommunityQuestionDetailScreen({
 		selectionLimit: 3,
 		mediaType: 'photo',
 	};
+
+	if (isPending) {
+		return (
+			<SafeAreaView style={styles.container}>
+				<FlatList
+					scrollEnabled={false}
+					data={Array(5).fill(null)}
+					contentContainerStyle={styles.contentContainer}
+					ListHeaderComponent={
+						<View style={styles.postInfoContainer}>
+							<CommunityDetailSkeletonScreen />
+						</View>
+					}
+					renderItem={() => <CommunityCommentSkeletonScreen />}
+				/>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
