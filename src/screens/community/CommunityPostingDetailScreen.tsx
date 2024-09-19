@@ -247,6 +247,9 @@ function CommunityPostingDetailScreen({
 					setComment={setComment}
 					onSubmit={commentId ? handleWriteChildComment : onSubmit}
 					onPressCamera={modal.show}
+					isLoading={
+						commentMutation.isPending || childCommentMutation.isPending
+					}
 				/>
 			</KeyboardAvoidingView>
 			<CameraOrLibrary

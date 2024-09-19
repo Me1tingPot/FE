@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+	ActivityIndicator,
 	FlatList,
 	Image,
 	KeyboardAvoidingView,
@@ -210,14 +211,28 @@ function CommunityPostingWriteScreen({
 						/>
 					</TouchableOpacity>
 					<View style={[styles.displayRow]}>
-						{!isEdit && (
-							<Pressable style={styles.menuBtn} onPress={handleOnTempSaved}>
-								<Text style={styles.menuText}>{t('임시저장')}</Text>
-							</Pressable>
+						{postMutation?.isPending || updatePostMutation?.isPending ? (
+							<ActivityIndicator />
+						) : (
+							<>
+								{!isEdit && (
+									<Pressable
+										style={styles.menuBtn}
+										onPress={handleOnTempSaved}
+										disabled={postMutation.isPending}
+									>
+										<Text style={styles.menuText}>{t('임시저장')}</Text>
+									</Pressable>
+								)}
+								<Pressable
+									style={styles.menuBtn}
+									onPress={handleOnSubmit}
+									disabled={postMutation.isPending}
+								>
+									<Text style={styles.menuText}>{t('게시하기')}</Text>
+								</Pressable>
+							</>
 						)}
-						<Pressable style={styles.menuBtn} onPress={handleOnSubmit}>
-							<Text style={styles.menuText}>{t('게시하기')}</Text>
-						</Pressable>
 					</View>
 				</View>
 			</KeyboardAvoidingView>

@@ -33,11 +33,10 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 
-	const onRefresh = useCallback(() => {
+	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
-		refetch().finally(() => {
-			setRefreshing(false);
-		});
+		await refetch();
+		setRefreshing(false);
 	}, [refetch]);
 
 	const loadMore = useCallback(() => {

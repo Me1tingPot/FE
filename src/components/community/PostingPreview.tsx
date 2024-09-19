@@ -9,7 +9,8 @@ import { ThemeMode } from '@/types';
 import { POST_DTO } from '@/types/api/types';
 import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 import Comment from '../../assets/images/Comment.png';
-import Report from '../../assets/images/Report.png';
+
+// import Report from '../../assets/images/Report.png';
 
 type PostingPreviewProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
@@ -48,16 +49,20 @@ function PostingPreview({ navigation, id, post }: PostingPreviewProps) {
 					</View>
 				)}
 				<Text style={styles.flexText}>{post.name}</Text>
-				<TouchableOpacity
+				{/* <TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}
 				>
 					<Image source={Report} style={styles.report} />
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 			<View style={[styles.innerPadding, styles.contentContainer]}>
-				<Text style={styles.title}>{post.title}</Text>
-				<Text style={styles.content}>{post.content}</Text>
+				<Text style={styles.title} numberOfLines={1} ellipsizeMode="clip">
+					{post.title}
+				</Text>
+				<Text style={styles.content} numberOfLines={3} ellipsizeMode="clip">
+					{post.content}
+				</Text>
 				{/* API 수정되면 이미지 표시 */}
 				{/* <FlatList
 					data={post}

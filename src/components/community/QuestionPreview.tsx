@@ -9,7 +9,8 @@ import { ThemeMode } from '@/types';
 import { POST_DTO } from '@/types/api/types';
 import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 import Comment from '../../assets/images/Comment.png';
-import Report from '../../assets/images/Report.png';
+
+// import Report from '../../assets/images/Report.png';
 
 type QuestionPreviewProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
@@ -57,18 +58,22 @@ function QuestionPreview({ navigation, id, post }: QuestionPreviewProps) {
 						{date} {time}
 					</Text>
 				</View>
-				<TouchableOpacity
+				{/* <TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}
 				>
 					<Image source={Report} style={styles.report} />
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 			<View style={styles.contents}>
 				<View style={styles.titleLayout}>
-					<Text style={styles.title}>{post.title}</Text>
+					<Text style={styles.title} numberOfLines={1} ellipsizeMode="clip">
+						{post.title}
+					</Text>
 				</View>
-				<Text style={styles.content}>{post.content}</Text>
+				<Text style={styles.content} numberOfLines={3} ellipsizeMode="clip">
+					{post.content}
+				</Text>
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}

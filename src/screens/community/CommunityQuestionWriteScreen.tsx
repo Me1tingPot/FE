@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+	ActivityIndicator,
 	FlatList,
 	Image,
 	KeyboardAvoidingView,
@@ -54,7 +55,6 @@ function CommunityQuestionWriteScreen({
 	const [title, setTitle] = useState(post?.title || '');
 	const [content, setContent] = useState(post?.content || '');
 	const [files, setFiles] = useState<string[]>(postImgData || []);
-	const [isDraft, setIsDraft] = useState(false);
 
 	usePermission('PHOTO');
 	usePermission('CAMERA');
@@ -118,7 +118,7 @@ function CommunityQuestionWriteScreen({
 					content,
 					postType: POST_TYPE.QUESTION,
 					imageKeys: uploadedImages,
-					isDraft,
+					isDraft: false,
 				},
 				{
 					onSuccess: () => {
@@ -149,7 +149,7 @@ function CommunityQuestionWriteScreen({
 				content,
 				postType: POST_TYPE.QUESTION,
 				imageKeys: uploadedImages,
-				isDraft,
+				isDraft: true,
 			},
 			{
 				onSuccess: () => {
@@ -215,14 +215,28 @@ function CommunityQuestionWriteScreen({
 						/>
 					</TouchableOpacity>
 					<View style={[styles.displayRow]}>
-						{!isEdit && (
-							<Pressable style={styles.menuBtn} onPress={handleOnTempSaved}>
-								<Text style={styles.menuText}>{t('임시저장')}</Text>
-							</Pressable>
+						{postMutation.isPending || updatePostMutation.isPending ? (
+							<ActivityIndicator />
+						) : (
+							<>
+								{!isEdit && (
+									<Pressable
+										style={styles.menuBtn}
+										onPress={handleOnTempSaved}
+										disabled={postMutation.isPending}
+									>
+										<Text style={styles.menuText}>{t('임시저장')}</Text>
+									</Pressable>
+								)}
+								<Pressable
+									style={styles.menuBtn}
+									onPress={handleOnSubmit}
+									disabled={postMutation.isPending}
+								>
+									<Text style={styles.menuText}>{t('게시하기')}</Text>
+								</Pressable>
+							</>
 						)}
-						<Pressable style={styles.menuBtn} onPress={handleOnSubmit}>
-							<Text style={styles.menuText}>{t('게시하기')}</Text>
-						</Pressable>
 					</View>
 				</View>
 			</KeyboardAvoidingView>

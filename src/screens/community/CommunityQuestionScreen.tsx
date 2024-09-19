@@ -36,11 +36,10 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 		}, [setPost]),
 	);
 
-	const onRefresh = useCallback(() => {
+	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
-		refetch().finally(() => {
-			setRefreshing(false);
-		});
+		await refetch();
+		setRefreshing(false);
 	}, [refetch]);
 
 	const loadMore = useCallback(() => {

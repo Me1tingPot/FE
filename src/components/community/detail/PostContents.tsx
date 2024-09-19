@@ -66,7 +66,7 @@ const styling = (theme: ThemeMode) =>
 		},
 		content: {
 			paddingHorizontal: 10,
-			marginBottom: 40,
+			marginBottom: 20,
 			fontSize: 14,
 			color: colors[theme].GRAY_700,
 			fontFamily: 'Pretendard-Regular',
