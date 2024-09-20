@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	FlatList,
 	KeyboardAvoidingView,
@@ -16,6 +17,7 @@ import InputBottom from '@/components/community/detail/InputBottom';
 import OtherPostOption from '@/components/community/detail/OtherPostOption';
 import PostContents from '@/components/community/detail/PostContents';
 import PostInfo from '@/components/community/detail/PostInfo';
+import ReportPostModal from '@/components/community/detail/ReportPostModal';
 import UpdatePostOption from '@/components/community/detail/UpdatePostOption';
 import CommentOption from '@/components/community/detail/comment/CommentOption';
 import CommentsView from '@/components/community/detail/comment/CommentsView';
@@ -26,6 +28,7 @@ import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors, queryKeys } from '@/constants';
 import useComment from '@/hooks/queries/useComment';
 import useCommunity from '@/hooks/queries/useCommunity';
+import useReport from '@/hooks/queries/useReport';
 import useGetUserData from '@/hooks/useGetUserData';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
@@ -57,13 +60,17 @@ function CommunityQuestionDetailScreen({
 	const [targetComment, setTargetComment] = useState<COMMENT_DTO | undefined>(
 		undefined,
 	);
-	const { id: userId } = useGetUserData();
+	const [content, setContent] = useState('');
 
+	const { t } = useTranslation();
+	const { id: userId } = useGetUserData();
 	const { id } = route.params;
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const modal = useModal();
 	const { setPost } = usePostStore();
+	const { reportPostMutation } = useReport();
+	const reportModal = useModal();
 	const questtionOption = useModal();
 	const commentOption = useModal();
 
@@ -184,6 +191,41 @@ function CommunityQuestionDetailScreen({
 		}
 	});
 
+	const handleReportPost = useThrottle(() => {
+		if (data?.data?.postId && content) {
+			reportPostMutation.mutate(
+				{
+					postId: data?.data?.postId,
+					content,
+				},
+				{
+					onSuccess: () => {
+						Toast.show({
+							type: 'success',
+							text1: t('신고가 완료되었습니다.'),
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+					},
+					onError: error => {
+						console.log(error?.response);
+						Toast.show({
+							type: 'error',
+							text1:
+								error?.response?.data?.message ||
+								t('신고 중 에러가 발생했습니다.'),
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+					},
+					onSettled: () => {
+						reportModal.hide();
+					},
+				},
+			);
+		}
+	});
+
 	const cameraOptions: CameraOptions = {
 		cameraType: 'front',
 		mediaType: 'photo',
@@ -275,8 +317,7 @@ function CommunityQuestionDetailScreen({
 				libraryOptions={libraryOptions}
 				setFiles={setFiles}
 			/>
-			{/* TODO: API 수정 필요 */}
-			{/* {userId === data?.data?.userId ? (
+			{userId === data?.data?.userId ? (
 				<UpdatePostOption
 					isVisible={questtionOption.isVisible}
 					hideOption={questtionOption.hide}
@@ -287,16 +328,9 @@ function CommunityQuestionDetailScreen({
 				<OtherPostOption
 					isVisible={questtionOption.isVisible}
 					hideOption={questtionOption.hide}
-					postId={data?.data.postId}
+					onPress={reportModal.show}
 				/>
-			)} */}
-			<UpdatePostOption
-				isVisible={questtionOption.isVisible}
-				hideOption={questtionOption.hide}
-				postType={'Question'}
-				navigation={navigation}
-			/>
-
+			)}
 			{userId === targetComment?.userId ? (
 				<CommentOption
 					isVisible={commentOption.isVisible}
@@ -313,6 +347,13 @@ function CommunityQuestionDetailScreen({
 					targetComment={targetComment}
 				/>
 			)}
+			<ReportPostModal
+				content={content}
+				setContent={setContent}
+				onSubmit={handleReportPost}
+				isVisible={reportModal.isVisible}
+				hideOption={reportModal.hide}
+			/>
 		</SafeAreaView>
 	);
 }

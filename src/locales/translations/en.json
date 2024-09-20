@@ -429,5 +429,8 @@
 	"댓글 수정": "Comment Edit",
 	"댓글 수정 중 오류가 발생했습니다.": "An unexpected error has occurred",
 	"임시 저장한 글": "Temporary Saved Post",
-	"내용을 입력해주세요.": "Please enter the contents."
+	"내용을 입력해주세요.": "Please enter the contents.",
+	"신고가 완료되었습니다.": "The post was reported successfully.",
+	"신고 중 에러가 발생했습니다.": "An error occurred during reporting.",
+	"신고 사유를 작성해주세요.": "Please fill out the reason for the report."
 }

@@ -46,13 +46,6 @@ function PostInfo({ writerName, postDate, show }: PostInfoProps) {
 					</View>
 				</View>
 			</View>
-
-			<TouchableOpacity
-				activeOpacity={0.8}
-				onPress={() => console.log('click')}
-			>
-				<Image source={Report} style={styles.report} />
-			</TouchableOpacity>
 			<TouchableOpacity activeOpacity={0.8} onPress={show}>
 				<IonIcons name="ellipsis-vertical" color="#000" size={20} />
 			</TouchableOpacity>

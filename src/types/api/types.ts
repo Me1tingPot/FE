@@ -98,6 +98,7 @@ export type COMMENT_LIST_TYPE = {
 
 export type POST_DETAIL_DATA = {
 	postId: number;
+	userId: number;
 	name: string;
 	title: string;
 	content: string;

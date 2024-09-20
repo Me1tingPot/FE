@@ -11,6 +11,7 @@ const API_BASE = {
 	PARTY: `party`,
 	AREA: `area`,
 	SEARCH: `search`,
+	REPORTS: 'reports',
 };
 
 const API_URL = {
@@ -20,6 +21,9 @@ const API_URL = {
 	LOGOUT: `/${API}/${VERSION}/${API_BASE.AUTH}/signout`,
 	AUTH_PROFILE_IMG_URL: `/${API}/${VERSION}/${API_BASE.AUTH}/image-url`,
 	REISSUE_TOKEN: `/${API}/${VERSION}/${API_BASE.AUTH}/reissue-token`,
+
+	// report-controller
+	REPORT: `/${API}/${VERSION}/${API_BASE.REPORTS}`,
 
 	// mail-controller
 	POST_MAIL: `/${API}/${VERSION}/${API_BASE.MAIL}`,
