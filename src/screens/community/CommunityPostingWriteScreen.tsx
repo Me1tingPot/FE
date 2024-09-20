@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
 	ActivityIndicator,
@@ -23,6 +23,7 @@ import queryClient from '@/api/queryClient';
 import MultipleGradientBgTextInput from '@/components/community/MultipleGradientBgTextInput';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
 import { colors, communityNavigations, queryKeys } from '@/constants';
+import { MAX_LENGTH_TEXT_INPUT } from '@/constants/textInput';
 import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';

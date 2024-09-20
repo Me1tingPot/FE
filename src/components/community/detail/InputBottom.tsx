@@ -13,6 +13,7 @@ import {
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import CheckBox from '@/components/common/CheckBox';
 import { colors } from '@/constants';
+import { MAX_LENGTH_TEXT_INPUT } from '@/constants/textInput';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import Send from '../../../assets/images/Send.png';
@@ -65,6 +66,7 @@ function InputBottom({
 						placeholderTextColor={colors[theme].GRAY_300}
 						placeholder={`${t('댓글을 입력하세요')}`}
 						style={styles.input}
+						maxLength={MAX_LENGTH_TEXT_INPUT}
 					/>
 					<TouchableOpacity
 						activeOpacity={0.8}
