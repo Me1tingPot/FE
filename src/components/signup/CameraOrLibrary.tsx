@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import {
 	CameraOptions,
@@ -24,6 +25,8 @@ function CameraOrLibrary({
 	cameraOptions,
 	libraryOptions,
 }: CameraOrLibraryProps) {
+	const { t } = useTranslation();
+
 	const openCamera = async () => {
 		await launchCamera(cameraOptions, (response: ImagePickerResponse) => {
 			if (response.errorCode) {
@@ -64,7 +67,7 @@ function CameraOrLibrary({
 							hideOption();
 						}}
 					>
-						카메라로 찍기
+						{`${t('카메라로 찍기')}`}
 					</CompoundOption.Button>
 					<CompoundOption.Divider />
 					<CompoundOption.Button
@@ -73,13 +76,13 @@ function CameraOrLibrary({
 							hideOption();
 						}}
 					>
-						앨범에서 가져오기
+						{`${t('앨범에서 가져오기')}`}
 					</CompoundOption.Button>
 				</CompoundOption.Container>
 
 				<CompoundOption.Container>
 					<CompoundOption.Button isDanger onPress={hideOption}>
-						취소하기
+						{`${t('취소하기')}`}
 					</CompoundOption.Button>
 				</CompoundOption.Container>
 			</CompoundOption.Background>
