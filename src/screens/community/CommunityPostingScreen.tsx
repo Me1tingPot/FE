@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	ActivityIndicator,
 	FlatList,
 	RefreshControl,
 	SafeAreaView,
-	StatusBar,
+	ScrollView,
 	StyleSheet,
+	Text,
+	TouchableOpacity,
 	View,
 } from 'react-native';
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
@@ -25,6 +28,7 @@ type CommunityPostingScreenProps = {
 };
 
 function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
+	const { t } = useTranslation();
 	const [refreshing, setRefreshing] = useState(false);
 	const { useGetInfinitePostingPostLists } = useCommunity();
 	const {
@@ -81,6 +85,42 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 			</SafeAreaView>
 		);
 	}
+	if (data?.pages[0] && data?.pages[0].data.postsList.length <= 0) {
+		return (
+			<SafeAreaView style={styles.container}>
+				<ScrollView
+					contentContainerStyle={styles.blankContainer}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					}
+				>
+					<Text
+						style={styles.blankText}
+					>{`${t('아직 작성된 글이 없습니다.')}`}</Text>
+					<TouchableOpacity
+						style={styles.writeButton}
+						activeOpacity={0.8}
+						onPress={() =>
+							navigation.navigate(communityNavigations.COMMUNITY_POSTING_WRITE)
+						}
+					>
+						<Text style={styles.blankText}>{`${t('포스팅 작성하기')}`}</Text>
+					</TouchableOpacity>
+				</ScrollView>
+				<View style={styles.buttonList}>
+					<IconCircleButton
+						family="Octicons"
+						name="pencil"
+						color={colors[theme].WHITE}
+						size={30}
+						onPress={() =>
+							navigation.navigate(communityNavigations.COMMUNITY_POSTING_WRITE)
+						}
+					/>
+				</View>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -124,6 +164,23 @@ const styling = (theme: ThemeMode) =>
 			flex: 1,
 			paddingHorizontal: 20,
 			paddingVertical: 30,
+		},
+		blankContainer: {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			justifyContent: 'center',
+			flex: 1,
+			gap: 20,
+		},
+		blankText: {
+			color: colors.dark.GRAY_300,
+			fontSize: 16,
+		},
+		writeButton: {
+			borderRadius: 10,
+			backgroundColor: colors.dark.GRAY_700,
+			padding: 20,
 		},
 		scrollStyle: {
 			display: 'flex',

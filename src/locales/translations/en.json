@@ -432,5 +432,8 @@
 	"내용을 입력해주세요.": "Please enter the contents.",
 	"신고가 완료되었습니다.": "The post was reported successfully.",
 	"신고 중 에러가 발생했습니다.": "An error occurred during reporting.",
-	"신고 사유를 작성해주세요.": "Please fill out the reason for the report."
+	"신고 사유를 작성해주세요.": "Please fill out the reason for the report.",
+	"아직 작성된 글이 없습니다.": "No writing has been written yet.",
+	"질문글 작성하기": "Writing a Question",
+	"포스팅 작성하기": "Writing a Post"
 }
