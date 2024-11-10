@@ -39,7 +39,7 @@ function useGetInfiniteQuestionPostLists(
 		InfiniteData<POST_TYPES, number>,
 		POST_TYPES,
 		QueryKey,
-		number
+		number | null
 	>,
 ) {
 	return useInfiniteQuery({
@@ -50,7 +50,7 @@ function useGetInfiniteQuestionPostLists(
 				pageSize: 10,
 			}),
 		queryKey: [queryKeys.POST, POST_TYPE.QUESTION],
-		initialPageParam: 1,
+		initialPageParam: null,
 		getNextPageParam: (lastPage, _) => {
 			return lastPage.data.isLast ? undefined : lastPage.data.nextCursor;
 		},
@@ -66,7 +66,7 @@ function useGetInfinitePostingPostLists(
 		InfiniteData<POST_TYPES, number>,
 		POST_TYPES,
 		QueryKey,
-		number
+		number | null
 	>,
 ) {
 	return useInfiniteQuery({
@@ -77,7 +77,7 @@ function useGetInfinitePostingPostLists(
 				pageSize: 10,
 			}),
 		queryKey: [queryKeys.POST, POST_TYPE.POSTING],
-		initialPageParam: 1,
+		initialPageParam: null,
 		getNextPageParam: (lastPage, _) => {
 			return lastPage.data.isLast ? undefined : lastPage.data.nextCursor;
 		},

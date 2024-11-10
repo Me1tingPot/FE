@@ -39,8 +39,7 @@ function QuestionPreview({ navigation, id, post }: QuestionPreviewProps) {
 				<TouchableOpacity
 					onPress={() => navigation.navigate(userNavigations.USER)}
 				>
-					{/* API 수정되면 유저 정보 표시 */}
-					{post.userImg ? (
+					{post.profileImg ? (
 						<Image source={{ uri: '/' }} style={styles.profileImg} />
 					) : (
 						<View style={styles.profileImg}>

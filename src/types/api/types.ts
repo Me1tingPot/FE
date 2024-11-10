@@ -66,6 +66,9 @@ export type POST_DTO = {
 	content: string;
 	commentCount: number;
 	updatedAt: string;
+	userId: 11;
+	profileImg: 'd967641a-3a1f-46ee-9f9e-8fdf417b8a7a';
+	imgUrls: [];
 };
 
 export type POST_DATA = {

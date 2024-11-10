@@ -121,7 +121,7 @@ function CommunityQuestionScreen({ navigation }: CommunityQuestionScreenProps) {
 		<SafeAreaView style={styles.container}>
 			<View style={styles.contentContainer}>
 				<FlatList
-					data={data?.pages.flatMap(page => page.data.postsList).reverse()}
+					data={data?.pages.flatMap(page => page.data.postsList)}
 					renderItem={renderItem}
 					onEndReached={loadMore}
 					onEndReachedThreshold={0.5}

@@ -126,7 +126,7 @@ function CommunityPostingScreen({ navigation }: CommunityPostingScreenProps) {
 		<SafeAreaView style={styles.container}>
 			<View style={styles.contentContainer}>
 				<FlatList
-					data={data?.pages.flatMap(page => page.data.postsList).reverse()}
+					data={data?.pages.flatMap(page => page.data.postsList)}
 					renderItem={renderItem}
 					contentContainerStyle={styles.scrollStyle}
 					onEndReached={loadMore}

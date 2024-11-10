@@ -21,7 +21,7 @@ interface UpdatePostProps extends Omit<PostProps, 'isDraft'> {
 
 export interface GetPostsProps {
 	postType?: POST_TYPE;
-	cursor?: number;
+	cursor?: number | null;
 	pageSize?: number;
 }
 
@@ -64,10 +64,15 @@ const getPosts = async ({
 	cursor,
 	pageSize,
 }: GetPostsProps): Promise<POST_TYPES> => {
+	if (!cursor) {
+		const { data } = await axiosInstance.get(
+			`${API_URL.GET_POSTS_LIST}/${postType}?pageSize=${pageSize}`,
+		);
+		return data;
+	}
 	const { data } = await axiosInstance.get(
 		`${API_URL.GET_POSTS_LIST}/${postType}?cursor=${cursor}&pageSize=${pageSize}`,
 	);
-	console.log('데이터: ', data);
 	return data;
 };
 
