@@ -8,10 +8,12 @@ import {
 	TouchableOpacity,
 	View,
 	GestureResponderEvent,
+	ActivityIndicator,
 } from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import CheckBox from '@/components/common/CheckBox';
 import { colors } from '@/constants';
+import { MAX_LENGTH_TEXT_INPUT } from '@/constants/textInput';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 import Send from '../../../assets/images/Send.png';
@@ -24,6 +26,7 @@ interface InputBottomProps {
 	comment: string;
 	setComment: Dispatch<SetStateAction<string>>;
 	onSubmit: () => void;
+	isLoading: boolean;
 }
 
 function InputBottom({
@@ -34,6 +37,7 @@ function InputBottom({
 	setComment,
 	onSubmit,
 	onPressCamera,
+	isLoading,
 }: InputBottomProps) {
 	const { t } = useTranslation();
 	const { theme } = useThemeStore();
@@ -62,9 +66,14 @@ function InputBottom({
 						placeholderTextColor={colors[theme].GRAY_300}
 						placeholder={`${t('댓글을 입력하세요')}`}
 						style={styles.input}
+						maxLength={MAX_LENGTH_TEXT_INPUT}
 					/>
-					<TouchableOpacity activeOpacity={0.8} onPress={onSubmit}>
-						<Image source={Send} />
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={onSubmit}
+						disabled={isLoading}
+					>
+						{isLoading ? <ActivityIndicator /> : <Image source={Send} />}
 					</TouchableOpacity>
 				</View>
 			</View>

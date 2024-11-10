@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { colors, communityNavigations, userNavigations } from '@/constants';
 import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
@@ -8,7 +9,8 @@ import { ThemeMode } from '@/types';
 import { POST_DTO } from '@/types/api/types';
 import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 import Comment from '../../assets/images/Comment.png';
-import Report from '../../assets/images/Report.png';
+
+// import Report from '../../assets/images/Report.png';
 
 type QuestionPreviewProps = {
 	navigation: NavigationProp<CommunityStackParamList>;
@@ -35,10 +37,20 @@ function QuestionPreview({ navigation, id, post }: QuestionPreviewProps) {
 		>
 			<View style={styles.top}>
 				<TouchableOpacity
+					disabled
 					onPress={() => navigation.navigate(userNavigations.USER)}
 				>
-					{/* API 수정되면 유저 정보 표시 */}
-					<Image source={{ uri: '/' }} style={styles.profileImg} />
+					{post.profileImg ? (
+						<Image source={{ uri: '/' }} style={styles.profileImg} />
+					) : (
+						<View style={styles.profileImg}>
+							<Ionicons
+								name="person-sharp"
+								color={colors[theme].GRAY_300}
+								size={20}
+							/>
+						</View>
+					)}
 				</TouchableOpacity>
 				<View style={styles.userInfo}>
 					<Text style={styles.name}>{post.name}</Text>
@@ -46,18 +58,22 @@ function QuestionPreview({ navigation, id, post }: QuestionPreviewProps) {
 						{date} {time}
 					</Text>
 				</View>
-				<TouchableOpacity
+				{/* <TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}
 				>
 					<Image source={Report} style={styles.report} />
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 			<View style={styles.contents}>
 				<View style={styles.titleLayout}>
-					<Text style={styles.title}>{post.title}</Text>
+					<Text style={styles.title} numberOfLines={1} ellipsizeMode="clip">
+						{post.title}
+					</Text>
 				</View>
-				<Text style={styles.content}>{post.content}</Text>
+				<Text style={styles.content} numberOfLines={3} ellipsizeMode="clip">
+					{post.content}
+				</Text>
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => console.log('click')}
@@ -107,9 +123,13 @@ const styling = (theme: ThemeMode) =>
 			alignSelf: 'center',
 		},
 		profileImg: {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			justifyContent: 'center',
 			width: 30,
 			height: 30,
-			backgroundColor: colors[theme].GRAY_300,
+			backgroundColor: colors[theme].GRAY_100,
 			borderRadius: 500,
 		},
 		title: {

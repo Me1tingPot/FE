@@ -4,8 +4,17 @@ import {
 	UseInfiniteQueryOptions,
 	useInfiniteQuery,
 	useMutation,
+	useQuery,
 } from '@tanstack/react-query';
-import { POST_TYPE, getPosts, post } from '@/api/community';
+import {
+	POST_TYPE,
+	deletePost,
+	getGetPostComment,
+	getPostDetail,
+	getPosts,
+	post,
+	updatePost,
+} from '@/api/community';
 import { queryKeys } from '@/constants';
 import { ResponseError } from '@/types';
 import { POST_TYPES } from '@/types/api';
@@ -30,7 +39,7 @@ function useGetInfiniteQuestionPostLists(
 		InfiniteData<POST_TYPES, number>,
 		POST_TYPES,
 		QueryKey,
-		number
+		number | null
 	>,
 ) {
 	return useInfiniteQuery({
@@ -41,7 +50,7 @@ function useGetInfiniteQuestionPostLists(
 				pageSize: 10,
 			}),
 		queryKey: [queryKeys.POST, POST_TYPE.QUESTION],
-		initialPageParam: 1,
+		initialPageParam: null,
 		getNextPageParam: (lastPage, _) => {
 			return lastPage.data.isLast ? undefined : lastPage.data.nextCursor;
 		},
@@ -57,7 +66,7 @@ function useGetInfinitePostingPostLists(
 		InfiniteData<POST_TYPES, number>,
 		POST_TYPES,
 		QueryKey,
-		number
+		number | null
 	>,
 ) {
 	return useInfiniteQuery({
@@ -68,7 +77,7 @@ function useGetInfinitePostingPostLists(
 				pageSize: 10,
 			}),
 		queryKey: [queryKeys.POST, POST_TYPE.POSTING],
-		initialPageParam: 1,
+		initialPageParam: null,
 		getNextPageParam: (lastPage, _) => {
 			return lastPage.data.isLast ? undefined : lastPage.data.nextCursor;
 		},
@@ -76,13 +85,57 @@ function useGetInfinitePostingPostLists(
 	});
 }
 
+// 커뮤니티 게시글 조회
+function useGetPostDetail(postId: number) {
+	return useQuery({
+		queryKey: [queryKeys.POST, postId],
+		queryFn: () => getPostDetail({ postId }),
+	});
+}
+
+// 커뮤니티 글 수정하기
+function useUpdatePost(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: updatePost,
+		onSuccess: data => {
+			console.log(data);
+		},
+		...mutationOptions,
+	});
+}
+
+// 커뮤니티 글 삭제하기
+function useDeletePost(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: deletePost,
+		onSuccess: data => {
+			console.log(data);
+		},
+		...mutationOptions,
+	});
+}
+
+// 임시 저장된 커뮤니티 글 가져오기
+function useGetTempSavedPost(postId: number) {
+	return useQuery({
+		queryKey: [queryKeys.TEMP_SAVED, postId],
+		queryFn: () => getPostDetail({ postId }),
+	});
+}
+
 function useCommunity() {
 	const postMutation = usePost();
+	const updatePostMutation = useUpdatePost();
+	const deletePostMutation = useDeletePost();
 
 	return {
 		postMutation,
+		updatePostMutation,
+		deletePostMutation,
 		useGetInfiniteQuestionPostLists,
 		useGetInfinitePostingPostLists,
+		useGetPostDetail,
+		useGetTempSavedPost,
 	};
 }
 

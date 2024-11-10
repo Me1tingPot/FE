@@ -1,19 +1,55 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { COMMENT_DTO } from '@/types/api/types';
+import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 
-const userImg = '';
+interface CommentProps {
+	comment?: COMMENT_DTO;
+	show: () => void;
+	setCommentId: (id: number | null) => void;
+	selectedCommentId: number | null;
+	setTargetComment: (comment: COMMENT_DTO) => void;
+}
 
-function Comment() {
+function Comment({
+	comment,
+	show,
+	setCommentId,
+	selectedCommentId,
+	setTargetComment,
+}: CommentProps) {
+	const [date, setDate] = useState(getDateLocaleFormat(new Date()));
+	const [time, setTime] = useState(getFormattedTime(new Date()));
 	const { theme } = useThemeStore();
-	const styles = styling(theme);
+	const { t } = useTranslation();
+	const styles = styling(theme, selectedCommentId, comment);
+
+	useEffect(() => {
+		if (comment?.updatedAt) {
+			setDate(getDateLocaleFormat(comment?.updatedAt));
+			setTime(getFormattedTime(comment?.updatedAt));
+		}
+	}, [comment?.updatedAt]);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.commentTop}>
-				{userImg ? (
-					<Image source={{ uri: userImg }} style={styles.user} />
+				{comment?.parentId ? (
+					<Ionicons
+						name="return-down-forward"
+						color={colors[theme].GRAY_500}
+						size={17}
+					/>
+				) : (
+					<></>
+				)}
+				{comment?.imageUrl ? (
+					<Image source={{ uri: comment?.imageUrl }} style={styles.user} />
 				) : (
 					<View style={styles.user}>
 						<Ionicons
@@ -24,25 +60,73 @@ function Comment() {
 					</View>
 				)}
 				<View style={styles.userInfo}>
-					<Text style={styles.comment}>익명</Text>
-					<Text style={styles.infoText}>2024/07/07 13:22</Text>
+					<Text style={styles.comment}>
+						{comment?.isAnonymous ? t('익명') : comment?.name}
+					</Text>
+					<Text style={styles.infoText}>
+						{date} {time}
+					</Text>
+				</View>
+				<View style={styles.menuContainer}>
+					{comment?.parentId ? (
+						<></>
+					) : (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								if (selectedCommentId === comment?.commentId) {
+									setCommentId(null);
+								} else if (comment?.commentId) {
+									setCommentId(comment?.commentId);
+								}
+							}}
+						>
+							<Ionicons
+								name="chatbubbles-outline"
+								color={colors[theme].GRAY_700}
+								size={18}
+							/>
+						</TouchableOpacity>
+					)}
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							show();
+							if (comment) {
+								setTargetComment(comment);
+							}
+						}}
+					>
+						<Ionicons name="ellipsis-vertical" color="#000" size={18} />
+					</TouchableOpacity>
 				</View>
 			</View>
 			<View style={styles.commentLayout}>
-				<Text style={styles.comment}>Comment</Text>
+				<Text style={styles.comment}>{comment?.content}</Text>
 			</View>
 			<View style={styles.verticalLine} />
 		</View>
 	);
 }
 
-const styling = (theme: ThemeMode) =>
+const styling = (
+	theme: ThemeMode,
+	selectedCommentId: number | null,
+	comment?: COMMENT_DTO,
+) =>
 	StyleSheet.create({
 		container: {
 			display: 'flex',
 			flexDirection: 'column',
 			gap: 10,
 			flex: 1,
+			backgroundColor:
+				selectedCommentId === comment?.commentId
+					? colors[theme].PINK_200
+					: 'transparent',
+			padding: 5,
+			borderRadius: 5,
+			marginLeft: comment?.parentId ? 13 : 0,
 		},
 		commentTop: {
 			display: 'flex',
@@ -69,8 +153,8 @@ const styling = (theme: ThemeMode) =>
 			backgroundColor: colors[theme].GRAY_100,
 		},
 		infoText: {
-			color: colors[theme].GRAY_700,
-			fontSize: 12,
+			color: colors[theme].GRAY_500,
+			fontSize: 11,
 		},
 		comment: {
 			color: colors[theme].BLACK,
@@ -79,8 +163,12 @@ const styling = (theme: ThemeMode) =>
 		verticalLine: {
 			width: '95%',
 			alignSelf: 'center',
-			borderBottomWidth: 0.5,
-			borderBottomColor: colors[theme].GRAY_300,
+		},
+		menuContainer: {
+			display: 'flex',
+			flexDirection: 'row',
+			marginLeft: 'auto',
+			gap: 5,
 		},
 	});
 

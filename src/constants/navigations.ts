@@ -37,6 +37,7 @@ const communityNavigations = {
 	COMMUNITY_POSTING_DETAIL: 'CommunityPostingDetail',
 	COMMUNITY_POSTING_WRITE: 'CommunityPostingWrite',
 	COMMUNITY_COMMENTS: 'CommunityComments',
+	COMMUNITY_COMMENT_EDIT: 'CommunityCommentEdit',
 } as const;
 
 const myNavigations = {
@@ -45,6 +46,7 @@ const myNavigations = {
 	MY_WRITE_POST: 'MyWritePost',
 	MY_PROFILE_IMAGE_EDIT: 'MyProfileImageEdit',
 	PASSWORD_CHANGE: 'PasswordChange',
+	TEMPORARY_SAVE_POST: 'Temporary Save Post',
 	USING_RESTRICT: 'UsingRestrict',
 	CHATTING_SETTING: 'ChattingSetting',
 	COMMUNITY_RULES: 'CommunityRules',

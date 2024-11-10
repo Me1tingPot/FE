@@ -62,6 +62,12 @@ function MyHomeScreen({ navigation }: MyHomeScreenProps) {
 					<View style={styles.section}>
 						<Text style={styles.categoryText}>{t('커뮤니티')}</Text>
 						<SettingItem
+							title={t('임시 저장한 글')}
+							onPress={() =>
+								navigation.navigate(myNavigations.TEMPORARY_SAVE_POST)
+							}
+						/>
+						<SettingItem
 							title={t('이용 제한 내역')}
 							onPress={() => navigation.navigate(myNavigations.USING_RESTRICT)}
 						/>

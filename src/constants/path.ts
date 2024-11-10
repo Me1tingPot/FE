@@ -7,9 +7,11 @@ const API_BASE = {
 	USER: `user`,
 	CHAT_ROOM: `chatRooms`,
 	POSTS: `posts`,
+	COMMENTS: `comments`,
 	PARTY: `party`,
 	AREA: `area`,
 	SEARCH: `search`,
+	REPORTS: 'reports',
 };
 
 const API_URL = {
@@ -19,6 +21,9 @@ const API_URL = {
 	LOGOUT: `/${API}/${VERSION}/${API_BASE.AUTH}/signout`,
 	AUTH_PROFILE_IMG_URL: `/${API}/${VERSION}/${API_BASE.AUTH}/image-url`,
 	REISSUE_TOKEN: `/${API}/${VERSION}/${API_BASE.AUTH}/reissue-token`,
+
+	// report-controller
+	REPORT: `/${API}/${VERSION}/${API_BASE.REPORTS}`,
 
 	// mail-controller
 	POST_MAIL: `/${API}/${VERSION}/${API_BASE.MAIL}`,
@@ -41,6 +46,13 @@ const API_URL = {
 	// post-controller
 	POST: `/${API}/${VERSION}/${API_BASE.POSTS}`,
 	GET_POSTS_LIST: `${API}/${VERSION}/${API_BASE.POSTS}/type`,
+	GET_POST_DETAIL: `${API}/${VERSION}/${API_BASE.POSTS}`,
+	GET_TEMP_SAVED_POST: `${API}/${VERSION}/${API_BASE.POSTS}/temp-saved`,
+
+	// comment-controller
+	COMMENT: `/${API}/${VERSION}/${API_BASE.COMMENTS}`,
+	GET_COMMENTS_LIST: `/${API}/${VERSION}/${API_BASE.COMMENTS}/list`,
+	CHILD_COMMENT: `/${API}/${VERSION}/${API_BASE.COMMENTS}/child`,
 
 	// party-controller
 	PARTY: `/${API}/${VERSION}/${API_BASE.PARTY}`,

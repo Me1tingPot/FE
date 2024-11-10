@@ -66,12 +66,49 @@ export type POST_DTO = {
 	content: string;
 	commentCount: number;
 	updatedAt: string;
+	userId: 11;
+	profileImg: 'd967641a-3a1f-46ee-9f9e-8fdf417b8a7a';
+	imgUrls: [];
 };
 
 export type POST_DATA = {
-	pageDtos: POST_DTO[];
+	postsList: POST_DTO[];
 	nextCursor: number;
 	isLast: boolean;
+};
+
+export type POST_IMAGE_TYPE = {
+	imageId: number;
+	imageUrl: string;
+};
+
+export type COMMENT_DTO = {
+	commentId: number;
+	parentId: number;
+	userId: number;
+	content: string;
+	name: string;
+	isAnonymous: boolean;
+	imageUrl: string;
+	updatedAt: string;
+};
+
+export type COMMENT_LIST_TYPE = {
+	commentsList: COMMENT_DTO[];
+	nextCursor: number;
+	isLast: boolean;
+};
+
+export type POST_DETAIL_DATA = {
+	postId: number;
+	userId: number;
+	name: string;
+	title: string;
+	content: string;
+	imgData: POST_IMAGE_TYPE[];
+	commentCount: number;
+	commentsList: COMMENT_LIST_TYPE;
+	updatedAt: string;
 };
 
 export type OWNER_DTO = {

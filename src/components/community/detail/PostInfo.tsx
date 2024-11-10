@@ -1,40 +1,53 @@
+import { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, StyleSheet, Text, View } from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import { getDateLocaleFormat, getFormattedTime } from '@/utils';
 import Report from '../../../assets/images/Report.png';
 
-interface PostInfoProps {}
+interface PostInfoProps {
+	writerName?: string;
+	postDate?: string;
+	show: () => void;
+}
 
 const testImg =
 	'https://images.unsplash.com/photo-1605100958409-e084833953d4?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFuYWxvZ3xlbnwwfHwwfHx8MA%3D%3D';
 
-function PostInfo({}: PostInfoProps) {
+function PostInfo({ writerName, postDate, show }: PostInfoProps) {
+	const [date, setDate] = useState(getDateLocaleFormat(new Date()));
+	const [time, setTime] = useState(getFormattedTime(new Date()));
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+
+	useEffect(() => {
+		if (postDate) {
+			setDate(getDateLocaleFormat(postDate));
+			setTime(getFormattedTime(postDate));
+		}
+	}, [postDate]);
+
 	return (
 		<View style={styles.rowGap10}>
 			<Image source={{ uri: testImg }} style={styles.userImg} />
 			<View style={styles.questionInfoLayout}>
-				<Text style={styles.username}>Sunny Kim</Text>
+				<Text style={styles.username}>{writerName}</Text>
 				<View style={styles.rowGap10}>
 					<View style={styles.rowGap5}>
 						<IonIcons name="calendar" color={colors[theme].GRAY_500} />
-						<Text style={styles.questionInfo}>2024/07/07</Text>
+						<Text style={styles.questionInfo}>{date}</Text>
 					</View>
 					<View style={styles.rowGap5}>
 						<Octicons name="clock" color={colors[theme].GRAY_500} />
-						<Text style={styles.questionInfo}>13:22</Text>
+						<Text style={styles.questionInfo}>{time}</Text>
 					</View>
 				</View>
 			</View>
-			<TouchableOpacity
-				activeOpacity={0.8}
-				onPress={() => console.log('click')}
-			>
-				<Image source={Report} style={styles.report} />
+			<TouchableOpacity activeOpacity={0.8} onPress={show}>
+				<IonIcons name="ellipsis-vertical" color="#000" size={20} />
 			</TouchableOpacity>
 		</View>
 	);

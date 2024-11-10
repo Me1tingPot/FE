@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+	ActivityIndicator,
 	FlatList,
 	Image,
 	KeyboardAvoidingView,
@@ -18,36 +19,44 @@ import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { POST_TYPE } from '@/api/community';
+import queryClient from '@/api/queryClient';
 import MultipleGradientBgTextInput from '@/components/community/MultipleGradientBgTextInput';
 import CameraOrLibrary from '@/components/signup/CameraOrLibrary';
-import { colors, feedTabNavigations } from '@/constants';
+import { colors, communityNavigations, queryKeys } from '@/constants';
+import { MAX_LENGTH_TEXT_INPUT } from '@/constants/textInput';
 import useCommunity from '@/hooks/queries/useCommunity';
 import useModal from '@/hooks/useModal';
 import usePermission from '@/hooks/usePermission';
 import usePostImagePicker from '@/hooks/usePostImagePicker';
-import { FeedTabParamList } from '@/navigations/tab/FeedTabNavigator';
+import useThrottle from '@/hooks/useThrottle';
+import { CommunityStackParamList } from '@/navigations/stack/CommunityStackNavigator';
+import usePostStore from '@/store/usePostStore';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
 type CommunityPostingWriteScreenProps = {
-	navigation: NavigationProp<FeedTabParamList>;
+	navigation: NavigationProp<CommunityStackParamList>;
 };
 
 function CommunityPostingWriteScreen({
 	navigation,
 }: CommunityPostingWriteScreenProps) {
-	const [title, setTitle] = useState('');
-	const [content, setContent] = useState('');
-	const [files, setFiles] = useState<string[]>([]);
+	const { post } = usePostStore();
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
 	const modal = useModal();
-	const { postMutation } = useCommunity();
+	const { postMutation, updatePostMutation } = useCommunity();
 	const { imageUris, uploadedImages } = usePostImagePicker({
 		initialImages: [],
 		maxFiles: 10,
 	});
+
+	const isEdit = !!post;
+	const postImgData = post?.imgData.map(img => img.imageUrl);
+	const [title, setTitle] = useState(post?.title || '');
+	const [content, setContent] = useState(post?.content || '');
+	const [files, setFiles] = useState<string[]>(postImgData || []);
 
 	usePermission('PHOTO');
 	usePermission('CAMERA');
@@ -67,37 +76,117 @@ function CommunityPostingWriteScreen({
 		setFiles(imgList);
 	};
 
-	const handleOnSubmit = () => {
-		postMutation.mutate(
-			{
-				title,
-				content,
-				postType: POST_TYPE.POSTING,
-				imageKeys: uploadedImages,
-			},
-			{
-				onSuccess: data => {
-					Toast.show({
-						type: 'success',
-						text1: '게시물이 업로드 되었습니다.',
-						visibilityTime: 2000,
-						position: 'bottom',
-					});
-					// TODO: post detail API 연결 후, 해당 게시글로 바로 이동하는 로직으로 변경
-					navigation.navigate(feedTabNavigations.COMMUNITY_HOME);
+	const handleOnSubmit = useThrottle(() => {
+		if (title && content) {
+			if (isEdit) {
+				updatePostMutation.mutate(
+					{
+						postId: post.postId,
+						title,
+						content,
+						postType: POST_TYPE.POSTING,
+						imageKeys: uploadedImages,
+					},
+					{
+						onSuccess: () => {
+							navigation.navigate(
+								communityNavigations.COMMUNITY_POSTING_DETAIL,
+								{
+									id: post.postId,
+								},
+							);
+							queryClient.invalidateQueries({
+								queryKey: [queryKeys.POST, post.postId],
+							});
+							queryClient.invalidateQueries({
+								queryKey: [queryKeys.POST, POST_TYPE.POSTING],
+							});
+						},
+						onError: error => {
+							Toast.show({
+								type: 'error',
+								text1:
+									error.response?.data.message || '게시물 업로드 오류입니다.',
+								visibilityTime: 2000,
+								position: 'bottom',
+							});
+						},
+					},
+				);
+			} else {
+				postMutation.mutate(
+					{
+						title,
+						content,
+						postType: POST_TYPE.POSTING,
+						imageKeys: uploadedImages,
+						isDraft: false,
+					},
+					{
+						onSuccess: () => {
+							navigation.goBack();
+							queryClient.invalidateQueries({
+								queryKey: [queryKeys.POST, POST_TYPE.POSTING],
+							});
+						},
+						onError: error => {
+							Toast.show({
+								type: 'error',
+								text1:
+									error.response?.data.message || '게시물 업로드 오류입니다.',
+								visibilityTime: 2000,
+								position: 'bottom',
+							});
+							console.error(error.response);
+						},
+					},
+				);
+			}
+		} else {
+			Toast.show({
+				type: 'error',
+				text1: t('내용을 입력해주세요.'),
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+		}
+	});
+
+	const handleOnTempSaved = useThrottle(() => {
+		if (title && content) {
+			postMutation.mutate(
+				{
+					title,
+					content,
+					postType: POST_TYPE.POSTING,
+					imageKeys: uploadedImages,
+					isDraft: true,
 				},
-				onError: error => {
-					Toast.show({
-						type: 'error',
-						text1: error.response?.data.message || '게시물 업로드 오류입니다.',
-						visibilityTime: 2000,
-						position: 'bottom',
-					});
-					console.error(error.response);
+				{
+					onSuccess: () => {
+						navigation.goBack();
+					},
+					onError: error => {
+						Toast.show({
+							type: 'error',
+							text1:
+								error.response?.data.message || '게시물 업로드 오류입니다.',
+							visibilityTime: 2000,
+							position: 'bottom',
+						});
+						console.error(error.response);
+					},
 				},
-			},
-		);
-	};
+			);
+		} else {
+			Toast.show({
+				type: 'error',
+				text1: t('내용을 입력해주세요.'),
+				visibilityTime: 2000,
+				position: 'bottom',
+			});
+		}
+	});
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -146,15 +235,28 @@ function CommunityPostingWriteScreen({
 						/>
 					</TouchableOpacity>
 					<View style={[styles.displayRow]}>
-						<Pressable
-							style={styles.menuBtn}
-							onPress={() => console.log('click')}
-						>
-							<Text style={styles.menuText}>{t('임시저장')}</Text>
-						</Pressable>
-						<Pressable style={styles.menuBtn} onPress={handleOnSubmit}>
-							<Text style={styles.menuText}>{t('게시하기')}</Text>
-						</Pressable>
+						{postMutation?.isPending || updatePostMutation?.isPending ? (
+							<ActivityIndicator />
+						) : (
+							<>
+								{!isEdit && (
+									<Pressable
+										style={styles.menuBtn}
+										onPress={handleOnTempSaved}
+										disabled={postMutation.isPending}
+									>
+										<Text style={styles.menuText}>{t('임시저장')}</Text>
+									</Pressable>
+								)}
+								<Pressable
+									style={styles.menuBtn}
+									onPress={handleOnSubmit}
+									disabled={postMutation.isPending}
+								>
+									<Text style={styles.menuText}>{t('게시하기')}</Text>
+								</Pressable>
+							</>
+						)}
 					</View>
 				</View>
 			</KeyboardAvoidingView>

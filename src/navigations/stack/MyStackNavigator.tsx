@@ -11,6 +11,7 @@ import MyWritePostScreen from '@/screens/my/MyWritePostScreen';
 import AlertSettingScreen from '@/screens/my/app/AlertSettingScreen';
 import ChattingSettingScreen from '@/screens/my/community/ChattingSettingScreen';
 import CommunityRulesScreen from '@/screens/my/community/CommunityRulesScreen';
+import TemporarySavedPostScreen from '@/screens/my/community/TemporarySavedPostScreen';
 import UsingRestrictScreen from '@/screens/my/community/UsingRestrictScreen';
 import InfoAgreeSettingScreen from '@/screens/my/etc/InfoAgreeSettingScreen';
 import AppVersionScreen from '@/screens/my/info/AppVersionScreen';
@@ -26,6 +27,7 @@ export type MyStackParamList = {
 	[myNavigations.MY_WRITE_POST]: undefined;
 	[myNavigations.MY_PROFILE_IMAGE_EDIT]: undefined;
 	[myNavigations.PASSWORD_CHANGE]: undefined;
+	[myNavigations.TEMPORARY_SAVE_POST]: undefined;
 	[myNavigations.USING_RESTRICT]: undefined;
 	[myNavigations.CHATTING_SETTING]: undefined;
 	[myNavigations.COMMUNITY_RULES]: undefined;
@@ -166,6 +168,14 @@ function MyStackNavigator() {
 				component={InfoAgreeSettingScreen}
 				options={{
 					headerTitle: `${t('정보 동의 설정')}`,
+					...commonHeaderOptions,
+				}}
+			/>
+			<Stack.Screen
+				name={myNavigations.TEMPORARY_SAVE_POST}
+				component={TemporarySavedPostScreen}
+				options={{
+					headerTitle: `${t('임시 저장한 글')}`,
 					...commonHeaderOptions,
 				}}
 			/>

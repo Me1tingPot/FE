@@ -1,0 +1,3 @@
+const MAX_LENGTH_TEXT_INPUT = 500;
+
+export { MAX_LENGTH_TEXT_INPUT };

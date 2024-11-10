@@ -1,13 +1,18 @@
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
+import CommentImg from '../../../assets/images/Comment.png';
 
-interface PostContentsProps {}
+interface PostContentsProps {
+	title?: string;
+	content?: string;
+	commentCount?: number;
+}
 
-function PostContents({}: PostContentsProps) {
+function PostContents({ title, content, commentCount }: PostContentsProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
 	const { t } = useTranslation();
@@ -15,14 +20,9 @@ function PostContents({}: PostContentsProps) {
 		<>
 			<View style={styles.contents}>
 				<View style={styles.titleLayout}>
-					<Text style={styles.title}>
-						잠실에서 모임 열건데 추천 맛집있나요?
-					</Text>
+					<Text style={styles.title}>{title}</Text>
 				</View>
-				<Text style={styles.content}>
-					이번주에 잠실에서 만나려고 하는데요, 일단 저 포함 3명이고, 한국인 2명
-					있어요.
-				</Text>
+				<Text style={styles.content}>{content}</Text>
 			</View>
 
 			<TouchableOpacity
@@ -36,6 +36,17 @@ function PostContents({}: PostContentsProps) {
 				<Text style={styles.translationText}>{`${t('번역하기')}`}</Text>
 			</TouchableOpacity>
 			<View style={styles.verticalLine} />
+			<TouchableOpacity
+				activeOpacity={0.8}
+				style={[styles.rowGap10, styles.bottom]}
+				onPress={
+					() => {}
+					// navigation.navigate(communityNavigations.COMMUNITY_COMMENTS, { id })
+				}
+			>
+				<Image source={CommentImg} />
+				<Text style={styles.commentCount}>{commentCount}</Text>
+			</TouchableOpacity>
 		</>
 	);
 }
@@ -55,7 +66,7 @@ const styling = (theme: ThemeMode) =>
 		},
 		content: {
 			paddingHorizontal: 10,
-			marginBottom: 40,
+			marginBottom: 20,
 			fontSize: 14,
 			color: colors[theme].GRAY_700,
 			fontFamily: 'Pretendard-Regular',
@@ -93,6 +104,9 @@ const styling = (theme: ThemeMode) =>
 			alignSelf: 'center',
 			borderBottomWidth: 0.5,
 			borderBottomColor: colors[theme].GRAY_300,
+		},
+		commentCount: {
+			color: colors[theme].BLACK,
 		},
 	});
 

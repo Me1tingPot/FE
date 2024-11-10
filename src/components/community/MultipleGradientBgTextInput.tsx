@@ -1,5 +1,7 @@
 import { StyleSheet, TextInput } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { colors } from '@/constants';
+import { MAX_LENGTH_TEXT_INPUT } from '@/constants/textInput';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
 
@@ -31,6 +33,8 @@ function MultipleGradientBgTextInput({
 				placeholder={titlePlaceholder}
 				value={title}
 				onChangeText={onChangeTitle}
+				placeholderTextColor={colors[theme].GRAY_500}
+				maxLength={MAX_LENGTH_TEXT_INPUT}
 			/>
 			<TextInput
 				value={content}
@@ -38,6 +42,8 @@ function MultipleGradientBgTextInput({
 				multiline
 				placeholder={contentPlaceholder}
 				style={styles.content}
+				placeholderTextColor={colors[theme].GRAY_500}
+				maxLength={MAX_LENGTH_TEXT_INPUT}
 			/>
 		</LinearGradient>
 	);
@@ -54,10 +60,12 @@ const styling = (theme: ThemeMode) =>
 		title: {
 			padding: 3,
 			fontSize: 14,
+			color: colors[theme].BLACK,
 		},
 		content: {
 			padding: 3,
 			fontSize: 12,
+			color: colors[theme].BLACK,
 		},
 	});
 
