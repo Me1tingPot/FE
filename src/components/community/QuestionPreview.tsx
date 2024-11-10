@@ -37,6 +37,7 @@ function QuestionPreview({ navigation, id, post }: QuestionPreviewProps) {
 		>
 			<View style={styles.top}>
 				<TouchableOpacity
+					disabled
 					onPress={() => navigation.navigate(userNavigations.USER)}
 				>
 					{post.profileImg ? (

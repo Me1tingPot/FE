@@ -36,8 +36,7 @@ function PostingPreview({ navigation, id, post }: PostingPreviewProps) {
 			}
 		>
 			<View style={styles.row}>
-				{/* API 수정되면 유저 정보 표시 */}
-				{post.userImg ? (
+				{post.profileImg ? (
 					<Image source={{ uri: '/' }} style={styles.userImg} />
 				) : (
 					<View style={styles.userImg}>
