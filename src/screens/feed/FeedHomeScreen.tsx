@@ -9,9 +9,15 @@ import {
 	View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { NavigationProp } from '@react-navigation/native';
 // import FeedPartyList from '@/components/feed/FeedPartyList';
-import { colors } from '@/constants';
+import {
+	colors,
+	communityNavigations,
+	partyNavigations,
+	wishNavigations,
+} from '@/constants';
 // import { useStomp } from '@/hooks/useStomp';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useThemeStore from '@/store/useThemeStore';
@@ -26,6 +32,20 @@ interface FeedHomeScreenProps {
 
 const bannerImg =
 	'https://images.unsplash.com/photo-1606357887928-49ad46ca4882?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAxfHxLb3JlYXxlbnwwfHwwfHx8MA%3D%3D';
+
+const menuData = [
+	{ title: '내 주변 파티', img: PartyMenu, path: partyNavigations.PARTY_LIST },
+	{
+		title: '예약된 일정',
+		img: ScheduleMenu,
+		path: wishNavigations.WISH_RESERVATION,
+	},
+	{
+		title: '질문',
+		img: QuestionMenu,
+		path: communityNavigations.COMMUNITY_QUESTION,
+	},
+];
 
 function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 	const { theme } = useThemeStore();
@@ -55,24 +75,32 @@ function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 					</View>
 				</TouchableOpacity>
 
+				<TouchableOpacity
+					style={styles.postBanner}
+					onPress={() => navigation.navigate('CommunityPosting')}
+				>
+					<MaterialIcons
+						name="signpost"
+						size={25}
+						color={colors[theme].BLACK}
+					/>
+					<Text style={styles.postTitle}>
+						당신의 기록을 자유롭게 공유하세요
+					</Text>
+					<Text style={styles.postDescription}>
+						포스팅을 업로드하고, 서로의 취향을 공유해보세요
+					</Text>
+				</TouchableOpacity>
 				{/* <FeedPartyList /> */}
 
 				<View style={styles.menuCardContainer}>
 					<FlatList
-						data={[
-							{ title: '내 주변 파티', img: PartyMenu },
-							{ title: '예약된 일정', img: ScheduleMenu },
-							{ title: '질문', img: QuestionMenu },
-						]}
+						data={menuData}
 						horizontal
-						renderItem={({ item, index }) => (
-							<>
-								<Image
-									source={item.img}
-									style={styles.menuCardImg}
-									key={index}
-								/>
-							</>
+						renderItem={({ item }) => (
+							<TouchableOpacity onPress={() => navigation.navigate(item.path)}>
+								<Image source={item.img} style={styles.menuCardImg} />
+							</TouchableOpacity>
 						)}
 					/>
 				</View>
@@ -120,7 +148,7 @@ const styling = (theme: ThemeMode) =>
 		menuCardContainer: {
 			flexDirection: 'row',
 			gap: 10,
-			marginTop: 20,
+			marginTop: 10,
 			marginLeft: 10,
 			marginBottom: 20,
 		},
@@ -137,6 +165,25 @@ const styling = (theme: ThemeMode) =>
 			fontSize: 17,
 			color: colors[theme].WHITE,
 			fontFamily: 'Pretendard-Bold',
+		},
+		postBanner: {
+			gap: 7,
+			padding: 20,
+			marginVertical: 20,
+			marginHorizontal: 20,
+			borderRadius: 10,
+			backgroundColor: colors[theme].GRAY_100,
+		},
+		postTitle: {
+			color: colors[theme].UNCHANGE_BLACK,
+			fontSize: 17,
+			fontFamily: 'Pretendard-Light',
+			marginTop: 5,
+		},
+		postDescription: {
+			color: colors[theme].GRAY_500,
+			fontSize: 14,
+			fontFamily: 'Pretendard-Mediim',
 		},
 	});
 
