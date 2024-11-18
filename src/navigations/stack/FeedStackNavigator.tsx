@@ -19,6 +19,7 @@ import ChatStartScreen from '@/screens/chat/ChatStartScreen';
 import CommunityPostingDetailScreen from '@/screens/community/CommunityPostingDetailScreen';
 import CommunityQuestionDetailScreen from '@/screens/community/CommunityQuestionDetailScreen';
 import PartyDetailScreen from '@/screens/party/PartyDetailScreen';
+import PartyHomeScreen from '@/screens/party/PartyHomeScreen';
 import UserProfileScreen from '@/screens/user/UserProfileScreen';
 import useThemeStore from '@/store/useThemeStore';
 import { ThemeMode } from '@/types';
@@ -34,6 +35,7 @@ export type FeedStackParamList = {
 	[communityNavigations.COMMUNITY_QUESTION_DETAIL]: { id: number };
 	[partyNavigations.PARTY_DETAIL]: { id: number };
 	[userNavigations.USER_PROFILE]: { id: number };
+	[partyNavigations.PARTY_HOME]: undefined;
 };
 
 function FeedStackNavigator() {
@@ -107,6 +109,10 @@ function FeedStackNavigator() {
 			<Stack.Screen
 				name={userNavigations.USER_PROFILE}
 				component={UserProfileScreen}
+			/>
+			<Stack.Screen
+				name={partyNavigations.PARTY_HOME}
+				component={PartyHomeScreen}
 			/>
 		</Stack.Navigator>
 	);
