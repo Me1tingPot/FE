@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	FlatList,
 	Image,
@@ -50,6 +51,7 @@ const menuData = [
 function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 	const { theme } = useThemeStore();
 	const styles = styling(theme);
+	const { t } = useTranslation();
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -66,12 +68,14 @@ function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 					/>
 					<View style={styles.bannerContent}>
 						<View>
-							<Text style={styles.bannerTitle}>파티 호스트가 되어</Text>
-							<Text style={styles.bannerTitle}>친구들을</Text>
-							<Text style={styles.bannerTitle}>모아보세요!</Text>
+							<Text
+								style={styles.bannerTitle}
+							>{`${t('파티 호스트가 되어')}`}</Text>
+							<Text style={styles.bannerTitle}>{`${t('친구들을')}`}</Text>
+							<Text style={styles.bannerTitle}>{`${t('모아보세요!')}`}</Text>
 						</View>
 
-						<Text style={styles.bannerSubTitle}>파티 주최하기</Text>
+						<Text style={styles.bannerSubTitle}>{`${t('파티 주최하기')}`}</Text>
 					</View>
 				</TouchableOpacity>
 
@@ -85,10 +89,10 @@ function FeedHomeScreen({ navigation }: FeedHomeScreenProps) {
 						color={colors[theme].BLACK}
 					/>
 					<Text style={styles.postTitle}>
-						당신의 기록을 자유롭게 공유하세요
+						{`${t('당신의 기록을 자유롭게 공유하세요')}`}
 					</Text>
 					<Text style={styles.postDescription}>
-						포스팅을 업로드하고, 서로의 취향을 공유해보세요
+						{`${t('포스팅을 업로드하고, 서로의 취향을 공유해보세요')}`}
 					</Text>
 				</TouchableOpacity>
 				{/* <FeedPartyList /> */}
